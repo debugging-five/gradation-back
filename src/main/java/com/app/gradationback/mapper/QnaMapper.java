@@ -3,7 +3,5 @@ package com.app.gradationback.mapper;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface TimeMapper {
-    public String getTime();
-
+public interface QnaMapper {
 }
