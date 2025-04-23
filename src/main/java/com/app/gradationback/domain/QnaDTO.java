@@ -56,5 +56,4 @@ public class QnaDTO {
     private String userBackgroundImgName;
     private String userBackgroundImgPath;
     private Long majorId;
-
 }

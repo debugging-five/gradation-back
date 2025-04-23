@@ -18,5 +18,4 @@ public class AuctionVO {
     private Date auctionBidDate;
     private Long artId;
     private Long userId;
-
 }
