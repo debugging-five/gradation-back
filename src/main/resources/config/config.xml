@@ -6,5 +6,47 @@
     </settings>
 
     <typeAliases>
+        <typeAlias type="com.app.gradationback.domain.ArtImgVO" alias="ArtImgVO" />
+        <typeAlias type="com.app.gradationback.domain.ArtLikeVO" alias="ArtLikeVO" />
+        <typeAlias type="com.app.gradationback.domain.ArtPostVO" alias="ArtPostVO" />
+        <typeAlias type="com.app.gradationback.domain.ArtVO" alias="ArtVO" />
+        <typeAlias type="com.app.gradationback.domain.AuctionBiddingVO" alias="AuctionBiddingVO" />
+        <typeAlias type="com.app.gradationback.domain.AuctionVO" alias="AuctionVO" />
+        <typeAlias type="com.app.gradationback.domain.BanVO" alias="BanVO" />
+        <typeAlias type="com.app.gradationback.domain.DeliveryVO" alias="DeliveryVO" />
+        <typeAlias type="com.app.gradationback.domain.ExhibitionPastArtVO" alias="ExhibitionPastArtVO" />
+        <typeAlias type="com.app.gradationback.domain.FaqVO" alias="FaqVO" />
+        <typeAlias type="com.app.gradationback.domain.GradationExhibitionVO" alias="GradationExhibitionVO" />
+        <typeAlias type="com.app.gradationback.domain.MailVO" alias="MailVO" />
+        <typeAlias type="com.app.gradationback.domain.MajorVO" alias="MajorVO" />
+        <typeAlias type="com.app.gradationback.domain.PaymentCancellationVO" alias="PaymentCancellationVO" />
+        <typeAlias type="com.app.gradationback.domain.PaymentVO" alias="PaymentVO" />
+        <typeAlias type="com.app.gradationback.domain.QnaAnswerVO" alias="QnaAnswerVO" />
+        <typeAlias type="com.app.gradationback.domain.QnaVO" alias="QnaVO" />
+        <typeAlias type="com.app.gradationback.domain.ReplyLikeVO" alias="ReplyLikeVO" />
+        <typeAlias type="com.app.gradationback.domain.ReplyVO" alias="ReplyVO" />
+        <typeAlias type="com.app.gradationback.domain.UniversityExhibitionImgVO" alias="UniversityExhibitionImgVO" />
+        <typeAlias type="com.app.gradationback.domain.UniversityExhibitionVO" alias="UniversityExhibitionVO" />
+        <typeAlias type="com.app.gradationback.domain.UniversityLikeVO" alias="UniversityLikeVO" />
+        <typeAlias type="com.app.gradationback.domain.UniversityVO" alias="UniversityVO" />
+        <typeAlias type="com.app.gradationback.domain.UpcyclingVO" alias="UpcyclingVO" />
+        <typeAlias type="com.app.gradationback.domain.UserVO" alias="UserVO" />
+        <typeAlias type="com.app.gradationback.domain.ArtDTO" alias="ArtDTO" />
+        <typeAlias type="com.app.gradationback.domain.ArtPostDTO" alias="ArtPostDTO" />
+        <typeAlias type="com.app.gradationback.domain.AuctionDTO" alias="AuctionDTO" />
+        <typeAlias type="com.app.gradationback.domain.BanDTO" alias="BanDTO" />
+        <typeAlias type="com.app.gradationback.domain.DeliveryDTO" alias="DeliveryDTO" />
+        <typeAlias type="com.app.gradationback.domain.DisplayDTO" alias="DisplayDTO" />
+        <typeAlias type="com.app.gradationback.domain.ExhibitionPastDTO" alias="ExhibitionPastDTO" />
+        <typeAlias type="com.app.gradationback.domain.GradationExhibitionDTO" alias="GradationExhibitionDTO" />
+        <typeAlias type="com.app.gradationback.domain.HistoryVO" alias="HistoryVO" />
+        <typeAlias type="com.app.gradationback.domain.MailDTO" alias="MailDTO" />
+        <typeAlias type="com.app.gradationback.domain.MajorDTO" alias="MajorDTO" />
+        <typeAlias type="com.app.gradationback.domain.PostDTO" alias="PostDTO" />
+        <typeAlias type="com.app.gradationback.domain.QnaDTO" alias="QnaDTO" />
+        <typeAlias type="com.app.gradationback.domain.UniversityDTO" alias="UniversityDTO" />
+        <typeAlias type="com.app.gradationback.domain.UniversityExhibitionDTO" alias="UniversityExhibitionDTO" />
+        <typeAlias type="com.app.gradationback.domain.UniversityLikeDTO" alias="UniversityLikeDTO" />
+        <typeAlias type="com.app.gradationback.domain.UpcyclingDTO" alias="UpcyclingDTO" />
     </typeAliases>
 </configuration>
