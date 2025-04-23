@@ -9,5 +9,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping
-public class ServiceCenterController {
+public class QnaController {
 }
