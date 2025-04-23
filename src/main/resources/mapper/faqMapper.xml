@@ -1,4 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.gradationback.mapper.FaqMapper">
+
+<!--    자주 묻는 질문 등록-->
+    <insert id="insert" parameterType="FaqVO">
+        INSERT INTO TBL_FAQ
+        VALUES (SEQ_FAQ.NEXTVAL, #{faqTitle}, #{faqContent}, #{faqCategory})
+    </insert>
+
+<!--    자주 묻는 질문 리스트-->
+    <select id="selectAll" resultType="FaqVO">
+        SELECT ID, FAQ_CATEGORY, FAQ_TITLE
+        FROM TBL_FAQ
+    </select>
+
+<!--    자주 묻는 질문 단일 조회-->
+    <select id="selectById" resultType="FaqVO" parameterType="Long">
+        SELECT ID, FAQ_CATEGORY, FAQ_TITLE, FAQ_CONTENT
+        FROM TBL_FAQ
+        WHERE ID = #{id}
+    </select>
+
+<!--    자주 묻는 질문 수정-->
+    <update id="update" parameterType="FaqVO">
+        UPDATE TBL_FAQ
+        SET FAQ_TITLE = #{faqTitle} , FAQ_CONTENT= #{faqContent}, FAQ_CATEGORY = #{faqCategory}
+        WHERE ID = #{id}
+    </update>
+
+<!--    자주 묻는 질문 삭제-->
+    <delete id="delete" parameterType="Long">
+        DELETE FROM TBL_FAQ
+        WHERE ID = #{id}
+    </delete>
+
+
+
 </mapper>
