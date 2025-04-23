@@ -42,7 +42,6 @@
         <typeAlias type="com.app.gradationback.domain.HistoryVO" alias="HistoryVO" />
         <typeAlias type="com.app.gradationback.domain.MailDTO" alias="MailDTO" />
         <typeAlias type="com.app.gradationback.domain.MajorDTO" alias="MajorDTO" />
-        <typeAlias type="com.app.gradationback.domain.PostDTO" alias="PostDTO" />
         <typeAlias type="com.app.gradationback.domain.QnaDTO" alias="QnaDTO" />
         <typeAlias type="com.app.gradationback.domain.UniversityDTO" alias="UniversityDTO" />
         <typeAlias type="com.app.gradationback.domain.UniversityExhibitionDTO" alias="UniversityExhibitionDTO" />
