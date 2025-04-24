@@ -41,4 +41,9 @@ public class ArtPostDAO {
     public void delete(Long id) {
         artPostMapper.delete(id);
     }
+
+//    작품 게시 전체 삭제 (회원 탈퇴)
+    public void deleteAllByUserId(Long userId) {
+        artPostMapper.deleteAllByUserId(userId);
+    }
 }

@@ -18,17 +18,18 @@ import java.util.Optional;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/display/api/*")
+@RequestMapping("/displays/api/*")
 public class DisplayController {
 
     private final DisplayService displayService;
+    private final ArtPostDTO artPostDTO;
 
     @Operation(summary = "작품 등록", description = "작품을 등록할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "작품 등록 성공")
     @PostMapping("write")
-    public void write(@RequestBody ArtVO artVO, @RequestBody ArtImgVO artImgVO) {
-        displayService.registerArt(artVO);
-        displayService.registerArtImg(artImgVO);
+    public void write(@RequestBody ArtPostDTO artPostDTO) {
+        log.info("{}", artPostDTO);
+        displayService.registerForm(artPostDTO);
     }
 
 }

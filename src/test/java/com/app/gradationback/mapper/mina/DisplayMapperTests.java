@@ -2,6 +2,7 @@ package com.app.gradationback.mapper.mina;
 
 import com.app.gradationback.domain.*;
 import com.app.gradationback.mapper.*;
+import com.app.gradationback.service.DisplayService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ public class DisplayMapperTests {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private DisplayService displayService;
 
     //    ArtMapper
     //    작품 정보 등록
@@ -205,11 +209,13 @@ public class DisplayMapperTests {
         log.info("{}", artPostVO);
     }
 
-//    작품 게시 삭제 (user만들고 다시)
+//    작품 게시 삭제 (유저 필요)
     public void deleteArtPostTest() {
         artPostMapper.delete(7L);
         artMapper.delete(1L);
     }
+
+//    작품 게시 전체 삭제 (회원 탈퇴)
 
     //    ===================================================================================================
 //    ReplyMapper
@@ -262,12 +268,16 @@ public class DisplayMapperTests {
     }
 
 //    댓글 전체 삭제 (회원 탈퇴)
+
 //    댓글 전체 삭제 (게시글 삭제)
     @Test
     public void deleteAllReplyByPostIdTest() {
         replyMapper.deleteAllByPostId(4L);
         artPostMapper.delete(4L);
     }
+
+//    DisplayService
+
 
 
 }

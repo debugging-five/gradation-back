@@ -54,5 +54,10 @@
         DELETE TBL_ART_POST
         WHERE ID = #{id}
     </delete>
+    
+    <delete id="deleteAllByUserId" parameterType="Long">
+        DELETE FROM TBL_ART_POST
+        WHERE USER_ID = #{userId}
+    </delete>
 
 </mapper>
