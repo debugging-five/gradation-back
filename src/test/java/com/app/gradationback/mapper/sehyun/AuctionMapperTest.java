@@ -26,13 +26,14 @@ public class AuctionMapperTest {
     @Test
     public void insert() {
         AuctionVO auctionVO = new AuctionVO();
-        auctionVO.setArtId(4L);
-        auctionVO.setAuctionStartDate("2025-04-26 14:40:00");
+        auctionVO.setArtId(9L);
+        auctionVO.setAuctionStartDate("2025-04-24 16:30:00");
         auctionVO.setAuctionStartPrice(1000000);
         auctionVO.setAuctionEstimatedMinPrice("2000000");
         auctionVO.setAuctionEstimatedMaxPrice("3000000");
 
         auctionMapper.insert(auctionVO);
+        log.info(auctionVO.toString());
 
     }
 
