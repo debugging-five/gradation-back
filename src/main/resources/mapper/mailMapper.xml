@@ -1,4 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.gradationback.mapper.MailMapper">
+
+<!--    쪽지 등록-->
+    <insert id="insertByEmail" parameterType="com.app.vo.MailVO">
+        INSERT INTO TBL_MAIL (
+            ID,
+            MAIL_TITLE,
+            MAIL_CONTENTS,
+            MAIL_SEND_TIME,
+            SEND_USER_ID,
+            RECEIVE_USER_ID
+        )
+        VALUES (
+               SEQ_MAIL.NEXTVAL,
+               #{mailTitle},
+               #{mailContents},
+               SYSDATE,
+               #{sendUserId},
+               (SELECT ID FROM TBL_USER WHERE USER_EMAIL = #{receiveUserEmail})
+               )
+    </insert>
+<!--    받은 쪽지 조회-->
+
+<!--    보낸 쪽지 조회-->
+
+<!--    받은 쪽지 단일 조회-->
+
+<!--    보낸 쪽지 단일 조회-->
+
+<!--    쪽지 삭제 (내가 보낸쪽지 삭제)-->
+
+<!--    쪽지 삭제 (상대방이 보낸쪽지 삭제)-->
+
+
 </mapper>
