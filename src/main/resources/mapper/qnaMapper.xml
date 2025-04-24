@@ -1,4 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.gradationback.mapper.QnaMapper">
+
+<!--    최신순으로 문의 전체 조회-->
+    <select id="selectAll" parameterType="String" resultType="QnaDTO">
+        SELECT TQ.ID AS QNA_ID, QNA_TITLE, QNA_CONTENT, QNA_TIME, QNA_IMG_NAME, QNA_IMG_PATH, QNA_CATEGORY, QNA_ANSWER_TITLE, QNA_ANSWER_CONTENT, QNA_ANSWER_TIME
+        FROM TBL_USER TU
+        JOIN TBL_QNA TQ
+        ON TU.ID = TQ.USER_ID
+        LEFT JOIN TBL_QNA_ANSWER TQA
+        ON TQA.QNA_ID = TQ.ID
+        WHERE USER_EMAIL = #{userEmail}
+        ORDER BY QNA_TIME
+    </select>
+
+<!--    문의 단일 조회-->
+    <select id="selectById" parameterType="Long" resultType="QnaDTO">
+        SELECT TQ.ID AS QNA_ID, QNA_TITLE, QNA_CONTENT, QNA_TIME, QNA_IMG_NAME, QNA_IMG_PATH, QNA_CATEGORY, QNA_ANSWER_TITLE, QNA_ANSWER_CONTENT, QNA_ANSWER_TIME
+        FROM TBL_USER TU
+        JOIN TBL_QNA TQ
+        ON TU.ID = TQ.USER_ID
+        FULL OUTER JOIN TBL_QNA_ANSWER TQA
+        ON TQA.QNA_ID = TQ.ID
+        WHERE TQ.ID = #{qnaId}
+    </select>
+
+    <select id="selectOne" parameterType="Long" resultType="QnaVO">
+        SELECT ID, QNA_TITLE, QNA_CONTENT, QNA_TIME, QNA_IMG_NAME, QNA_IMG_PATH, QNA_CATEGORY, USER_ID
+        FROM TBL_QNA
+        WHERE ID = #{qnaId}
+    </select>
+
+<!--    문의 작성-->
+    <insert id="insert" parameterType="QnaVO">
+        INSERT INTO TBL_QNA
+        VALUES (SEQ_QNA.NEXTVAL, #{qnaTitle}, #{qnaContent}, CURRENT_TIMESTAMP, #{qnaImgName}, #{qnaImgPath}, #{qnaCategory}, #{userId})
+    </insert>
+
+<!--    문의 수정-->
+    <update id="update" parameterType="QnaVO">
+        UPDATE TBL_QNA
+        SET QNA_TITLE = #{qnaTitle}, QNA_CONTENT = #{qnaContent}, QNA_TIME = CURRENT_TIMESTAMP, QNA_IMG_NAME = #{qnaImgName}, QNA_IMG_PATH = #{qnaImgPath}, QNA_CATEGORY = #{qnaCategory}
+        WHERE ID = #{id}
+    </update>
+
+<!--    문의 삭제-->
+    <delete id="delete" parameterType="Long">
+        DELETE FROM TBL_QNA
+        WHERE ID = #{id}
+    </delete>
+
 </mapper>
