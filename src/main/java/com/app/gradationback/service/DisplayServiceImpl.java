@@ -16,8 +16,9 @@ import java.util.Optional;
 public class DisplayServiceImpl implements DisplayService {
 
     private final DisplayDAO displayDAO;
+    private final ArtImgVO artImgVO;
 
-//    작품 등록
+    //    작품 등록
     @Override
     public void registerArt(ArtVO artVO) {
         displayDAO.save(artVO);

@@ -1,4 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.gradationback.mapper.ArtMapper">
+
+    <insert id="insert" parameterType="ArtVO">
+        INSERT INTO TBL_ART
+        VALUES (SEQ_ART.NEXTVAL, #{artTitle}, #{artCategory}, #{artMaterial},
+                #{artSize}, #{artDescription}, #{artEndDate}, #{userId})
+    </insert>
+
+    <select id="selectAll" resultType="ArtVO">
+        SELECT ID, ART_TITLE, ART_CATEGORY, ART_MATERIAL, ART_SIZE, ART_DESCRIPTION, ART_END_DATE, USER_ID
+        FROM TBL_ART
+    </select>
+
+    <select id="select" parameterType="Long" resultType="ArtVO">
+        SELECT ID, ART_TITLE, ART_CATEGORY, ART_MATERIAL, ART_SIZE, ART_DESCRIPTION, ART_END_DATE, USER_ID
+        FROM TBL_ART
+        WHERE ID = #{id}
+    </select>
+
+    <update id="update" parameterType="ArtVO">
+        UPDATE TBL_ART
+        SET ART_TITLE = #{artTitle}, ART_CATEGORY = #{artCategory}, ART_MATERIAL = #{artMaterial},
+            ART_SIZE = #{artSize}, ART_DESCRIPTION = #{artDescription}, ART_END_DATE = #{artEndDate}
+        WHERE ID = #{id}
+    </update>
+
+    <delete id="delete" parameterType="Long">
+        DELETE TBL_ART
+        WHERE ID = #{id}
+    </delete>
+
+
 </mapper>

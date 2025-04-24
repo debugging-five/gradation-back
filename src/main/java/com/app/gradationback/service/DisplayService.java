@@ -15,8 +15,6 @@ public interface DisplayService {
 //    작품 이미지 등록
     public void registerArtImg(ArtImgVO artImgVO);
 
-
-//    public void registerForm(ArtVO artVO, ArtImgVO artImgVO );
 //    작품 리스트
     public List<ArtPostDTO> getArtList();
 

@@ -6,7 +6,6 @@
         INSERT INTO TBL_ART
         VALUES (SEQ_ART.NEXTVAL, #{artTitle}, #{artCategory}, #{artMaterial},
                 #{artSize}, #{artDescription}, #{artEndDate}, #{userId})
-
     </insert>
 
     <insert id="insertArtImg" parameterType="ArtImgVO">
