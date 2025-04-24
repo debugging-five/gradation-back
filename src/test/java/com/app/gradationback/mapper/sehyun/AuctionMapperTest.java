@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @SpringBootTest
@@ -37,7 +38,13 @@ public class AuctionMapperTest {
 
     @Test
     public void selectAll() {
-        List<AuctionDTO> auctions = auctionMapper.selectAll();
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("order", "popular");
+        params.put("cursor", 1);
+        params.put("direction", "asc");
+        params.put("category", "건축");
+        params.put("status", "complete");
+        List<AuctionDTO> auctions = auctionMapper.selectAll(params);
         log.info("------------------------------------");
         for (AuctionDTO auction : auctions) {
             log.info(auction.toString());

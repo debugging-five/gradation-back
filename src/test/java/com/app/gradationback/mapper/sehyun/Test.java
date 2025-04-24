@@ -12,12 +12,5 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class Test {
-    private final AuctionMapper auctionMapper;
 
-    public void selectAll() {
-        List<AuctionDTO> auctions = auctionMapper.selectAll();
-        for (AuctionDTO auction : auctions) {
-            log.info(auction.toString());
-        }
-    }
 }
