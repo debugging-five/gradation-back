@@ -1,13 +1,7 @@
 package com.app.gradationback.mapper.mina;
 
-import com.app.gradationback.domain.ArtImgVO;
-import com.app.gradationback.domain.ArtPostDTO;
-import com.app.gradationback.domain.ArtPostVO;
-import com.app.gradationback.domain.ArtVO;
-import com.app.gradationback.mapper.ArtImgMapper;
-import com.app.gradationback.mapper.ArtMapper;
-import com.app.gradationback.mapper.ArtPostMapper;
-import com.app.gradationback.mapper.UserMapper;
+import com.app.gradationback.domain.*;
+import com.app.gradationback.mapper.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +28,15 @@ public class DisplayMapperTests {
     private ArtPostMapper artPostMapper;
 
     @Autowired
+    private ReplyMapper replyMapper;
+
+    @Autowired
     private ArtImgVO artImgVO;
+
     @Autowired
     private UserMapper userMapper;
 
+    //    ArtMapper
     //    작품 정보 등록
     @Test
     public void insertTest() {
@@ -120,7 +119,7 @@ public class DisplayMapperTests {
     }
 
 //    ===================================================================================================
-
+//    ArtImgMapper
 //    작품 이미지 등록
     @Test
     public void insertArtImgTest() {
@@ -167,7 +166,7 @@ public class DisplayMapperTests {
     }
 
     //    ===================================================================================================
-
+//    ArtPostMapper
 //    작품 게시
     @Test
     public void insertArtPostTest() {
@@ -210,6 +209,64 @@ public class DisplayMapperTests {
     public void deleteArtPostTest() {
         artPostMapper.delete(7L);
         artMapper.delete(1L);
+    }
+
+    //    ===================================================================================================
+//    ReplyMapper
+//    댓글 등록
+    @Test
+    public void insertReplyTest() {
+        ReplyVO replyVO = new ReplyVO();
+        replyVO.setArtPostId(5L);
+        replyVO.setUserId(49L);
+        replyVO.setReplyContent("댓글6");
+        replyVO.setReplyDate(new Timestamp(System.currentTimeMillis()));
+        replyMapper.insert(replyVO);
+        log.info("{}", replyVO);
+    }
+
+//    댓글 전체 조회
+    @Test
+    public void selectAllReplyTest() {
+        List<ReplyVO> replyVOList = replyMapper.selectAll();
+        for (ReplyVO replyVO : replyVOList) {
+            log.info("{}", replyVO);
+        }
+    }
+
+//    댓글 단일 조회
+    @Test
+    public void selectReplyTest() {
+        ReplyVO replyVO = new ReplyVO();
+        replyVO.setId(5L);
+        replyMapper.select(replyVO.getId()).map(ReplyVO::toString).ifPresent(log::info);
+    }
+
+//    댓글 수정
+    @Test
+    public void updateReplyTest() {
+        ReplyVO replyVO = new ReplyVO();
+        replyVO.setId(8L);
+        replyVO.setArtPostId(5L);
+        replyVO.setUserId(49L);
+        replyVO.setReplyContent("수정된 댓글6");
+        replyVO.setReplyDate(new Timestamp(System.currentTimeMillis()));
+        replyMapper.update(replyVO);
+        log.info("{}", replyVO);
+    }
+
+//    댓글 삭제
+    @Test
+    public void deleteReplyTest() {
+        replyMapper.delete(8L);
+    }
+
+//    댓글 전체 삭제 (회원 탈퇴)
+//    댓글 전체 삭제 (게시글 삭제)
+    @Test
+    public void deleteAllReplyByPostIdTest() {
+        replyMapper.deleteAllByPostId(4L);
+        artPostMapper.delete(4L);
     }
 
 
