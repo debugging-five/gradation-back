@@ -25,18 +25,18 @@ public class AuctionVO {
     @Schema(description = "최대추정가", required = true, example = "200000")
     private String auctionEstimatedMaxPrice;
 
-    @Schema(description = "낙찰여부", example = "null")
+    @Schema(description = "낙찰여부", example = "false")
     private boolean auctionAttracted;
 
-    @Schema(description = "낙찰가", example = "null")
+    @Schema(description = "낙찰가", example = "200000")
     private Integer auctionBidPrice;
 
-    @Schema(description = "경매종료일", example = "null")
+    @Schema(description = "경매종료일", example = "2025-01-01 15:30:00")
     private String auctionBidDate;
 
     @Schema(description = "작품번호", required = true, example = "1")
     private Long artId;
 
-    @Schema(description = "낙찰자", example = "null")
+    @Schema(description = "낙찰자", example = "1")
     private Long userId;
 }

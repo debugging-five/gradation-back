@@ -56,37 +56,37 @@
         SELECT TAI1.ART_ID, TAI1.ART_IMG_NAME, TAI1.ART_IMG_PATH
         FROM TBL_ART_IMG TAI1
         JOIN (
-        SELECT ART_ID, MIN(ID) AS MIN_ID
-        FROM TBL_ART_IMG
-        GROUP BY ART_ID
+            SELECT ART_ID, MIN(ID) AS MIN_ID
+            FROM TBL_ART_IMG
+            GROUP BY ART_ID
         ) TAI2
         ON TAI1.ART_ID = TAI2.ART_ID
         AND TAI1.ID = TAI2.MIN_ID
         ) TAI
         ON TAR.ID = TAI.ART_ID
         LEFT OUTER JOIN (
-        SELECT ART_ID, COUNT(*) AS ART_LIKE_COUNT
-        FROM TBL_ART_LIKE
-        GROUP BY ART_ID
+            SELECT ART_ID, COUNT(*) AS ART_LIKE_COUNT
+            FROM TBL_ART_LIKE
+            GROUP BY ART_ID
         ) TAL
         ON TAR.ID = TAL.ART_ID
         <choose>
-            <when test="category.equals('공예')">
+            <when test="category != null and category.equals('공예')">
                 WHERE ART_CATEGORY = '공예'
             </when>
-            <when test="category.equals('건축')">
+            <when test="category != null and category.equals('건축')">
                 WHERE ART_CATEGORY = '건축'
             </when>
-            <when test="category.equals('서예')">
+            <when test="category != null and category.equals('서예')">
                 WHERE ART_CATEGORY = '서예'
             </when>
-            <when test="category.equals('회화')">
+            <when test="category != null and category.equals('회화')">
                 WHERE ART_CATEGORY = '회화'
             </when>
-            <when test="category.equals('조각')">
+            <when test="category != null and category.equals('조각')">
                 WHERE ART_CATEGORY = '조각'
             </when>
-            <when test="category.equals('한국화')">
+            <when test="category != null and category.equals('한국화')">
                 WHERE ART_CATEGORY = '한국화'
             </when>
             <otherwise>
@@ -94,27 +94,28 @@
             </otherwise>
         </choose>
         <choose>
-            <when test="status.equals('expected')">
+            <when test="status != null and status.equals('expected')">
                 AND AUCTION_START_DATE &gt; SYSDATE
             </when>
-            <when test="status.equals('bidding')">
+            <when test="status != null and status.equals('bidding')">
                 AND AUCTION_START_DATE &lt; SYSDATE
                 AND AUCTION_BID_DATE IS NULL
             </when>
-            <when test="status.equals('complete')">
+            <when test="status != null and status.equals('complete')">
                 AND AUCTION_BID_DATE &lt; SYSDATE
             </when>
             <otherwise>
                 AND AUCTION_START_DATE &lt; SYSDATE
+                AND AUCTION_BID_DATE IS NULL
             </otherwise>
         </choose>
         ORDER BY
         <choose>
-            <when test="order.equals('popular')">
+            <when test="order != null and order.equals('popular')">
                 ART_LIKE_COUNT
             </when>
             <otherwise>
-                ID
+                TAU.ID
             </otherwise>
         </choose>
         <choose>
@@ -172,15 +173,15 @@
                 <when test="auctionAttracted">
                     AUCTION_ATTRACTED = 1,
                     USER_ID = #{userId},
-                    AUCTION_BID_PRICE = #{auctionBidPrice},
+                    AUCTION_BID_PRICE = #{auctionBidPrice}
                 </when>
                 <otherwise>
-                    AUCTION_ATTRACTED = 0,
+                    AUCTION_ATTRACTED = 0
                 </otherwise>
             </choose>
             <choose>
                 <when test="auctionBidDate != null">
-                    AUCTION_BID_DATE = TO_DATE(#{auctionBidDate}, 'YYYY-MM-DD HH24:MI:SS')
+                    , AUCTION_BID_DATE = TO_DATE(#{auctionBidDate}, 'YYYY-MM-DD HH24:MI:SS')
                 </when>
                 <otherwise>
                 </otherwise>
