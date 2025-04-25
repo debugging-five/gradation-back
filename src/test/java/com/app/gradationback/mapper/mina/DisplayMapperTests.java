@@ -277,6 +277,21 @@ public class DisplayMapperTests {
     }
 
 //    DisplayService
+//    @Test
+//    public void test() {
+//        ArtPostDTO artPostDTO = new ArtPostDTO();
+//        artPostDTO.setArtTitle("제목1");
+//        artPostDTO.setArtCategory("카테고리1");
+//        artPostDTO.setArtDescription("설명1");
+//        artPostDTO.setArtMaterial("재료1");
+//        artPostDTO.setArtImgPath("/images/art1");
+//        artPostDTO.setArtSize("10x10x10");
+//        artPostDTO.setArtEndDate(new Timestamp(System.currentTimeMillis()));
+//        artPostDTO.getArtImgName("이미지1");
+//        artPostDTO.setUserId(45L);
+//        displayService.registerForm(artPostDTO);
+//        log.info("{}", artPostDTO);
+//    }
 
 
 

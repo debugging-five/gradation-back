@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface DisplayService {
 
 //    양식 제출
-    public void registerForm(ArtPostDTO artPostDTO);
+    public void register(ArtPostDTO artPostDTO);
 
 //    display 리스트
     public List<ArtPostDTO> getArtPostList();

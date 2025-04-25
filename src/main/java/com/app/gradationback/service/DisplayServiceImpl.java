@@ -33,7 +33,7 @@ public class DisplayServiceImpl implements DisplayService {
 
     //    게시글 등록
     @Override
-    public void registerForm(ArtPostDTO artPostDTO) {
+    public void register(ArtPostDTO artPostDTO) {
 
 //        작품
         ArtVO artVO = new ArtVO();
@@ -43,6 +43,7 @@ public class DisplayServiceImpl implements DisplayService {
         artVO.setArtSize(artPostDTO.getArtSize());
         artVO.setArtDescription(artPostDTO.getArtDescription());
         artVO.setArtEndDate(artPostDTO.getArtEndDate());
+        artVO.setUserId(artPostDTO.getUserId());
 
 //        작품 이미지
         ArtImgVO artImgVO = new ArtImgVO();
@@ -76,10 +77,12 @@ public class DisplayServiceImpl implements DisplayService {
 //    게시글 수정
     @Override
     public void editArtPost(ArtPostDTO artPostDTO) {
-        ArtPostVO artPostVO = new ArtPostVO();
-        artPostVO.setArtPostDate(artPostDTO.getArtPostDate());
+//        ArtPostVO artPostVO = new ArtPostVO();
+//        artPostVO.setArtPostDate(artPostDTO.getArtPostDate());
 
+//        작품
         ArtVO artVO = new ArtVO();
+        artVO.setId(artPostDTO.getId());
         artVO.setArtTitle(artPostDTO.getArtTitle());
         artVO.setArtCategory(artPostDTO.getArtCategory());
         artVO.setArtMaterial(artPostDTO.getArtMaterial());
@@ -87,8 +90,23 @@ public class DisplayServiceImpl implements DisplayService {
         artVO.setArtDescription(artPostDTO.getArtDescription());
         artVO.setArtEndDate(artPostDTO.getArtEndDate());
 
-        artPostDAO.update(artPostVO);
+//        작품 이미지
+        ArtImgVO artImgVO = new ArtImgVO();
+        artImgVO.setId(artPostDTO.getArtId());
+        artImgVO.setArtImgName(artPostDTO.getArtImgName());
+        artImgVO.setArtImgPath(artPostDTO.getArtImgPath());
+        artImgVO.setArtId(artPostDTO.getArtId());
+
+//        게시글
+        ArtPostVO artPostVO = new ArtPostVO();
+        artPostVO.setId(artPostDTO.getArtId());
+        artPostVO.setArtId(artPostDTO.getArtId());
+        artPostVO.setUserId(artPostDTO.getUserId());
+        artPostVO.setArtPostDate(artPostDTO.getArtPostDate());
+
         artDAO.update(artVO);
+        artImgDAO.update(artImgVO);
+        artPostDAO.update(artPostVO);
     }
 
 //    게시글 삭제 + 댓글 삭제

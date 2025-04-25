@@ -3,8 +3,11 @@
 <mapper namespace="com.app.gradationback.mapper.ArtMapper">
 
     <insert id="insert" parameterType="ArtVO">
+        <selectKey keyProperty="id" order="BEFORE" resultType="Long">
+            SELECT SEQ_ART.NEXTVAL FROM DUAL
+        </selectKey>
         INSERT INTO TBL_ART
-        VALUES (SEQ_ART.NEXTVAL, #{artTitle}, #{artCategory}, #{artMaterial},
+        VALUES (#{id}, #{artTitle}, #{artCategory}, #{artMaterial},
                 #{artSize}, #{artDescription}, #{artEndDate}, #{userId})
     </insert>
 
