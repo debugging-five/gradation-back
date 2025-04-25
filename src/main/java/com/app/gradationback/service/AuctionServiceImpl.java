@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuctionServiceImpl implements AuctionService {
 
-    private AuctionDAO auctionDAO;
+    private final AuctionDAO auctionDAO;
 
     @Override
     public void auctionRegistration(AuctionVO auctionVO) {
