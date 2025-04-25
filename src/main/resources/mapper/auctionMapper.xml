@@ -1,4 +1,196 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.gradationback.mapper.AuctionMapper">
+    
+    <insert id="insert" parameterType="AuctionVO">
+        <selectKey keyProperty="id" order="BEFORE" resultType="Long">
+            SELECT SEQ_AUCTION.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO TBL_AUCTION (
+            ID,
+            ART_ID,
+            AUCTION_START_DATE,
+            AUCTION_START_PRICE,
+            AUCTION_ESTIMATED_MIN_PRICE,
+            AUCTION_ESTIMATED_MAX_PRICE
+        )
+        VALUES (
+            #{id},
+            #{artId},
+            TO_DATE(#{auctionStartDate}, 'YYYY-MM-DD HH24:MI:SS'),
+            #{auctionStartPrice},
+            #{auctionEstimatedMinPrice},
+            #{auctionEstimatedMaxPrice}
+        )
+    </insert>
+    
+    <select id="selectAll" parameterType="Map" resultType="AuctionDTO">
+        SELECT
+        TAU.ID,
+        TAU.ART_ID,
+        TAU.USER_ID,
+        AUCTION_START_DATE,
+        AUCTION_START_PRICE,
+        AUCTION_ESTIMATED_MIN_PRICE,
+        AUCTION_ESTIMATED_MAX_PRICE,
+        AUCTION_ATTRACTED,
+        AUCTION_BID_PRICE,
+        AUCTION_BID_DATE,
+
+        TAR.ID,
+        ART_TITLE,
+        ART_CATEGORY,
+        ART_MATERIAL,
+        ART_SIZE,
+        ART_DESCRIPTION,
+        ART_END_DATE,
+        TAR.USER_ID,
+
+        TAI.ART_IMG_NAME,
+        TAI.ART_IMG_PATH,
+        COALESCE(TAL.ART_LIKE_COUNT, 0) AS ART_LIKE_COUNT
+        FROM TBL_AUCTION TAU
+        JOIN TBL_ART TAR
+        ON TAU.ART_ID = TAR.ID
+        LEFT JOIN (
+        SELECT TAI1.ART_ID, TAI1.ART_IMG_NAME, TAI1.ART_IMG_PATH
+        FROM TBL_ART_IMG TAI1
+        JOIN (
+            SELECT ART_ID, MIN(ID) AS MIN_ID
+            FROM TBL_ART_IMG
+            GROUP BY ART_ID
+        ) TAI2
+        ON TAI1.ART_ID = TAI2.ART_ID
+        AND TAI1.ID = TAI2.MIN_ID
+        ) TAI
+        ON TAR.ID = TAI.ART_ID
+        LEFT OUTER JOIN (
+            SELECT ART_ID, COUNT(*) AS ART_LIKE_COUNT
+            FROM TBL_ART_LIKE
+            GROUP BY ART_ID
+        ) TAL
+        ON TAR.ID = TAL.ART_ID
+        <choose>
+            <when test="category != null and category.equals('공예')">
+                WHERE ART_CATEGORY = '공예'
+            </when>
+            <when test="category != null and category.equals('건축')">
+                WHERE ART_CATEGORY = '건축'
+            </when>
+            <when test="category != null and category.equals('서예')">
+                WHERE ART_CATEGORY = '서예'
+            </when>
+            <when test="category != null and category.equals('회화')">
+                WHERE ART_CATEGORY = '회화'
+            </when>
+            <when test="category != null and category.equals('조각')">
+                WHERE ART_CATEGORY = '조각'
+            </when>
+            <when test="category != null and category.equals('한국화')">
+                WHERE ART_CATEGORY = '한국화'
+            </when>
+            <otherwise>
+                WHERE ART_CATEGORY = '한국화'
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="status != null and status.equals('expected')">
+                AND AUCTION_START_DATE &gt; SYSDATE
+            </when>
+            <when test="status != null and status.equals('bidding')">
+                AND AUCTION_START_DATE &lt; SYSDATE
+                AND AUCTION_BID_DATE IS NULL
+            </when>
+            <when test="status != null and status.equals('complete')">
+                AND AUCTION_BID_DATE &lt; SYSDATE
+            </when>
+            <otherwise>
+                AND AUCTION_START_DATE &lt; SYSDATE
+                AND AUCTION_BID_DATE IS NULL
+            </otherwise>
+        </choose>
+        ORDER BY
+        <choose>
+            <when test="order != null and order.equals('popular')">
+                ART_LIKE_COUNT
+            </when>
+            <otherwise>
+                TAU.ID
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="direction != null and direction.equals('asc')">
+                ASC
+            </when>
+            <otherwise>
+                DESC
+            </otherwise>
+        </choose>
+        OFFSET (#{cursor} - 1) * 15 ROWS
+        FETCH NEXT 15 ROWS ONLY
+    </select>
+
+    <select id="select" resultType="AuctionDTO" parameterType="Long">
+        SELECT
+            TAU.ID,
+            TAU.ART_ID,
+            TAU.USER_ID,
+            AUCTION_START_DATE,
+            AUCTION_START_PRICE,
+            AUCTION_ESTIMATED_MIN_PRICE,
+            AUCTION_ESTIMATED_MAX_PRICE,
+            AUCTION_ATTRACTED,
+            AUCTION_BID_PRICE,
+            AUCTION_BID_DATE,
+
+            TAR.ID,
+            ART_TITLE,
+            ART_CATEGORY,
+            ART_MATERIAL,
+            ART_SIZE,
+            ART_DESCRIPTION,
+            ART_END_DATE,
+            TAR.USER_ID,
+
+            TAI.ART_IMG_NAME,
+            TAI.ART_IMG_PATH
+
+        FROM TBL_AUCTION TAU
+                 JOIN HR.TBL_ART TAR ON TAU.ART_ID = TAR.ID
+                 JOIN HR.TBL_ART_IMG TAI ON TAR.ID = TAI.ART_ID
+        WHERE TAU.ID = #{id}
+    </select>
+
+    <update id="update" parameterType="AuctionVO">
+        UPDATE TBL_AUCTION
+        SET
+            AUCTION_START_DATE = TO_DATE(#{auctionStartDate}, 'YYYY-MM-DD HH24:MI:SS'),
+            AUCTION_START_PRICE = #{auctionStartPrice},
+            AUCTION_ESTIMATED_MIN_PRICE = #{auctionEstimatedMinPrice},
+            AUCTION_ESTIMATED_MAX_PRICE = #{auctionEstimatedMaxPrice},
+
+            <choose>
+                <when test="auctionAttracted">
+                    AUCTION_ATTRACTED = 1,
+                    USER_ID = #{userId},
+                    AUCTION_BID_PRICE = #{auctionBidPrice}
+                </when>
+                <otherwise>
+                    AUCTION_ATTRACTED = 0
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="auctionBidDate != null">
+                    , AUCTION_BID_DATE = TO_DATE(#{auctionBidDate}, 'YYYY-MM-DD HH24:MI:SS')
+                </when>
+                <otherwise>
+                </otherwise>
+            </choose>
+        WHERE ID = #{id}
+    </update>
+
+    <delete id="delete" parameterType="Long">
+        DELETE FROM TBL_AUCTION
+        WHERE ID = #{id}
+    </delete>
 </mapper>
