@@ -33,12 +33,49 @@
     </select>
 
 <!--    받은 쪽지 단일 조회-->
+<!--    발신자명: 닉네임, 메일주소: 이메일, 제목, 내용, 작성일 -->
+    <select id="selectReceivedDetail" parameterType="Long" resultType="MailDTO">
+        SELECT
+            TM.ID, TM.MAIL_TITLE, TM.MAIL_CONTENT, TM.MAIL_SEND_TIME,
+            TU.USER_NICKNAME AS sendUserNickName,
+            TU.USER_EMAIL AS sendUserEmail
+        FROM TBL_MAIL TM
+        JOIN TBL_USER TU
+        ON TM.SEND_USER_ID = TU.ID
+        WHERE TM.ID = #{id}
+          AND TM.RECEIVE_USER_ID = #{receiveUserId}
+          AND TM.MAIL_RECEIVE_USER_DELETED = 0
+    </select>
 
 <!--    보낸 쪽지 단일 조회-->
+    <select id="selectSendedDetail" parameterType="Long" resultType="MailDTO">
+        SELECT
+            TM.ID, TM.MAIL_TITLE, TM.MAIL_CONTENT, TM.MAIL_SEND_TIME,
+            TU.USER_NICKNAME AS receiveUserNickName,
+            TU.USER_EMAIL AS receiveUserEmail
+        FROM TBL_MAIL TM
+        JOIN TBL_USER TU
+        ON TM.SEND_USER_ID = TU.ID
+        WHERE TM.ID = #{id}
+          AND TM.SEND_USER_ID = #{sendUserId}
+          AND TM.MAIL_RECEIVE_USER_DELETED = 0
+    </select>
 
-<!--    쪽지 삭제 (내가 보낸쪽지 삭제)-->
+<!--    쪽지 삭제 (내가 보낸 쪽지 삭제)-->
+    <update id="deleteSendedMail" parameterType="Long">
+        UPDATE TBL_MAIL
+        SET MAIL_SEND_USER_DELETED = 1
+        WHERE ID = #{id}
+          AND SEND_USER_ID = #{sendUserId}
+    </update>
 
-<!--    쪽지 삭제 (상대방이 보낸쪽지 삭제)-->
 
+<!--    쪽지 삭제 (받은 쪽지 삭제)-->
+    <update id="deleteReceivedMail" parameterType="Long">
+        UPDATE TBL_MAIL
+        SET MAIL_RECEIVE_USER_DELETED = 1
+        WHERE ID = #{id}
+          AND RECEIVE_USER_ID = #{receiveUserId}
+    </update>
 
 </mapper>
