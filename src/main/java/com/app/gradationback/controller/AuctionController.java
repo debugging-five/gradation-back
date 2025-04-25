@@ -1,8 +1,8 @@
 package com.app.gradationback.controller;
 
+import com.app.gradationback.domain.AuctionBiddingVO;
 import com.app.gradationback.domain.AuctionDTO;
 import com.app.gradationback.domain.AuctionVO;
-import com.app.gradationback.repository.AuctionDAO;
 import com.app.gradationback.service.AuctionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -10,15 +10,12 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("auction/api/*")
@@ -83,6 +80,14 @@ public class AuctionController {
     @DeleteMapping("delete/{id}")
     public void delete(@PathVariable Long id) {
         auctionService.auctionDelete(id);
+    }
+
+//    입찰
+    @Operation(summary = "경매 입찰", description = "경매 입찰 API")
+    @ApiResponse(responseCode = "200", description = "입찰 성공")
+    @PostMapping("bidding")
+    public void bidding(AuctionBiddingVO auctionBiddingVO) {
+        auctionService.auctionBidding(auctionBiddingVO);
     }
 
 

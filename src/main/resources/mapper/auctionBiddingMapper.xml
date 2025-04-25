@@ -3,8 +3,44 @@
 <mapper namespace="com.app.gradationback.mapper.AuctionBiddingMapper">
 
     <insert id="insert" parameterType="AuctionBiddingVO">
-
-
+        <selectKey keyProperty="id" order="BEFORE" resultType="Long">
+            SELECT SEQ_AUCTION_BIDDING.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO TBL_AUCTION_BIDDING (
+            ID,
+            AUCTION_BIDDING_PRICE,
+            AUCTION_BIDDING_AUTO_OK,
+            AUCTION_BIDDING_TIME,
+            AUCTION_ID,
+            USER_ID
+        )
+        VALUES (
+            #{id},
+            #{auctionBiddingPrice},
+            #{auctionBiddingAutoOk},
+            SYSDATE,
+            #{auctionId},
+            #{userId}
+        )
     </insert>
+
+    <select id="select" resultType="AuctionBiddingVO" parameterType="Long">
+        SELECT SELECT ID, AUCTION_BIDDING_PRICE, AUCTION_BIDDING_AUTO_OK, AUCTION_BIDDING_TIME, AUCTION_ID, USER_ID
+        FROM (
+            SELECT ID, AUCTION_BIDDING_PRICE, AUCTION_BIDDING_AUTO_OK, AUCTION_BIDDING_TIME, AUCTION_ID, USER_ID
+            FROM TBL_AUCTION_BIDDING
+            WHERE AUCTION_ID = #{auctionId}
+            AND AUCTION_BIDDING_AUTO_OK = 0
+            ORDER BY AUCTION_BIDDING_TIME DESC
+             )
+        WHERE ROWNUM = 1
+    </select>
+
+    <select id="selectAll" resultType="AuctionBiddingVO" parameterType="Long">
+        SELECT SELECT ID, AUCTION_BIDDING_PRICE, AUCTION_BIDDING_AUTO_OK, AUCTION_BIDDING_TIME, AUCTION_ID, USER_ID
+        FROM TBL_AUCTION_BIDDING
+        WHERE AUCTION_ID = #{auctionId}
+        ORDER BY AUCTION_BIDDING_TIME DESC
+    </select>
 
 </mapper>

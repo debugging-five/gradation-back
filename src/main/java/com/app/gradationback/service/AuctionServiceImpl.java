@@ -1,7 +1,9 @@
 package com.app.gradationback.service;
 
+import com.app.gradationback.domain.AuctionBiddingVO;
 import com.app.gradationback.domain.AuctionDTO;
 import com.app.gradationback.domain.AuctionVO;
+import com.app.gradationback.repository.AuctionBiddingDAO;
 import com.app.gradationback.repository.AuctionDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import java.util.List;
 public class AuctionServiceImpl implements AuctionService {
 
     private final AuctionDAO auctionDAO;
+    private final AuctionBiddingDAO auctionBiddingDAO;
 
     @Override
     public void auctionRegistration(AuctionVO auctionVO) {
@@ -41,5 +44,11 @@ public class AuctionServiceImpl implements AuctionService {
     @Override
     public void auctionDelete(Long id) {
         auctionDAO.delete(id);
+    }
+
+
+    @Override
+    public void auctionBidding(AuctionBiddingVO auctionBiddingVO) {
+        auctionBiddingDAO.insert(auctionBiddingVO);
     }
 }

@@ -1,5 +1,6 @@
 package com.app.gradationback.service;
 
+import com.app.gradationback.domain.AuctionBiddingVO;
 import com.app.gradationback.domain.AuctionDTO;
 import com.app.gradationback.domain.AuctionVO;
 
@@ -12,4 +13,6 @@ public interface AuctionService {
     public List<AuctionDTO> auctionRead(Long id);
     public void auctionModify(AuctionVO auctionVO);
     public void auctionDelete(Long id);
+// 입찰에 사용되는 로직
+    public void auctionBidding(AuctionBiddingVO auctionBiddingVO);
 }
