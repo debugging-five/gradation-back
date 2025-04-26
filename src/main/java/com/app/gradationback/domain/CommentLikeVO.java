@@ -7,10 +7,9 @@ import java.sql.Timestamp;
 
 @Component
 @Data
-public class ReplyVO {
+public class CommentLikeVO {
     private Long id;
-    private String replyContent;
-    private Timestamp replyDate;
-    private Long artPostId;
+    private Timestamp commentLikeTime;
+    private Long commentId;
     private Long userId;
 }

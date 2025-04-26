@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class DisplayMapperTests {
     private ArtPostMapper artPostMapper;
 
     @Autowired
-    private ReplyMapper replyMapper;
+    private CommentMapper commentMapper;
 
     @Autowired
     private ArtImgVO artImgVO;
@@ -210,9 +209,10 @@ public class DisplayMapperTests {
     }
 
 //    작품 게시 삭제 (유저 필요)
+    @Test
     public void deleteArtPostTest() {
-        artPostMapper.delete(7L);
-        artMapper.delete(1L);
+        artPostMapper.delete(21L);
+//        artMapper.delete(1L);
     }
 
 //    작품 게시 전체 삭제 (회원 탈퇴)
@@ -222,49 +222,47 @@ public class DisplayMapperTests {
 //    댓글 등록
     @Test
     public void insertReplyTest() {
-        ReplyVO replyVO = new ReplyVO();
-        replyVO.setArtPostId(5L);
-        replyVO.setUserId(49L);
-        replyVO.setReplyContent("댓글6");
-        replyVO.setReplyDate(new Timestamp(System.currentTimeMillis()));
-        replyMapper.insert(replyVO);
-        log.info("{}", replyVO);
+        CommentVO commentVO = new CommentVO();
+        commentVO.setArtPostId(21L);
+        commentVO.setUserId(2L);
+        commentVO.setCommentContent("게시글21 댓글2");
+        commentVO.setCommentDate(new Timestamp(System.currentTimeMillis()));
+        commentMapper.insert(commentVO);
+        log.info("{}", commentVO);
     }
 
 //    댓글 전체 조회
     @Test
     public void selectAllReplyTest() {
-        List<ReplyVO> replyVOList = replyMapper.selectAll();
-        for (ReplyVO replyVO : replyVOList) {
-            log.info("{}", replyVO);
+        List<CommentVO> commentVOList = commentMapper.selectAll();
+        for (CommentVO commentVO : commentVOList) {
+            log.info("{}", commentVO);
         }
     }
 
 //    댓글 단일 조회
     @Test
     public void selectReplyTest() {
-        ReplyVO replyVO = new ReplyVO();
-        replyVO.setId(5L);
-        replyMapper.select(replyVO.getId()).map(ReplyVO::toString).ifPresent(log::info);
+        CommentVO commentVO = new CommentVO();
+        commentVO.setId(23L);
+        commentMapper.select(commentVO.getId()).map(CommentVO::toString).ifPresent(log::info);
     }
 
 //    댓글 수정
     @Test
     public void updateReplyTest() {
-        ReplyVO replyVO = new ReplyVO();
-        replyVO.setId(8L);
-        replyVO.setArtPostId(5L);
-        replyVO.setUserId(49L);
-        replyVO.setReplyContent("수정된 댓글6");
-        replyVO.setReplyDate(new Timestamp(System.currentTimeMillis()));
-        replyMapper.update(replyVO);
-        log.info("{}", replyVO);
+        CommentVO commentVO = new CommentVO();
+        commentVO.setId(23L);
+        commentVO.setCommentContent("수정된 댓글댓글");
+        commentVO.setCommentDate(new Timestamp(System.currentTimeMillis()));
+        commentMapper.update(commentVO);
+        log.info("{}", commentVO);
     }
 
 //    댓글 삭제
     @Test
     public void deleteReplyTest() {
-        replyMapper.delete(8L);
+        commentMapper.delete(23L);
     }
 
 //    댓글 전체 삭제 (회원 탈퇴)
@@ -272,8 +270,8 @@ public class DisplayMapperTests {
 //    댓글 전체 삭제 (게시글 삭제)
     @Test
     public void deleteAllReplyByPostIdTest() {
-        replyMapper.deleteAllByPostId(4L);
-        artPostMapper.delete(4L);
+        commentMapper.deleteAllByPostId(5L);
+        artPostMapper.delete(5L);
     }
 
 //    DisplayService
@@ -293,6 +291,7 @@ public class DisplayMapperTests {
 //        log.info("{}", artPostDTO);
 //    }
 
+//    ===================================================================================================
 
 
 }
