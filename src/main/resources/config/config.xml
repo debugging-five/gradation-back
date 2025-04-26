@@ -38,6 +38,7 @@
         <typeAlias type="com.app.gradationback.domain.DeliveryDTO" alias="DeliveryDTO" />
         <typeAlias type="com.app.gradationback.domain.DisplayDTO" alias="DisplayDTO" />
         <typeAlias type="com.app.gradationback.domain.ExhibitionPastDTO" alias="ExhibitionPastDTO" />
+        <typeAlias type="com.app.gradationback.domain.FaqDTO" alias="FaqDTO" />
         <typeAlias type="com.app.gradationback.domain.GradationExhibitionDTO" alias="GradationExhibitionDTO" />
         <typeAlias type="com.app.gradationback.domain.HistoryVO" alias="HistoryVO" />
         <typeAlias type="com.app.gradationback.domain.MailDTO" alias="MailDTO" />
