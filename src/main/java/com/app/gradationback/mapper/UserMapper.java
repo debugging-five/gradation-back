@@ -34,7 +34,7 @@ public interface UserMapper {
     public String login (UserVO userVO);
 
 //    비밀번호 변경
-    public void changePassword(UserVO userVO);
+    public void updatePassword(UserVO userVO);
 
 //    회원 정보 수정
     public void updateUser(UserVO userVO);

@@ -78,7 +78,7 @@
     </select>
 
     <!--  비밀번호 변경  -->
-    <update id="changePassword" parameterType="UserVO">
+    <update id="updatePassword" parameterType="UserVO">
         UPDATE TBL_USER
         SET USER_PASSWORD = #{userPassword}
         WHERE USER_IDENTIFICATION = #{userIdentification}
