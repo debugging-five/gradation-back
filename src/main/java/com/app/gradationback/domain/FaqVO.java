@@ -10,4 +10,5 @@ public class FaqVO {
     private String faqTitle;
     private String faqContent;
     private String faqCategory;
+    private Long userId;
 }

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.gradationback.mapper.ReplyMapper">
+
+    <insert id="insert" parameterType="ReplyVO">
+        INSERT INTO TBL_REPLY
+        VALUES (SEQ_REPLY.NEXTVAL, #{artPostId}, #{userId}, #{replyContent}, #{replyDate})
+    </insert>
+
+    <select id="selectAll" resultType="ReplyVO">
+        SELECT ID, ART_POST_ID, USER_ID, REPLY_CONTENT, REPLY_DATE
+        FROM TBL_REPLY
+    </select>
+
+    <select id="select" parameterType="Long" resultType="ReplyVO">
+        SELECT ID, ART_POST_ID, USER_ID, REPLY_CONTENT, REPLY_DATE
+        FROM TBL_REPLY
+        WHERE ID = #{id}
+    </select>
+
+    <update id="update" parameterType="ReplyVO">
+        UPDATE TBL_REPLY
+        SET REPLY_CONTENT = #{replyContent}, REPLY_DATE = #{replyDate}
+        WHERE ID = #{id}
+    </update>
+
+    <delete id="delete" parameterType="Long">
+        DELETE FROM TBL_REPLY
+        WHERE ID = #{id}
+    </delete>
+
+    <delete id="deleteAllByUserId" parameterType="Long">
+        DELETE FROM TBL_REPLY
+        WHERE USER_ID = #{userId}
+    </delete>
+
+    <delete id="deleteAllByPostId" parameterType="Long">
+        DELETE FROM TBL_REPLY
+        WHERE ART_POST_ID = #{artPostId}
+    </delete>
+
+</mapper>

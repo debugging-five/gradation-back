@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.gradationback.mapper.ArtPostMapper">
+
+    <insert id="insert" parameterType="ArtPostVO">
+        INSERT INTO TBL_ART_POST
+        VALUES (SEQ_ART_POST.NEXTVAL, #{artPostDate}, #{userId}, #{artId})
+    </insert>
+
+    <select id="selectAll" resultType="ArtPostDTO">
+        SELECT TBP.ID, TBP.ART_POST_DATE, TBP.USER_ID, TBP.ART_ID,
+                TBA.ART_TITLE, TBA.ART_CATEGORY, TBA.ART_MATERIAL, TBA.ART_SIZE, TBA.ART_DESCRIPTION,
+                TBA.ART_END_DATE, TBA.USER_ID, TBI.ART_IMG_NAME, TBI.ART_IMG_PATH, TBI.ART_ID,
+                TBU.USER_NAME, TBR.REPLY_CONTENT, TBR.REPLY_DATE, TBRL.REPLY_ID, TBRL.USER_ID, TBRL.REPLY_LIKE_TIME
+        FROM TBL_ART_POST TBP
+        JOIN TBL_ART TBA
+        ON TBP.ART_ID = TBA.ID
+        JOIN TBL_ART_IMG TBI
+        ON TBI.ART_ID = TBA.ID
+        JOIN TBL_USER TBU
+        ON TBP.USER_ID = TBU.ID
+        JOIN TBL_REPLY TBR
+        ON TBP.ID = TBR.ART_POST_ID
+        JOIN TBL_REPLY_LIKE TBRL
+        ON TBR.ID = TBRL.REPLY_ID
+    </select>
+
+    <select id="select" parameterType="Long" resultType="ArtPostDTO">
+        SELECT TBP.ID, TBP.ART_POST_DATE, TBP.USER_ID, TBP.ART_ID,
+                TBA.ART_TITLE, TBA.ART_CATEGORY, TBA.ART_MATERIAL, TBA.ART_SIZE, TBA.ART_DESCRIPTION,
+                TBA.ART_END_DATE, TBA.USER_ID, TBI.ART_IMG_NAME, TBI.ART_IMG_PATH, TBI.ART_ID,
+                TBU.USER_NAME, TBR.REPLY_CONTENT, TBR.REPLY_DATE, TBRL.REPLY_ID, TBRL.USER_ID, TBRL.REPLY_LIKE_TIME
+        FROM TBL_ART_POST TBP
+        JOIN TBL_ART TBA
+        ON TBP.ART_ID = TBA.ID
+        JOIN TBL_ART_IMG TBI
+        ON TBI.ART_ID = TBA.ID
+        JOIN TBL_USER TBU
+        ON TBP.USER_ID = TBU.ID
+        JOIN TBL_REPLY TBR
+        ON TBP.ID = TBR.ART_POST_ID
+        JOIN TBL_REPLY_LIKE TBRL
+        ON TBR.ID = TBRL.REPLY_ID
+        WHERE TBP.ID = #{id}
+    </select>
+
+    <update id="update" parameterType="ArtPostVO">
+        UPDATE TBL_ART_POST
+        SET ART_POST_DATE = #{artPostDate}
+        WHERE ID = #{id}
+    </update>
+
+    <delete id="delete" parameterType="Long">
+        DELETE TBL_ART_POST
+        WHERE ID = #{id}
+    </delete>
+    
+    <delete id="deleteAllByUserId" parameterType="Long">
+        DELETE FROM TBL_ART_POST
+        WHERE USER_ID = #{userId}
+    </delete>
+
+</mapper>

@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.gradationback.mapper.UserMapper">
+    <insert id="insert" parameterType="userVO">
+        INSERT INTO TBL_USER (ID, USER_NAME, USER_EMAIL, USER_IDENTIFICATION, USER_PASSWORD, USER_PHONE, USER_NICKNAME, USER_SNS_OK, USER_MAIL_OK, USER_AGREEMENT_OK)
+        VALUES (
+                SEQ_USER.NEXTVAL,
+               #{userName},
+               #{userEmail},
+               #{userIdentification},
+               #{userPassword},
+               #{userPhone},
+               #{userNickname},
+               #{userSnsOk},
+               #{userMailOk},
+               #{userAgreementOk}
+               )
+    </insert>
+
+
 </mapper>

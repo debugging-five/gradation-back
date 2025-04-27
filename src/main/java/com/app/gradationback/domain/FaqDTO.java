@@ -7,22 +7,13 @@ import java.util.Date;
 
 @Component
 @Data
-public class DisplayDTO {
-//    TBL_ART
-    private Long id;
-    private String artTitle;
-    private String artCategory;
-    private String artMaterial;
-    private String artSize;
-    private String artDescription;
-    private Date artEndDate;
-    private String artStatus;
+public class FaqDTO {
+//    TBL_FAQ
+private Long id;
+    private String faqTitle;
+    private String faqContent;
+    private String faqCategory;
     private Long userId;
-
-//    TBL_ART_IMG
-    private String artImgName;
-    private String artImgPath;
-    private Long artId;
 
 //    TBL_USER
     private String userImgName;
