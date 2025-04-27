@@ -218,14 +218,14 @@ public class DisplayMapperTests {
 //    작품 게시 전체 삭제 (회원 탈퇴)
 
     //    ===================================================================================================
-//    ReplyMapper
+//    CommentMapper
 //    댓글 등록
     @Test
     public void insertReplyTest() {
         CommentVO commentVO = new CommentVO();
-        commentVO.setArtPostId(21L);
-        commentVO.setUserId(2L);
-        commentVO.setCommentContent("게시글21 댓글2");
+        commentVO.setArtPostId(3L);
+        commentVO.setUserId(64L);
+        commentVO.setCommentContent("유저3의 댓글2");
         commentVO.setCommentDate(new Timestamp(System.currentTimeMillis()));
         commentMapper.insert(commentVO);
         log.info("{}", commentVO);
@@ -266,6 +266,10 @@ public class DisplayMapperTests {
     }
 
 //    댓글 전체 삭제 (회원 탈퇴)
+    @Test
+    public void deleteAllReplyByUserIdTest() {
+        commentMapper.deleteAllByUserId(58L);
+    }
 
 //    댓글 전체 삭제 (게시글 삭제)
     @Test
