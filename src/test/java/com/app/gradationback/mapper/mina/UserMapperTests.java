@@ -1,0 +1,93 @@
+package com.app.gradationback.mapper.mina;
+
+import com.app.gradationback.domain.UserVO;
+import com.app.gradationback.mapper.UserMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
+
+@SpringBootTest
+@Slf4j
+public class UserMapperTests {
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private UserVO userVO;
+
+//    회원 가입
+    @Test
+    public void insertUserTest() {
+        UserVO userVO = new UserVO();
+        userVO.setUserName("유저1");
+        userVO.setUserEmail("user1@gmail.com");
+        userVO.setUserIdentification("아이디1");
+        userVO.setUserPassword("1234");
+        userVO.setUserPhone("01012345678");
+        userVO.setUserImgName("이미지1");
+        userVO.setUserImgPath("이미지 경로1");
+        userMapper.insert(userVO);
+        log.info("{}", userVO);
+    }
+
+//    전체 회원 정보 조회
+    @Test
+    public void selectAllUserTest() {
+        List<UserVO> userList = userMapper.selectAllUser();
+        for (UserVO userVO : userList) {
+            log.info("{}", userVO);
+        }
+    }
+
+//    단일 회원 정보 조회
+    @Test
+    public void selectUserTest() {
+        UserVO userVO = new UserVO();
+        userVO.setUserEmail("user1@gmail.com");
+        userMapper.selectUser(userVO.getUserEmail()).map(UserVO::toString).ifPresent(log::info);
+    }
+
+//    아이디 중복 체크
+    @Test
+    public void checkIdTest() {
+        UserVO userVO = new UserVO();
+        userVO.setUserIdentification("아이디1");
+        userMapper.checkId(userVO.getUserIdentification());
+        log.info("{}", userVO);
+    }
+
+//    이메일 중복 체크
+    @Test
+    public void checkEmailTest() {
+        UserVO userVO = new UserVO();
+        userVO.setUserEmail("user1@gmail.com");
+        userMapper.checkEmail(userVO.getUserEmail());
+        log.info("{}", userVO);
+    }
+
+//    비밀번호 변경
+    @Test
+    public void updatePassword() {
+        UserVO userVO = new UserVO();
+//        userVO.setId(56L);
+        userVO.setUserEmail("user1@gmail.com");
+        userVO.setUserName("유저1");
+        userVO.setUserIdentification("아이디1");
+        userVO.setUserPassword("123!@#");
+        userMapper.updatePassword(userVO);
+        log.info("{}", userVO);
+    }
+
+//    회원 정보 수정
+    public void updateUserTest() {
+        UserVO userVO = new UserVO();
+        userVO.setUserEmail("user1@gmail.com");
+    }
+
+
+
+}

@@ -16,7 +16,7 @@ public interface UserMapper {
     public List<UserVO> selectAllUser();
 
 //    단일 회원 정보 조회
-    public Optional<UserVO> selectUserByEmail(String userEmail);
+    public Optional<UserVO> selectUser(String userEmail);
 
 //    아이디 중복 체크
     public int checkId(String userIdentification);
@@ -27,11 +27,11 @@ public interface UserMapper {
 //    아이디 찾기
     public String selectIdByEmailAndName(UserVO userVO);
 
-//    회원 조회
+//    비밀번호 찾기
     public int selectByIdAndEmailAndName(UserVO userVO);
 
 //    로그인
-    public String login (UserVO userVO);
+    public String login(UserVO userVO);
 
 //    비밀번호 변경
     public void updatePassword(UserVO userVO);
@@ -46,6 +46,6 @@ public interface UserMapper {
     public void deleteUser(String userEmail);
 
 //    이메일 찾기
-    public String findEmailById(Long id);
+        public String selectEmailById(Long id);
 
 }

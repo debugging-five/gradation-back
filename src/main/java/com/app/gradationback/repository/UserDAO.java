@@ -26,7 +26,7 @@ public class UserDAO {
 
 //    단일 회원 정보 조회
     public Optional<UserVO> findUser(String userEmail) {
-        return userMapper.selectUserByEmail(userEmail);
+        return userMapper.selectUser(userEmail);
     }
 
 //    아이디 중복 체크
@@ -44,13 +44,13 @@ public class UserDAO {
         return userMapper.selectIdByEmailAndName(userVO);
     }
 
-//    회원 조회
-    public int findUserByIdEmailAndName(UserVO userVO) {
+//    비밀번호 찾기
+    public int findByIdAndEmailAndName(UserVO userVO) {
         return userMapper.selectByIdAndEmailAndName(userVO);
     }
 
 //    로그인
-    public String authenticateUser(UserVO userVO) {
+    public String login(UserVO userVO) {
         return userMapper.login(userVO);
     }
 
@@ -58,8 +58,6 @@ public class UserDAO {
     public void updatePassword(UserVO userVO) {
         userMapper.updatePassword(userVO);
     }
-
-//    전공 조회
 
 //    회원 정보 수정
     public void updateUser(UserVO userVO) {
@@ -71,13 +69,13 @@ public class UserDAO {
         return userMapper.selectPassword(userEmail);
     }
 
-//    회원 탍퇴
+//    회원 탈퇴
     public void deleteUser(String userEmail) {
         userMapper.deleteUser(userEmail);
     }
 
 //    이메일 찾기
     public String findEmail(Long id) {
-        return userMapper.findEmailById(id);
+        return userMapper.selectEmailById(id);
     }
 }
