@@ -43,4 +43,33 @@
         ORDER BY AUCTION_BIDDING_TIME DESC
     </select>
 
+    <select id="selectAuto" resultType="AuctionBiddingVO" parameterType="Long">
+        SELECT ID, AUCTION_BIDDING_PRICE, AUCTION_BIDDING_AUTO_OK, AUCTION_BIDDING_TIME, AUCTION_ID, USER_ID
+        FROM (
+            SELECT ID, AUCTION_BIDDING_PRICE, AUCTION_BIDDING_AUTO_OK, AUCTION_BIDDING_TIME, AUCTION_ID, USER_ID
+            FROM TBL_AUCTION_BIDDING
+            WHERE AUCTION_ID = #{auctionId}
+            AND AUCTION_BIDDING_AUTO_OK = 1
+            ORDER BY AUCTION_BIDDING_PRICE DESC, AUCTION_BIDDING_TIME ASC
+             )
+        WHERE ROWNUM = 1
+
+    </select>
+
+    <select id="selectAutoAll" resultType="AuctionBiddingVO" parameterType="Long">
+        SELECT ID, AUCTION_BIDDING_PRICE, AUCTION_BIDDING_AUTO_OK, AUCTION_BIDDING_TIME, AUCTION_ID, USER_ID
+        FROM TBL_AUCTION_BIDDING
+        WHERE AUCTION_ID = #{auctionId}
+        AND AUCTION_BIDDING_AUTO_OK = 1
+        ORDER BY AUCTION_BIDDING_PRICE DESC, AUCTION_BIDDING_TIME
+    </select>
+
+    <select id="selectCount" resultType="Integer" parameterType="Long">
+        SELECT COUNT(USER_ID)
+        FROM TBL_AUCTION_BIDDING
+        WHERE AUCTION_ID = #{auctionId}
+        GROUP BY AUCTION_ID
+    </select>
+
+
 </mapper>

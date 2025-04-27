@@ -35,7 +35,7 @@ public class AuctionBiddingMapperTest {
     }
 
     @Test
-    public void select() {
+    public void selectAll() {
         List<AuctionBiddingVO> biddings = auctionBiddingMapper.selectAll(6L);
         for (AuctionBiddingVO auctionBiddingVO : biddings) {
             log.info(auctionBiddingVO.toString());
@@ -43,11 +43,24 @@ public class AuctionBiddingMapperTest {
     }
     
     @Test
-    public void selectAll() {
+    public void select() {
         Optional<AuctionBiddingVO> foundBidding = auctionBiddingMapper.select(6L);
         if (foundBidding.isPresent()) {
             log.info(foundBidding.get().toString());
+        }else {
+            log.info("낙찰자 없는경우");
         }
-        log.info("낙찰자 없는경우");
+    }
+
+    @Test
+    public void selectAuto() {
+        List<AuctionBiddingVO> foundBidding = auctionBiddingMapper.selectAutoAll(11L);
+        if (foundBidding.isEmpty()) {
+            log.info("빈 리스트");
+        }else {
+            for (AuctionBiddingVO auctionBiddingVO : foundBidding) {
+                log.info(auctionBiddingVO.toString());
+            }
+        }
     }
 }

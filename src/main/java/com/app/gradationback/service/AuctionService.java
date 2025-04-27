@@ -6,6 +6,7 @@ import com.app.gradationback.domain.AuctionVO;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 public interface AuctionService {
     public void auctionRegistration(AuctionVO auctionVO);
@@ -15,4 +16,7 @@ public interface AuctionService {
     public void auctionDelete(Long id);
 // 입찰에 사용되는 로직
     public void auctionBidding(AuctionBiddingVO auctionBiddingVO);
+    public void endBidding(AuctionVO auctionVO);
+    public Optional<AuctionBiddingVO> auctionStatus(Long id);
+
 }
