@@ -79,6 +79,8 @@ public class MailDTO {
     private String mailContent;
     private Timestamp mailSendTime;
     private boolean mailOpenOk;
+    private int deletedBySender;
+    private int deletedByReceiver;
     private Long sendUserId;
     private Long receiveUserId;
 }

@@ -32,6 +32,7 @@ public class GradationExhibitionDTO {
     private String artSize;
     private String artDescription;
     private Date artEndDate;
+    private String artStatus;
     private Long userId;
 
 //    TBL_ART_IMG

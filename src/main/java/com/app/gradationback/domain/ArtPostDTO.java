@@ -17,6 +17,7 @@ public class ArtPostDTO {
     private String artSize;
     private String artDescription;
     private Date artEndDate;
+    private String artStatus;
     private Long userId;
 
 //    TBL_ART_POST
@@ -30,14 +31,14 @@ public class ArtPostDTO {
 //    TBL_ART_LIKE
     private Timestamp artLikeTime;
 
-//    TBL_REPLY
-    private String replyContent;
-    private Timestamp replyDate;
+//    TBL_COMMENT
+    private String commentContent;
+    private Timestamp commentDate;
     private Long artPostId;
 
-//    TBL_REPLY_LIKE
-    private Timestamp replyLikeTime;
-    private Long replyId;
+//    TBL_COMMENT_LIKE
+    private Timestamp commentLikeTime;
+    private Long commentId;
 
 //    TBL_USER
     private String userImgName;

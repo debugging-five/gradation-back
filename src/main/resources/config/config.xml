@@ -23,8 +23,8 @@
         <typeAlias type="com.app.gradationback.domain.PaymentVO" alias="PaymentVO" />
         <typeAlias type="com.app.gradationback.domain.QnaAnswerVO" alias="QnaAnswerVO" />
         <typeAlias type="com.app.gradationback.domain.QnaVO" alias="QnaVO" />
-        <typeAlias type="com.app.gradationback.domain.ReplyLikeVO" alias="ReplyLikeVO" />
-        <typeAlias type="com.app.gradationback.domain.ReplyVO" alias="ReplyVO" />
+        <typeAlias type="com.app.gradationback.domain.CommentLikeVO" alias="CommentLikeVO" />
+        <typeAlias type="com.app.gradationback.domain.CommentVO" alias="CommentVO" />
         <typeAlias type="com.app.gradationback.domain.UniversityExhibitionImgVO" alias="UniversityExhibitionImgVO" />
         <typeAlias type="com.app.gradationback.domain.UniversityExhibitionVO" alias="UniversityExhibitionVO" />
         <typeAlias type="com.app.gradationback.domain.UniversityLikeVO" alias="UniversityLikeVO" />
@@ -38,6 +38,7 @@
         <typeAlias type="com.app.gradationback.domain.DeliveryDTO" alias="DeliveryDTO" />
         <typeAlias type="com.app.gradationback.domain.DisplayDTO" alias="DisplayDTO" />
         <typeAlias type="com.app.gradationback.domain.ExhibitionPastDTO" alias="ExhibitionPastDTO" />
+        <typeAlias type="com.app.gradationback.domain.FaqDTO" alias="FaqDTO" />
         <typeAlias type="com.app.gradationback.domain.GradationExhibitionDTO" alias="GradationExhibitionDTO" />
         <typeAlias type="com.app.gradationback.domain.HistoryVO" alias="HistoryVO" />
         <typeAlias type="com.app.gradationback.domain.MailDTO" alias="MailDTO" />

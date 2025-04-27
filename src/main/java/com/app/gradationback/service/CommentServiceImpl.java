@@ -1,0 +1,58 @@
+package com.app.gradationback.service;
+
+import com.app.gradationback.domain.CommentVO;
+import com.app.gradationback.repository.CommentDAO;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class CommentServiceImpl implements CommentService {
+
+    private final CommentDAO commentDAO;
+
+//    댓글 등록
+    @Override
+    public void write(CommentVO commentVO) {
+        commentDAO.save(commentVO);
+    }
+
+//    댓글 전체 조회
+    @Override
+    public List<CommentVO> getCommentList() {
+        return commentDAO.findAll();
+    }
+
+//    댓글 단일 조회
+    @Override
+    public Optional<CommentVO> getComment(Long id) {
+        return commentDAO.findById(id);
+    }
+
+//    댓글 수정
+    @Override
+    public void modifyComment(CommentVO commentVO) {
+        commentDAO.update(commentVO);
+    }
+
+//    댓글 삭제
+    @Override
+    public void removeComment(Long id) {
+        commentDAO.delete(id);
+    }
+
+//    댓글 전체 삭제 (회원 탈퇴)
+    @Override
+    public void removeCommentByUserId(Long userId) {
+        commentDAO.deleteAllByUserId(userId);
+    }
+
+//    댓글 전체 삭제 (게시글 삭제)
+    @Override
+    public void removeCommentByPostId(Long postId) {
+        commentDAO.deleteAllByPostId(postId);
+    }
+}
