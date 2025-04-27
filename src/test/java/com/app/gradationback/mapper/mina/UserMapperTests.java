@@ -56,17 +56,17 @@ public class UserMapperTests {
     public void checkIdTest() {
         UserVO userVO = new UserVO();
         userVO.setUserIdentification("아이디1");
-        userMapper.checkId(userVO.getUserIdentification());
-        log.info("{}", userVO);
+        int checkId = userMapper.checkId(userVO.getUserIdentification());
+        log.info("{}", checkId);
     }
 
 //    이메일 중복 체크
     @Test
     public void checkEmailTest() {
         UserVO userVO = new UserVO();
-        userVO.setUserEmail("user1@gmail.com");
-        userMapper.checkEmail(userVO.getUserEmail());
-        log.info("{}", userVO);
+        userVO.setUserEmail("user1234@gmail.com");
+        int checkEmail = userMapper.checkEmail(userVO.getUserEmail());
+        log.info("{}", checkEmail);
     }
 
 //    비밀번호 변경
@@ -83,11 +83,41 @@ public class UserMapperTests {
     }
 
 //    회원 정보 수정
+    @Test
     public void updateUserTest() {
         UserVO userVO = new UserVO();
-        userVO.setUserEmail("user1@gmail.com");
+        userVO.setUserIdentification("아이디1");
+        userVO.setUserName("회원 이름 수정!");
+        userVO.setUserPhone("01012341234");
+        userVO.setUserEmail("user1234@gmail.com");
+        userMapper.updateUser(userVO);
+        log.info("{}", userVO);
     }
 
+//    비밀번호 조회
+    @Test
+    public void selectPasswordTest() {
+        UserVO userVO = new UserVO();
+        userVO.setUserEmail("user1234@gmail.com");
+        String password = userMapper.selectPassword(userVO.getUserEmail());
+        log.info("{}", password);
+    }
+
+//    이메일 찾기
+    @Test
+    public void selectEmailTest() {
+        UserVO userVO = new UserVO();
+//        userVO.setId(56L);
+        userVO.setId(1L);
+        String Email = userMapper.selectEmailById(userVO.getId());
+        log.info("{}", Email);
+    }
+
+//    회원 탈퇴
+    @Test
+    public void deleteUserTest() {
+        userMapper.deleteUser("user1234@gmail.com");
+    }
 
 
 }

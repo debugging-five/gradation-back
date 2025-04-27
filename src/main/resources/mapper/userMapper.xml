@@ -75,7 +75,7 @@
     <!--  회원 정보 수정  -->
     <update id="updateUser" parameterType="UserVO">
         UPDATE TBL_USER
-        SET USER_NICKNAME = #{userNickname}, USER_NAME = #{userName},
+        SET USER_NICKNAME = #{userNickName}, USER_NAME = #{userName},
             USER_PHONE = #{userPhone}, USER_EMAIL = #{userEmail}, USER_ADDRESS = #{userAddress}, USER_DETAIL_ADDRESS = #{userDetailAddress}
         WHERE USER_IDENTIFICATION = #{userIdentification}
     </update>
