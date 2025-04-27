@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.gradationback.mapper.AuctionBiddingMapper">
+
+    <insert id="insert" parameterType="AuctionBiddingVO">
+        <selectKey keyProperty="id" order="BEFORE" resultType="Long">
+            SELECT SEQ_AUCTION_BIDDING.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO TBL_AUCTION_BIDDING (
+            ID,
+            AUCTION_BIDDING_PRICE,
+            AUCTION_BIDDING_AUTO_OK,
+            AUCTION_BIDDING_TIME,
+            AUCTION_ID,
+            USER_ID
+        )
+        VALUES (
+            #{id},
+            #{auctionBiddingPrice},
+            #{auctionBiddingAutoOk},
+            SYSDATE,
+            #{auctionId},
+            #{userId}
+        )
+    </insert>
+
+    <select id="select" resultType="AuctionBiddingVO" parameterType="Long">
+        SELECT ID, AUCTION_BIDDING_PRICE, AUCTION_BIDDING_AUTO_OK, AUCTION_BIDDING_TIME, AUCTION_ID, USER_ID
+        FROM (
+            SELECT ID, AUCTION_BIDDING_PRICE, AUCTION_BIDDING_AUTO_OK, AUCTION_BIDDING_TIME, AUCTION_ID, USER_ID
+            FROM TBL_AUCTION_BIDDING
+            WHERE AUCTION_ID = #{auctionId}
+            AND AUCTION_BIDDING_AUTO_OK = 0
+            ORDER BY AUCTION_BIDDING_TIME DESC
+             )
+        WHERE ROWNUM = 1
+    </select>
+
+    <select id="selectAll" resultType="AuctionBiddingVO" parameterType="Long">
+        SELECT ID, AUCTION_BIDDING_PRICE, AUCTION_BIDDING_AUTO_OK, AUCTION_BIDDING_TIME, AUCTION_ID, USER_ID
+        FROM TBL_AUCTION_BIDDING
+        WHERE AUCTION_ID = #{auctionId}
+        ORDER BY AUCTION_BIDDING_TIME DESC
+    </select>
+
+    <select id="selectAuto" resultType="AuctionBiddingVO" parameterType="Long">
+        SELECT ID, AUCTION_BIDDING_PRICE, AUCTION_BIDDING_AUTO_OK, AUCTION_BIDDING_TIME, AUCTION_ID, USER_ID
+        FROM (
+            SELECT ID, AUCTION_BIDDING_PRICE, AUCTION_BIDDING_AUTO_OK, AUCTION_BIDDING_TIME, AUCTION_ID, USER_ID
+            FROM TBL_AUCTION_BIDDING
+            WHERE AUCTION_ID = #{auctionId}
+            AND AUCTION_BIDDING_AUTO_OK = 1
+            ORDER BY AUCTION_BIDDING_PRICE DESC, AUCTION_BIDDING_TIME ASC
+             )
+        WHERE ROWNUM = 1
+
+    </select>
+
+    <select id="selectAutoAll" resultType="AuctionBiddingVO" parameterType="Long">
+        SELECT ID, AUCTION_BIDDING_PRICE, AUCTION_BIDDING_AUTO_OK, AUCTION_BIDDING_TIME, AUCTION_ID, USER_ID
+        FROM TBL_AUCTION_BIDDING
+        WHERE AUCTION_ID = #{auctionId}
+        AND AUCTION_BIDDING_AUTO_OK = 1
+        ORDER BY AUCTION_BIDDING_PRICE DESC, AUCTION_BIDDING_TIME
+    </select>
+
+    <select id="selectCount" resultType="Integer" parameterType="Long">
+        SELECT COUNT(DISTINCT USER_ID)
+        FROM TBL_AUCTION_BIDDING
+        WHERE AUCTION_ID = #{auctionId}
+    </select>
+
+
+</mapper>

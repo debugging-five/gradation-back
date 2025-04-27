@@ -3,8 +3,6 @@ package com.app.gradationback.domain;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
-import java.util.Date;
 
 @Component
 @Data
@@ -23,7 +21,7 @@ public class DeliveryDTO {
 //    TBL_PAYMENT
     private String paymentMethod;
     private int paymentAmount;
-    private Timestamp paymentDate;
+    private String paymentDate;
     private String paymentCode;
     private Long auctionId;
 
@@ -66,7 +64,7 @@ public class DeliveryDTO {
     private String artMaterial;
     private String artSize;
     private String artDescription;
-    private Date artEndDate;
+    private String artEndDate;
     private String artStatus;
     private Long userId;
 
