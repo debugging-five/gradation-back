@@ -83,6 +83,7 @@ public class AuctionDTO {
     private String artSize;
     private String artDescription;
     private Date artEndDate;
+    private String artStatus;
 
 //    TBL_ART_IMG
     private String artImgName;
