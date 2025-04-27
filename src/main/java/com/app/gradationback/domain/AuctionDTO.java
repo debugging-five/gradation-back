@@ -11,13 +11,13 @@ import java.util.Date;
 public class AuctionDTO {
 //    TBL_AUCTION
     private Long id;
-    private Date auctionStartDate;
+    private String auctionStartDate;
     private int auctionStartPrice;
     private String auctionEstimatedMinPrice;
     private String auctionEstimatedMaxPrice;
     private boolean auctionAttracted;
     private int auctionBidPrice;
-    private Date auctionBidDate;
+    private String auctionBidDate;
     private Long artId;
     private Long userId;
 
@@ -73,7 +73,7 @@ public class AuctionDTO {
 //    TBL_PAYMENT
     private String paymentMethod;
     private int paymentAmount;
-    private Timestamp paymentDate;
+    private String paymentDate;
     private String paymentCode;
 
 //    TBL_ART
@@ -82,7 +82,7 @@ public class AuctionDTO {
     private String artMaterial;
     private String artSize;
     private String artDescription;
-    private Date artEndDate;
+    private String artEndDate;
     private String artStatus;
 
 //    TBL_ART_IMG
