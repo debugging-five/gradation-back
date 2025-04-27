@@ -93,7 +93,13 @@ public class UserServiceImpl implements UserService {
 //    회원 탈퇴
     @Override
     public void withdraw(String userEmail) {
-//        commentDAO.deleteAllByUserId();
+        Long userId = userDAO.findIdByEmail(userEmail);
+        commentDAO.deleteAllByUserId(userId);
         userDAO.deleteUser(userEmail);
+    }
+
+    @Override
+    public Long getIdByEmail(String userEmail) {
+        return userDAO.findIdByEmail(userEmail);
     }
 }

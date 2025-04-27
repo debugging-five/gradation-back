@@ -78,4 +78,8 @@ public class UserDAO {
     public void deleteUser(String userEmail) {
         userMapper.deleteUser(userEmail);
     }
+
+    public Long findIdByEmail(String userEmail) {
+        return userMapper.selectIdByEmail(userEmail);
+    }
 }

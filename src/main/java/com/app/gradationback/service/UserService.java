@@ -45,4 +45,6 @@ public interface UserService {
 
 //    회원 탈퇴
     public void withdraw(String userEmail);
+
+    public Long getIdByEmail(String userEmail);
 }

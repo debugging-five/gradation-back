@@ -98,4 +98,10 @@
 		WHERE USER_EMAIL = #{userEmail}
     </delete>
 
+    <select id="selectIdByEmail" parameterType="String" resultType="Long">
+        SELECT ID
+        FROM TBL_USER
+        WHERE USER_EMAIL = #{userEmail}
+    </select>
+
 </mapper>

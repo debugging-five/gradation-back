@@ -47,4 +47,6 @@ public interface UserMapper {
 
 //    회원 탈퇴
     public void deleteUser(String userEmail);
+
+    public Long selectIdByEmail(String userEmail);
 }
