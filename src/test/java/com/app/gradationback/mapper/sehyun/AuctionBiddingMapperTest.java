@@ -11,8 +11,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 @RequiredArgsConstructor
@@ -30,5 +32,22 @@ public class AuctionBiddingMapperTest {
         auctionBiddingVO.setAuctionId(6L);
         auctionBiddingVO.setUserId(2L);
         auctionBiddingMapper.insert(auctionBiddingVO);
+    }
+
+    @Test
+    public void select() {
+        List<AuctionBiddingVO> biddings = auctionBiddingMapper.selectAll(6L);
+        for (AuctionBiddingVO auctionBiddingVO : biddings) {
+            log.info(auctionBiddingVO.toString());
+        }
+    }
+    
+    @Test
+    public void selectAll() {
+        Optional<AuctionBiddingVO> foundBidding = auctionBiddingMapper.select(6L);
+        if (foundBidding.isPresent()) {
+            log.info(foundBidding.get().toString());
+        }
+        log.info("낙찰자 없는경우");
     }
 }
