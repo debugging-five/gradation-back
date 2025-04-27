@@ -29,6 +29,11 @@ public class UserDAO {
         return userMapper.selectUser(userEmail);
     }
 
+//    로그인
+    public String login(UserVO userVO) {
+        return userMapper.login(userVO);
+    }
+
 //    아이디 중복 체크
     public int checkIdExist(String userIdentification) {
         return userMapper.checkId(userIdentification);
@@ -39,24 +44,24 @@ public class UserDAO {
         return userMapper.checkEmail(userEmail);
     }
 
-//    아이디 찾기
-    public String findId(UserVO userVO) {
+//    비밀번호 중복 체크
+    public int checkPasswordExist(UserVO userVO) {
+        return userMapper.checkPassword(userVO);
+    }
+
+//    아이디 조회
+    public String findIdByEmailAndName(UserVO userVO) {
         return userMapper.selectIdByEmailAndName(userVO);
     }
 
-//    비밀번호 찾기
-    public int findByIdAndEmailAndName(UserVO userVO) {
-        return userMapper.selectByIdAndEmailAndName(userVO);
+//    비밀번호 조회
+    public String findPasswordByEmail(String userEmail) {
+        return userMapper.selectPasswordByEmail(userEmail);
     }
 
-//    로그인
-    public String login(UserVO userVO) {
-        return userMapper.login(userVO);
-    }
-
-//    비밀번호 변경
-    public void updatePassword(UserVO userVO) {
-        userMapper.updatePassword(userVO);
+//    이메일 조회
+    public String findEmailById(Long id) {
+        return userMapper.selectEmailById(id);
     }
 
 //    회원 정보 수정
@@ -64,18 +69,13 @@ public class UserDAO {
         userMapper.updateUser(userVO);
     }
 
-//    비밀번호 조회
-    public String findPassword(String userEmail) {
-        return userMapper.selectPassword(userEmail);
+//    비밀번호 변경
+    public void updatePassword(UserVO userVO) {
+        userMapper.updatePassword(userVO);
     }
 
 //    회원 탈퇴
     public void deleteUser(String userEmail) {
         userMapper.deleteUser(userEmail);
-    }
-
-//    이메일 찾기
-    public String findEmail(Long id) {
-        return userMapper.selectEmailById(id);
     }
 }

@@ -99,7 +99,7 @@ public class UserMapperTests {
     public void selectPasswordTest() {
         UserVO userVO = new UserVO();
         userVO.setUserEmail("user1234@gmail.com");
-        String password = userMapper.selectPassword(userVO.getUserEmail());
+        String password = userMapper.selectPasswordByEmail(userVO.getUserEmail());
         log.info("{}", password);
     }
 
