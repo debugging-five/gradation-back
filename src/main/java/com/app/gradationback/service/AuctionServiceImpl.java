@@ -116,4 +116,11 @@ public class AuctionServiceImpl implements AuctionService {
     public Optional<AuctionBiddingVO> auctionStatus(Long auctionId) {
         return auctionBiddingDAO.select(auctionId);
     }
+
+    @Override
+    public Optional<Integer> auctionBidderCount(Long auctionId) {
+        return auctionBiddingDAO.selectCount(auctionId);
+    }
+
+
 }

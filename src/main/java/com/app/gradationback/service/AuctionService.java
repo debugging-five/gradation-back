@@ -17,6 +17,6 @@ public interface AuctionService {
 // 입찰에 사용되는 로직
     public void auctionBidding(AuctionBiddingVO auctionBiddingVO);
     public void endBidding(AuctionVO auctionVO);
-    public Optional<AuctionBiddingVO> auctionStatus(Long id);
-
+    public Optional<AuctionBiddingVO> auctionStatus(Long auctionId);
+    public Optional<Integer> auctionBidderCount(Long auctionId);
 }

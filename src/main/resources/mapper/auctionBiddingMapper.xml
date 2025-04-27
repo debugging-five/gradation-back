@@ -65,10 +65,9 @@
     </select>
 
     <select id="selectCount" resultType="Integer" parameterType="Long">
-        SELECT COUNT(USER_ID)
+        SELECT COUNT(DISTINCT USER_ID)
         FROM TBL_AUCTION_BIDDING
         WHERE AUCTION_ID = #{auctionId}
-        GROUP BY AUCTION_ID
     </select>
 
 

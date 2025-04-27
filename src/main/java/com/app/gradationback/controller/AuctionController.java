@@ -83,12 +83,27 @@ public class AuctionController {
     }
 
 //    입찰
-    @Operation(summary = "경매 입찰", description = "경매 입찰 API")
-    @ApiResponse(responseCode = "200", description = "입찰 성공")
+    @Operation(summary = "경매 응찰", description = "경매 입찰 API")
+    @ApiResponse(responseCode = "200", description = "응찰 성공")
     @PostMapping("bidding")
     public void bidding(AuctionBiddingVO auctionBiddingVO) {
         auctionService.auctionBidding(auctionBiddingVO);
     }
+
+//    해당 겸매의 경쟁응찰자 조회
+    @Operation(summary = "경쟁응찰자 조회", description = "해당 경매의 응찰자 수를 조회할 수 있는 API")
+    @Parameter(
+            name = "auctionId",
+            description = "경매 번호",
+            schema = @Schema(type = "number"), // 스키마 타입
+            in = ParameterIn.PATH,
+            required = true
+    )
+    @GetMapping("bidding-count/{auctionId}")
+    public Integer biddingCount(@PathVariable Long auctionId) {
+        return auctionService.auctionBidderCount(auctionId).orElse(0);
+    }
+
 
 
 }

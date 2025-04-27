@@ -34,4 +34,8 @@ public class AuctionBiddingDAO {
         return auctionBiddingMapper.selectAuto(auctionId);
     }
 
+    public Optional<Integer> selectCount(Long auctionId) {
+        return auctionBiddingMapper.selectCount(auctionId);
+    }
+
 }
