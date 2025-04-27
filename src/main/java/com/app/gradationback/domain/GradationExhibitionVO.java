@@ -10,13 +10,11 @@ import java.util.Date;
 public class GradationExhibitionVO {
     private Long id;
     private String gradationExhibitionTitle;
-    private int gradationExhibitionCount;
-    private Date gradationExhibitionTime;
-    private int gradationExhibitionFee;
+    private String gradationExhibitionArt;
+    private String gradationExhibitionCategory;
+    private String gradationExhibitionTime;
+    private String gradationExhibitionFee;
     private String gradationExhibitionTel;
     private String gradationExhibitionAddress;
-    private Date gradationExhibitionStartDate;
-    private Date gradationExhibitionEndDate;
-    private String gradationExhibitionAddressImgName;
-    private String gradationExhibitionTitleImgPath;
+    private String gradationExhibitionDate;
 }
