@@ -2,6 +2,7 @@ package com.app.gradationback.mapper.mina;
 
 import com.app.gradationback.domain.UserVO;
 import com.app.gradationback.mapper.UserMapper;
+import com.app.gradationback.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,18 +19,18 @@ public class UserMapperTests {
 
     @Autowired
     private UserVO userVO;
+    @Autowired
+    private UserService userService;
 
-//    회원 가입
+    //    회원 가입
     @Test
     public void insertUserTest() {
         UserVO userVO = new UserVO();
-        userVO.setUserName("유저1");
-        userVO.setUserEmail("user1@gmail.com");
-        userVO.setUserIdentification("아이디1");
+        userVO.setUserName("유저3");
+        userVO.setUserEmail("user3@gmail.com");
+        userVO.setUserIdentification("아이디3");
         userVO.setUserPassword("1234");
-        userVO.setUserPhone("01012345678");
-        userVO.setUserImgName("이미지1");
-        userVO.setUserImgPath("이미지 경로1");
+        userVO.setUserPhone("01033331234");
         userMapper.insert(userVO);
         log.info("{}", userVO);
     }
@@ -117,6 +118,13 @@ public class UserMapperTests {
     @Test
     public void deleteUserTest() {
         userMapper.deleteUser("user1234@gmail.com");
+    }
+
+    @Test
+    public void withdrawUser() {
+        UserVO userVO = new UserVO();
+        userVO.setUserEmail("user2@gmail.com");
+        userService.withdraw(userVO.getUserEmail());
     }
 
 
