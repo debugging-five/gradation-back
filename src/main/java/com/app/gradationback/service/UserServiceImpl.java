@@ -94,6 +94,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void withdraw(String userEmail) {
         Long userId = userDAO.findIdByEmail(userEmail);
+        System.out.println("userId : " + userId);
         commentDAO.deleteAllByUserId(userId);
         userDAO.deleteUser(userEmail);
     }

@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 @Component
 @Data
 public class CommentVO {
-    @Schema(description = "댓글 번호", example = "1")
+    @Schema(description = "댓글 번호", required = true, example = "1")
     private Long id;
     @Schema(description = "댓글 내용", required = true, example = "댓글1")
     private String commentContent;
