@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.gradationback.mapper.CommentMapper">
+
+    <insert id="insert" parameterType="CommentVO">
+        INSERT INTO TBL_COMMENT
+        VALUES (SEQ_COMMENT.NEXTVAL, #{artPostId}, #{userId}, #{commentContent}, #{commentDate})
+    </insert>
+
+    <select id="selectAll" resultType="CommentVO">
+        SELECT ID, ART_POST_ID, USER_ID, COMMENT_CONTENT, COMMENT_DATE
+        FROM TBL_COMMENT
+    </select>
+
+    <select id="select" parameterType="Long" resultType="CommentVO">
+        SELECT ID, ART_POST_ID, USER_ID, COMMENT_CONTENT, COMMENT_DATE
+        FROM TBL_COMMENT
+        WHERE ID = #{id}
+    </select>
+
+    <update id="update" parameterType="CommentVO">
+        UPDATE TBL_COMMENT
+        SET COMMENT_CONTENT = #{commentContent}, COMMENT_DATE = #{commentDate}
+        WHERE ID = #{id}
+    </update>
+
+    <delete id="delete" parameterType="Long">
+        DELETE FROM TBL_COMMENT
+        WHERE ID = #{id}
+    </delete>
+
+    <delete id="deleteAllByUserId" parameterType="Long">
+        DELETE FROM TBL_COMMENT
+        WHERE USER_ID = #{userId}
+    </delete>
+
+    <delete id="deleteAllByPostId" parameterType="Long">
+        DELETE FROM TBL_COMMENT
+        WHERE ART_POST_ID = #{artPostId}
+    </delete>
+
+</mapper>

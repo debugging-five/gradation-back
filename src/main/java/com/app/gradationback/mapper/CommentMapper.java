@@ -1,26 +1,25 @@
 package com.app.gradationback.mapper;
 
-import com.app.gradationback.domain.ArtVO;
-import com.app.gradationback.domain.ReplyVO;
+import com.app.gradationback.domain.CommentVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 import java.util.Optional;
 
 @Mapper
-public interface ReplyMapper {
+public interface CommentMapper {
 
 //    댓글 작성
-    public void insert(ReplyVO replyVO);
+    public void insert(CommentVO commentVO);
 
 //    댓글 전체 조회
-    public List<ReplyVO> selectAll();
+    public List<CommentVO> selectAll();
 
 //    댓글 단일 조회
-    public Optional<ReplyVO> select(Long id);
+    public Optional<CommentVO> select(Long id);
 
 //    댓글 수정
-    public void update(ReplyVO replyVO);
+    public void update(CommentVO commentVO);
 
 //    댓글 삭제
     public void delete(Long id);

@@ -1,8 +1,6 @@
 package com.app.gradationback.controller;
 
-import com.app.gradationback.domain.ArtImgVO;
 import com.app.gradationback.domain.ArtPostDTO;
-import com.app.gradationback.domain.ArtVO;
 import com.app.gradationback.service.DisplayService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -18,8 +16,10 @@ import java.util.Optional;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping
+@RequestMapping("/display/api/*")
 public class DisplayController {
+
+
 
 
 

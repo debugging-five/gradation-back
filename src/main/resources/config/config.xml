@@ -23,8 +23,8 @@
         <typeAlias type="com.app.gradationback.domain.PaymentVO" alias="PaymentVO" />
         <typeAlias type="com.app.gradationback.domain.QnaAnswerVO" alias="QnaAnswerVO" />
         <typeAlias type="com.app.gradationback.domain.QnaVO" alias="QnaVO" />
-        <typeAlias type="com.app.gradationback.domain.ReplyLikeVO" alias="ReplyLikeVO" />
-        <typeAlias type="com.app.gradationback.domain.ReplyVO" alias="ReplyVO" />
+        <typeAlias type="com.app.gradationback.domain.CommentLikeVO" alias="CommentLikeVO" />
+        <typeAlias type="com.app.gradationback.domain.CommentVO" alias="CommentVO" />
         <typeAlias type="com.app.gradationback.domain.UniversityExhibitionImgVO" alias="UniversityExhibitionImgVO" />
         <typeAlias type="com.app.gradationback.domain.UniversityExhibitionVO" alias="UniversityExhibitionVO" />
         <typeAlias type="com.app.gradationback.domain.UniversityLikeVO" alias="UniversityLikeVO" />
