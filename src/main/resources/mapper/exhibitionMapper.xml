@@ -1,4 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.gradationback.mapper.ExhibitionMapper">
+
+    <!--    그라데이션 전시회 정보 -->
+    <select id="selectGradation" resultType="GradationExhibitionVO">
+        SELECT
+            ID,
+            GRADATION_EXHIBITION_TITLE,
+            GRADATION_EXHIBITION_ART,
+            GRADATION_EXHIBITION_CATEGORY,
+            GRADATION_EXHIBITION_TIME,
+            GRADATION_EXHIBITION_FEE,
+            GRADATION_EXHIBITION_TEL,
+            GRADATION_EXHIBITION_ADDRESS,
+            GRADATION_EXHIBITION_DATE
+        FROM (
+            SELECT
+                ID,
+                GRADATION_EXHIBITION_TITLE,
+                GRADATION_EXHIBITION_ART,
+                GRADATION_EXHIBITION_CATEGORY,
+                GRADATION_EXHIBITION_TIME,
+                GRADATION_EXHIBITION_FEE,
+                GRADATION_EXHIBITION_TEL,
+                GRADATION_EXHIBITION_ADDRESS,
+                GRADATION_EXHIBITION_DATE
+            FROM TBL_GRADATION_EXHIBITION
+            ORDER BY ID DESC
+        )
+        WHERE ROWNUM = 1
+    </select>
+
+<!--    전시회 장소 이미지 리스트로 조회 -->
+    <select id="selectGradationExhibitionImgAll" resultType="GradationExhibitionImgVO">
+        SELECT
+            ID,
+            GRADATION_EXHIBITION_IMG_NAME,
+            GRADATION_EXHIBITION_IMG_PATH,
+            GRADATION_EXHIBITION_ID
+        FROM TBL_GRADATION_EXHIBITION_IMG
+        WHERE GRADATION_EXHIBITION_ID = #{gradationExhibitionId}
+    </select>
+
+<!--    전시회 장소 이미지 추가 -->
+    <insert id="insertGradationExhibitionImg" parameterType="GradationExhibitionImgVO">
+        INSERT INTO TBL_GRADATION_EXHIBITION_IMG (ID, GRADATION_EXHIBITION_IMG_NAME, GRADATION_EXHIBITION_IMG_PATH, GRADATION_EXHIBITION_ID)
+        VALUES (SEQ_GRADATION_EXHIBITION_IMG.NEXTVAL, #{gradationExhibitionImgName}, #{gradationExhibitionImgPath}, #{gradationExhibitionId})
+    </insert>
+
+<!--    전시회 장소 이미지 삭제 -->
+    <delete id="deleteGradationExhibitionImg">
+        DELETE FROM TBL_GRADATION_EXHIBITION_IMG
+        WHERE ID = #{id}
+    </delete>
+
+<!--    과거 전시회용 INSERT -->
+
+
+    <!--    <select id="selectGradation" resultType="GradationExhibitionDTO">-->
+<!--        SELECT TGE.ID,-->
+<!--               TGE.GRADATION_EXHIBITION_TITLE,-->
+<!--               TGE.GRADATION_EXHIBITION_ART,-->
+<!--               TGE.GRADATION_EXHIBITION_CATEGORY,-->
+<!--               TGE.GRADATION_EXHIBITION_TIME,-->
+<!--               TGE.GRADATION_EXHIBITION_FEE,-->
+<!--               TGE.GRADATION_EXHIBITION_TEL,-->
+<!--               TGE.GRADATION_EXHIBITION_ADDRESS,-->
+<!--               TGE.GRADATION_EXHIBITION_DATE-->
+<!--        FROM TBL_GRADATION_EXHIBITION TGE-->
+<!--        JOIN TBL_GRADATION_EXHIBITION_IMG TGEI-->
+<!--        ON TGE.ID = TGEI.GRADATION_EXHIBITION_ID-->
+<!--        JOIN TBL_EXHIBITION_PAST_ART TEPA-->
+<!--        ON TGE.ID = TEPA.GRADATION_EXHIBITION_ID-->
+<!--        JOIN TBL_ART TA-->
+<!--        ON TEPA.ART_ID = TA.ID-->
+<!--        JOIN TBL_ART_IMG TAI-->
+<!--        ON TA.ID = TAI.ART_ID-->
+<!--        LEFT JOIN TBL_USER TU-->
+<!--        ON TA.USER_ID = TU.ID-->
+<!--    </select>-->
+
 </mapper>
