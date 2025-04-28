@@ -23,20 +23,19 @@ public class ArtMapperTests {
     @Test
     public void insertTest() {
         ArtVO artVO = new ArtVO();
-        artVO.setArtTitle("작품1");
-        artVO.setArtCategory("카테고리1");
-        artVO.setArtDescription("설명1");
-        artVO.setArtSize("300X300X300");
-        artVO.setArtMaterial("재료1");
-        artVO.setUserId(1L);
+        artVO.setArtTitle("작품6");
+        artVO.setArtCategory("카테고리6");
+        artVO.setArtDescription("설명6");
+        artVO.setArtSize("600 x 600 x 600");
+        artVO.setArtMaterial("재료6");
+        artVO.setUserId(88L);
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date endDate = formatter.parse("2025-04-24");
+            Date endDate = formatter.parse("2025-04-28");
             artVO.setArtEndDate(endDate);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         artMapper.insert(artVO);
         log.info("{}", artVO);
     }
@@ -54,37 +53,23 @@ public class ArtMapperTests {
     @Test
     public void selectTest() {
         ArtVO artVO = new ArtVO();
-        artVO.setArtTitle("작품2");
-        artVO.setArtCategory("카테고리2");
-        artVO.setArtDescription("설명2");
-        artVO.setArtSize("200X200X200");
-        artVO.setArtMaterial("재료2");
-        artVO.setUserId(2L);
-        try {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date endDate = formatter.parse("2025-04-24");
-            artVO.setArtEndDate(endDate);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        artMapper.select(2L);
-        log.info("{}", artVO);
+        artVO.setId(384L);
+        artMapper.select(artVO.getId()).map(ArtVO::toString).ifPresent(log::info);
     }
 
 //    작품 정보 수정
     @Test
     public void updateTest() {
         ArtVO artVO = new ArtVO();
-        artVO.setId(381L);
-        artVO.setArtTitle("수정된 작품1");
-        artVO.setArtCategory("수정된 카테고리1");
-        artVO.setArtDescription("수정된 설명1");
-        artVO.setArtSize("300X300X300");
-        artVO.setArtMaterial("재료1");
+        artVO.setId(384L);
+        artVO.setArtTitle("수정된 작품");
+        artVO.setArtCategory("카테고리4");
+        artVO.setArtDescription("수정된 설명4");
+        artVO.setArtMaterial("재료4");
+        artVO.setArtSize("600 x 600 x 600");
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date endDate = formatter.parse("2025-04-24");
+            Date endDate = formatter.parse("2025-04-27");
             artVO.setArtEndDate(endDate);
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,6 +82,6 @@ public class ArtMapperTests {
     //    작품 정보 삭제
     @Test
     public void deleteTest() {
-        artMapper.delete(381L);
+        artMapper.delete(384L);
     }
 }

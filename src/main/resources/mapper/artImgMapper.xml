@@ -2,28 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.gradationback.mapper.ArtImgMapper">
 
+    <!--  작품 이미지 등록  -->
     <insert id="insert" parameterType="ArtImgVO">
         INSERT INTO TBL_ART_IMG
         VALUES (SEQ_ART_IMG.NEXTVAL, #{artImgName}, #{artImgPath}, #{artId})
     </insert>
 
+    <!--  작품 이미지 전체 조회  -->
     <select id="selectAll" resultType="ArtImgVO">
         SELECT ID, ART_IMG_NAME, ART_IMG_PATH, ART_ID
         FROM TBL_ART_IMG
     </select>
 
+    <!--  작품 이미지 단일 조회  -->
     <select id="select" parameterType="Long" resultType="ArtImgVO">
         SELECT ID, ART_IMG_NAME, ART_IMG_PATH, ART_ID
         FROM TBL_ART_IMG
         WHERE ID = #{id}
     </select>
 
+    <!--  작품 이미지 수정  -->
     <update id="update" parameterType="ArtImgVO">
         UPDATE TBL_ART_IMG
         SET ART_IMG_NAME = #{artImgName}, ART_IMG_PATH = #{artImgPath}
         WHERE ID = #{id}
     </update>
 
+    <!--  작품 이미지 삭제  -->
     <delete id="delete" parameterType="Long">
         DELETE FROM TBL_ART_IMG
         WHERE ID = #{id}

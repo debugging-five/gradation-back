@@ -24,16 +24,22 @@ public class UserServiceImpl implements UserService {
         userDAO.save(userVO);
     }
 
-//    전체 회원 정보 조회
+//    전체 회원 조회
     @Override
     public List<UserVO> getUserList() {
         return userDAO.findAllUser();
     }
 
-//    단일 회원 정보 조회
+//    단일 회원 조회 (이메일로)
     @Override
-    public Optional<UserVO> getUser(String userEmail) {
-        return userDAO.findUser(userEmail);
+    public Optional<UserVO> getUserByEmail(String userEmail) {
+        return userDAO.findUserByEmail(userEmail);
+    }
+
+//    단일 회원 조회 (아이디로)
+    @Override
+    public Optional<UserVO> getUserByIdentification(String userIdentification) {
+        return userDAO.findUserByIdentification(userIdentification);
     }
 
 //    로그인
@@ -42,40 +48,28 @@ public class UserServiceImpl implements UserService {
         return userDAO.login(userVO);
     }
 
-//    아이디 중복 체크
+//    아이디 찾기 (이름 + 이메일)
     @Override
-    public int isIdExist(String userIdentification) {
-        return userDAO.checkIdExist(userIdentification);
+    public String getIdentificationByEmailAndName(UserVO userVO) {
+        return userDAO.findIdentificationByEmailAndName(userVO);
     }
 
-//    이메일 중복 체크
-    @Override
-    public int isEmailExist(String userEmail) {
-        return userDAO.checkEmailExist(userEmail);
-    }
-
-//    비밀번호 중복 체크
-    @Override
-    public int isPasswordExist(UserVO userVO) {
-        return userDAO.checkPasswordExist(userVO);
-    }
-
-//    아이디 조회
-    @Override
-    public String getIdByEmailAndName(UserVO userVO) {
-        return userDAO.findIdByEmailAndName(userVO);
-    }
-
-//    비밀번호 조회
+//    비밀번호 찾기 (이메일)
     @Override
     public String getPasswordByEmail(String userEmail) {
         return userDAO.findPasswordByEmail(userEmail);
     }
 
-//    이메일 조회
+//    아이디로 이메일 조회
     @Override
     public String getEmailById(Long id) {
         return userDAO.findEmailById(id);
+    }
+
+//    이메일로 ID 조회
+    @Override
+    public Long getIdByEmail(String userEmail) {
+        return userDAO.findIdByEmail(userEmail);
     }
 
 //    회원 정보 수정
@@ -84,23 +78,12 @@ public class UserServiceImpl implements UserService {
         userDAO.updateUser(userVO);
     }
 
-//    비밀번호 변경
-    @Override
-    public void modifyPassword(UserVO userVO) {
-        userDAO.updatePassword(userVO);
-    }
-
 //    회원 탈퇴
     @Override
     public void withdraw(String userEmail) {
         Long userId = userDAO.findIdByEmail(userEmail);
-        System.out.println("userId : " + userId);
         commentDAO.deleteAllByUserId(userId);
         userDAO.deleteUser(userEmail);
     }
 
-    @Override
-    public Long getIdByEmail(String userEmail) {
-        return userDAO.findIdByEmail(userEmail);
-    }
 }

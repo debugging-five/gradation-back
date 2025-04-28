@@ -20,9 +20,9 @@ public class ArtImgMapperTests {
     @Test
     public void insertArtImgTest() {
         ArtImgVO artImgVO = new ArtImgVO();
-        artImgVO.setArtImgName("작품 이미지1");
-        artImgVO.setArtImgPath("/images/art1");
-        artImgVO.setArtId(1L);
+        artImgVO.setArtImgName("art2-1.png");
+        artImgVO.setArtImgPath("/images/art2-1");
+        artImgVO.setArtId(382L);
         artImgMapper.insert(artImgVO);
         log.info("{}", artImgVO);
     }
@@ -40,7 +40,7 @@ public class ArtImgMapperTests {
     @Test
     public void selectArtImgTest() {
         ArtImgVO artImgVO = new ArtImgVO();
-        artImgVO.setId(381L);
+        artImgVO.setId(385L);
         artImgMapper.select(artImgVO.getId()).map(ArtImgVO::toString).ifPresent(log::info);
     }
 

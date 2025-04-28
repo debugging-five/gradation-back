@@ -52,37 +52,6 @@ public class UserMapperTests {
         userMapper.selectUser(userVO.getUserEmail()).map(UserVO::toString).ifPresent(log::info);
     }
 
-//    아이디 중복 체크
-    @Test
-    public void checkIdTest() {
-        UserVO userVO = new UserVO();
-        userVO.setUserIdentification("아이디1");
-        int checkId = userMapper.checkId(userVO.getUserIdentification());
-        log.info("{}", checkId);
-    }
-
-//    이메일 중복 체크
-    @Test
-    public void checkEmailTest() {
-        UserVO userVO = new UserVO();
-        userVO.setUserEmail("user1234@gmail.com");
-        int checkEmail = userMapper.checkEmail(userVO.getUserEmail());
-        log.info("{}", checkEmail);
-    }
-
-//    비밀번호 변경
-    @Test
-    public void updatePassword() {
-        UserVO userVO = new UserVO();
-//        userVO.setId(56L);
-        userVO.setUserEmail("user1@gmail.com");
-        userVO.setUserName("유저1");
-        userVO.setUserIdentification("아이디1");
-        userVO.setUserPassword("123!@#");
-        userMapper.updatePassword(userVO);
-        log.info("{}", userVO);
-    }
-
 //    회원 정보 수정
     @Test
     public void updateUserTest() {
