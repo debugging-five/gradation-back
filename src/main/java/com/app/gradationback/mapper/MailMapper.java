@@ -6,6 +6,7 @@ import com.app.gradationback.domain.QnaDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper
 public interface MailMapper {
@@ -18,5 +19,17 @@ public interface MailMapper {
 
 //    내가 보낸 쪽지
     public List<MailDTO> selectSended(Long id);
+
+//    받은 쪽지 단일조회
+    public Optional<MailDTO> selectReceivedDetail(Long id, Long receiveUserId);
+
+//    보낸 쪽지 단일조회
+    public Optional<MailDTO> selectSendedDetail(Long id, Long sendUserId);
+
+//    내가 보낸 쪽지 삭제
+    public Optional<MailDTO> deleteSendedMail(Long id , Long sendUserId);
+
+//    받은 쪽지 삭제
+    public Optional<MailDTO> deleteReceivedMail(Long id, Long receiveUserId);
 
 }

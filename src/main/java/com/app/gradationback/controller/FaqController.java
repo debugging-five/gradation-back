@@ -1,6 +1,9 @@
 package com.app.gradationback.controller;
 
+import com.app.gradationback.domain.FaqDTO;
 import com.app.gradationback.domain.FaqVO;
+import com.app.gradationback.domain.QnaDTO;
+import com.app.gradationback.domain.QnaVO;
 import com.app.gradationback.service.FaqService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -48,6 +51,7 @@ public class FaqController {
         return new FaqVO();
     }
 
+
     //    FAQ 작성
     @Operation(summary = "FAQ 작성", description = "FAQ를 작성할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "FAQ 작성 성공")
@@ -80,6 +84,8 @@ public class FaqController {
         }
         return new FaqVO();
     }
+
+
 
     //    FAQ 삭제
     @Operation(summary = "FAQ 삭제", description = "FAQ를 삭제할 수 있는 API")

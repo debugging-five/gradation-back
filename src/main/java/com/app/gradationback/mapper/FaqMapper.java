@@ -1,5 +1,6 @@
 package com.app.gradationback.mapper;
 
+import com.app.gradationback.domain.FaqDTO;
 import com.app.gradationback.domain.FaqVO;
 import org.apache.ibatis.annotations.Mapper;
 
