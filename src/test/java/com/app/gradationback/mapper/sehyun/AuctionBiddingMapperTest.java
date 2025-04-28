@@ -36,8 +36,8 @@ public class AuctionBiddingMapperTest {
 
     @Test
     public void selectAll() {
-        List<AuctionBiddingVO> biddings = auctionBiddingMapper.selectAll(6L);
-        for (AuctionBiddingVO auctionBiddingVO : biddings) {
+        List<AuctionBiddingVO> bidding = auctionBiddingMapper.selectAll(6L);
+        for (AuctionBiddingVO auctionBiddingVO : bidding) {
             log.info(auctionBiddingVO.toString());
         }
     }
@@ -63,4 +63,5 @@ public class AuctionBiddingMapperTest {
             }
         }
     }
+
 }

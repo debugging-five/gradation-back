@@ -100,12 +100,10 @@ public class AuctionController {
             in = ParameterIn.PATH,
             required = true
     )
-    @GetMapping("bidding-count/{auctionId}")
-    public Integer biddingCount(@PathVariable Long auctionId) {
+    @GetMapping("read-bidder-count/{auctionId}")
+    public Integer readBidderCount(@PathVariable Long auctionId) {
         return auctionService.auctionBidderCount(auctionId).orElse(0);
     }
-
-//    해당 경매의 최종 응찰자 조회
     @Operation(summary = "입찰자 조회", description = "현재 입찰자를 조회할 수 있는 API")
     @Parameter(
             name = "auctionId",
