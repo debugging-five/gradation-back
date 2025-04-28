@@ -4,13 +4,10 @@ import com.app.gradationback.domain.ArtImgVO;
 import com.app.gradationback.domain.ArtPostDTO;
 import com.app.gradationback.domain.ArtPostVO;
 import com.app.gradationback.domain.ArtVO;
-import com.app.gradationback.mapper.ArtImgMapper;
-import com.app.gradationback.mapper.ArtMapper;
-import com.app.gradationback.mapper.ArtPostMapper;
 import com.app.gradationback.repository.ArtDAO;
 import com.app.gradationback.repository.ArtImgDAO;
 import com.app.gradationback.repository.ArtPostDAO;
-import com.app.gradationback.repository.ReplyDAO;
+import com.app.gradationback.repository.CommentDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +26,7 @@ public class DisplayServiceImpl implements DisplayService {
     private final ArtVO artVO;
     private final ArtImgVO artImgVO;
     private final ArtPostVO artPostVO;
-    private final ReplyDAO replyDAO;
+    private final CommentDAO commentDAO;
 
     //    게시글 등록
     @Override
@@ -112,7 +109,7 @@ public class DisplayServiceImpl implements DisplayService {
 //    게시글 삭제 + 댓글 삭제
     @Override
     public void removeArtPost(Long id) {
-        replyDAO.deleteAllByPostId(id);
+        commentDAO.deleteAllByPostId(id);
         artPostDAO.delete(id);
     }
 }
