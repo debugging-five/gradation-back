@@ -19,35 +19,37 @@ public class MailMapperTests {
     @Autowired
     private MailMapper mailMapper;
 
+//      쪽지 등록
     @Test
     public void insertTest() {
         MailDTO mailDTO = new MailDTO();
         mailDTO.setMailTitle("안녕하세요");
         mailDTO.setMailContent("반갑습니다잉");
-        mailDTO.setSendUserId(4L);
-        mailDTO.setReceiveUserEmail("iseonghyeon@gmail.com");
+        mailDTO.setSendUserId(2L);
+        mailDTO.setReceiveUserEmail("sma@example.com");
         mailMapper.insert(mailDTO);
     }
 
 //      쪽지 수신함
     @Test
     public void selectReceivedTest() {
-        List<MailDTO> receivedList = mailMapper.selectReceived(4L);
+        List<MailDTO> receivedList = mailMapper.selectReceived(2L);
         for (MailDTO mail : receivedList) {
-            log.info("메일 제목: {}, 발신인: {}, 작성일: {}",
+            log.info("제목: {}, 이름: {}, 작성일: {}",
                     mail.getMailTitle(),
-                    mail.getSendUserNickName(),
+                    mail.getSendUserName(),
                     mail.getMailSendTime());
         }
     }
+
 //      보낸 쪽지함
     @Test
     public void selectSendedTest() {
         List<MailDTO> sendedList = mailMapper.selectSended(2L);
         for (MailDTO mail : sendedList) {
-            log.info("제목: {}, 수신인: {}, 작성일: {}",
+            log.info("제목: {}, 이름: {}, 작성일: {}",
                     mail.getMailTitle(),
-                    mail.getReceiveUserNickName(),
+                    mail.getReceiveUserName(),
                     mail.getMailSendTime());
         }
     }

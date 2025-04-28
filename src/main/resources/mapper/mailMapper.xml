@@ -12,7 +12,7 @@
 
 <!--    받은 쪽지 조회-->
     <select id="selectReceived" parameterType="Long" resultType="MailDTO">
-        SELECT TM.ID, TM.MAIL_TITLE, TM.MAIL_SEND_TIME, TU.USER_NICKNAME AS sendUserNickName
+        SELECT TM.ID, TM.MAIL_TITLE, TM.MAIL_SEND_TIME, TU.USER_NAME AS sendUserName
         FROM TBL_MAIL TM
         JOIN TBL_USER TU
         ON TM.SEND_USER_ID = TU.ID
@@ -23,7 +23,7 @@
 
 <!--    보낸 쪽지 조회-->
     <select id="selectSended" parameterType="Long" resultType="MailDTO">
-        SELECT TM.ID, TM.MAIL_TITLE, TM.MAIL_SEND_TIME, TU.USER_NICKNAME AS receiveUserNickName
+        SELECT TM.ID, TM.MAIL_TITLE, TM.MAIL_SEND_TIME, TU.USER_NAME AS receiveUserName
         FROM TBL_MAIL TM
         JOIN TBL_USER TU
         ON TM.RECEIVE_USER_ID = TU.ID
@@ -37,7 +37,7 @@
     <select id="selectReceivedDetail" parameterType="Long" resultType="MailDTO">
         SELECT
             TM.ID, TM.MAIL_TITLE, TM.MAIL_CONTENT, TM.MAIL_SEND_TIME,
-            TU.USER_NICKNAME AS sendUserNickName,
+            TU.USER_NAME AS sendUserName,
             TU.USER_EMAIL AS sendUserEmail
         FROM TBL_MAIL TM
         JOIN TBL_USER TU
@@ -51,7 +51,7 @@
     <select id="selectSendedDetail" parameterType="Long" resultType="MailDTO">
         SELECT
             TM.ID, TM.MAIL_TITLE, TM.MAIL_CONTENT, TM.MAIL_SEND_TIME,
-            TU.USER_NICKNAME AS receiveUserNickName,
+            TU.USER_NAME AS receiveUserName,
             TU.USER_EMAIL AS receiveUserEmail
         FROM TBL_MAIL TM
         JOIN TBL_USER TU
