@@ -1,5 +1,6 @@
 package com.app.gradationback.service;
 
+import com.app.gradationback.domain.FaqDTO;
 import com.app.gradationback.domain.FaqVO;
 import com.app.gradationback.repository.FaqDAO;
 import lombok.RequiredArgsConstructor;
