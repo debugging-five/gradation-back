@@ -28,8 +28,8 @@ public class FaqController {
     //    FAQ 전체조회
     @Operation(summary = "FAQ 전체 조회",description = "FAQ를 전체 조회 할 수 있는 API")
     @GetMapping("faq-list")
-    public List<FaqVO> getFaqs() {
-        return faqService.getFaqList();
+    public List<FaqVO> getFaqs(FaqDTO faqDTO) {
+        return faqService.getFaqList(faqDTO);
     }
 
     //    FAQ 1개 조회
@@ -44,7 +44,7 @@ public class FaqController {
     @GetMapping("faq/{id}")
     public FaqVO getFaq(@PathVariable Long id) {
         log.info("{}", id);
-        Optional<FaqVO> foundFaq = faqService.getFaq(id);
+        Optional<FaqVO> foundFaq = faqService.findByFaq(id);
         if (foundFaq.isPresent()) {
             return foundFaq.get();
         }
@@ -56,9 +56,9 @@ public class FaqController {
     @Operation(summary = "FAQ 작성", description = "FAQ를 작성할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "FAQ 작성 성공")
     @PostMapping("registraction")
-    public FaqVO registraction(@RequestBody FaqVO faqVO){
-        faqService.registraction(faqVO);
-        Optional<FaqVO> foundFaq = faqService.getFaq(faqVO.getId());
+    public FaqVO register(@RequestBody FaqVO faqVO){
+        faqService.register(faqVO);
+        Optional<FaqVO> foundFaq = faqService.findByFaq(faqVO.getId());
         if (foundFaq.isPresent()) {
             return foundFaq.get();
         }
@@ -78,7 +78,7 @@ public class FaqController {
     public FaqVO modify(@PathVariable Long id, @RequestBody FaqVO faqVO){
         faqVO.setId(id);
         faqService.modify(faqVO);
-        Optional<FaqVO> foundFaq = faqService.getFaq(id);
+        Optional<FaqVO> foundFaq = faqService.findByFaq(id);
         if (foundFaq.isPresent()) {
             return foundFaq.get();
         }
@@ -103,3 +103,15 @@ public class FaqController {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
