@@ -15,17 +15,17 @@ public class FaqDAO {
     private final FaqMapper faqMapper;
 
 //    자주 묻는 질문 등록
-    public void registraction(FaqVO faqVO){
+    public void save(FaqVO faqVO){
         faqMapper.insert(faqVO);
 };
 
 //    목록
-    public List<FaqVO> findAll() {
+    public List<FaqVO> getFaqList(FaqDTO faqDTO) {
         return faqMapper.selectAll();
 }
 
 //    단일게시글 조회
-    public Optional<FaqVO> findById(Long id){
+    public Optional<FaqVO> findByFaq(Long id){
         return faqMapper.selectById(id);
 }
 

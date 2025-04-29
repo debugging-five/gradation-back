@@ -19,20 +19,20 @@ public class FaqServiceImpl implements FaqService {
 
 //    등록
     @Override
-    public void registraction(FaqVO faqVO) {
-        faqDAO.registraction(faqVO);
+    public void register(FaqVO faqVO) {
+        faqDAO.save(faqVO);
     }
 
 //    단일 조회
     @Override
-    public Optional<FaqVO> getFaq(Long id) {
-        return faqDAO.findById(id);
+    public Optional<FaqVO> findByFaq(Long id) {
+        return faqDAO.findByFaq(id);
     }
 
 //    목록
     @Override
-    public List<FaqVO> getFaqList() {
-        return faqDAO.findAll();
+    public List<FaqVO> getFaqList(FaqDTO faqDTO) {
+        return faqDAO.getFaqList(faqDTO);
     }
 
 //    수정
