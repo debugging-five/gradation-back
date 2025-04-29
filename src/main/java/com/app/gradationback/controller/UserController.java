@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -36,6 +38,18 @@ public class UserController {
         }
         return new UserVO();
     }
+
+//    로그인
+    @PostMapping("login")
+    public String login(@RequestBody UserVO userVO) {
+        return userService.login(userVO);
+    }
+
+
+//        Map<String, Object> response = new HashMap<>();
+//        response.put("message", "로그인 성공하였습니다.");
+//        return response
+
 
 //    단일 회원 정보 조회
     @Operation(summary = "회원 정보 조회", description = "회원 1명의 정보를 조회할 수 있는 API")

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.gradationback.mapper.ArtMapper">
 
-    <!--  작품 정보 등록  -->
+    <!--  작품 등록  -->
     <insert id="insert" parameterType="ArtVO">
         <selectKey keyProperty="id" order="BEFORE" resultType="Long">
             SELECT SEQ_ART.NEXTVAL FROM DUAL
@@ -12,20 +12,20 @@
                 #{artSize}, #{artDescription}, #{artEndDate}, #{userId})
     </insert>
 
-    <!--  작품 정보 전체 조회  -->
+    <!--  작품 전체 조회  -->
     <select id="selectAll" resultType="ArtVO">
         SELECT ID, ART_TITLE, ART_CATEGORY, ART_MATERIAL, ART_SIZE, ART_DESCRIPTION, ART_END_DATE, USER_ID
         FROM TBL_ART
     </select>
 
-    <!--  작품 정보 단일 조회  -->
+    <!--  작품 단일 조회  -->
     <select id="select" parameterType="Long" resultType="ArtVO">
         SELECT ID, ART_TITLE, ART_CATEGORY, ART_MATERIAL, ART_SIZE, ART_DESCRIPTION, ART_END_DATE, USER_ID
         FROM TBL_ART
         WHERE ID = #{id}
     </select>
 
-    <!--  작품 정보 수정  -->
+    <!--  작품 수정  -->
     <update id="update" parameterType="ArtVO">
         UPDATE TBL_ART
         SET ART_TITLE = #{artTitle}, ART_CATEGORY = #{artCategory}, ART_MATERIAL = #{artMaterial},
@@ -33,7 +33,7 @@
         WHERE ID = #{id}
     </update>
 
-    <!--  작품 정보 삭제  -->
+    <!--  작품 삭제  -->
     <delete id="delete" parameterType="Long">
         DELETE TBL_ART
         WHERE ID = #{id}

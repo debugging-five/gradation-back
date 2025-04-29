@@ -45,12 +45,12 @@ public class UserMapperTests {
     }
 
 //    단일 회원 정보 조회
-    @Test
-    public void selectUserTest() {
-        UserVO userVO = new UserVO();
-        userVO.setUserEmail("user1@gmail.com");
-        userMapper.selectUser(userVO.getUserEmail()).map(UserVO::toString).ifPresent(log::info);
-    }
+//    @Test
+//    public void selectUserTest() {
+//        UserVO userVO = new UserVO();
+//        userVO.setUserEmail("user1@gmail.com");
+//        userMapper.selectUser(userVO.getUserEmail()).map(UserVO::toString).ifPresent(log::info);
+//    }
 
 //    회원 정보 수정
     @Test

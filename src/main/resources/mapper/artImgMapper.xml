@@ -18,7 +18,7 @@
     <select id="select" parameterType="Long" resultType="ArtImgVO">
         SELECT ID, ART_IMG_NAME, ART_IMG_PATH, ART_ID
         FROM TBL_ART_IMG
-        WHERE ID = #{id}
+        WHERE ART_ID = #{artId}
     </select>
 
     <!--  작품 이미지 수정  -->
@@ -31,7 +31,7 @@
     <!--  작품 이미지 삭제  -->
     <delete id="delete" parameterType="Long">
         DELETE FROM TBL_ART_IMG
-        WHERE ID = #{id}
+        WHERE ART_ID = #{artId}
     </delete>
 
 </mapper>
