@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public interface UpcyclingService {
     // 전체 신청 내역 조회
-    List<UpcyclingVO> getAll();
+    List<UpcyclingVO> getUpcyclingUserList();
     // ID 단건 조회
-    Optional<UpcyclingVO> getById(Long id);
+    Optional<UpcyclingVO> getByUpcyclingUser(Long id);
     // 신청 등록
     void register(UpcyclingVO upcyclingVO);
     // 상태 변경

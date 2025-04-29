@@ -17,13 +17,13 @@ public class UpcyclingServiceImpl implements UpcyclingService {
     private final UpcyclingDAO upcyclingDAO;
 
     @Override
-    public List<UpcyclingVO> getAll() {
-        return upcyclingDAO.getAll();
+    public List<UpcyclingVO> getUpcyclingUserList() {
+        return upcyclingDAO.getUpcyclingUserList();
     }
 
     @Override
-    public Optional<UpcyclingVO> getById(Long id) {
-        return upcyclingDAO.getById(id);
+    public Optional<UpcyclingVO> getByUpcyclingUser(Long id) {
+        return upcyclingDAO.getByUpcyclingUser(id);
     }
 
     @Override
