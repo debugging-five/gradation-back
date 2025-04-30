@@ -1,4 +1,4 @@
-package com.app.gradationback.mapper.duckjun;
+package com.app.gradationback.mapper.duckjun.mapper;
 
 import com.app.gradationback.domain.UpcyclingVO;
 import com.app.gradationback.mapper.UpcyclingMapper;
@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @SpringBootTest
 @Slf4j
-public class upcyclingMapperTests {
+public class UpcyclingMapperTests {
     @Autowired
     private UpcyclingMapper upcyclingMapper;
     @Autowired
@@ -51,13 +51,13 @@ public class upcyclingMapperTests {
 
     @Test
     public void findAllTest() {
-        List<UpcyclingVO> list = upcyclingDAO.getAll();
+        List<UpcyclingVO> list = upcyclingDAO.getUpcyclingUserList();
         list.forEach(vo -> log.info(vo.toString()));
     }
 
     @Test
     public void getByIdTest() {
-        Optional<UpcyclingVO> found = upcyclingDAO.getById(2L);
+        Optional<UpcyclingVO> found = upcyclingDAO.getByUpcyclingUser(2L);
         found.ifPresent(vo -> log.info(vo.toString()));
     }
 
