@@ -17,7 +17,7 @@ public class QnaDAO {
     private final QnaMapper qnaMapper;
 
     //    문의 등록
-    public void registraction(QnaVO qnaVO){
+    public void save(QnaVO qnaVO){
         qnaMapper.insert(qnaVO);
     };
 
@@ -39,5 +39,10 @@ public class QnaDAO {
     //    게시글 삭제
     public void delete(Long id){
         qnaMapper.delete(id);
+    }
+
+//    관리자용 전체 문의 내역 조회
+    public List<QnaDTO> getAllQnaListForAdmin(){
+        return qnaMapper.selectAllForAdmin();
     }
 }
