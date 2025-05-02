@@ -4,8 +4,11 @@
 
     <!--  작품 게시 등록  -->
     <insert id="insert" parameterType="ArtPostVO">
-        INSERT INTO TBL_ART_POST
-        VALUES (SEQ_ART_POST.NEXTVAL, #{artPostDate}, #{userId}, #{artId})
+        <selectKey keyProperty="id" order="BEFORE" resultType="Long">
+            SELECT SEQ_ART_POST.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO TBL_ART_POST (ID, ART_POST_DATE, USER_ID, ART_ID)
+        VALUES (#{id}, #{artPostDate}, #{userId}, #{artId})
     </insert>
 
     <!-- 작품 게시 전체 조회  -->
@@ -54,12 +57,13 @@
         WHERE ID = #{id}
     </update>
 
-    <!--  작품 게시 삭제  -->
-    <delete id="delete" parameterType="Long">
-        DELETE TBL_ART_POST
+    <!--  작품 게시 전체 삭제 (게시글 ID) -->
+    <delete id="deleteAllById" parameterType="Long">
+        DELETE FROM TBL_ART_POST
         WHERE ID = #{id}
     </delete>
-    
+
+    <!--  작품 게시 전체 삭제 (회원 탈퇴) -->
     <delete id="deleteAllByUserId" parameterType="Long">
         DELETE FROM TBL_ART_POST
         WHERE USER_ID = #{userId}

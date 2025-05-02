@@ -4,7 +4,7 @@
 
     <!--  작품 이미지 등록  -->
     <insert id="insert" parameterType="ArtImgVO">
-        INSERT INTO TBL_ART_IMG
+        INSERT INTO TBL_ART_IMG (ID, ART_IMG_NAME, ART_IMG_PATH, ART_ID)
         VALUES (SEQ_ART_IMG.NEXTVAL, #{artImgName}, #{artImgPath}, #{artId})
     </insert>
 
@@ -18,18 +18,11 @@
     <select id="select" parameterType="Long" resultType="ArtImgVO">
         SELECT ID, ART_IMG_NAME, ART_IMG_PATH, ART_ID
         FROM TBL_ART_IMG
-        WHERE ART_ID = #{artId}
+        WHERE ID = #{id}
     </select>
 
-    <!--  작품 이미지 수정  -->
-    <update id="update" parameterType="ArtImgVO">
-        UPDATE TBL_ART_IMG
-        SET ART_IMG_NAME = #{artImgName}, ART_IMG_PATH = #{artImgPath}
-        WHERE ID = #{id}
-    </update>
-
-    <!--  작품 이미지 삭제  -->
-    <delete id="delete" parameterType="Long">
+    <!--  작품 이미지 전체 삭제 (작품 ID로)  -->
+    <delete id="deleteAllByArtId" parameterType="Long">
         DELETE FROM TBL_ART_IMG
         WHERE ART_ID = #{artId}
     </delete>

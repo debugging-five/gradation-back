@@ -37,9 +37,9 @@ public class ArtPostDAO {
         artPostMapper.update(artPostVO);
     }
 
-//    작품 게시 삭제
-    public void delete(Long id) {
-        artPostMapper.delete(id);
+//    작품 게시 전체 삭제 (게시글 ID)
+    public void deleteAllById(Long id) {
+        artPostMapper.deleteAllById(id);
     }
 
 //    작품 게시 전체 삭제 (회원 탈퇴)

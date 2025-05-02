@@ -1,5 +1,6 @@
 package com.app.gradationback.repository;
 
+import com.app.gradationback.domain.ArtFilterVO;
 import com.app.gradationback.domain.ArtVO;
 import com.app.gradationback.mapper.ArtMapper;
 import lombok.RequiredArgsConstructor;
@@ -13,29 +14,30 @@ import java.util.Optional;
 public class ArtDAO {
 
     private final ArtMapper artMapper;
+    private final ArtFilterVO artFilterVO;
 
-//    작품 정보 등록
+    //    작품 등록
     public void save(ArtVO artVO) {
         artMapper.insert(artVO);
     }
 
-//    전체 작품 정보 조회
+//    전체 작품 조회
     public List<ArtVO> findAll(ArtVO artVO) {
         return artMapper.selectAll();
     }
 
-//    단일 작품 정보 조회
+//    단일 작품 조회
     public Optional<ArtVO> findById(Long id) {
         return artMapper.select(id);
     }
 
-//    작품 정보 수정
-    public void update(ArtVO artVO) {
-        artMapper.update(artVO);
+//    카테고리별 작품 조회
+    public List<ArtVO> findArtListByFilter(ArtFilterVO artFilterVo) {
+        return artMapper.selectArtListByFilter(artFilterVO);
     }
 
-//    작품 정보 삭제
-    public void delete(Long id) {
-        artMapper.delete(id);
+//    작품 삭제
+    public void deleteAllById(Long id) {
+        artMapper.deleteById(id);
     }
 }
