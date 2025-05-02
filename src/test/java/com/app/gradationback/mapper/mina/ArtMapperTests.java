@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @SpringBootTest
@@ -59,18 +60,31 @@ public class ArtMapperTests {
     }
 
 //    카테고리별 작품 조회
-    @Test
-    public void selectArtListByFilterTest() {
-        ArtFilterVO artFilterVO = new ArtFilterVO();
-        artFilterVO.setArtCategory("건축");
-        artFilterVO.setOffset(0);
-        artFilterVO.setLimit(15);
-        artFilterVO.setSortBy("date");
-        List<ArtVO> artVOList = artMapper.selectArtListByFilter(artFilterVO);
+//    @Test
+//    public void selectArtListByFilterTest() {
+//        ArtFilterVO artFilterVO = new ArtFilterVO();
+//        artFilterVO.setArtCategory("건축");
+//        artFilterVO.setOffset(0);
+//        artFilterVO.setLimit(15);
+//        artFilterVO.setSortBy("date");
+//        List<ArtVO> artVOList = artMapper.selectArtListByFilter(artFilterVO);
+//
+//        for (ArtVO artVO : artVOList) {
+//            log.info("{}", artVO);
+//        }
+//    }
 
-        for (ArtVO artVO : artVOList) {
-            log.info("{}", artVO);
-        }
+//    카테고리 + 드롭다운 + 페이지네이션
+    @Test
+    public void selectArtByCategoryAndDropdown() {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("artCategory", "건축");
+//        params.put("sortBy", "likes");
+//        params.put("cursor", 1);
+
+        artMapper.selectArtListByCategoryAndDropdown(params)
+                .stream().map(ArtVO::toString).forEach(log::info);
+
     }
 
 //    작품 삭제

@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -32,8 +33,13 @@ public class ArtDAO {
     }
 
 //    카테고리별 작품 조회
-    public List<ArtVO> findArtListByFilter(ArtFilterVO artFilterVo) {
-        return artMapper.selectArtListByFilter(artFilterVO);
+//    public List<ArtVO> findArtListByFilter(ArtFilterVO artFilterVo) {
+//        return artMapper.selectArtListByFilter(artFilterVO);
+//    }
+
+//    카테고리 + 드롭다운 + 페이지네이션
+    public List<ArtVO> findArtListByCategoryAndDropdown(Map<String, Object> params) {
+        return artMapper.selectArtListByCategoryAndDropdown(params);
     }
 
 //    작품 삭제
