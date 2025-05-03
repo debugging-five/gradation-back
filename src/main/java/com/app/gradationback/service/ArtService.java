@@ -24,7 +24,4 @@ public interface ArtService {
 //    작품 삭제
     public void removeArtById(Long id);
 
-
-
-
 }

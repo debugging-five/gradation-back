@@ -49,56 +49,60 @@
 
 
 <!--  카테고리별 작품 조회  -->
-    <select id="selectArtListByCategory" parameterType="Map" resultType="ArtVO">
-        SELECT TBA.ID, TBA.ART_TITLE, TBA.ART_CATEGORY, TBA.ART_MATERIAL, TBA.ART_SIZE, TBA.ART_DESCRIPTION, TBA.USER_ID, TBP.ART_POST_DATE
-        FROM TBL_ART TBA
-        JOIN TBL_ART_POST TBP
-        ON TBA.ID = TBP.ART_ID
-        WHERE ART_CATEGORY = #{artCategory}
-        OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
-    </select>
+<!--    <select id="selectArtListByCategory" parameterType="Map" resultType="ArtVO">-->
+<!--        SELECT TBA.ID, TBA.ART_TITLE, TBA.ART_CATEGORY, TBA.ART_MATERIAL, TBA.ART_SIZE, TBA.ART_DESCRIPTION, TBA.USER_ID, TBP.ART_POST_DATE-->
+<!--        FROM TBL_ART TBA-->
+<!--        JOIN TBL_ART_POST TBP-->
+<!--        ON TBA.ID = TBP.ART_ID-->
+<!--        WHERE ART_CATEGORY = #{artCategory}-->
+<!--        OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY-->
+<!--    </select>-->
 
 <!--  드롭다운 작품 조회  -->
-    <select id="selectArtListByDropdown" parameterType="Map" resultType="ArtVO">
-        SELECT TBA.ID, TBA.ART_TITLE, TBA.ART_CATEGORY, TBA.ART_MATERIAL, TBA.ART_SIZE, TBA.ART_DESCRIPTION, TBA.USER_ID, TBP.ART_POST_DATE
-        FROM TBL_ART TBA
-        JOIN TBL_ART_POST TBP
-        <choose>
-            <when test="sortBy == 'likes'">
-                ORDER BY TBA.ART_LIKE_COUNT DESC
-            </when>
-            <when test="sortBy == 'date'">
-                ORDER BY TBP.ART_POST_DATE DESC
-            </when>
-            <otherwise>
-                ORDER BY TBA.ID DESC
-            </otherwise>
-        </choose>
-        OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
-    </select>
+<!--    <select id="selectArtListByDropdown" parameterType="Map" resultType="ArtVO">-->
+<!--        SELECT TBA.ID, TBA.ART_TITLE, TBA.ART_CATEGORY, TBA.ART_MATERIAL, TBA.ART_SIZE, TBA.ART_DESCRIPTION, TBA.USER_ID, TBP.ART_POST_DATE-->
+<!--        FROM TBL_ART TBA-->
+<!--        JOIN TBL_ART_POST TBP-->
+<!--        <choose>-->
+<!--            <when test="sortBy == 'likes'">-->
+<!--                ORDER BY TBA.ART_LIKE_COUNT DESC-->
+<!--            </when>-->
+<!--            <when test="sortBy == 'date'">-->
+<!--                ORDER BY TBP.ART_POST_DATE DESC-->
+<!--            </when>-->
+<!--            <otherwise>-->
+<!--                ORDER BY TBA.ID DESC-->
+<!--            </otherwise>-->
+<!--        </choose>-->
+<!--        OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY-->
+<!--    </select>-->
 
 <!-- 카테고리 + 드롭다운 + 페이지네이션 -->
     <select id="selectArtListByCategoryAndDropdown" parameterType="map" resultType="ArtVO">
-        SELECT TBA.ID, TBA.ART_TITLE, TBA.ART_CATEGORY, TBA.ART_MATERIAL, TBA.ART_SIZE, TBA.ART_DESCRIPTION, TBA.USER_ID, TBP.ART_POST_DATE, TBP.ART_ID, COUNT(TBL.ART_ID) AS ART_LIKE_COUNT
+        SELECT TBA.ID, TBA.ART_TITLE, TBA.ART_CATEGORY, TBA.ART_MATERIAL, TBA.ART_SIZE,
+               TBA.ART_DESCRIPTION, TBA.USER_ID, TBP.ART_POST_DATE, COUNT(TBL.ART_ID) AS ART_LIKE_COUNT
         FROM TBL_ART TBA
         JOIN TBL_ART_POST TBP
         ON TBA.ID = TBP.ART_ID
         JOIN TBL_ART_LIKE TBL
         ON TBA.ID = TBL.ART_ID
         WHERE TBA.ART_CATEGORY = #{artCategory}
+        GROUP BY TBA.ID, TBA.ART_TITLE, TBA.ART_CATEGORY, TBA.ART_MATERIAL, TBA.ART_SIZE,
+                 TBA.ART_DESCRIPTION, TBA.USER_ID, TBP.ART_POST_DATE
         <choose>
             <when test="sortBy == 'date'">
                 ORDER BY TBP.ART_POST_DATE DESC
+            </when>
+            <when test="sortBy == 'likes'">
+                ORDER BY ART_LIKE_COUNT DESC
             </when>
             <otherwise>
                 ORDER BY TBA.ID DESC
             </otherwise>
         </choose>
-        GROUP BY TBA.ID, TBA.ART_TITLE, TBA.ART_CATEGORY, TBA.ART_MATERIAL, TBA.ART_SIZE, TBA.ART_DESCRIPTION, TBA.USER_ID, TBP.ART_ID, TBP.ART_POST_DATE, TBL.ART_ID
         OFFSET (#{cursor} - 1) * 15 ROWS
         FETCH NEXT 15 ROWS ONLY
     </select>
-
 
     <!--  작품 삭제 -->
     <delete id="deleteById" parameterType="Long">

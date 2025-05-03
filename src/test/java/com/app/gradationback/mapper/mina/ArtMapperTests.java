@@ -1,9 +1,7 @@
 package com.app.gradationback.mapper.mina;
 
-import com.app.gradationback.domain.ArtFilterVO;
 import com.app.gradationback.domain.ArtVO;
 import com.app.gradationback.mapper.ArtMapper;
-import com.app.gradationback.mapper.ArtPostMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,9 +76,10 @@ public class ArtMapperTests {
     @Test
     public void selectArtByCategoryAndDropdown() {
         HashMap<String, Object> params = new HashMap<>();
-        params.put("artCategory", "건축");
+        params.put("artCategory", "서예");
+        params.put("cursor", 1);
 //        params.put("sortBy", "likes");
-//        params.put("cursor", 1);
+        params.put("sortBy", "date");
 
         artMapper.selectArtListByCategoryAndDropdown(params)
                 .stream().map(ArtVO::toString).forEach(log::info);
@@ -90,6 +89,6 @@ public class ArtMapperTests {
 //    작품 삭제
     @Test
     public void deleteTest() {
-        artMapper.deleteById(386L);
+        artMapper.deleteById(401L);
     }
 }

@@ -1,6 +1,5 @@
 package com.app.gradationback.mapper;
 
-import com.app.gradationback.domain.ArtFilterVO;
 import com.app.gradationback.domain.ArtVO;
 import org.apache.ibatis.annotations.Mapper;
 

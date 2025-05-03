@@ -6,7 +6,6 @@
     </settings>
 
     <typeAliases>
-        <typeAlias type="com.app.gradationback.domain.ArtFilterVO" alias="ArtFilterVO" />
         <typeAlias type="com.app.gradationback.domain.ArtImgVO" alias="ArtImgVO" />
         <typeAlias type="com.app.gradationback.domain.ArtLikeVO" alias="ArtLikeVO" />
         <typeAlias type="com.app.gradationback.domain.ArtPostVO" alias="ArtPostVO" />
