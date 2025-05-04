@@ -11,20 +11,20 @@ import java.util.Optional;
 @Mapper
 public interface ArtPostMapper {
 
-//    작품 게시
+//    작품 게시글 등록
     public void insert(ArtPostVO artPostVO);
 
-//    작품 게시 상세 (전체)
+//    작품 게시글 전체 조회
     public List<ArtPostDTO> selectAll();
 
-//    작품 게시 상세 (단일)
+//    작품 게시글 단일 조회
     public Optional<ArtPostDTO> select(Long id);
 
-//    작품 게시 수정
+//    작품 게시글 수정
     public void update(ArtPostVO artPostVO);
 
-//    작품 게시 전체 삭제 (게시글 ID)
-    public void deleteAllById(Long id);
+//    작품 게시글 삭제
+    public void deleteById(Long id);
 
 //    작품 게시 전체 삭제 (회원 탈퇴)
     public void deleteAllByUserId(Long userId);
