@@ -39,5 +39,12 @@
         WHERE ART_POST_ID = #{artPostId}
     </delete>
 
+    <select id="selectAllByPostId" parameterType="Long" resultType="CommentVO">
+        SELECT ID, COMMENT_CONTENT, COMMENT_DATE, USER_ID, ART_POST_ID
+        FROM TBL_COMMENT
+        WHERE ART_POST_ID = #{postId}
+    </select>
+
+
 
 </mapper>

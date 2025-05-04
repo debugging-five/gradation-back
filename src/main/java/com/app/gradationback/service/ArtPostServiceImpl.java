@@ -74,42 +74,19 @@ public class ArtPostServiceImpl implements ArtPostService {
     }
 
 //    작품 게시글 삭제 (art + artImg 삭제)
-//    @Override
-//    public void removeById(Long id) {
-//        artPostDAO.findById(id).ifPresent(post -> {
-//            Long artId = post.getArtId();
-//            artPostDAO.deleteById(id);
-//            artImgDAO.deleteAllByArtId(artId);
-//            artDAO.deleteById(artId);
-//        });
-//    }
-@Override
-public void removeById(Long id) {
-    System.out.println("🔍 게시글 삭제 요청됨. postId = " + id);
+    @Override
+    public void removeById(Long id) {
+        artPostDAO.findById(id).ifPresent(post -> {
+            Long postId = post.getId();
+            Long artId = post.getArtId();
+            commentDAO.deleteAllByPostId(postId);
 
-    artPostDAO.findById(id).ifPresentOrElse(post -> {
-        Long artId = post.getArtId();
-        System.out.println("✅ 게시글 존재. artId = " + artId);
-
-        System.out.println("🗑 댓글 삭제 시작 (postId = " + id + ")");
-        commentDAO.deleteAllByPostId(id);
-
-        System.out.println("🗑 게시글 삭제 시작 (postId = " + id + ")");
-        artPostDAO.deleteById(id);
-
-        System.out.println("🗑 이미지 삭제 시작 (artId = " + artId + ")");
-        artImgDAO.deleteAllByArtId(artId);
-
-        System.out.println("🗑 작품 삭제 시작 (artId = " + artId + ")");
-        artDAO.deleteById(artId);
-
-        System.out.println("✅ 게시글 + 이미지 + 작품 삭제 완료");
-
-    }, () -> {
-        System.out.println("⚠ 게시글이 존재하지 않음. postId = " + id);
-    });
-}
-
+            // 그 후 나머지 삭제
+            artPostDAO.deleteById(postId);
+            artImgDAO.deleteAllByArtId(artId);
+            artDAO.deleteById(artId);
+        });
+    }
 
 //    작품 게시글 전체 삭제 (회원 탈퇴)
 //    @Override

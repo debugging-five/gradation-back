@@ -57,4 +57,9 @@ public class CommentServiceImpl implements CommentService {
     public void removeCommentByPostId(Long postId) {
         commentDAO.deleteAllByPostId(postId);
     }
+
+    @Override
+    public List<CommentVO> getAllCommentByPostId(Long postId) {
+        return commentDAO.findAllByPostId(postId);
+    }
 }

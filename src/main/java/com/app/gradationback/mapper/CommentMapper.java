@@ -30,5 +30,6 @@ public interface CommentMapper {
 //    댓글 전체 삭제 (게시물 삭제)
     public void deleteAllByPostId(Long postId);
 
+    public List<CommentVO> selectAllByPostId(Long postId);
 
 }
