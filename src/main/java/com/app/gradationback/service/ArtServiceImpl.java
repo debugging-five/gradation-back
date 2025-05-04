@@ -2,6 +2,7 @@ package com.app.gradationback.service;
 
 import com.app.gradationback.domain.ArtVO;
 import com.app.gradationback.repository.ArtDAO;
+import com.app.gradationback.repository.ArtImgDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,8 +17,9 @@ import java.util.Optional;
 public class ArtServiceImpl implements ArtService {
 
     private final ArtDAO artDAO;
+    private final ArtImgDAO artImgDAO;
 
-//    작품 등록
+    //    작품 등록
     @Override
     public void registerArt(ArtVO artVO) {
         artDAO.save(artVO);
@@ -41,6 +43,9 @@ public class ArtServiceImpl implements ArtService {
 
     @Override
     public void removeArtById(Long id) {
-        artDAO.deleteAllByArtId(id);
+//        작품 이미지 삭제
+//        artImgDAO.deleteAllByArtId(artId);
+//        작품 삭제
+        artDAO.deleteById(id);
     }
 }

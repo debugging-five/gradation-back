@@ -38,11 +38,11 @@ public class ArtPostDAO {
     }
 
 //    작품 게시글 삭제
-    public void deleteAllById(Long id) {
+    public void deleteById(Long id) {
         artPostMapper.deleteById(id);
     }
 
-//    작품 게시 전체 삭제 (회원 탈퇴)
+//    작품 게시글 전체 삭제 (회원 탈퇴)
     public void deleteAllByUserId(Long userId) {
         artPostMapper.deleteAllByUserId(userId);
     }

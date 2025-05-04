@@ -1,8 +1,7 @@
 package com.app.gradationback.service;
 
 import com.app.gradationback.domain.UserVO;
-import com.app.gradationback.repository.CommentDAO;
-import com.app.gradationback.repository.UserDAO;
+import com.app.gradationback.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,8 +16,11 @@ public class UserServiceImpl implements UserService {
 
     private final UserDAO userDAO;
     private final CommentDAO commentDAO;
+    private final ArtDAO artDAO;
+    private final ArtImgDAO artImgDAO;
+    private final ArtPostDAO artPostDAO;
 
-//    회원가입
+    //    회원가입
     @Override
     public void join(UserVO userVO) {
         userDAO.save(userVO);
@@ -78,11 +80,15 @@ public class UserServiceImpl implements UserService {
         userDAO.updateUser(userVO);
     }
 
-//    회원 탈퇴
+//    회원 탈퇴 (댓글, 게시글 삭제)
     @Override
     public void withdraw(String userEmail) {
         Long userId = userDAO.findIdByEmail(userEmail);
+//        댓글 삭제
         commentDAO.deleteAllByUserId(userId);
+//        게시글 삭제
+        artPostDAO.deleteAllByUserId(userId);
+//        회원 탈퇴
         userDAO.deleteUser(userEmail);
     }
 

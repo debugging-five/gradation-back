@@ -41,7 +41,7 @@ public class ArtDAO {
     }
 
 //    작품 삭제
-    public void deleteAllByArtId(Long id) {
+    public void deleteById(Long id) {
         artMapper.deleteById(id);
     }
 }
