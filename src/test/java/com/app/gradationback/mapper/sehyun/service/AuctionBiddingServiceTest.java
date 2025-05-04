@@ -1,8 +1,7 @@
-package com.app.gradationback.mapper.sehyun;
+package com.app.gradationback.mapper.sehyun.service;
 
 import com.app.gradationback.domain.AuctionBiddingVO;
 import com.app.gradationback.service.AuctionService;
-import com.app.gradationback.service.AuctionServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;

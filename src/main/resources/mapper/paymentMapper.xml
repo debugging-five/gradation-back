@@ -1,11 +1,161 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.gradationback.mapper.PaymentMapper">
-    <insert id="">
+    <insert id="insert" parameterType="PaymentVO">
         <selectKey keyProperty="id" order="BEFORE" resultType="Long">
             SELECT SEQ_PAYMENT.NEXTVAL FROM DUAL
         </selectKey>
         INSERT INTO  TBL_PAYMENT(ID, AUCTION_ID, PAYMENT_METHOD, PAYMENT_AMOUNT, PAYMENT_DATE, PAYMENT_CODE)
-        VALUES (#{id}, #{auctionId}m, #{paymentMethod}, #{paymentAmount}, SYSDATE, #{paymentCode})
+        VALUES (#{id}, #{auctionId}, #{paymentMethod}, #{paymentAmount}, SYSDATE, #{paymentCode})
     </insert>
+
+    <select id="select" resultType="DeliveryDTO" parameterType="Long">
+        SELECT
+            TP.ID,
+            AUCTION_ID, PAYMENT_METHOD,
+            PAYMENT_AMOUNT, PAYMENT_DATE,
+            PAYMENT_CODE,
+            TAU.ART_ID,
+            TAU.USER_ID,
+            AUCTION_START_DATE,
+            AUCTION_START_PRICE,
+            AUCTION_ESTIMATED_MIN_PRICE,
+            AUCTION_ESTIMATED_MAX_PRICE,
+            AUCTION_ATTRACTED,
+            AUCTION_BID_PRICE,
+            AUCTION_BID_DATE,
+            ART_TITLE,
+            ART_CATEGORY,
+            ART_MATERIAL,
+            ART_SIZE,
+            ART_DESCRIPTION,
+            ART_END_DATE,
+            ART_IMG_NAME,
+            ART_IMG_PATH,
+            USER_IMG_NAME,
+            USER_IMG_PATH,
+            USER_NAME,
+            USER_EMAIL,
+            USER_IDENTIFICATION,
+            USER_PASSWORD,
+            USER_PHONE,
+            USER_NICKNAME,
+            USER_ADDRESS,
+            USER_DETAIL_ADDRESS,
+            USER_POSTAL_CODE,
+            USER_SNS_OK,
+            USER_MAIL_OK,
+            USER_AGREEMENT_OK,
+            USER_INTRODUCE,
+            USER_INSTAGRAM,
+            USER_YOUTUBE,
+            USER_BLOG,
+            USER_KAKAO,
+            USER_GOOGLE,
+            USER_NAVER,
+            USER_ADMIN_OK,
+            USER_BAN_OK,
+            MAJOR_ID,
+            USER_MAJOR_IMG_NAME,
+            USER_MAJOR_IMG_PATH,
+            USER_WRITER_STATUS,
+            USER_UNIVERSITY_STATUS,
+            USER_ART_CATEGORY,
+            USER_BACKGROUND_IMG_NAME,
+            USER_BACKGROUND_IMG_PATH
+        FROM TBL_PAYMENT TP
+        JOIN TBL_AUCTION TAU
+            ON TAU.ID = TP.AUCTION_ID
+        JOIN TBL_ART TAR
+            ON TAR.ID = TAU.ART_ID
+        JOIN (
+            SELECT T1.ART_ID, T1.ART_IMG_NAME, T1.ART_IMG_PATH
+            FROM TBL_ART_IMG T1
+                JOIN (
+                    SELECT ART_ID, MIN(ID) AS MIN_ID
+                    FROM TBL_ART_IMG
+                    GROUP BY ART_ID
+                ) T2 ON T1.ART_ID = T2.ART_ID AND T1.ID = T2.MIN_ID
+        ) TAI
+            ON TAR.ID = TAI.ART_ID
+        JOIN TBL_USER TU
+            ON TAU.USER_ID = TU.ID
+        WHERE
+            TP.ID = #{id}
+    </select>
+
+    <select id="selectByUserId" resultType="DeliveryDTO" parameterType="Long">
+        SELECT
+            TP.ID,
+            AUCTION_ID, PAYMENT_METHOD,
+            PAYMENT_AMOUNT, PAYMENT_DATE,
+            PAYMENT_CODE,
+            TAU.ART_ID,
+            TAU.USER_ID,
+            AUCTION_START_DATE,
+            AUCTION_START_PRICE,
+            AUCTION_ESTIMATED_MIN_PRICE,
+            AUCTION_ESTIMATED_MAX_PRICE,
+            AUCTION_ATTRACTED,
+            AUCTION_BID_PRICE,
+            AUCTION_BID_DATE,
+            ART_TITLE,
+            ART_CATEGORY,
+            ART_MATERIAL,
+            ART_SIZE,
+            ART_DESCRIPTION,
+            ART_END_DATE,
+            ART_IMG_NAME,
+            ART_IMG_PATH,
+            USER_IMG_NAME,
+            USER_IMG_PATH,
+            USER_NAME,
+            USER_EMAIL,
+            USER_IDENTIFICATION,
+            USER_PASSWORD,
+            USER_PHONE,
+            USER_NICKNAME,
+            USER_ADDRESS,
+            USER_DETAIL_ADDRESS,
+            USER_POSTAL_CODE,
+            USER_SNS_OK,
+            USER_MAIL_OK,
+            USER_AGREEMENT_OK,
+            USER_INTRODUCE,
+            USER_INSTAGRAM,
+            USER_YOUTUBE,
+            USER_BLOG,
+            USER_KAKAO,
+            USER_GOOGLE,
+            USER_NAVER,
+            USER_ADMIN_OK,
+            USER_BAN_OK,
+            MAJOR_ID,
+            USER_MAJOR_IMG_NAME,
+            USER_MAJOR_IMG_PATH,
+            USER_WRITER_STATUS,
+            USER_UNIVERSITY_STATUS,
+            USER_ART_CATEGORY,
+            USER_BACKGROUND_IMG_NAME,
+            USER_BACKGROUND_IMG_PATH
+        FROM TBL_PAYMENT TP
+                 JOIN TBL_AUCTION TAU
+                      ON TAU.ID = TP.AUCTION_ID
+                 JOIN TBL_ART TAR
+                      ON TAR.ID = TAU.ART_ID
+                 JOIN (
+            SELECT T1.ART_ID, T1.ART_IMG_NAME, T1.ART_IMG_PATH
+            FROM TBL_ART_IMG T1
+                     JOIN (
+                SELECT ART_ID, MIN(ID) AS MIN_ID
+                FROM TBL_ART_IMG
+                GROUP BY ART_ID
+            ) T2 ON T1.ART_ID = T2.ART_ID AND T1.ID = T2.MIN_ID
+        ) TAI
+                      ON TAR.ID = TAI.ART_ID
+                 JOIN TBL_USER TU
+                      ON TAU.USER_ID = TU.ID
+        WHERE
+            TAU.USER_ID = #{userId}
+    </select>
 </mapper>
