@@ -18,7 +18,7 @@ public class DeliveryVO {
     @Schema(description = "상세 주소", required = true, example = "**아파트 **동 **호")
     private String deliveryDetailAddress;
 
-    @Schema(description = "우편 번호", required = true, example = "05503")
+    @Schema(description = "우편 번호", required = true, example = "01234")
     private String deliveryPostalCode;
 
     @Schema(description = "배송 상태", required = true, example = "배송중")
