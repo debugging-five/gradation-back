@@ -28,4 +28,6 @@ public interface ArtMapper {
 
 //    작품 삭제
     public void deleteById(Long id);
+
+    public List<ArtVO> selectAllByUserId(Long userId);
 }

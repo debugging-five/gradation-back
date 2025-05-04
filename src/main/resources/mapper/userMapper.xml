@@ -40,17 +40,17 @@
         WHERE USER_EMAIL = #{userEmail}
     </select>
 
-    <!--  아이디로 이메일 조회  -->
-<!--    <select id="selectEmailById" parameterType="Long" resultType="String">-->
-<!--        SELECT USER_EMAIL FROM TBL_USER WHERE ID = #{id}-->
-<!--    </select>-->
+<!--      아이디로 이메일 조회  -->
+    <select id="selectEmailById" parameterType="Long" resultType="String">
+        SELECT USER_EMAIL FROM TBL_USER WHERE ID = #{id}
+    </select>
 
-    <!--  이메일로 ID 조회  -->
-<!--    <select id="selectIdByEmail" parameterType="String" resultType="Long">-->
-<!--        SELECT ID-->
-<!--        FROM TBL_USER-->
-<!--        WHERE USER_EMAIL = #{userEmail}-->
-<!--    </select>-->
+<!--      이메일로 ID 조회  -->
+    <select id="selectIdByEmail" parameterType="String" resultType="Long">
+        SELECT ID
+        FROM TBL_USER
+        WHERE USER_EMAIL = #{userEmail}
+    </select>
 
     <!--  회원 정보 수정  -->
     <update id="updateUser" parameterType="UserVO">

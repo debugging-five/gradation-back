@@ -110,4 +110,8 @@
         WHERE ID = #{id}
     </delete>
 
+    <select id="selectAllByUserId" parameterType="Long" resultType="ArtVO">
+        SELECT * FROM TBL_ART WHERE USER_ID = #{userId}
+    </select>
+
 </mapper>

@@ -1,5 +1,7 @@
 package com.app.gradationback.service;
 
+import com.app.gradationback.domain.ArtPostDTO;
+import com.app.gradationback.domain.ArtVO;
 import com.app.gradationback.domain.UserVO;
 import com.app.gradationback.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -83,13 +85,97 @@ public class UserServiceImpl implements UserService {
 //    회원 탈퇴 (댓글, 게시글 삭제)
     @Override
     public void withdraw(String userEmail) {
+//        Long userId = userDAO.findIdByEmail(userEmail);
+//
+////        댓글 삭제
+//        commentDAO.deleteAllByUserId(userId);
+////        게시글 삭제
+////        artPostDAO.deleteAllByUserId(userId);
+////        회원 탈퇴
+////        userDAO.deleteUser(userEmail);
+//        List<ArtPostDTO> postList = artPostDAO.findAllByUserId(userId);
+//
+//        for (ArtPostDTO post : postList) {
+//            Long postId = post.getId();
+//            Long artId = post.getArtId();
+//
+//            artPostDAO.deleteById(postId);
+//            artImgDAO.deleteAllByArtId(artId);
+//            artDAO.deleteById(artId);
+//        }
+//
+//        // 3. 회원 삭제
+//        userDAO.deleteUser(userEmail);
+
         Long userId = userDAO.findIdByEmail(userEmail);
-//        댓글 삭제
+
+        // 1. 댓글 좋아요 → 댓글 삭제
+//        commentDAO.deleteAllByUserId(userId);
+//
+//        List<ArtPostDTO> postList = artPostDAO.findAllByUserId(userId);
+//        for (ArtPostDTO post : postList) {
+//            Long postId = post.getId();
+//            Long artId = post.getArtId();
+//
+//            commentDAO.deleteAllByPostId(postId); // 있다면
+//
+//            artPostDAO.deleteById(postId);
+//            artImgDAO.deleteAllByArtId(artId);
+//            artDAO.deleteById(artId);
+//    }
+
+
+//        commentDAO.deleteAllByUserId(userId);
+//        List<ArtPostDTO> postList = artPostDAO.findAllByUserId(userId);
+//        for (ArtPostDTO post : postList) {
+//            Long postId = post.getId();
+//            Long artId = post.getArtId();
+//        commentDAO.deleteAllByPostId(postId);
+//        // 2. 모든 작품 + 게시글 + 이미지 삭제
+//        List<ArtVO> artList = artDAO.findAllByUserId(userId);
+//        for (ArtVO art : artList) {
+//            Long artId = art.getId();
+//
+//            artPostDAO.deleteAllByArtId(artId);   // 게시했든 안 했든 제거
+//            artImgDAO.deleteAllByArtId(artId);
+//            artDAO.deleteById(artId);
+//        }
+//
+//        // 3. 유저 삭제
+//        userDAO.deleteUser(userEmail);
+
+        // 1. 댓글 삭제 (댓글 좋아요 등도 있다면 여기에 추가)
         commentDAO.deleteAllByUserId(userId);
-//        게시글 삭제
-        artPostDAO.deleteAllByUserId(userId);
-//        회원 탈퇴
+
+        // 2. 게시글 삭제 전: 댓글 먼저 삭제 → 게시글 삭제
+        List<ArtPostDTO> postList = artPostDAO.findAllByUserId(userId);
+        for (ArtPostDTO post : postList) {
+            Long postId = post.getId();           // 게시글 ID
+
+            // 댓글 먼저 삭제
+            commentDAO.deleteAllByPostId(postId);
+
+            // 게시글 삭제
+            artPostDAO.deleteById(postId);
+        }
+
+        // 3. 유저가 등록한 모든 작품 삭제 (게시되지 않은 것도 포함)
+        List<ArtVO> artList = artDAO.findAllByUserId(userId);
+        for (ArtVO art : artList) {
+            Long artId = art.getId();
+
+            // 이미지 삭제
+            artImgDAO.deleteAllByArtId(artId);
+
+            // 작품 삭제
+            artDAO.deleteById(artId);
+        }
+
+        // 4. 최종 회원 삭제
         userDAO.deleteUser(userEmail);
+
     }
+
+
 
 }

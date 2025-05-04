@@ -3,6 +3,7 @@ package com.app.gradationback.service;
 import com.app.gradationback.domain.ArtVO;
 import com.app.gradationback.repository.ArtDAO;
 import com.app.gradationback.repository.ArtImgDAO;
+import com.app.gradationback.repository.ArtPostDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ public class ArtServiceImpl implements ArtService {
 
     private final ArtDAO artDAO;
     private final ArtImgDAO artImgDAO;
+    private final ArtPostDAO artPostDAO;
 
     //    작품 등록
     @Override
@@ -43,8 +45,10 @@ public class ArtServiceImpl implements ArtService {
 
     @Override
     public void removeArtById(Long id) {
+//        게시글 삭제
+        artPostDAO.deleteAllByArtId(id);
 //        작품 이미지 삭제
-//        artImgDAO.deleteAllByArtId(artId);
+        artImgDAO.deleteAllByArtId(id);
 //        작품 삭제
         artDAO.deleteById(id);
     }

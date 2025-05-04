@@ -2,10 +2,7 @@ package com.app.gradationback.mapper.mina;
 
 import com.app.gradationback.domain.ArtPostDTO;
 import com.app.gradationback.domain.ArtPostVO;
-import com.app.gradationback.mapper.ArtImgMapper;
-import com.app.gradationback.mapper.ArtMapper;
-import com.app.gradationback.mapper.ArtPostMapper;
-import com.app.gradationback.mapper.UserMapper;
+import com.app.gradationback.mapper.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +23,16 @@ public class ArtPostMapperTests {
     private ArtMapper artMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private CommentMapper commentMapper;
 
     //    작품 게시글 등록
     @Test
     public void insertArtPostTest() {
         ArtPostVO artPostVO = new ArtPostVO();
         artPostVO.setArtPostDate(new Timestamp(System.currentTimeMillis()));
-        artPostVO.setUserId(88L);
-        artPostVO.setArtId(385L);
+        artPostVO.setUserId(95L);
+        artPostVO.setArtId(446L);
         artPostMapper.insert(artPostVO);
         log.info("{}", artPostVO);
     }
@@ -68,6 +67,7 @@ public class ArtPostMapperTests {
 //    작품 게시글 삭제
     @Test
     public void deleteArtPostTest() {
+        commentMapper.deleteAllByPostId(23L);
         artPostMapper.deleteById(23L);
         artImgMapper.deleteAllByArtId(421L);
         artMapper.deleteById(421L);

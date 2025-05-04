@@ -7,6 +7,7 @@ import com.app.gradationback.domain.ArtVO;
 import com.app.gradationback.repository.ArtDAO;
 import com.app.gradationback.repository.ArtImgDAO;
 import com.app.gradationback.repository.ArtPostDAO;
+import com.app.gradationback.repository.CommentDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ public class ArtPostServiceImpl implements ArtPostService {
     private final ArtPostDAO artPostDAO;
     private final ArtImgDAO artImgDAO;
     private final ArtDAO artDAO;
+    private final CommentDAO commentDAO;
 
 //    작품 게시글 등록 (작품 정보 + 작품 이미지 + 작품 게시글)
     @Override
@@ -72,16 +74,46 @@ public class ArtPostServiceImpl implements ArtPostService {
     }
 
 //    작품 게시글 삭제 (art + artImg 삭제)
-    @Override
-    public void removeById(Long id) {
-        artImgDAO.deleteAllByArtId(id);
-        artDAO.deleteById(id);
+//    @Override
+//    public void removeById(Long id) {
+//        artPostDAO.findById(id).ifPresent(post -> {
+//            Long artId = post.getArtId();
+//            artPostDAO.deleteById(id);
+//            artImgDAO.deleteAllByArtId(artId);
+//            artDAO.deleteById(artId);
+//        });
+//    }
+@Override
+public void removeById(Long id) {
+    System.out.println("🔍 게시글 삭제 요청됨. postId = " + id);
+
+    artPostDAO.findById(id).ifPresentOrElse(post -> {
+        Long artId = post.getArtId();
+        System.out.println("✅ 게시글 존재. artId = " + artId);
+
+        System.out.println("🗑 댓글 삭제 시작 (postId = " + id + ")");
+        commentDAO.deleteAllByPostId(id);
+
+        System.out.println("🗑 게시글 삭제 시작 (postId = " + id + ")");
         artPostDAO.deleteById(id);
-    }
+
+        System.out.println("🗑 이미지 삭제 시작 (artId = " + artId + ")");
+        artImgDAO.deleteAllByArtId(artId);
+
+        System.out.println("🗑 작품 삭제 시작 (artId = " + artId + ")");
+        artDAO.deleteById(artId);
+
+        System.out.println("✅ 게시글 + 이미지 + 작품 삭제 완료");
+
+    }, () -> {
+        System.out.println("⚠ 게시글이 존재하지 않음. postId = " + id);
+    });
+}
+
 
 //    작품 게시글 전체 삭제 (회원 탈퇴)
-    @Override
-    public void removeAllByUserId(Long userId) {
-        artPostDAO.deleteAllByUserId(userId);
-    }
+//    @Override
+//    public void removeAllByUserId(Long userId) {
+//        artPostDAO.deleteAllByUserId(userId);
+//    }
 }

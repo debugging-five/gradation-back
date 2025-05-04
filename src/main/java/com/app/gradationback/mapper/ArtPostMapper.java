@@ -29,6 +29,9 @@ public interface ArtPostMapper {
 //    작품 게시 전체 삭제 (회원 탈퇴)
     public void deleteAllByUserId(Long userId);
 
+    public void deleteAllByArtId(Long artId);
+
+    public List<ArtPostDTO> selectAllByUserId(Long userId);
 
 
 

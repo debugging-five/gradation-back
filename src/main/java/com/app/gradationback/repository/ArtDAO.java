@@ -44,4 +44,8 @@ public class ArtDAO {
     public void deleteById(Long id) {
         artMapper.deleteById(id);
     }
+
+    public List<ArtVO> findAllByUserId(Long userId) {
+        return artMapper.selectAllByUserId(userId);
+    }
 }

@@ -1,37 +1,37 @@
-//package com.app.gradationback.mapper.mina;
-//
-//import com.app.gradationback.domain.CommentVO;
-//import com.app.gradationback.mapper.ArtPostMapper;
-//import com.app.gradationback.mapper.CommentMapper;
-//import lombok.extern.slf4j.Slf4j;
-//import org.junit.jupiter.api.Test;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.context.SpringBootTest;
-//
-//import java.sql.Timestamp;
-//import java.util.List;
-//
-//@SpringBootTest
-//@Slf4j
-//public class CommentMapperTests {
-//
-//    @Autowired
-//    private CommentMapper commentMapper;
-//
-//    @Autowired
-//    private ArtPostMapper artPostMapper;
-//
-////    댓글 등록
-//    @Test
-//    public void insertReplyTest() {
-//        CommentVO commentVO = new CommentVO();
-//        commentVO.setArtPostId(3L);
-//        commentVO.setUserId(64L);
-//        commentVO.setCommentContent("유저3의 댓글2");
-//        commentVO.setCommentDate(new Timestamp(System.currentTimeMillis()));
-//        commentMapper.insert(commentVO);
-//        log.info("{}", commentVO);
-//    }
+package com.app.gradationback.mapper.mina;
+
+import com.app.gradationback.domain.CommentVO;
+import com.app.gradationback.mapper.ArtPostMapper;
+import com.app.gradationback.mapper.CommentMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.sql.Timestamp;
+import java.util.List;
+
+@SpringBootTest
+@Slf4j
+public class CommentMapperTests {
+
+    @Autowired
+    private CommentMapper commentMapper;
+
+    @Autowired
+    private ArtPostMapper artPostMapper;
+
+//    댓글 등록
+    @Test
+    public void insertReplyTest() {
+        CommentVO commentVO = new CommentVO();
+        commentVO.setArtPostId(35L);
+        commentVO.setUserId(5L);
+        commentVO.setCommentContent("댓글입니당2");
+        commentVO.setCommentDate(new Timestamp(System.currentTimeMillis()));
+        commentMapper.insert(commentVO);
+        log.info("{}", commentVO);
+    }
 //
 ////    댓글 전체 조회
 //    @Test
@@ -61,11 +61,11 @@
 //        log.info("{}", commentVO);
 //    }
 //
-////    댓글 삭제
-//    @Test
-//    public void deleteReplyTest() {
-//        commentMapper.delete(23L);
-//    }
+//    댓글 삭제
+    @Test
+    public void deleteReplyTest() {
+        commentMapper.delete(42L);
+    }
 //
 ////    댓글 전체 삭제 (회원 탈퇴)
 //    @Test
@@ -79,4 +79,4 @@
 //        commentMapper.deleteAllByPostId(5L);
 //        artPostMapper.delete(5L);
 //    }
-//}
+}

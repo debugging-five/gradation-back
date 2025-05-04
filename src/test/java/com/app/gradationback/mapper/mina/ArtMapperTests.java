@@ -23,15 +23,15 @@ public class ArtMapperTests {
     @Test
     public void insertTest() {
         ArtVO artVO = new ArtVO();
-        artVO.setArtTitle("작품7");
-        artVO.setArtCategory("카테고리7");
-        artVO.setArtDescription("설명7");
+        artVO.setArtTitle("작품작품");
+        artVO.setArtCategory("카테고리카테고리");
+        artVO.setArtDescription("설명설명");
         artVO.setArtSize("700 x 700 x 700");
-        artVO.setArtMaterial("재료7");
-        artVO.setUserId(88L);
+        artVO.setArtMaterial("재료재료");
+        artVO.setUserId(95L);
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date endDate = formatter.parse("2025-05-02");
+            Date endDate = formatter.parse("2025-05-05");
             artVO.setArtEndDate(endDate);
         } catch (Exception e) {
             e.printStackTrace();

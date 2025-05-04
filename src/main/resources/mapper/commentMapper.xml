@@ -39,4 +39,5 @@
         WHERE ART_POST_ID = #{artPostId}
     </delete>
 
+
 </mapper>

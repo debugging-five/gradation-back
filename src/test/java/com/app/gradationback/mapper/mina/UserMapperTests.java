@@ -91,9 +91,10 @@ public class UserMapperTests {
 
     @Test
     public void withdrawUser() {
-        UserVO userVO = new UserVO();
-        userVO.setUserEmail("user2@gmail.com");
-        userService.withdraw(userVO.getUserEmail());
+//        UserVO userVO = new UserVO();
+//        userVO.setUserEmail("user3@test.app");
+//        userService.withdraw(userVO.getUserEmail());
+        userService.withdraw("회원이메일");
     }
 
 

@@ -20,9 +20,9 @@ public class ArtImgMapperTests {
     @Test
     public void insertArtImgTest() {
         ArtImgVO artImgVO = new ArtImgVO();
-        artImgVO.setArtImgName("art7.png");
-        artImgVO.setArtImgPath("/images/art7");
-        artImgVO.setArtId(421L);
+        artImgVO.setArtImgName("이미지이름");
+        artImgVO.setArtImgPath("이미지경로");
+        artImgVO.setArtId(446L);
         artImgMapper.insert(artImgVO);
         log.info("{}", artImgVO);
     }

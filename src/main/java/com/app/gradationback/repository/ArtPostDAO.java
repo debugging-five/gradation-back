@@ -46,4 +46,9 @@ public class ArtPostDAO {
     public void deleteAllByUserId(Long userId) {
         artPostMapper.deleteAllByUserId(userId);
     }
+
+
+    public void deleteAllByArtId(Long artId) { artPostMapper.deleteAllByArtId(artId); }
+
+    public List<ArtPostDTO> findAllByUserId(Long userId) { return artPostMapper.selectAllByUserId(userId); }
 }
