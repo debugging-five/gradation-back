@@ -9,6 +9,14 @@
         VALUES (#{id}, #{auctionId}, #{paymentMethod}, #{paymentAmount}, SYSDATE, #{paymentCode})
     </insert>
 
+    <insert id="insertCancel" parameterType="PaymentCancellationVO">
+        <selectKey keyProperty="id" order="BEFORE" resultType="Long">
+            SELECT SEQ_PAYMENT_CANCELLATION.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO TBL_PAYMENT_CANCELLATION(ID, PAYMENT_CANCELLATION_CODE, PAYMENT_ID)
+        VALUES (#{id}, #{paymentCancellationCode}, #{paymentId})
+    </insert>
+
     <select id="select" resultType="DeliveryDTO" parameterType="Long">
         SELECT
             TP.ID,
@@ -158,4 +166,6 @@
         WHERE
             TAU.USER_ID = #{userId}
     </select>
+
+
 </mapper>
