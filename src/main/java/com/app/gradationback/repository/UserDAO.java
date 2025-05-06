@@ -1,5 +1,6 @@
 package com.app.gradationback.repository;
 
+import com.app.gradationback.domain.BanDTO;
 import com.app.gradationback.domain.UserVO;
 import com.app.gradationback.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
@@ -68,5 +69,15 @@ public class UserDAO {
     public void deleteUser(String userEmail) {
         userMapper.deleteUser(userEmail);
     }
+
+//    관리자용 유저 정지 처리
+    public void insertBan(BanDTO banDTO){ userMapper.insertBan(banDTO);}
+
+//    관리자용 유저 정지 상태 업데이트
+    public void updateUserBanStatus(BanDTO banDTO){userMapper.updateUserBanStatus(banDTO);}
+
+    public Optional<UserVO> findUserByIdForWrite(Long id) {return userMapper.selectUserByIdForWrite(id);
+    }
+
 
 }

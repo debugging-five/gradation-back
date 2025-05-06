@@ -25,4 +25,7 @@ public interface QnaMapper {
 //    문의 삭제
     public void delete(Long id);
 
+//    관리자용 전체 문의 내역 조회
+    public List<QnaDTO> selectAllForAdmin();
+
 }

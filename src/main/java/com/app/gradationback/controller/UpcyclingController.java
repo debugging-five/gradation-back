@@ -27,7 +27,7 @@ public class UpcyclingController {
     @Operation(summary = "전체 신청 목록 조회", description = "업사이클링 신청 정보 전체를 조회 할 수 있는 API")
     @GetMapping("list")
     public List<UpcyclingVO> getList() {
-        return upcyclingService.getAll();
+        return upcyclingService.getUpcyclingUserList();
     }
 
     // 단건 조회
@@ -35,7 +35,7 @@ public class UpcyclingController {
     @Parameter(name = "id", description = "업사이클링 신청 ID", schema = @Schema(type = "number"), in = ParameterIn.PATH, required = true)
     @GetMapping("detail/{id}")
     public UpcyclingVO getDetail(@PathVariable Long id) {
-        Optional<UpcyclingVO> foundId = upcyclingService.getById(id);
+        Optional<UpcyclingVO> foundId = upcyclingService.getByUpcyclingUser(id);
         return foundId.orElse(new UpcyclingVO());
     }
 
@@ -46,6 +46,23 @@ public class UpcyclingController {
     public UpcyclingVO register(@RequestBody UpcyclingVO upcyclingVO) {
         log.info("신청 : {}", upcyclingVO);
         upcyclingService.register(upcyclingVO);
-        return upcyclingService.getById(upcyclingVO.getId()).orElse(new UpcyclingVO());
+        return upcyclingService.getByUpcyclingUser(upcyclingVO.getId()).orElse(new UpcyclingVO());
+    }
+    // 상태 수정
+    @Operation(summary = "업사이클링 신청 상태 수정", description = "업사이클링 신청 상태를 변경하는 API.")
+    @ApiResponse(responseCode = "200", description = "상태 수정 성공")
+    @PutMapping("modify/{id}")
+    public void modify(@PathVariable Long id, @RequestBody UpcyclingVO upcyclingVO) {
+        upcyclingVO.setId(id);
+        upcyclingService.modify(upcyclingVO);
+    }
+
+    // 삭제
+    @Operation(summary = "업사이클링 신청 삭제", description = "업사이클링 신청 정보를 삭제하는 API.")
+    @ApiResponse(responseCode = "200", description = "삭제 성공")
+    @DeleteMapping("remove/{id}")
+    public void remove(@PathVariable Long id) {
+        upcyclingService.remove(id);
     }
 }
+

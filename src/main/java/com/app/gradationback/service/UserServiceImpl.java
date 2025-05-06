@@ -1,8 +1,6 @@
 package com.app.gradationback.service;
 
-import com.app.gradationback.domain.ArtPostDTO;
-import com.app.gradationback.domain.ArtVO;
-import com.app.gradationback.domain.UserVO;
+import com.app.gradationback.domain.*;
 import com.app.gradationback.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -176,6 +174,23 @@ public class UserServiceImpl implements UserService {
 
     }
 
-
+//    관리자용 유저 정지 처리 및 상태 변경
+    @Override
+    public void banUser(BanDTO banDTO) {
+//        Ban 테이블에 정지 기록 저장
+        userDAO.insertBan(banDTO);
+//        User 테이블에 정시 상태(댓글, 영구정지) 반영
+        userDAO.updateUserBanStatus(banDTO);
+    }
+//    관리자용 유저 정지 해제
+    @Override
+    public void updateUserBanStatus(BanDTO banDTO) {
+        userDAO.updateUserBanStatus(banDTO);
+    }
+//    댓글 작성 시 정지 유저 확인
+    @Override
+    public Optional<UserVO> findUserByIdForWrite(Long id){
+        return userDAO.findUserByIdForWrite(id);
+    };
 
 }

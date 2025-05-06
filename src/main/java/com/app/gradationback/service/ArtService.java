@@ -1,6 +1,7 @@
 package com.app.gradationback.service;
 
 
+import com.app.gradationback.domain.ArtDTO;
 import com.app.gradationback.domain.ArtVO;
 
 import java.util.List;
@@ -23,5 +24,14 @@ public interface ArtService {
 
 //    작품 삭제
     public void removeArtById(Long id);
+
+//    관리자용 승인 대기 목록
+    public List<ArtDTO> getAllPending();
+
+//    관리자용 상세
+    public Optional<ArtDTO> getPendingById(Long id);
+
+//    관리자 승인/반려 처리
+    public void updateStatus(ArtDTO artDTO);
 
 }

@@ -1,5 +1,6 @@
 package com.app.gradationback.service;
 
+import com.app.gradationback.domain.BanDTO;
 import com.app.gradationback.domain.UserVO;
 
 import java.util.List;
@@ -39,4 +40,13 @@ public interface UserService {
 
 //    회원 탈퇴
     public void withdraw(String userEmail);
+
+//    관리자용 유저 정지 처리
+    public void banUser(BanDTO banDTO);
+
+    public void updateUserBanStatus(BanDTO banDTO);
+
+//    댓글 작성 시 정지 유저 확인
+    public Optional<UserVO> findUserByIdForWrite(Long id);
+
 }

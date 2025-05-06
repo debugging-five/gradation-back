@@ -1,5 +1,6 @@
 package com.app.gradationback.mapper;
 
+import com.app.gradationback.domain.ArtDTO;
 import com.app.gradationback.domain.ArtVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -27,4 +28,12 @@ public interface ArtMapper {
 //    작품 삭제
     public void deleteById(Long id);
 
+//    관리자용 승인 대기 목록 조회
+    public List<ArtDTO> selectAllPending();
+
+//    관리자용 승인 대기 상세 조회
+    public Optional<ArtDTO> selectPendingById(Long id);
+
+//    관리자용 승인 상태 변경
+    public void updateStatus(ArtDTO artDTO);
 }

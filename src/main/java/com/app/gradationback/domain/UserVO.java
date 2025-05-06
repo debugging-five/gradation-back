@@ -54,7 +54,7 @@ public class UserVO {
     @Schema(description = "관리자 여부", example = "1")
     private boolean userAdminOk;
     @Schema(description = "정지 여부", example = "1")
-    private boolean userBanOk;
+    private int userBanOk;
     @Schema(description = "학생증 이미지 제목", example = "major.jpg")
     private String userMajorImgName;
     @Schema(description = "학생증 이미지 경로", example = "assets/images/user/major.jpg")
