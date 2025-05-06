@@ -6,12 +6,14 @@ import com.app.gradationback.service.FaqService;
 import com.app.gradationback.service.QnaAnswerService;
 import com.app.gradationback.service.QnaService;
 import com.app.gradationback.util.AdminCheckUtil;
+import com.app.gradationback.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,31 +27,34 @@ public class AdminController {
     private final QnaService qnaService;
     private final QnaAnswerService qnaAnswerService;
     private final ArtService artService;
+    private final UserService userService;
 
     //    관리자용 자주 묻는 질문 목록 조회
     @Operation(summary = "FAQ 전체 조회", description = "FAQ 전체 리스트를 조회하는 API")
     @GetMapping("/faq/list")
     public List<FaqVO> getFaqList(FaqDTO faqDTO, HttpSession session) {
-        if(!AdminCheckUtil.isAdmin(session)){
+        if (!AdminCheckUtil.isAdmin(session)) {
             throw new RuntimeException("관리자만 접근 가능합니다.");
         }
         return faqService.getFaqList(faqDTO);
     }
-//  관리자용 자주 묻는 질문 등록
+
+    //  관리자용 자주 묻는 질문 등록
     @Operation(summary = "FAQ 신규 등록", description = "FAQ 신규 등록하는 API")
     @PostMapping("/faq/register")
     public void registerFaq(@RequestBody FaqVO faqVO, HttpSession session) {
-        if(!AdminCheckUtil.isAdmin(session)){
+        if (!AdminCheckUtil.isAdmin(session)) {
             throw new RuntimeException("관리자만 접근 가능합니다.");
         }
         faqVO.setUserId(1L);
         faqService.register(faqVO);
     }
-//  관리자용 자주 묻는 질문 수정
+
+    //  관리자용 자주 묻는 질문 수정
     @Operation(summary = "FAQ 수정", description = "FAQ 내용을 수정하는 API")
     @PutMapping("/faq/modify/{id}")
     public void modifyFaq(@PathVariable Long id, @RequestBody FaqVO faqVO, HttpSession session) {
-        if(!AdminCheckUtil.isAdmin(session)){
+        if (!AdminCheckUtil.isAdmin(session)) {
             throw new RuntimeException("관리자만 접근 가능합니다.");
         }
         faqVO.setId(id);
@@ -59,7 +64,7 @@ public class AdminController {
     @Operation(summary = "FAQ 삭제", description = "FAQ 내용을 삭제하는 API")
     @DeleteMapping("/faq/remove/{id}")
     public void removeFaq(@PathVariable Long id, HttpSession session) {
-        if(!AdminCheckUtil.isAdmin(session)){
+        if (!AdminCheckUtil.isAdmin(session)) {
             throw new RuntimeException("관리자만 접근 가능합니다.");
         }
         faqService.remove(id);
@@ -146,6 +151,29 @@ public class AdminController {
         }
         artDTO.setId(id);
         artService.updateStatus(artDTO);
+    }
+
+    // 회원 정지 처리
+    // 0 = 일반회원 1 = 댓글 정지 2 = 영구 정지
+    @Operation(summary = "회원 정지 처리", description = "관리자 전용: 회원을 댓글 정지/영구 정지/정지 해제하는 API")
+    @PostMapping("/user/ban")
+    public void banUser(@RequestBody BanDTO banDTO, HttpSession session) {
+        if (!AdminCheckUtil.isAdmin(session)) {
+            throw new RuntimeException("관리자만 접근 가능합니다.");
+        }
+
+        int status = banDTO.getUserBanOk();
+
+        if (status == 0) {
+            // 정지 해제
+            userService.updateUserBanStatus(banDTO);
+        } else if (status == 1 || status == 2) {
+            // 정지 처리 (댓글 정지 / 영구 정지)
+            banDTO.setBanDate(new Timestamp(System.currentTimeMillis())); // 정지 일자 자동 세팅
+            userService.banUser(banDTO);
+        } else {
+            throw new IllegalArgumentException("잘못된 정지 상태입니다.");
+        }
     }
 
 }

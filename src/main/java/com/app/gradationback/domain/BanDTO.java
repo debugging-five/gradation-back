@@ -32,7 +32,7 @@ public class BanDTO {
     private String userGoogle;
     private String userNaver;
     private boolean userAdminOk;
-    private boolean userBanOk;
+    private int userBanOk;
     private String userMajorImgName;
     private String userMajorImgPath;
     private String userWriterStatus;
@@ -42,8 +42,10 @@ public class BanDTO {
     private String userBackgroundImgPath;
     private Long majorId;
 
+
 //    TBL_BAN
     private String banReason;
     private Timestamp banDate;
     private Long userId;
+
 }
