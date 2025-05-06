@@ -1,8 +1,10 @@
 package com.app.gradationback.service;
 
 import com.app.gradationback.domain.DeliveryDTO;
+import com.app.gradationback.domain.DeliveryVO;
 import com.app.gradationback.domain.PaymentCancellationVO;
 import com.app.gradationback.domain.PaymentVO;
+import com.app.gradationback.repository.DeliveryDAO;
 import com.app.gradationback.repository.PaymentDAO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -29,6 +31,7 @@ import java.util.*;
 public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentDAO paymentDAO;
+    private final DeliveryDAO deliveryDAO;
 
     @Value("${toss.payments.api.key}")
     private String apiKey;
@@ -58,15 +61,28 @@ public class PaymentServiceImpl implements PaymentService {
         String jsonString = response.getBody();
 
         PaymentVO paymentVO = new PaymentVO();
+        DeliveryVO deliveryVO = new DeliveryVO();
         try {
             JsonNode responseNode = objectMapper.readTree(jsonString);
             paymentVO.setPaymentMethod(responseNode.path("easyPay").path("provider").asText());
             paymentVO.setPaymentAmount(responseNode.path("easyPay").path("amount").asInt());
             paymentVO.setPaymentCode(responseNode.path("orderId").asText());
             paymentVO.setAuctionId(auctionId);
-            log.info("paymentVO: " + paymentVO);
-
+//            log.info("paymentVO: " + paymentVO);
             paymentDAO.save(paymentVO);
+
+            deliveryVO.setPaymentId(paymentVO.getId());
+            deliveryVO.setDeliveryAddress(paymentData.get("deliveryAddress").toString());
+            deliveryVO.setDeliveryDetailAddress(paymentData.get("deliveryDetailAddress").toString());
+            deliveryVO.setDeliveryPostalCode(paymentData.get("deliveryPostalCode").toString());
+            deliveryVO.setDeliveryMessage(paymentData.get("deliveryMessage").toString());
+            deliveryVO.setDeliveryReceiver(paymentData.get("deliveryReceiver").toString());
+            deliveryVO.setDeliveryPhone(paymentData.get("deliveryPhone").toString());
+
+            log.info("deliveryVO: " + deliveryVO);
+
+            deliveryDAO.save(deliveryVO);
+
         } catch (JsonProcessingException e) {
             return null;
         }

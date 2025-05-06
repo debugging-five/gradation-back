@@ -1,7 +1,10 @@
 package com.app.gradationback.controller;
 
+import com.app.gradationback.domain.AuctionVO;
 import com.app.gradationback.domain.DeliveryDTO;
+import com.app.gradationback.domain.DeliveryVO;
 import com.app.gradationback.domain.PaymentCancellationVO;
+import com.app.gradationback.service.DeliveryService;
 import com.app.gradationback.service.PaymentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -26,6 +29,7 @@ import java.util.Optional;
 public class PaymentController {
 
     private final PaymentService paymentService;
+    private final DeliveryService deliveryService;
 
     @Operation(summary = "결제", description = "결제 API")
     @ApiResponse(responseCode = "200", description = "결제 성공")
@@ -78,5 +82,33 @@ public class PaymentController {
         }
         return deliveryDTOList;
     }
+
+//    배송
+    @Operation(summary = "배송 조회", description = "Id 값으로 상품의 배송정보만 조회하는 API")
+    @ApiResponse(responseCode = "200", description = "조회 성공")
+    @Parameter(
+            name = "id",
+            description = "배송 번호",
+            schema = @Schema(type = "number"),
+            in = ParameterIn.PATH,
+            required = true
+    )
+    @GetMapping("/delivery/{id}")
+    public DeliveryVO getDeliveryByUserId(@PathVariable Long id) {
+        Optional<DeliveryVO> deliveryVO = deliveryService.deliveryRead(id);
+        if (deliveryVO.isPresent()) {
+            return deliveryVO.get();
+        }
+        return new DeliveryVO();
+    }
+
+    @Operation(summary = "배송 수정", description = "배송정보를 수정할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "수정 성공")
+    @PutMapping("modify")
+    public void modify(DeliveryVO deliveryVO) {
+        deliveryService.deleveryUpdate(deliveryVO);
+    }
+
+
 
 }
