@@ -27,7 +27,7 @@ public class DeliveryMapperTest {
         deliveryVO.setDeliveryMessage("문앞에 놓고 벨");
         deliveryVO.setDeliveryReceiver("홍길동");
         deliveryVO.setDeliveryPhone("010-1234-1234");
-        deliveryVO.setPaymentId(21L);
+        deliveryVO.setPaymentId(22L);
         deliveryMapper.insert(deliveryVO);
     }
 
@@ -38,9 +38,11 @@ public class DeliveryMapperTest {
 
     @Test
     public void updateTest() {
-        Optional<DeliveryVO> deliveryVO = deliveryMapper.select(1L);
+        Optional<DeliveryVO> deliveryVO = deliveryMapper.select(2L);
         deliveryVO.ifPresent(delivery -> {
             delivery.setDeliveryState("배송 완료");
+            delivery.setDeliveryReceiver("홍길동");
+            delivery.setDeliveryPhone("010-1234-1234");
             deliveryMapper.update(delivery);
             log.info("{}", deliveryMapper.select(1L));
         });
