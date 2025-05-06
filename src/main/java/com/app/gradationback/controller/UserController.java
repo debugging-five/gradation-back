@@ -2,6 +2,7 @@ package com.app.gradationback.controller;
 
 import com.app.gradationback.domain.UserVO;
 import com.app.gradationback.service.UserService;
+import com.app.gradationback.util.JwtTokenUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,20 +26,27 @@ public class UserController {
 
     private final UserService userService;
     private final UserVO userVO;
+    private final JwtTokenUtil jwtTokenUtil;
 
-//    회원 가입
-    @Operation(summary = "회원가입", description = "회원가입을 할 수 있는 API")
-    @ApiResponse(responseCode = "200", description = "회원가입 성공")
-    @PostMapping("join")
-    public UserVO join(@RequestBody UserVO userVO) {
-        userService.join(userVO);
-        log.info("{}", userVO);
-        Optional<UserVO> foundUser = userService.getUserByEmail(userVO.getUserEmail());
-        if (foundUser.isPresent()) {
-            return foundUser.get();
-        }
-        return new UserVO();
-    }
+
+////    회원 가입
+//    @Operation(summary = "회원가입", description = "회원가입을 할 수 있는 API")
+//    @ApiResponse(responseCode = "200", description = "회원가입 성공")
+//    @PostMapping("join")
+////    public UserVO join(@RequestBody UserVO userVO) {
+////        userService.join(userVO);
+////        log.info("{}", userVO);
+////        Optional<UserVO> foundUser = userService.getUserByEmail(userVO.getUserEmail());
+////        if (foundUser.isPresent()) {
+////            return foundUser.get();
+////        }
+////        return new UserVO();
+////    }
+//    public ResponseEntity<Map<String, Object>> join(@RequestBody UserVO userVO) {
+//        Map<String, Object> response = new HashMap<>();
+//
+//        Long userId = userService.getUserI
+//    }
 
 //    로그인
     @PostMapping("login")
