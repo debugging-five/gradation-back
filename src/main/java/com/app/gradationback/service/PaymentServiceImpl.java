@@ -2,7 +2,11 @@ package com.app.gradationback.service;
 
 import com.app.gradationback.domain.DeliveryDTO;
 import com.app.gradationback.domain.PaymentCancellationVO;
+import com.app.gradationback.domain.PaymentVO;
 import com.app.gradationback.repository.PaymentDAO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -35,7 +40,7 @@ public class PaymentServiceImpl implements PaymentService {
     public String payment(Map<String, Object> paymentData) {
 
         RestTemplate restTemplate = new RestTemplate();
-
+        Long auctionId = Long.valueOf(paymentData.get("auctionId").toString());
 //        API키를 Base64로 인코딩
         String encodedApiKey = Base64.getEncoder().encodeToString((apiKey + ":").getBytes());
 
@@ -49,6 +54,23 @@ public class PaymentServiceImpl implements PaymentService {
         ObjectMapper objectMapper = new ObjectMapper();
 
         ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.POST, entity, String.class);
+
+        String jsonString = response.getBody();
+
+        PaymentVO paymentVO = new PaymentVO();
+        try {
+            JsonNode responseNode = objectMapper.readTree(jsonString);
+            paymentVO.setPaymentMethod(responseNode.path("easyPay").path("provider").asText());
+            paymentVO.setPaymentAmount(responseNode.path("easyPay").path("amount").asInt());
+            paymentVO.setPaymentCode(responseNode.path("orderId").asText());
+            paymentVO.setAuctionId(auctionId);
+            log.info("paymentVO: " + paymentVO);
+
+            paymentDAO.save(paymentVO);
+        } catch (JsonProcessingException e) {
+            return null;
+        }
+
         return response.toString();
     }
 

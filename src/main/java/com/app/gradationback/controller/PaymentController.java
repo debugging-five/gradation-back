@@ -31,7 +31,7 @@ public class PaymentController {
     @ApiResponse(responseCode = "200", description = "결제 성공")
     @PostMapping("/payment")
     public ResponseEntity<String> processPayment(@RequestBody Map<String, Object> paymentData) {
-        log.info("processPayment: " + paymentData);
+//        log.info("processPayment: " + paymentData);
         String response = paymentService.payment(paymentData);
         return ResponseEntity.ok(response);
     }

@@ -25,6 +25,6 @@ public class PaymentVO {
     @Schema(description = "결제 코드", example = "2170011098")
     private String paymentCode;
 
-    @Schema(description = "결제 코드", example = "1")
+    @Schema(description = "경매 코드", example = "1")
     private Long auctionId;
 }
