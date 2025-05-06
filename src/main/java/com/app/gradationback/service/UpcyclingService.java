@@ -11,9 +11,9 @@ public interface UpcyclingService {
     // ID 단건 조회
     Optional<UpcyclingVO> getByUpcyclingUser(Long id);
     // 신청 등록
-    void register(UpcyclingVO upcyclingVO);
+    public void register(UpcyclingVO upcyclingVO);
     // 상태 변경
-    void modify(UpcyclingVO upcyclingVO);
+    public void modify(UpcyclingVO upcyclingVO);
     // 삭제
-    void remove(Long id);
+    public void remove(Long id);
 }

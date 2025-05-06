@@ -27,4 +27,6 @@ public interface CommentService {
 
 //    댓글 전체 삭제 (게시글 삭제)
     public void removeCommentByPostId(Long postId);
+
+    public List<CommentVO> getAllCommentByPostId(Long postId);
 }

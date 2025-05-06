@@ -2,6 +2,9 @@ package com.app.gradationback.controller;
 
 import com.app.gradationback.domain.UserVO;
 import com.app.gradationback.service.UserService;
+import com.app.gradationback.util.JwtTokenUtil;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -9,9 +12,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -22,39 +28,128 @@ public class UserController {
 
     private final UserService userService;
     private final UserVO userVO;
+    private final JwtTokenUtil jwtTokenUtil;
+
 
 //    회원 가입
     @Operation(summary = "회원가입", description = "회원가입을 할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "회원가입 성공")
     @PostMapping("join")
-    public UserVO join(@RequestBody UserVO userVO) {
+    public ResponseEntity<Map<String, Object>> join(@RequestBody UserVO userVO) {
+        Map<String, Object> response = new HashMap<>();
+
+//        회원가입 후 다시 로그인
+        Optional<UserVO> userEmail = userService.getUserByEmail(userVO.getUserEmail());
+        if(userEmail != null) {
+            UserVO foundUser = userEmail.get();
+
+            if(foundUser != null && foundUser.getUserEmail().equals(userVO.getUserEmail())) {
+                response.put("message", "이미 사용중인 이메일입니다.");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+            }
+        }
+//        회원가입
         userService.join(userVO);
-        log.info("{}", userVO);
-        Optional<UserVO> foundUser = userService.getUser(userVO.getUserEmail());
+        response.put("message", "회원가입이 완료되었습니다.");
+        return ResponseEntity.ok(response);
+    }
+
+//    로그인
+    @Operation(summary = "로그인", description = "로그인을 할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "로그인 성공")
+    @PostMapping("login")
+//    public String login(@RequestBody UserVO userVO) {
+//        return userService.login(userVO);
+//    }
+    public ResponseEntity<Map<String, Object>> login(@RequestBody UserVO userVO) {
+        Map<String, Object> response = new HashMap<>();
+        Map<String, Object> claims = new HashMap<>();
+
+        Optional<UserVO> userIdentification = userService.getUserByIdentification(userVO.getUserIdentification());
+
+        if (!userIdentification.isPresent()) {
+            response.put("message", "등록되지 않은 아이디입니다.");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        }
+
+        UserVO foundUser = userIdentification.get();
+
+        if(!foundUser.getUserPassword().equals(userVO.getUserPassword())) {
+            response.put("message", "비밀번호가 틀렸습니다.");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        }
+
+        claims.put("email", foundUser.getUserEmail());
+        claims.put("identification", foundUser.getUserIdentification());
+        String jwtToken = jwtTokenUtil.generateToken(claims);
+        response.put("jwtToken", jwtToken);
+        response.put("message", "로그인 성공하였습니다.");
+
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "회원 프로필 조회", description = "JWT 토큰을 통해 현재 로그인한 회원의 정보를 조회할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "회원 프로필 조회 성공")
+    @PostMapping("profile")
+    public ResponseEntity<Map<String, Object>> profile(
+            @RequestHeader(value = "Authorization", required = false) String jwtToken
+    ){
+        Map<String, Object> response = new HashMap<>();
+        String token = jwtToken != null ? jwtToken.replace("Bearer ", "") : null;
+
+        try {
+            if (token != null && jwtTokenUtil.isTokenValid(token)) {
+
+                Claims claims = jwtTokenUtil.parseToken(token);
+                String userIdentification = claims.get("identification").toString();
+                UserVO foundUser = userService.getUserByIdentification(userIdentification).orElseThrow(() -> {
+                    throw new RuntimeException("User profile, Not found User");
+                });
+
+                foundUser.setUserPassword(null);
+                response.put("currentUser", foundUser);
+                return ResponseEntity.ok(response);
+            }
+        } catch (ExpiredJwtException e) {
+            response.put("message", "토큰이 만료되었습니다.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+
+        response.put("message", "토큰이 만료되었습니다");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+
+
+    //    단일 회원 정보 조회
+    @Operation(summary = "회원 정보 조회", description = "회원 1명의 정보를 조회할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "회원 정보 조회 성공")
+    @Parameter(
+            name = "userEmail",
+            description = "회원 이메일",
+            schema = @Schema(type = "string"),
+            in = ParameterIn.PATH,
+            required = true
+    )
+    @GetMapping("user/{userEmail}")
+    public UserVO getUser(@PathVariable String userEmail) {
+        Optional<UserVO> foundUser = userService.getUserByEmail(userEmail);
+        log.info("{}", userEmail);
         if (foundUser.isPresent()) {
             return foundUser.get();
         }
         return new UserVO();
     }
 
-//    단일 회원 정보 조회
-    @Operation(summary = "회원 정보 조회", description = "회원 1명의 정보를 조회할 수 있는 API")
-    @ApiResponse(responseCode = "200", description = "회원 정보 조회 성공")
-    @Parameter(
-            name = "id",
-            description = "회원 이메일",
-            schema = @Schema(type = "string"),
-            in = ParameterIn.PATH,
-            required = true
-    )
-    @GetMapping("user/{id}")
-    public UserVO getUser(@PathVariable("id") String userEmail) {
-        Optional<UserVO> foundUser = userService.getUser(userEmail);
-        log.info("{}", userEmail);
+//    아이디 중복 체크
+    @Operation(summary = "아이디 중복 검사", description = "아이디 중복 검사를 할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "아이디 중복 검사 성공")
+    @GetMapping("/check-id/{userIdentification}")
+    public boolean checkIdentification(@PathVariable String userIdentification) {
+        Optional<UserVO> foundUser = userService.getUserByIdentification(userIdentification);
         if (foundUser.isPresent()) {
-            return foundUser.get();
+            return true;
         }
-        return new UserVO();
+        return false;
     }
 
 //    회원 정보 수정
@@ -69,15 +164,15 @@ public class UserController {
 //    회원 탈퇴
     @Operation(summary = "회원 탈퇴", description = "회원 탈퇴 할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "회원 탈퇴 성공")
-    @DeleteMapping("withdraw/{id}")
+    @DeleteMapping("withdraw/{userEmail}")
     @Parameter(
-            name = "id",
+            name = "userEmail",
             description = "회원 이메일",
             schema = @Schema(type = "string"),
             in = ParameterIn.PATH,
             required = true
     )
-    public void withdraw(@PathVariable("id") String userEmail) {
+    public void withdraw(@PathVariable String userEmail) {
         userService.withdraw(userEmail);
     }
 

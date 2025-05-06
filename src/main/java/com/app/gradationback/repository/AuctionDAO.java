@@ -14,13 +14,13 @@ import java.util.List;
 public class AuctionDAO {
     private final AuctionMapper auctionMapper;
 
-    public void insert(AuctionVO auctionVO) {
+    public void save(AuctionVO auctionVO) {
         auctionMapper.insert(auctionVO);
     }
-    public List<AuctionDTO> selectAll(HashMap<String, Object> params) {
+    public List<AuctionDTO> findAll(HashMap<String, Object> params) {
         return auctionMapper.selectAll(params);
     }
-    public List<AuctionDTO> selectById(Long id) {
+    public List<AuctionDTO> findById(Long id) {
         return auctionMapper.select(id);
     }
     public void update(AuctionVO auctionVO) {

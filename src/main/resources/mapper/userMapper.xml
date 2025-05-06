@@ -9,7 +9,7 @@
                 #{userPhone}, #{userNickName}, #{userSnsOk}, #{userMailOk}, #{userAgreement} )
     </insert>
 
-    <!--  전체 회원 정보 조회  -->
+    <!--  전체 회원 조회  -->
     <select id="selectAllUser" resultType="UserVO">
         SELECT ID, USER_IMG_NAME, USER_IMG_PATH, USER_NAME, USER_EMAIL, USER_IDENTIFICATION, USER_PASSWORD,
                USER_PHONE, USER_NICKNAME, USER_ADDRESS, USER_DETAIL_ADDRESS, USER_POSTAL_CODE, USER_SNS_OK,
@@ -19,76 +19,54 @@
         FROM TBL_USER
     </select>
 
-    <!--  단일 회원 정보 조회  -->
-    <select id="selectUser" parameterType="String" resultType="UserVO">
-        SELECT ID, USER_IMG_NAME, USER_IMG_PATH, USER_NAME, USER_EMAIL, USER_IDENTIFICATION, USER_PASSWORD,
-               USER_PHONE, USER_NICKNAME, USER_ADDRESS, USER_DETAIL_ADDRESS, USER_POSTAL_CODE, USER_SNS_OK,
-               USER_MAIL_OK, USER_AGREEMENT_OK, USER_INTRODUCE, USER_INSTAGRAM, USER_YOUTUBE, USER_BLOG,
-               USER_KAKAO, USER_GOOGLE, USER_NAVER, USER_ADMIN_OK, USER_BAN_OK, MAJOR_ID, USER_MAJOR_IMG_NAME, USER_MAJOR_IMG_PATH,
-               USER_WRITER_STATUS, USER_UNIVERSITY_STATUS, USER_ART_CATEGORY, USER_BACKGROUND_IMG_NAME, USER_BACKGROUND_IMG_PATH
+    <select id="selectUserByIdentification" parameterType="String" resultType="UserVO">
+        SELECT ID, USER_IMG_NAME, USER_IMG_PATH, USER_NAME, USER_EMAIL, USER_IDENTIFICATION, USER_PHONE, USER_NICKNAME
         FROM TBL_USER
-        WHERE USER_EMAIL = #{userEmail}
+        WHERE USER_IDENTIFICATION = #{userIdentification}
     </select>
 
-    <!--  로그인  -->
-    <select id="login" parameterType="UserVO" resultType="String">
+    <!--  로그인 (아이디 + 비밀번호로 이메일 가져오기)  -->
+    <select id="selectUserByIdentificationAndPassword" parameterType="UserVO" resultType="UserVO">
         SELECT USER_EMAIL
         FROM TBL_USER
         WHERE USER_IDENTIFICATION = #{userIdentification} AND USER_PASSWORD = #{userPassword}
     </select>
 
-    <!--  아이디 중복 체크  -->
-    <select id="checkId" parameterType="String" resultType="int">
-        SELECT COUNT(ID)
-        FROM TBL_USER
-        WHERE USER_IDENTIFICATION = #{userIdentification}
-    </select>
-
-    <!--  이메일 중복 체크  -->
-    <select id="checkEmail" parameterType="String" resultType="int">
-        SELECT COUNT(ID)
-        FROM TBL_USER
-        WHERE USER_EMAIL = #{userEmail}
-    </select>
-
-    <!--  비밀번호 중복 체크  -->
-    <select id="checkPassword" parameterType="UserVO" resultType="int">
-        SELECT COUNT(ID)
-        FROM TBL_USER
-        WHERE USER_IDENTIFICATION = #{userIdentification} AND USER_EMAIL = #{userEmail} AND USER_NAME = #{userName}
-    </select>
-
-    <!--  아이디 조회 (이메일, 이름)  -->
-    <select id="selectIdByEmailAndName" parameterType="UserVO" resultType="String">
+    <!--  아이디 찾기 (이름 + 이메일) -->
+    <select id="selectIdentificationByEmailAndName" parameterType="UserVO" resultType="String">
         SELECT USER_IDENTIFICATION
         FROM TBL_USER
         WHERE USER_EMAIL = #{userEmail} AND USER_NAME = #{userName}
     </select>
 
-    <!--  비밀번호 조회 (이메일로)  -->
+    <!--  비밀번호 찾기 (이메일)  -->
     <select id="selectPasswordByEmail" parameterType="String" resultType="String">
         SELECT USER_PASSWORD
         FROM TBL_USER
         WHERE USER_EMAIL = #{userEmail}
     </select>
 
-    <!--  이메일 조회  -->
+    <!--  아이디로 이메일 조회  -->
     <select id="selectEmailById" parameterType="Long" resultType="String">
-        SELECT USER_EMAIL FROM TBL_USER WHERE ID = #{id}
+        SELECT USER_EMAIL
+        FROM TBL_USER
+        WHERE ID = #{id}
+    </select>
+
+    <!--  이메일로 ID 조회  -->
+    <select id="selectIdByEmail" parameterType="String" resultType="Long">
+        SELECT ID
+        FROM TBL_USER
+        WHERE USER_EMAIL = #{userEmail}
     </select>
 
     <!--  회원 정보 수정  -->
     <update id="updateUser" parameterType="UserVO">
         UPDATE TBL_USER
         SET USER_NICKNAME = #{userNickName}, USER_NAME = #{userName},
-            USER_PHONE = #{userPhone}, USER_EMAIL = #{userEmail}, USER_ADDRESS = #{userAddress}, USER_DETAIL_ADDRESS = #{userDetailAddress}
-        WHERE USER_IDENTIFICATION = #{userIdentification}
-    </update>
-
-    <!--  비밀번호 변경  -->
-    <update id="updatePassword" parameterType="UserVO">
-        UPDATE TBL_USER
-        SET USER_PASSWORD = #{userPassword}
+            USER_PHONE = #{userPhone}, USER_EMAIL = #{userEmail},
+            USER_ADDRESS = #{userAddress}, USER_DETAIL_ADDRESS = #{userDetailAddress},
+            USER_PASSWORD = #{userPassword}
         WHERE USER_IDENTIFICATION = #{userIdentification}
     </update>
 
@@ -98,10 +76,20 @@
 		WHERE USER_EMAIL = #{userEmail}
     </delete>
 
-    <select id="selectIdByEmail" parameterType="String" resultType="Long">
-        SELECT ID
-        FROM TBL_USER
-        WHERE USER_EMAIL = #{userEmail}
-    </select>
+<!--    관리자용 유저 정지 처리-->
+    <insert id="insertBan" parameterType="BanDTO">
+        INSERT INTO TBL_BAN(ID, BAN_DATE, BAN_REASON, USER_ID)
+        VALUES (SEQ_BAN.NEXTVAL, #{banDate}, #{banReason}, #{userId})
+    </insert>
 
+<!--    관리자용 유저 정지 상태 업데이트(댓글, 영구)-->
+    <update id="updateUserBanStatus" parameterType="banDTO">
+        UPDATE TBL_USER
+        SET USER_BAN_OK = #{usdrBanOk}
+        WHERE ID = #{userId}
+    </update>
+<!--    댓글 작성 시 정지 유저 확인용-->
+    <select id="selectUserByIdForWrite" resultType="userVO" parameterType="long">
+        SELECT * FROM TBL_USER WHERE ID = #{id}
+    </select>
 </mapper>

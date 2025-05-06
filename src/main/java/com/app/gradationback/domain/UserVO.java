@@ -54,10 +54,10 @@ public class UserVO {
     @Schema(description = "관리자 여부", example = "1")
     private boolean userAdminOk;
     @Schema(description = "정지 여부", example = "1")
-    private boolean userBanOk;
+    private int userBanOk;
     @Schema(description = "학생증 이미지 제목", example = "major.jpg")
     private String userMajorImgName;
-    @Schema(description = "학생증 이미지 경로", example = "assets/images/user/major")
+    @Schema(description = "학생증 이미지 경로", example = "assets/images/user/major.jpg")
     private String userMajorImgPath;
     @Schema(description = "작가 인증 상태", example = "미신청")
     private String userWriterStatus;
@@ -67,7 +67,7 @@ public class UserVO {
     private String userArtCategory;
     @Schema(description = "작가 배경화면 제목", example = "background.jpg")
     private String userBackgroundImgName;
-    @Schema(description = "작가 배경화면 이름", example = "assets/images/user/background")
+    @Schema(description = "작가 배경화면 이름", example = "assets/images/user/background.jpg")
     private String userBackgroundImgPath;
     @Schema(description = "학과", example = "1")
     private Long majorId;
