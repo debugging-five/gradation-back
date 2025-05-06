@@ -53,3 +53,4 @@ public class QnaServiceImpl implements QnaService {
         return qnaDAO.getAllQnaListForAdmin();
     }
 }
+
