@@ -44,7 +44,7 @@ public class DeliveryMapperTest {
             delivery.setDeliveryReceiver("홍길동");
             delivery.setDeliveryPhone("010-1234-1234");
             deliveryMapper.update(delivery);
-            log.info("{}", deliveryMapper.select(1L));
+            log.info("{}", deliveryMapper.select(23L));
         });
 
     }
