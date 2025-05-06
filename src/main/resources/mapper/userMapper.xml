@@ -19,6 +19,12 @@
         FROM TBL_USER
     </select>
 
+    <select id="selectUserByIdentification" parameterType="String" resultType="UserVO">
+        SELECT ID, USER_IMG_NAME, USER_IMG_PATH, USER_NAME, USER_EMAIL, USER_IDENTIFICATION, USER_PHONE, USER_NICKNAME
+        FROM TBL_USER
+        WHERE USER_IDENTIFICATION = #{userIdentification}
+    </select>
+
     <!--  로그인 (아이디 + 비밀번호로 이메일 가져오기)  -->
     <select id="selectUserByIdentificationAndPassword" parameterType="UserVO" resultType="UserVO">
         SELECT USER_EMAIL
