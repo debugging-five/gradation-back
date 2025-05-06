@@ -3,28 +3,26 @@ package com.app.gradationback.mapper.duckjun.util;
 import com.app.gradationback.domain.UserVO;
 import com.app.gradationback.util.AdminCheckUtil;
 import jakarta.servlet.http.HttpSession;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpSession;
+import lombok.extern.slf4j.Slf4j;
 
-@SpringBootTest
 @Slf4j
 public class AdminCheckUtilTests {
 
     @Test
-    public void adminCheckUtilTest() {
+    public void adminCheckTest() {
+        // 가짜 유저 생성
+        UserVO user = new UserVO();
+        user.setId(1L);          // ID 1번
+        user.setUserAdminOk(true); // 관리자 true
 
-        UserVO userVO = new UserVO();
-        userVO.setId(2L);
-        userVO.setUserAdminOk(true);
+        // 가짜 세션 생성
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("user", user);
 
-        HttpSession httpSession = request.getSession()
-        httpSession.setAttribute("user", userVO);
-
-        boolean isAdmin = AdminCheckUtil.isAdmin(httpSession);
-
-        log.info("관리자 인증: {}", isAdmin ? "관리자다" : "관리자 아니다");
+        // 관리자 여부 확인
+        boolean isAdmin = AdminCheckUtil.isAdmin(session);
+        log.info("관리자 인증 결과: {}", isAdmin ? "관리자입니다" : "관리자가 아닙니다");
     }
 }
-

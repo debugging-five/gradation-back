@@ -17,33 +17,38 @@ public class ArtPostDAO {
 
     private final ArtPostMapper artPostMapper;
 
-//    작품 게시
+//    작품 게시글 등록
     public void save(ArtPostVO artPostVO) {
         artPostMapper.insert(artPostVO);
     }
 
-//    작품 게시 조회 (전체)
+//    작품 게시글 전체 조회
     public List<ArtPostDTO> findAll() {
         return artPostMapper.selectAll();
     }
 
-//    작품 게시 조회 (단일)
-    public Optional<ArtPostDTO> find(Long id) {
+//    작품 게시글 단일 조회
+    public Optional<ArtPostDTO> findById(Long id) {
         return artPostMapper.select(id);
     }
 
-//    작품 게시 수정
+    public List<ArtPostDTO> findAllByUserId(Long userId) { return artPostMapper.selectAllByUserId(userId); }
+
+//    작품 게시글 수정
     public void update(ArtPostVO artPostVO) {
         artPostMapper.update(artPostVO);
     }
 
-//    작품 게시 삭제
-    public void delete(Long id) {
-        artPostMapper.delete(id);
+//    작품 게시글 삭제
+    public void deleteById(Long id) {
+        artPostMapper.deleteById(id);
     }
 
-//    작품 게시 전체 삭제 (회원 탈퇴)
+//    작품 게시글 전체 삭제 (회원 탈퇴)
     public void deleteAllByUserId(Long userId) {
         artPostMapper.deleteAllByUserId(userId);
     }
+
+    public void deleteAllByArtId(Long artId) { artPostMapper.deleteAllByArtId(artId); }
+
 }

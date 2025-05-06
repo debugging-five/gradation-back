@@ -10,41 +10,33 @@ public interface UserService {
 //    회원가입
     public void join(UserVO userVO);
 
-//    전체 회원 정보 조회
+//    전체 회원 조회
     public List<UserVO> getUserList();
 
-//    단일 회원 정보 조회
-    public Optional<UserVO> getUser(String userEmail);
+//    단일 회원 조회 (이메일로)
+    public Optional<UserVO> getUserByEmail(String userEmail);
+
+//    단일 회원 조회 (아이디로)
+    public Optional<UserVO> getUserByIdentification(String userIdentification);
 
 //    로그인
     public String login(UserVO userVO);
 
-//    아이디 중복 체크
-    public int isIdExist(String userIdentification);
+//    아이디 찾기 (이름 + 이메일)
+    public String getIdentificationByEmailAndName(UserVO userVO);
 
-//    이메일 중복 체크
-    public int isEmailExist(String userEmail);
-
-//    비밀번호 중복 체크
-    public int isPasswordExist(UserVO userVO);
-
-//    아이디 조회
-    public String getIdByEmailAndName(UserVO userVO);
-
-//    비밀번호 조회
+//    비밀번호 찾기 (이메일)
     public String getPasswordByEmail(String userEmail);
 
-//    이메일 조회
+//    아이디로 이메일 조회
     public String getEmailById(Long id);
+
+//    이메일로 ID 조회
+    public Long getIdByEmail(String userEmail);
 
 //    회원 정보 수정
     public void modifyUser(UserVO userVO);
 
-//    비밀번호 변경
-    public void modifyPassword(UserVO userVO);
-
 //    회원 탈퇴
     public void withdraw(String userEmail);
-
-    public Long getIdByEmail(String userEmail);
 }

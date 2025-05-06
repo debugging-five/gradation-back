@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -30,31 +32,55 @@ public class UserController {
     public UserVO join(@RequestBody UserVO userVO) {
         userService.join(userVO);
         log.info("{}", userVO);
-        Optional<UserVO> foundUser = userService.getUser(userVO.getUserEmail());
+        Optional<UserVO> foundUser = userService.getUserByEmail(userVO.getUserEmail());
         if (foundUser.isPresent()) {
             return foundUser.get();
         }
         return new UserVO();
     }
 
+//    로그인
+    @PostMapping("login")
+    public String login(@RequestBody UserVO userVO) {
+        return userService.login(userVO);
+    }
+
+
+//        Map<String, Object> response = new HashMap<>();
+//        response.put("message", "로그인 성공하였습니다.");
+//        return response
+
+
 //    단일 회원 정보 조회
     @Operation(summary = "회원 정보 조회", description = "회원 1명의 정보를 조회할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "회원 정보 조회 성공")
     @Parameter(
-            name = "id",
+            name = "userEmail",
             description = "회원 이메일",
             schema = @Schema(type = "string"),
             in = ParameterIn.PATH,
             required = true
     )
-    @GetMapping("user/{id}")
-    public UserVO getUser(@PathVariable("id") String userEmail) {
-        Optional<UserVO> foundUser = userService.getUser(userEmail);
+    @GetMapping("user/{userEmail}")
+    public UserVO getUser(@PathVariable String userEmail) {
+        Optional<UserVO> foundUser = userService.getUserByEmail(userEmail);
         log.info("{}", userEmail);
         if (foundUser.isPresent()) {
             return foundUser.get();
         }
         return new UserVO();
+    }
+
+//    아이디 중복 체크
+    @Operation(summary = "아이디 중복 검사", description = "아이디 중복 검사를 할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "아이디 중복 검사 성공")
+    @GetMapping("/check-id/{userIdentification}")
+    public boolean checkIdentification(@PathVariable String userIdentification) {
+        Optional<UserVO> foundUser = userService.getUserByIdentification(userIdentification);
+        if (foundUser.isPresent()) {
+            return true;
+        }
+        return false;
     }
 
 //    회원 정보 수정
@@ -69,15 +95,15 @@ public class UserController {
 //    회원 탈퇴
     @Operation(summary = "회원 탈퇴", description = "회원 탈퇴 할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "회원 탈퇴 성공")
-    @DeleteMapping("withdraw/{id}")
+    @DeleteMapping("withdraw/{userEmail}")
     @Parameter(
-            name = "id",
+            name = "userEmail",
             description = "회원 이메일",
             schema = @Schema(type = "string"),
             in = ParameterIn.PATH,
             required = true
     )
-    public void withdraw(@PathVariable("id") String userEmail) {
+    public void withdraw(@PathVariable String userEmail) {
         userService.withdraw(userEmail);
     }
 

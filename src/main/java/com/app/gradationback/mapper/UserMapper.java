@@ -12,41 +12,33 @@ public interface UserMapper {
 //    회원가입
     public void insert(UserVO userVO);
 
-//    전체 회원 정보 조회
+//    전체 회원 조회
     public List<UserVO> selectAllUser();
 
-//    단일 회원 정보 조회
-    public Optional<UserVO> selectUser(String userEmail);
+//    단일 회원 조회 (이메일로)
+    public Optional<UserVO> selectUserByEmail(String userEmail);
+
+//    단일 회원 조회 (아이디로)
+    public Optional<UserVO> selectUserByIdentification(String userIdentification);
 
 //    로그인
     public String login(UserVO userVO);
 
-//    아이디 중복 체크
-    public int checkId(String userIdentification);
+//    아이디 찾기 (이름 + 이메일)
+    public String selectIdentificationByEmailAndName(UserVO userVO);
 
-//    이메일 중복 체크
-    public int checkEmail(String userEmail);
-
-//    비밀번호 중복 체크
-    public int checkPassword(UserVO userVO);
-
-//    아이디 조회
-    public String selectIdByEmailAndName(UserVO userVO);
-
-//    비밀번호 조회
+//    비밀번호 찾기 (이메일)
     public String selectPasswordByEmail(String userEmail);
 
-//    이메일 조회
+//    아이디로 이메일 조회
     public String selectEmailById(Long id);
+
+//    이메일로 ID 조회
+    public Long selectIdByEmail(String userEmail);
 
 //    회원 정보 수정
     public void updateUser(UserVO userVO);
 
-//    비밀번호 변경
-    public void updatePassword(UserVO userVO);
-
 //    회원 탈퇴
     public void deleteUser(String userEmail);
-
-    public Long selectIdByEmail(String userEmail);
 }
