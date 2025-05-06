@@ -34,5 +34,37 @@
         WHERE ID = #{id}
     </delete>
 
+<!--    관리자용 승인 대기 목록-->
+    <select id="selectAllPending" resultType="ArtDTO">
+        SELECT
+            TBA.ID, ART_TITLE, ART_CATEGORY, ART_MATERIAL, ART_SIZE, ART_DESCRIPTION, ART_END_DATE, ART_STATUS,
+            TAI.ART_IMG_NAME, TAI.ART_IMG_PATH,
+            TBU.ID AS USER_ID, USER_NAME, USER_EMAIL
+        FROM TBL_ART TBA
+        JOIN TBL_USER TBU ON TBA.USER_ID = TBU.ID
+        LEFT JOIN TBL_ART_IMG TAI ON TAI.ART_ID = TBA.ID
+        WHERE ART_STATUS = '미신청'
+        ORDER BY ART_END_DATE DESC
+    </select>
+
+<!--    관리자용 대기 작품 상세 조회-->
+    <select id="selectPendingById" parameterType="Long" resultType="ArtDTO">
+        SELECT
+            TBA.ID, ART_TITLE, ART_CATEGORY, ART_MATERIAL, ART_SIZE, ART_DESCRIPTION, ART_END_DATE, ART_STATUS,
+            TAI.ART_IMG_NAME, TAI.ART_IMG_PATH,
+            TBU.ID AS USER_ID, USER_NAME, USER_EMAIL
+        FROM TBL_ART TBA
+        JOIN TBL_USER TBU ON TBA.USER_ID = TBU.ID
+        LEFT JOIN TBL_ART_IMG TAI ON TAI.ART_ID = TBA.ID
+        WHERE TBA.ID = #{id}
+    </select>
+
+<!--    관리자용 신청 작품 상태 변경 (승인 / 반려)-->
+    <update id="updateStatus" parameterType="ArtDTO">
+        UPDATE TBL_ART
+        SET ART_STATUS = #{artStatus}
+        WHERE ID = #{id}
+    </update>
+
 
 </mapper>
