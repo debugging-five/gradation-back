@@ -4,12 +4,14 @@ import com.app.gradationback.domain.CommentVO;
 import com.app.gradationback.repository.CommentDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(rollbackFor = Exception.class)
 public class CommentServiceImpl implements CommentService {
 
     private final CommentDAO commentDAO;
@@ -54,5 +56,10 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void removeCommentByPostId(Long postId) {
         commentDAO.deleteAllByPostId(postId);
+    }
+
+    @Override
+    public List<CommentVO> getAllCommentByPostId(Long postId) {
+        return commentDAO.findAllByPostId(postId);
     }
 }

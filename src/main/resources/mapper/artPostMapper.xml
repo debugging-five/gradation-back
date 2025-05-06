@@ -2,16 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.gradationback.mapper.ArtPostMapper">
 
+    <!--  작품 게시글 등록  -->
     <insert id="insert" parameterType="ArtPostVO">
-        INSERT INTO TBL_ART_POST
-        VALUES (SEQ_ART_POST.NEXTVAL, #{artPostDate}, #{userId}, #{artId})
+        <selectKey keyProperty="id" order="BEFORE" resultType="Long">
+            SELECT SEQ_ART_POST.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO TBL_ART_POST (ID, ART_POST_DATE, USER_ID, ART_ID)
+        VALUES (#{id}, #{artPostDate}, #{userId}, #{artId})
     </insert>
 
+    <!-- 작품 게시글 전체 조회  -->
     <select id="selectAll" resultType="ArtPostDTO">
         SELECT TBP.ID, TBP.ART_POST_DATE, TBP.USER_ID, TBP.ART_ID,
-            TBA.ART_TITLE, TBA.ART_CATEGORY, TBA.ART_MATERIAL, TBA.ART_SIZE, TBA.ART_DESCRIPTION,
-            TBA.ART_END_DATE, TBA.USER_ID, TBI.ART_IMG_NAME, TBI.ART_IMG_PATH, TBI.ART_ID,
-            TBU.USER_NAME, TBC.COMMENT_CONTENT, TBC.COMMENT_DATE, TBCL.COMMENT_ID, TBCL.USER_ID, TBCL.COMMENT_LIKE_TIME
+               TBA.ART_TITLE, TBA.ART_CATEGORY, TBA.ART_MATERIAL, TBA.ART_SIZE, TBA.ART_DESCRIPTION,
+               TBA.ART_END_DATE, TBA.USER_ID, TBI.ART_IMG_NAME, TBI.ART_IMG_PATH, TBI.ART_ID,
+               TBU.USER_NAME, TBC.COMMENT_CONTENT, TBC.COMMENT_DATE,
+               TBCL.COMMENT_ID, TBCL.USER_ID, TBCL.COMMENT_LIKE_TIME
         FROM TBL_ART_POST TBP
         JOIN TBL_ART TBA
         ON TBP.ART_ID = TBA.ID
@@ -19,45 +25,54 @@
         ON TBI.ART_ID = TBA.ID
         JOIN TBL_USER TBU
         ON TBP.USER_ID = TBU.ID
-        JOIN TBL_COMMENT TBC
+        LEFT JOIN TBL_COMMENT TBC
         ON TBP.ID = TBC.ART_POST_ID
-        JOIN TBL_COMMENT_LIKE TBCL
+        LEFT JOIN TBL_COMMENT_LIKE TBCL
         ON TBC.ID = TBCL.COMMENT_ID
     </select>
 
+    <!--  작품 게시글 단일 조회  -->
     <select id="select" parameterType="Long" resultType="ArtPostDTO">
         SELECT TBP.ID, TBP.ART_POST_DATE, TBP.USER_ID, TBP.ART_ID,
-                TBA.ART_TITLE, TBA.ART_CATEGORY, TBA.ART_MATERIAL, TBA.ART_SIZE, TBA.ART_DESCRIPTION,
-                TBA.ART_END_DATE, TBA.USER_ID, TBI.ART_IMG_NAME, TBI.ART_IMG_PATH, TBI.ART_ID,
-                TBU.USER_NAME, TBC.COMMENT_CONTENT, TBC.COMMENT_DATE, TBCL.COMMENT_ID, TBCL.USER_ID, TBCL.COMMENT_LIKE_TIME
+               TBA.ART_TITLE, TBA.ART_CATEGORY, TBA.ART_MATERIAL, TBA.ART_SIZE,
+               TBA.ART_DESCRIPTION, TBA.ART_END_DATE, TBA.USER_ID,
+               TBI.ART_IMG_NAME, TBI.ART_IMG_PATH, TBI.ART_ID,
+               TBU.USER_NAME, TBU.USER_EMAIL
         FROM TBL_ART_POST TBP
-        JOIN TBL_ART TBA
-        ON TBP.ART_ID = TBA.ID
-        JOIN TBL_ART_IMG TBI
-        ON TBI.ART_ID = TBA.ID
-        JOIN TBL_USER TBU
-        ON TBP.USER_ID = TBU.ID
-        JOIN TBL_COMMENT TBC
-        ON TBP.ID = TBC.ART_POST_ID
-        JOIN TBL_COMMENT_LIKE TBCL
-        ON TBC.ID = TBCL.COMMENT_ID
+                 JOIN TBL_ART TBA ON TBP.ART_ID = TBA.ID
+                 JOIN TBL_ART_IMG TBI ON TBI.ART_ID = TBA.ID
+                 JOIN TBL_USER TBU ON TBP.USER_ID = TBU.ID
         WHERE TBP.ID = #{id}
     </select>
 
+    <select id="selectAllByUserId" parameterType="Long" resultType="ArtPostDTO">
+        SELECT ID, ART_ID, USER_ID, ART_POST_DATE
+        FROM TBL_ART_POST
+        WHERE USER_ID = #{userId}
+    </select>
+
+    <!--  작품 게시글 수정  -->
     <update id="update" parameterType="ArtPostVO">
         UPDATE TBL_ART_POST
         SET ART_POST_DATE = #{artPostDate}
         WHERE ID = #{id}
     </update>
 
-    <delete id="delete" parameterType="Long">
-        DELETE TBL_ART_POST
+    <!--  작품 게시글 삭제 -->
+    <delete id="deleteById" parameterType="Long">
+        DELETE FROM TBL_ART_POST
         WHERE ID = #{id}
     </delete>
-    
+
+    <!--  작품 게시글 전체 삭제 (회원 탈퇴) -->
     <delete id="deleteAllByUserId" parameterType="Long">
         DELETE FROM TBL_ART_POST
         WHERE USER_ID = #{userId}
+    </delete>
+
+    <delete id="deleteAllByArtId" parameterType="Long">
+        DELETE FROM TBL_ART_POST
+        WHERE ART_ID = #{artId}
     </delete>
 
 </mapper>
