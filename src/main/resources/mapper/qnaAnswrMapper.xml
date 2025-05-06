@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.gradationback.mapper.QnaAnswerMapper">
+
+    <!-- 답변 등록 -->
+    <insert id="insert" parameterType="QnaAnswerVO">
+--     order="BEFORE" SQL실행 전에 시퀀스 값 먼저 조회, keyProperty="id" 조회된 시퀀스 값 VO의 id필드로
+--     단일값 조회 시 테이블 필요, DUAL로 임시 테이블 생성
+        <selectKey order="BEFORE" keyProperty="id" resultType="Long">
+            SELECT SEQ_QNA_ANSWER.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO TBL_QNA_ANSWER (
+            ID, QNA_ANSWER_TITLE, QNA_ANSWER_CONTENT, QNA_ANSWER_TIME, QNA_ID
+        ) VALUES (
+            #{id}, #{qnaAnswerTitle}, #{qnaAnswerContent}, CURRENT_TIMESTAMP, #{qnaId}
+        )
+    </insert>
+
+    <!-- 답변 수정 -->
+    <update id="update" parameterType="QnaAnswerVO">
+        UPDATE TBL_QNA_ANSWER
+        SET QNA_ANSWER_TITLE = #{qnaAnswerTitle},
+            QNA_ANSWER_CONTENT = #{qnaAnswerContent},
+            QNA_ANSWER_TIME = CURRENT_TIMESTAMP
+        WHERE QNA_ID = #{qnaId}
+    </update>
+
+    <!-- 답변 삭제 -->
+    <delete id="delete" parameterType="Long">
+        DELETE FROM TBL_QNA_ANSWER
+        WHERE QNA_ID = #{qnaId}
+    </delete>
+
+</mapper>

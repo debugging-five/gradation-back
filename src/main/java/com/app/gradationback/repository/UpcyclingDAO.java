@@ -15,9 +15,9 @@ public class UpcyclingDAO {
     private final UpcyclingMapper upcyclingMapper;
 
     // 전체 조회
-    public List<UpcyclingVO> getAll() {return upcyclingMapper.selectAll();}
+    public List<UpcyclingVO> getUpcyclingUserList() {return upcyclingMapper.selectAll();}
     // 단건 조회
-    public Optional<UpcyclingVO> getById(Long id){return upcyclingMapper.select(id);}
+    public Optional<UpcyclingVO> getByUpcyclingUser(Long id){return upcyclingMapper.select(id);}
     // 등록
     public void save(UpcyclingVO upcyclingVO) {upcyclingMapper.insert(upcyclingVO);}
     // 상태 업데이트

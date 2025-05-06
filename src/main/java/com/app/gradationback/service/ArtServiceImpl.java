@@ -1,5 +1,6 @@
 package com.app.gradationback.service;
 
+import com.app.gradationback.domain.ArtDTO;
 import com.app.gradationback.domain.ArtVO;
 import com.app.gradationback.repository.ArtDAO;
 import com.app.gradationback.repository.ArtImgDAO;
@@ -51,5 +52,23 @@ public class ArtServiceImpl implements ArtService {
         artImgDAO.deleteAllByArtId(id);
 //        작품 삭제
         artDAO.deleteById(id);
+    }
+
+//    관리자용 승인 대기 목록 조회
+    @Override
+    public List<ArtDTO> getAllPending() {
+        return artDAO.findAllPending();
+    }
+
+//    관리자용 승인 대기 상세 조회
+    @Override
+    public Optional<ArtDTO> getPendingById(Long id) {
+        return artDAO.findPendingById(id);
+    }
+
+//    관리자용 승인 상태 변경
+    @Override
+    public void updateStatus(ArtDTO artDTO) {
+        artDAO.updateStatus(artDTO);
     }
 }

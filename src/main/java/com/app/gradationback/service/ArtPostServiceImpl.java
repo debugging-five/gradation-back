@@ -88,9 +88,4 @@ public class ArtPostServiceImpl implements ArtPostService {
         });
     }
 
-//    작품 게시글 전체 삭제 (회원 탈퇴)
-//    @Override
-//    public void removeAllByUserId(Long userId) {
-//        artPostDAO.deleteAllByUserId(userId);
-//    }
 }

@@ -2,12 +2,15 @@ package com.app.gradationback.controller;
 
 import com.app.gradationback.domain.ArtPostDTO;
 import com.app.gradationback.domain.CommentVO;
+import com.app.gradationback.domain.UserVO;
 import com.app.gradationback.service.CommentService;
+import com.app.gradationback.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -22,14 +25,35 @@ import java.util.Optional;
 public class CommentController {
 
     private final CommentService commentService;
+    private final UserService userService;
 
 
-//    댓글 등록
+
+    //    댓글 등록
     @Operation(summary = "댓글 등록", description = "댓글을 등록할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "댓글 등록 성공")
     @PostMapping("registration")
-    public ArtPostDTO write(@RequestBody CommentVO commentVO) {
+    public ArtPostDTO write(@RequestBody CommentVO commentVO, HttpSession session) {
+        Long userId = (Long) session.getAttribute("id");
+
+        if (userId == null) {
+            throw new RuntimeException("로그인이 필요합니다.");
+        }
+
+        // 유저 상태 확인
+        UserVO user = userService.findUserByIdForWrite(userId)
+                .orElseThrow(() -> new RuntimeException("회원 정보를 찾을 수 없습니다."));
+
+        if (user.getUserBanOk() == 1) {
+            throw new RuntimeException("댓글 작성이 제한된 사용자입니다.");
+        } else if (user.getUserBanOk() == 2) {
+            throw new RuntimeException("정지된 사용자입니다.");
+        }
+
+        // 댓글 등록
+        commentVO.setUserId(userId);
         commentService.write(commentVO);
+
 
         Optional<CommentVO> foundReply = commentService.getComment(commentVO.getId());
         if (foundReply.isPresent()) {

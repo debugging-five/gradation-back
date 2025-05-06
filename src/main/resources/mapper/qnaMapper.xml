@@ -50,4 +50,15 @@
         WHERE ID = #{id}
     </delete>
 
+    <!-- 관리자용 전체 문의 내역 조회 -->
+    <select id="selectAllForAdmin" resultType="QnaDTO">
+        SELECT
+            TBQ.ID AS QNA_ID,
+            QNA_TITLE, QNA_CONTENT, QNA_TIME, QNA_IMG_NAME, QNA_IMG_PATH, QNA_CATEGORY, QNA_ANSWER_TITLE, QNA_ANSWER_CONTENT, QNA_ANSWER_TIME
+        FROM TBL_QNA TBQ
+        JOIN TBL_USER TBU ON TBU.ID = TBQ.USER_ID
+        LEFT JOIN TBL_QNA_ANSWER TQA ON TQA.QNA_ID = TBQ.ID
+        ORDER BY QNA_TIME DESC
+    </select>
+
 </mapper>
