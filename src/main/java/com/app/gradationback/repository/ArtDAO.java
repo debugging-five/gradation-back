@@ -58,4 +58,5 @@ public class ArtDAO {
     public void updateStatus(ArtDTO artDTO) {
         artMapper.updateStatus(artDTO);
     }
+
 }

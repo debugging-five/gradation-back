@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("auction/api/*")
@@ -60,7 +61,7 @@ public class AuctionController {
     @Parameter(
             name = "id",
             description = "경매 번호",
-            schema = @Schema(type = "number"), // 스키마 타입
+            schema = @Schema(type = "number"),
             in = ParameterIn.PATH,
             required = true
     )
@@ -73,7 +74,7 @@ public class AuctionController {
     @Parameter(
             name = "id",
             description = "경매 번호",
-            schema = @Schema(type = "number"), // 스키마 타입
+            schema = @Schema(type = "number"),
             in = ParameterIn.PATH,
             required = true
     )
@@ -95,14 +96,31 @@ public class AuctionController {
     @Parameter(
             name = "auctionId",
             description = "경매 번호",
-            schema = @Schema(type = "number"), // 스키마 타입
+            schema = @Schema(type = "number"),
             in = ParameterIn.PATH,
             required = true
     )
-    @GetMapping("bidding-count/{auctionId}")
-    public Integer biddingCount(@PathVariable Long auctionId) {
+    @GetMapping("read-bidder-count/{auctionId}")
+    public Integer readBidderCount(@PathVariable Long auctionId) {
         return auctionService.auctionBidderCount(auctionId).orElse(0);
     }
+    @Operation(summary = "입찰자 조회", description = "현재 입찰자를 조회할 수 있는 API")
+    @Parameter(
+            name = "auctionId",
+            description = "경매 번호",
+            schema = @Schema(type = "number"),
+            in = ParameterIn.PATH,
+            required = true
+    )
+    @GetMapping("read-bidder/{auctionId}")
+    public AuctionBiddingVO readBidder(@PathVariable Long auctionId) {
+        Optional<AuctionBiddingVO> foundBidder = auctionService.auctionStatus(auctionId);
+        if(foundBidder.isPresent()) {
+            return foundBidder.get();
+        }
+        return new AuctionBiddingVO();
+    }
+
 
 
 

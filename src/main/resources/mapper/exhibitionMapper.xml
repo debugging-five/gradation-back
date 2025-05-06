@@ -57,7 +57,7 @@
 <!--    과거 전시회용 INSERT -->
 
 
-    <!--    <select id="selectGradation" resultType="GradationExhibitionDTO">-->
+    <!--    <findByAuctionId id="selectGradation" resultType="GradationExhibitionDTO">-->
 <!--        SELECT TGE.ID,-->
 <!--               TGE.GRADATION_EXHIBITION_TITLE,-->
 <!--               TGE.GRADATION_EXHIBITION_ART,-->
@@ -78,6 +78,6 @@
 <!--        ON TA.ID = TAI.ART_ID-->
 <!--        LEFT JOIN TBL_USER TU-->
 <!--        ON TA.USER_ID = TU.ID-->
-<!--    </select>-->
+<!--    </findByAuctionId>-->
 
 </mapper>
