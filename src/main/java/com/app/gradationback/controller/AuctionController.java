@@ -37,7 +37,7 @@ public class AuctionController {
     @ApiResponse(responseCode = "200", description = "수정 성공")
     @PutMapping("modify")
     public void modify(AuctionVO auctionVO) {
-        log.info(auctionVO.toString());
+//        log.info(auctionVO.toString());
         auctionService.auctionModify(auctionVO);
     }
 
@@ -104,6 +104,7 @@ public class AuctionController {
     public Integer readBidderCount(@PathVariable Long auctionId) {
         return auctionService.auctionBidderCount(auctionId).orElse(0);
     }
+
     @Operation(summary = "입찰자 조회", description = "현재 입찰자를 조회할 수 있는 API")
     @Parameter(
             name = "auctionId",
