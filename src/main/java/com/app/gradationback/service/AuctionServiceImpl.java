@@ -23,17 +23,17 @@ public class AuctionServiceImpl implements AuctionService {
 
     @Override
     public void auctionRegistration(AuctionVO auctionVO) {
-        auctionDAO.insert(auctionVO);
+        auctionDAO.save(auctionVO);
     }
 
     @Override
     public List<AuctionDTO> auctionList(HashMap<String, Object> params) {
-        return auctionDAO.selectAll(params);
+        return auctionDAO.findAll(params);
     }
 
     @Override
     public List<AuctionDTO> auctionRead(Long id) {
-        return auctionDAO.selectById(id);
+        return auctionDAO.findById(id);
     }
 
     @Override
