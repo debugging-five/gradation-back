@@ -32,6 +32,8 @@ public class ArtPostDAO {
         return artPostMapper.select(id);
     }
 
+    public List<ArtPostDTO> findAllByUserId(Long userId) { return artPostMapper.selectAllByUserId(userId); }
+
 //    작품 게시글 수정
     public void update(ArtPostVO artPostVO) {
         artPostMapper.update(artPostVO);
@@ -47,8 +49,6 @@ public class ArtPostDAO {
         artPostMapper.deleteAllByUserId(userId);
     }
 
-
     public void deleteAllByArtId(Long artId) { artPostMapper.deleteAllByArtId(artId); }
 
-    public List<ArtPostDTO> findAllByUserId(Long userId) { return artPostMapper.selectAllByUserId(userId); }
 }

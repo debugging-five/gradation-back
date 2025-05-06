@@ -1,12 +1,17 @@
 package com.app.gradationback.controller;
 
 import com.app.gradationback.domain.ArtPostDTO;
+import com.app.gradationback.domain.ArtVO;
 import com.app.gradationback.domain.CommentVO;
 import com.app.gradationback.service.ArtPostService;
 import com.app.gradationback.service.CommentService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -20,12 +25,9 @@ public class DisplayController {
     private final ArtPostService artPostService;
     private final CommentService commentService;
 
-//    게시글 등록 (게시글 + 작품 + 이미지)
-//    @PostMapping("register")
-//    public ResponseEntity<String> register(@RequestBody ArtPostDTO artPostDTO) {
-//        artPostService.register(artPostDTO);
-//        return ResponseEntity.ok("게시글이 성공적으로 등록되었습니다.");
-//    }
+    //    전시 등록 (게시글 + 작품 + 이미지)
+    @Operation(summary = "전시 등록", description = "전시를 등록할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "전시 등록 성공")
     @PostMapping("register")
     public ArtPostDTO register(@RequestBody ArtPostDTO artPostDTO) {
         log.info("{}", artPostDTO);
@@ -37,51 +39,35 @@ public class DisplayController {
         return new ArtPostDTO();
     }
 
-
 //    게시글 전체 조회 + 댓글 전체 조회
-//    @GetMapping("list")
-//    public ResponseEntity<List<Map<String, Object>>> getAllPosts() {
-//        List<ArtPostDTO> posts = artPostService.getArtPostList();
-//        List<Map<String, Object>> response = new ArrayList<>();
-//
-//        for (ArtPostDTO post : posts) {
-//            Map<String, Object> map = new HashMap<>();
-//            map.put("post", post);
-//            map.put("comments", commentService.getAllCommentByPostId(post.getId()));
-//            response.add(map);
-//        }
-//
-//        return ResponseEntity.ok(response);
-//    }
+    @Operation(summary = "전시 전체 조회", description = "게시글 + 작품 정보 + 이미지 + 댓글을 포함한 전시를 전체 조회할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "전시 전체 조회 성공")
     @GetMapping("list")
     public List<Map<String, Object>> getAllPosts() {
         List<ArtPostDTO> posts = artPostService.getArtPostList();
 //        게시글 + 댓글
-        List<Map<String, Object>> response = new ArrayList<>();
+        List<Map<String, Object>> postListWithComments = new ArrayList<>();
 
 //        게시글 1개 + 댓글
         for (ArtPostDTO post : posts) {
-            Map<String, Object> postDetail = new HashMap<>();
-            postDetail.put("post", post);
-            postDetail.put("comments", commentService.getAllCommentByPostId(post.getId()));
-            response.add(postDetail);
+            Map<String, Object> postWithComments = new HashMap<>();
+            postWithComments.put("post", post);
+            postWithComments.put("comments", commentService.getAllCommentByPostId(post.getId()));
+            postListWithComments.add(postWithComments);
         }
-        return response;
+        return postListWithComments;
     }
 
-//    게시글 단일 조회
-//    @GetMapping("/display/{postId}")
-//    public ResponseEntity<Map<String, Object>> getPost(@PathVariable Long postId) {
-//        ArtPostDTO post = artPostService.getArtPostById(postId).orElseThrow(() ->
-//                new NoSuchElementException("해당 게시글이 존재하지 않습니다."));
-//        List<CommentVO> comments = commentService.getAllCommentByPostId(postId);
-//
-//        Map<String, Object> response = new HashMap<>();
-//        response.put("post", post);
-//        response.put("comments", comments);
-//
-//        return ResponseEntity.ok(response);
-//    }
+//    전시 단일 조회
+    @Operation(summary = "전시 단일 조회", description = "게시글 + 작품 정보 + 이미지 + 댓글을 포함한 전시를 1개 조회할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "전시 1개 조회 성공")
+    @Parameter(
+            name = "id",
+            description = "게시글 번호",
+            schema = @Schema(type = "number"), // 스키마 타입, 자바 타입X, swagger에서 정의되고 있는 타입
+            in = ParameterIn.PATH, // 어디에서 받는지
+            required = true
+    )
     @GetMapping("/display/{postId}")
     public Map<String, Object> getPost(@PathVariable Long postId) {
         log.info("{}", postId);
@@ -97,7 +83,16 @@ public class DisplayController {
         return response;
     }
 
-//    게시글 삭제 (작품 + 이미지 + 댓글 삭제)
+//    전시 삭제 (작품 + 이미지 + 댓글 삭제)
+    @Operation(summary = "전시 삭제", description = "전시를 삭제할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "전시 삭제 성공")
+    @Parameter(
+            name = "id",
+            description = "게시글 번호",
+            schema = @Schema(type = "number"),
+            in = ParameterIn.PATH,
+            required = true
+    )
     @DeleteMapping("/display/{postId}")
     public void deletePost(@PathVariable Long postId) {
         artPostService.removeById(postId);

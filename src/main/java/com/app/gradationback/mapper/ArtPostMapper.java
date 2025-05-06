@@ -20,6 +20,8 @@ public interface ArtPostMapper {
 //    작품 게시글 단일 조회
     public Optional<ArtPostDTO> select(Long id);
 
+    public List<ArtPostDTO> selectAllByUserId(Long userId);
+
 //    작품 게시글 수정
     public void update(ArtPostVO artPostVO);
 
@@ -30,12 +32,4 @@ public interface ArtPostMapper {
     public void deleteAllByUserId(Long userId);
 
     public void deleteAllByArtId(Long artId);
-
-    public List<ArtPostDTO> selectAllByUserId(Long userId);
-
-
-
-
-
-
 }

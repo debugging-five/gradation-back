@@ -19,15 +19,12 @@ public interface ArtMapper {
 //    단일 작품 조회
     public Optional<ArtVO> select(Long id);
 
-//    카테고리별 작품 조회
-//    public List<ArtVO> selectArtListByFilter(ArtFilterVO artFilterVO);
-
-
 //    카테고리 + 드롭다운 + 페이지네이션
     public List<ArtVO> selectArtListByCategoryAndDropdown(Map<String, Object> params);
+
+    public List<ArtVO> selectAllByUserId(Long userId);
 
 //    작품 삭제
     public void deleteById(Long id);
 
-    public List<ArtVO> selectAllByUserId(Long userId);
 }

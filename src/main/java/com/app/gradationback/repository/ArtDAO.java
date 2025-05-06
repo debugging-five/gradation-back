@@ -30,14 +30,13 @@ public class ArtDAO {
         return artMapper.select(id);
     }
 
-//    카테고리별 작품 조회
-//    public List<ArtVO> findArtListByFilter(ArtFilterVO artFilterVo) {
-//        return artMapper.selectArtListByFilter(artFilterVO);
-//    }
-
 //    카테고리 + 드롭다운 + 페이지네이션
     public List<ArtVO> findArtListByCategoryAndDropdown(Map<String, Object> params) {
         return artMapper.selectArtListByCategoryAndDropdown(params);
+    }
+
+    public List<ArtVO> findAllByUserId(Long userId) {
+        return artMapper.selectAllByUserId(userId);
     }
 
 //    작품 삭제
@@ -45,7 +44,4 @@ public class ArtDAO {
         artMapper.deleteById(id);
     }
 
-    public List<ArtVO> findAllByUserId(Long userId) {
-        return artMapper.selectAllByUserId(userId);
-    }
 }

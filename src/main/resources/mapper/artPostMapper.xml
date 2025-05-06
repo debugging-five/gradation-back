@@ -32,26 +32,6 @@
     </select>
 
     <!--  작품 게시글 단일 조회  -->
-<!--    <select id="select" parameterType="Long" resultType="ArtPostDTO">-->
-<!--        SELECT TBP.ID, TBP.ART_POST_DATE, TBP.USER_ID, TBP.ART_ID,-->
-<!--               TBA.ART_TITLE, TBA.ART_CATEGORY, TBA.ART_MATERIAL, TBA.ART_SIZE, TBA.ART_DESCRIPTION,-->
-<!--               TBA.ART_END_DATE, TBA.USER_ID, TBI.ART_IMG_NAME, TBI.ART_IMG_PATH, TBI.ART_ID,-->
-<!--               TBU.USER_NAME, TBC.COMMENT_CONTENT, TBC.COMMENT_DATE,-->
-<!--               TBCL.COMMENT_ID, TBCL.USER_ID, TBCL.COMMENT_LIKE_TIME, TBU.USER_EMAIL-->
-<!--        FROM TBL_ART_POST TBP-->
-<!--        JOIN TBL_ART TBA-->
-<!--        ON TBP.ART_ID = TBA.ID-->
-<!--        JOIN TBL_ART_IMG TBI-->
-<!--        ON TBI.ART_ID = TBA.ID-->
-<!--        JOIN TBL_USER TBU-->
-<!--        ON TBP.USER_ID = TBU.ID-->
-<!--        LEFT JOIN TBL_COMMENT TBC-->
-<!--        ON TBP.ID = TBC.ART_POST_ID-->
-<!--        LEFT JOIN TBL_COMMENT_LIKE TBCL-->
-<!--        ON TBC.ID = TBCL.COMMENT_ID-->
-<!--        WHERE TBP.ID = #{id}-->
-<!--    </select>-->
-
     <select id="select" parameterType="Long" resultType="ArtPostDTO">
         SELECT TBP.ID, TBP.ART_POST_DATE, TBP.USER_ID, TBP.ART_ID,
                TBA.ART_TITLE, TBA.ART_CATEGORY, TBA.ART_MATERIAL, TBA.ART_SIZE,
@@ -65,6 +45,11 @@
         WHERE TBP.ID = #{id}
     </select>
 
+    <select id="selectAllByUserId" parameterType="Long" resultType="ArtPostDTO">
+        SELECT ID, ART_ID, USER_ID, ART_POST_DATE
+        FROM TBL_ART_POST
+        WHERE USER_ID = #{userId}
+    </select>
 
     <!--  작품 게시글 수정  -->
     <update id="update" parameterType="ArtPostVO">
@@ -89,16 +74,5 @@
         DELETE FROM TBL_ART_POST
         WHERE ART_ID = #{artId}
     </delete>
-
-
-    <select id="selectAllByUserId" parameterType="Long" resultType="ArtPostDTO">
-        SELECT ID, ART_ID, USER_ID, ART_POST_DATE
-        FROM TBL_ART_POST
-        WHERE USER_ID = #{userId}
-    </select>
-
-
-
-
 
 </mapper>
