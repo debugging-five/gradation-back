@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.gradationback.mapper.DeliveryMapper">
+    <insert id="insert" parameterType="DeliveryVO">
+        <selectKey keyProperty="id" order="BEFORE" resultType="Long">
+            SELECT SEQ_DELIVERY.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO TBL_DELIVERY(ID, DELIVERY_ADDRESS, DELIVERY_DETAIL_ADDRESS, DELIVERY_POSTAL_CODE, DELIVERY_STATE, DELIVERY_MESSAGE, DELIVERY_RECEIVER, DELIVERY_PHONE, PAYMENT_ID)
+        VALUES (#{id}, #{deliveryAddress}, #{deliveryDetailAddress}, #{deliveryPostalCode}, '배송중', #{deliveryMessage}, #{deliveryReceiver}, #{deliveryPhone}, #{paymentId})
+    </insert>
+
+    <update id="update" parameterType="DeliveryVO">
+        UPDATE TBL_DELIVERY
+        SET DELIVERY_ADDRESS = #{deliveryAddress},
+            DELIVERY_DETAIL_ADDRESS = #{deliveryDetailAddress},
+            DELIVERY_POSTAL_CODE = #{deliveryPostalCode},
+            DELIVERY_STATE = #{deliveryState},
+            DELIVERY_MESSAGE = #{deliveryMessage},
+            DELIVERY_RECEIVER = #{deliveryReceiver},
+            DELIVERY_PHONE = #{deliveryPhone}
+        WHERE ID = #{id}
+    </update>
+
+    <select id="select" parameterType="Long" resultType="DeliveryVO">
+        SELECT ID, DELIVERY_ADDRESS, DELIVERY_DETAIL_ADDRESS, DELIVERY_POSTAL_CODE, DELIVERY_STATE, DELIVERY_MESSAGE, DELIVERY_RECEIVER, DELIVERY_PHONE, PAYMENT_ID
+        FROM TBL_DELIVERY
+        WHERE ID = #{id}
+    </select>
+
+</mapper>

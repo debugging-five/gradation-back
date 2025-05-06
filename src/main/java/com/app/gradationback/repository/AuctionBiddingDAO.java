@@ -14,27 +14,27 @@ import java.util.Optional;
 public class AuctionBiddingDAO {
     public final AuctionBiddingMapper auctionBiddingMapper;
 
-    public void insert(AuctionBiddingVO auctionBiddingVO) {
+    public void save(AuctionBiddingVO auctionBiddingVO) {
         auctionBiddingMapper.insert(auctionBiddingVO);
     }
 
-    public List<AuctionBiddingVO> selectAll(Long auctionId) {
+    public List<AuctionBiddingVO> findAllListByAuctionId(Long auctionId) {
         return auctionBiddingMapper.selectAll(auctionId);
     }
 
-    public Optional<AuctionBiddingVO> select(Long auctionId) {
+    public Optional<AuctionBiddingVO> findByAuctionId(Long auctionId) {
         return auctionBiddingMapper.select(auctionId);
     }
 
-    public List<AuctionBiddingVO> selectAutoAll(Long auctionId) {
+    public List<AuctionBiddingVO> findAutoListByAuctionId(Long auctionId) {
         return auctionBiddingMapper.selectAutoAll(auctionId);
     }
 
-    public Optional<AuctionBiddingVO> selectAuto(Long auctionId) {
+    public Optional<AuctionBiddingVO> findAutoByAuctionId(Long auctionId) {
         return auctionBiddingMapper.selectAuto(auctionId);
     }
 
-    public Optional<Integer> selectCount(Long auctionId) {
+    public Optional<Integer> findCountByAuctionId(Long auctionId) {
         return auctionBiddingMapper.selectCount(auctionId);
     }
 

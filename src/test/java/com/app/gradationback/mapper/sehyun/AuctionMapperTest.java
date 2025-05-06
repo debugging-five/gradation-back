@@ -48,7 +48,7 @@ public class AuctionMapperTest {
 //        params.put("direction", "asc");
 //        params.put("category", "건축");
 //        params.put("status", "bidding");
-//        List<AuctionDTO> auctions = auctionMapper.selectAll(params);
+//        List<AuctionDTO> auctions = auctionMapper.findAllListByAuctionId(params);
 //        log.info("------------------------------------");
 //        for (AuctionDTO auction : auctions) {
 //            log.info(auction.toString());
