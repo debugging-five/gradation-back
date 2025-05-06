@@ -87,8 +87,8 @@
             <!-- 검색 (작품명, 작가명) -->
             <if test="keyword != null and keyword != ''">
                 AND (
-                INSTR(LOWER(TBA.ART_TITLE), LOWER(#{keyword})) > 0
-                OR INSTR(LOWER(TBU.USER_NAME), LOWER(#{keyword})) > 0
+                TBA.ART_TITLE LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+                OR TBU.USER_NAME LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
                 )
             </if>
 
