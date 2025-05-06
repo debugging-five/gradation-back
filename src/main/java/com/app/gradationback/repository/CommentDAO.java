@@ -49,4 +49,7 @@ public class CommentDAO {
         commentMapper.deleteAllByPostId(postId);
     }
 
+    public List<CommentVO> findAllByPostId(Long postId) {
+        return commentMapper.selectAllByPostId(postId);
+    }
 }
