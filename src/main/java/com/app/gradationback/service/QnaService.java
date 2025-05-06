@@ -23,4 +23,7 @@ public interface QnaService {
 
     //    삭제
     public void remove(Long id);
+
+    // 관리자용 전체 문의 내역 조회
+    public List<QnaDTO> getAllQnaListForAdmin();
 }
