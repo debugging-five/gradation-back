@@ -1,4 +1,4 @@
-package com.app.gradationback.mapper.duckjun;
+package com.app.gradationback.mapper.duckjun.mapper;
 
 import com.app.gradationback.domain.UpcyclingVO;
 import com.app.gradationback.mapper.UpcyclingMapper;
@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @SpringBootTest
 @Slf4j
-public class upcyclingMapperTests {
+public class UpcyclingMapperTests {
     @Autowired
     private UpcyclingMapper upcyclingMapper;
     @Autowired
@@ -31,13 +31,18 @@ public class upcyclingMapperTests {
     @Test
     public void insertTest(){
         UpcyclingVO upcyclingVO = new UpcyclingVO();
-        upcyclingVO.setUpcyclingCategory("금속");
-        upcyclingVO.setUpcyclingSize("소형 1");
-        upcyclingVO.setUpcyclingDate(new Date());
         upcyclingVO.setUpcyclingAddress("서울시 강남구 테헤란로 131");
+        upcyclingVO.setUpcyclingDetailAddress("4층");
+        upcyclingVO.setUpcyclingEmail("upcycling@gmail.com");
+        upcyclingVO.setUpcyclingPhone("010-2345-6789");
+        upcyclingVO.setUpcyclingDate(new Date());
+        upcyclingVO.setUpcyclingSizeSmall(1);
+        upcyclingVO.setUpcyclingSizeMedium(0);
+        upcyclingVO.setUpcyclingSizeLarge(0);
+        upcyclingVO.setUpcyclingMaterials("금속");
         upcyclingVO.setUpcyclingImgName("default.jpg");
         upcyclingVO.setUpcyclingImgPath("assets/images/upcycling");
-        upcyclingVO.setUpcyclingSignificant("지속 가능한 재활용");
+        upcyclingVO.setUpcyclingSignificant("수거 전 연락부탁함다");
         upcyclingVO.setUpcyclingStatus("미신청");
         upcyclingVO.setUserId(2L);
 
@@ -46,13 +51,13 @@ public class upcyclingMapperTests {
 
     @Test
     public void findAllTest() {
-        List<UpcyclingVO> list = upcyclingDAO.getAll();
+        List<UpcyclingVO> list = upcyclingDAO.getUpcyclingUserList();
         list.forEach(vo -> log.info(vo.toString()));
     }
 
     @Test
     public void getByIdTest() {
-        Optional<UpcyclingVO> found = upcyclingDAO.getById(2L);
+        Optional<UpcyclingVO> found = upcyclingDAO.getByUpcyclingUser(2L);
         found.ifPresent(vo -> log.info(vo.toString()));
     }
 

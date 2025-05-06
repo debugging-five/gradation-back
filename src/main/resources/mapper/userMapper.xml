@@ -68,4 +68,20 @@
 		WHERE USER_EMAIL = #{userEmail}
     </delete>
 
+<!--    관리자용 유저 정지 처리-->
+    <insert id="insertBan" parameterType="BanDTO">
+        INSERT INTO TBL_BAN(ID, BAN_DATE, BAN_REASON, USER_ID)
+        VALUES (SEQ_BAN.NEXTVAL, #{banDate}, #{banReason}, #{userId})
+    </insert>
+
+<!--    관리자용 유저 정지 상태 업데이트(댓글, 영구)-->
+    <update id="updateUserBanStatus" parameterType="banDTO">
+        UPDATE TBL_USER
+        SET USER_BAN_OK = #{usdrBanOk}
+        WHERE ID = #{userId}
+    </update>
+<!--    댓글 작성 시 정지 유저 확인용-->
+    <select id="selectUserByIdForWrite" resultType="userVO" parameterType="long">
+        SELECT * FROM TBL_USER WHERE ID = #{id}
+    </select>
 </mapper>

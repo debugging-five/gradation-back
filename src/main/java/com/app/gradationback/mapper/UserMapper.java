@@ -1,5 +1,6 @@
 package com.app.gradationback.mapper;
 
+import com.app.gradationback.domain.BanDTO;
 import com.app.gradationback.domain.UserVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -41,4 +42,14 @@ public interface UserMapper {
 
 //    회원 탈퇴
     public void deleteUser(String userEmail);
+
+//    관리자용 유저 정지 처리
+    public void insertBan(BanDTO banDTO);
+
+//    관리자용 유저 정지 상태 업데이트
+    public void updateUserBanStatus(BanDTO banDTO);
+
+//    댓글 작성 시 정지 유저 확인용
+    public Optional<UserVO> selectUserByIdForWrite(Long id);
+
 }

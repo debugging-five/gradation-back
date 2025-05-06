@@ -1,34 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.app.gradationback.mapper.UpcyclingMapper">
-    <!--신청 내역 조회-->
+
+    <!-- 전체 조회 -->
     <select id="selectAll" resultType="UpcyclingVO">
-        SELECT ID, UPCYCLING_CATEGORY, UPCYCLING_SIZE, UPCYCLING_DATE, UPCYCLING_ADDRESS, UPCYCLING_IMG_NAME, UPCYCLING_IMG_PATH, UPCYCLING_SIGNIFICANT, UPCYCLING_STATUS
+        SELECT
+            ID, UPCYCLING_ADDRESS, UPCYCLING_DETAIL_ADDRESS, UPCYCLING_EMAIL, UPCYCLING_PHONE, UPCYCLING_DATE,
+            UPCYCLING_SIZE_SMALL, UPCYCLING_SIZE_MEDIUM, UPCYCLING_SIZE_LARGE, UPCYCLING_MATERIALS, UPCYCLING_IMG_NAME,
+            UPCYCLING_IMG_PATH, UPCYCLING_SIGNIFICANT, UPCYCLING_STATUS, USER_ID
         FROM TBL_UPCYCLING
     </select>
-    <!--ID 단건 조회-->
-    <select id="select" resultType="UpcyclingVO">
-        SELECT ID, UPCYCLING_CATEGORY, UPCYCLING_SIZE, UPCYCLING_DATE, UPCYCLING_ADDRESS, UPCYCLING_IMG_NAME, UPCYCLING_IMG_PATH, UPCYCLING_SIGNIFICANT, UPCYCLING_STATUS
+
+    <!-- 단건 조회 -->
+    <select id="select" parameterType="Long" resultType="UpcyclingVO">
+        SELECT
+            ID, UPCYCLING_ADDRESS, UPCYCLING_DETAIL_ADDRESS, UPCYCLING_EMAIL, UPCYCLING_PHONE, UPCYCLING_DATE,
+            UPCYCLING_SIZE_SMALL, UPCYCLING_SIZE_MEDIUM, UPCYCLING_SIZE_LARGE, UPCYCLING_MATERIALS, UPCYCLING_IMG_NAME,
+            UPCYCLING_IMG_PATH, UPCYCLING_SIGNIFICANT, UPCYCLING_STATUS, USER_ID
         FROM TBL_UPCYCLING
         WHERE ID = #{id}
     </select>
-    <!--업사이클링 신청 등록-->
+
+    <!-- 등록 -->
     <insert id="insert" parameterType="UpcyclingVO">
-        INSERT INTO TBL_UPCYCLING(
-            ID, UPCYCLING_CATEGORY, UPCYCLING_SIZE, UPCYCLING_DATE, UPCYCLING_ADDRESS, UPCYCLING_IMG_NAME, UPCYCLING_IMG_PATH, UPCYCLING_SIGNIFICANT, UPCYCLING_STATUS, USER_ID
-        )VALUES (
-            SEQ_UPCYCLING.NEXTVAL, #{upcyclingCategory}, #{upcyclingSize}, #{upcyclingDate}, #{upcyclingAddress}, #{upcyclingImgName}, #{upcyclingImgPath}, #{upcyclingSignificant}, #{upcyclingStatus}, #{userId}
-        )
+        INSERT INTO TBL_UPCYCLING (
+            ID, UPCYCLING_ADDRESS, UPCYCLING_DETAIL_ADDRESS, UPCYCLING_EMAIL, UPCYCLING_PHONE, UPCYCLING_DATE,
+            UPCYCLING_SIZE_SMALL, UPCYCLING_SIZE_MEDIUM, UPCYCLING_SIZE_LARGE, UPCYCLING_MATERIALS, UPCYCLING_IMG_NAME,
+            UPCYCLING_IMG_PATH, UPCYCLING_SIGNIFICANT, UPCYCLING_STATUS, USER_ID
+        ) VALUES (
+            SEQ_UPCYCLING.NEXTVAL, #{upcyclingAddress}, #{upcyclingDetailAddress}, #{upcyclingEmail},
+             #{upcyclingPhone}, #{upcyclingDate}, #{upcyclingSizeSmall}, #{upcyclingSizeMedium}, #{upcyclingSizeLarge},
+             #{upcyclingMaterials}, #{upcyclingImgName}, #{upcyclingImgPath}, #{upcyclingSignificant},
+             #{upcyclingStatus}, #{userId}
+                 )
     </insert>
-    <!--상태 변경-->
+
+    <!-- 수정 (상태 변경) -->
     <update id="update" parameterType="UpcyclingVO">
         UPDATE TBL_UPCYCLING
-        SET UPCYCLING_STATUS = #{upcyclingStatus}
+        SET
+            UPCYCLING_STATUS = #{upcyclingStatus}
         WHERE ID = #{id}
     </update>
-    <!--삭제-->
+
+    <!-- 삭제 -->
     <delete id="delete" parameterType="Long">
         DELETE FROM TBL_UPCYCLING
         WHERE ID = #{id}
     </delete>
+
+
+
 </mapper>

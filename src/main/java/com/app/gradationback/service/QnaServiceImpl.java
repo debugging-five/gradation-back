@@ -20,7 +20,7 @@ public class QnaServiceImpl implements QnaService {
 //    등록
     @Override
     public void registraction(QnaVO qnaVO) {
-        qnaDAO.registraction(qnaVO);
+        qnaDAO.save(qnaVO);
     }
 
 //    단일조회
@@ -45,5 +45,11 @@ public class QnaServiceImpl implements QnaService {
     @Override
     public void remove(Long id) {
         qnaDAO.delete(id);
+    }
+
+//    관리자용 전체 문의 내역 조회
+    @Override
+    public List<QnaDTO> getAllQnaListForAdmin() {
+        return qnaDAO.getAllQnaListForAdmin();
     }
 }

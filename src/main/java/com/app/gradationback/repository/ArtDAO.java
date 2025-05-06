@@ -1,5 +1,6 @@
 package com.app.gradationback.repository;
 
+import com.app.gradationback.domain.ArtDTO;
 import com.app.gradationback.domain.ArtVO;
 import com.app.gradationback.mapper.ArtMapper;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,20 @@ public class ArtDAO {
 //    작품 삭제
     public void deleteById(Long id) {
         artMapper.deleteById(id);
+    }
+
+//    관리자 승인 대기 목록 조회
+    public List<ArtDTO> findAllPending() {
+        return artMapper.selectAllPending();
+    }
+//    관리자 승인 대기 상세 조회
+    public Optional<ArtDTO> findPendingById(Long id) {
+        return artMapper.selectPendingById(id);
+    }
+
+//    관리자 승인, 반려 처리
+    public void updateStatus(ArtDTO artDTO) {
+        artMapper.updateStatus(artDTO);
     }
 
 }
