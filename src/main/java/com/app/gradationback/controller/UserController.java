@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -33,19 +34,30 @@ public class UserController {
 //    @Operation(summary = "회원가입", description = "회원가입을 할 수 있는 API")
 //    @ApiResponse(responseCode = "200", description = "회원가입 성공")
 //    @PostMapping("join")
-////    public UserVO join(@RequestBody UserVO userVO) {
-////        userService.join(userVO);
-////        log.info("{}", userVO);
-////        Optional<UserVO> foundUser = userService.getUserByEmail(userVO.getUserEmail());
-////        if (foundUser.isPresent()) {
-////            return foundUser.get();
-////        }
-////        return new UserVO();
-////    }
+//////    public UserVO join(@RequestBody UserVO userVO) {
+//////        userService.join(userVO);
+//////        log.info("{}", userVO);
+//////        Optional<UserVO> foundUser = userService.getUserByEmail(userVO.getUserEmail());
+//////        if (foundUser.isPresent()) {
+//////            return foundUser.get();
+//////        }
+//////        return new UserVO();
+//////    }
 //    public ResponseEntity<Map<String, Object>> join(@RequestBody UserVO userVO) {
 //        Map<String, Object> response = new HashMap<>();
 //
-//        Long userId = userService.getUserI
+//        String userEmail = userService.getUserByEmail(userVO.getUserEmail());
+//        if(userEmail != null) {
+//            UserVO foundUser = userService.getUserByEmail(userEmail).orElse(null);
+//
+//            if(foundUser != null && foundUser.getUserEmail().equals(userVO.getUserEmail())) {
+//                response.put("message", "이미 사용중인 이메일입니다.");
+//                return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+//            }
+//        }
+//        userService.join(userVO);
+//        response.put("message", "회원가입이 완료되었습니다.");
+//        return ResponseEntity.ok(response);
 //    }
 
 //    로그인
