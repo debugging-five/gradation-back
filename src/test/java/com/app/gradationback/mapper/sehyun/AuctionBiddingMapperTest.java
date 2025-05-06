@@ -44,7 +44,7 @@ public class AuctionBiddingMapperTest {
     
     @Test
     public void select() {
-        Optional<AuctionBiddingVO> foundBidding = auctionBiddingMapper.select(6L);
+        Optional<AuctionBiddingVO> foundBidding = auctionBiddingMapper.select(1L);
         if (foundBidding.isPresent()) {
             log.info(foundBidding.get().toString());
         }else {

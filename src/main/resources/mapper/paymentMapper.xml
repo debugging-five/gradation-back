@@ -70,7 +70,14 @@
             USER_UNIVERSITY_STATUS,
             USER_ART_CATEGORY,
             USER_BACKGROUND_IMG_NAME,
-            USER_BACKGROUND_IMG_PATH
+            USER_BACKGROUND_IMG_PATH,
+            DELIVERY_ADDRESS,
+            DELIVERY_DETAIL_ADDRESS,
+            DELIVERY_POSTAL_CODE,
+            DELIVERY_STATE,
+            DELIVERY_MESSAGE,
+            DELIVERY_RECEIVER,
+            DELIVERY_PHONE
         FROM TBL_PAYMENT TP
         JOIN TBL_AUCTION TAU
             ON TAU.ID = TP.AUCTION_ID
@@ -88,6 +95,8 @@
             ON TAR.ID = TAI.ART_ID
         JOIN TBL_USER TU
             ON TAU.USER_ID = TU.ID
+        LEFT OUTER JOIN TBL_DELIVERY TD
+            ON TP.ID = TD.PAYMENT_ID
         WHERE
             TP.ID = #{id}
     </select>
@@ -145,13 +154,20 @@
             USER_UNIVERSITY_STATUS,
             USER_ART_CATEGORY,
             USER_BACKGROUND_IMG_NAME,
-            USER_BACKGROUND_IMG_PATH
+            USER_BACKGROUND_IMG_PATH,
+            DELIVERY_ADDRESS,
+            DELIVERY_DETAIL_ADDRESS,
+            DELIVERY_POSTAL_CODE,
+            DELIVERY_STATE,
+            DELIVERY_MESSAGE,
+            DELIVERY_RECEIVER,
+            DELIVERY_PHONE
         FROM TBL_PAYMENT TP
-                 JOIN TBL_AUCTION TAU
-                      ON TAU.ID = TP.AUCTION_ID
-                 JOIN TBL_ART TAR
-                      ON TAR.ID = TAU.ART_ID
-                 JOIN (
+        JOIN TBL_AUCTION TAU
+            ON TAU.ID = TP.AUCTION_ID
+        JOIN TBL_ART TAR
+            ON TAR.ID = TAU.ART_ID
+        JOIN (
             SELECT T1.ART_ID, T1.ART_IMG_NAME, T1.ART_IMG_PATH
             FROM TBL_ART_IMG T1
                      JOIN (
@@ -160,9 +176,11 @@
                 GROUP BY ART_ID
             ) T2 ON T1.ART_ID = T2.ART_ID AND T1.ID = T2.MIN_ID
         ) TAI
-                      ON TAR.ID = TAI.ART_ID
-                 JOIN TBL_USER TU
-                      ON TAU.USER_ID = TU.ID
+            ON TAR.ID = TAI.ART_ID
+        JOIN TBL_USER TU
+            ON TAU.USER_ID = TU.ID
+        LEFT OUTER JOIN TBL_DELIVERY TD
+            ON TP.ID = TD.PAYMENT_ID
         WHERE
             TAU.USER_ID = #{userId}
     </select>

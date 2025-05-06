@@ -36,7 +36,7 @@ public class PaymentServiceTest {
 
     @Test
     public void selectTest() {
-        Optional<DeliveryDTO> foundPayment = paymentMapper.select(1L);
+        Optional<DeliveryDTO> foundPayment = paymentMapper.select(21L);
 
         if(foundPayment.isPresent()) {
             log.info("{}",foundPayment.get());
