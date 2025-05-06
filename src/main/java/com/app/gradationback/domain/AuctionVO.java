@@ -10,6 +10,7 @@ import java.util.Date;
 @Data
 @Schema(description = "경매 정보")
 public class AuctionVO {
+
     @Schema(description = "경매 번호", required = true, example = "1")
     private Long id;
 

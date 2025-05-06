@@ -26,7 +26,7 @@ public class FaqMapperTests {
 //        faqDTO.setFaqContent("전시를 진행할때는 일단 어렵게 생각하지 말고...");
 //        faqDTO.setFaqCategory("전시");
 //        faqDTO.setUserId(1L);
-//        faqMapper.insert(faqDTO);
+//        faqMapper.save(faqDTO);
 //    }
 
 //    모두조회(리스트)

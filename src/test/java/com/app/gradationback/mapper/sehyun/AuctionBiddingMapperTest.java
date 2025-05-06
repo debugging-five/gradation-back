@@ -36,15 +36,15 @@ public class AuctionBiddingMapperTest {
 
     @Test
     public void selectAll() {
-        List<AuctionBiddingVO> biddings = auctionBiddingMapper.selectAll(6L);
-        for (AuctionBiddingVO auctionBiddingVO : biddings) {
+        List<AuctionBiddingVO> bidding = auctionBiddingMapper.selectAll(6L);
+        for (AuctionBiddingVO auctionBiddingVO : bidding) {
             log.info(auctionBiddingVO.toString());
         }
     }
     
     @Test
     public void select() {
-        Optional<AuctionBiddingVO> foundBidding = auctionBiddingMapper.select(6L);
+        Optional<AuctionBiddingVO> foundBidding = auctionBiddingMapper.select(1L);
         if (foundBidding.isPresent()) {
             log.info(foundBidding.get().toString());
         }else {
@@ -63,4 +63,5 @@ public class AuctionBiddingMapperTest {
             }
         }
     }
+
 }
