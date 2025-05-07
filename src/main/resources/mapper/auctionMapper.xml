@@ -158,6 +158,7 @@
         WHERE TAU.ID = #{id}
     </select>
 
+
     <update id="update" parameterType="AuctionVO">
         UPDATE TBL_AUCTION
         SET

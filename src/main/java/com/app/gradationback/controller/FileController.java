@@ -81,9 +81,9 @@ public class FileController {
 //   대학 ExhibitionService 생기면 추가
 
     @Operation(summary = "이미지 조회", description = "패스와 이름을 적으면 이미지를 반환해주는 API")
-    @GetMapping("get/{fileName}/{filePath}")
+    @GetMapping("get/{fileName}")
     @ResponseBody
-    public byte[] display(@PathVariable String fileName, @PathVariable String filePath) throws IOException {
-        return FileCopyUtils.copyToByteArray(new File(filePath + "/" + fileName));
+    public byte[] display(@PathVariable String fileName, @RequestParam String filePath) throws IOException {
+        return FileCopyUtils.copyToByteArray(new File("c:/upload/" + filePath + "/" + fileName));
     }
 }
