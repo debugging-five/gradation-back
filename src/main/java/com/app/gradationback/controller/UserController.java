@@ -173,12 +173,15 @@ public class UserController {
     @Operation(summary = "비밀번호 찾기", description = "비밀번호를 찾을 수 있는 API")
     @ApiResponse(responseCode = "200", description = "비밀번호 찾기 성공")
     @GetMapping("/find-password/{userEmail}")
-    public String findPassword(@PathVariable String userEmail) {
-        String userPassword = userService.getPasswordByEmail(userVO.getUserEmail());
-        if (userPassword != null) {
-            return userPassword;
+    public ResponseEntity<Map<String, Object>> findPassword(@PathVariable String userEmail) {
+        Map<String, Object> response = new HashMap<>();
+        String foundPassword = userService.getPasswordByEmail(userEmail);
+        if (foundPassword != null) {
+            response.put("foundPassword", foundPassword);
+            return ResponseEntity.ok(response);
         }
-        return null;
+        response.put("message", "입력하신 이메일에 해당하는 비밀번호가 존재하지 않습니다.");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
 //    회원 정보 수정

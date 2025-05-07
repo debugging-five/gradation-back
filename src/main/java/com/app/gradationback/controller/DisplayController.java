@@ -1,12 +1,15 @@
 package com.app.gradationback.controller;
 
+import com.app.gradationback.domain.ArtImgVO;
 import com.app.gradationback.domain.ArtPostDTO;
 import com.app.gradationback.domain.ArtVO;
 import com.app.gradationback.domain.CommentVO;
+import com.app.gradationback.service.ArtImgService;
 import com.app.gradationback.service.ArtPostService;
 import com.app.gradationback.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -24,6 +27,7 @@ public class DisplayController {
 
     private final ArtPostService artPostService;
     private final CommentService commentService;
+    private final ArtImgService artImgService;
 
     //    전시 등록 (게시글 + 작품 + 이미지)
     @Operation(summary = "전시 등록", description = "전시를 등록할 수 있는 API")
@@ -41,6 +45,13 @@ public class DisplayController {
 
 //    게시글 전체 조회 + 댓글 전체 조회
     @Operation(summary = "전시 전체 조회", description = "게시글 + 작품 정보 + 이미지 + 댓글을 포함한 전시를 전체 조회할 수 있는 API")
+    @Parameters({
+            @Parameter(name = "order", description = "정렬기준", example = "popular"),
+            @Parameter(name = "cursor", description = "페이지", example = "1"),
+            @Parameter(name = "direction", description = "오름차순", example = "asc"),
+            @Parameter(name = "category", description = "분류", example = "건축, 회화, 한국화, 조각, 서예, 공예"),
+            @Parameter(name = "keyword", description = "검색", example = "작가명, 작품명")
+    })
     @ApiResponse(responseCode = "200", description = "전시 전체 조회 성공")
     @GetMapping("list")
     public List<Map<String, Object>> getAllPosts() {
@@ -50,10 +61,11 @@ public class DisplayController {
 
 //        게시글 1개 + 댓글
         for (ArtPostDTO post : posts) {
-            Map<String, Object> postWithComments = new HashMap<>();
-            postWithComments.put("post", post);
-            postWithComments.put("comments", commentService.getAllCommentByPostId(post.getId()));
-            postListWithComments.add(postWithComments);
+            Map<String, Object> postDetail = new HashMap<>();
+            postDetail.put("post", post);
+            postDetail.put("comments", commentService.getAllCommentByPostId(post.getId()));
+            postDetail.put("images", artImgService.getArtImgListByArtId(post.getArtId()));
+            postListWithComments.add(postDetail);
         }
         return postListWithComments;
     }
@@ -64,8 +76,8 @@ public class DisplayController {
     @Parameter(
             name = "id",
             description = "게시글 번호",
-            schema = @Schema(type = "number"), // 스키마 타입, 자바 타입X, swagger에서 정의되고 있는 타입
-            in = ParameterIn.PATH, // 어디에서 받는지
+            schema = @Schema(type = "number"),
+            in = ParameterIn.PATH,
             required = true
     )
     @GetMapping("/display/{postId}")
@@ -76,9 +88,12 @@ public class DisplayController {
 
         if(foundArtPost.isPresent()) {
             ArtPostDTO post = foundArtPost.get();
+            Long artId = post.getArtId();
             List<CommentVO> comments = commentService.getAllCommentByPostId(postId);
-            response.put("comments", comments);
+            List<ArtImgVO> images = artImgService.getArtImgListByArtId(artId);
             response.put("post", post);
+            response.put("comments", comments);
+            response.put("images", images);
         }
         return response;
     }
