@@ -44,7 +44,7 @@ public class UniversityExhibitionDTO {
     private String postalCode;
     private boolean userSnsOk;
     private boolean userMailOk;
-    private boolean userAgreement;
+    private boolean userAgreementOk;
     private String userIntroduce;
     private String userInstagram;
     private String userYoutube;
@@ -61,4 +61,5 @@ public class UniversityExhibitionDTO {
     private String userArtCategory;
     private String userBackgroundImgName;
     private String userBackgroundImgPath;
+    private String userProvider;
 }

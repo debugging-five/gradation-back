@@ -70,6 +70,22 @@ public class AuctionController {
         return auctionService.auctionRead(id);
     }
 
+    @Operation(summary = "하단 경매 조회", description = "페이지 하단의 경매 4개씩을 조회할 수 있는 API")
+    @Parameter(
+            name = "cursor",
+            description = "페이지 번호",
+            schema = @Schema(type = "number"),
+            in = ParameterIn.PATH,
+            required = false
+    )
+    @GetMapping("footer/{cursor}")
+    public List<AuctionDTO> read(@PathVariable int cursor) {
+        if (cursor == 0) {
+            return auctionService.auctionFooterBidding(1);
+        }
+        return auctionService.auctionFooterBidding(cursor);
+    }
+
     @Operation(summary = "경매 삭제", description = "경매를 삭제할 수 있는 API")
     @Parameter(
             name = "id",
