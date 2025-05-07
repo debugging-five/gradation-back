@@ -37,6 +37,11 @@ public class AuctionServiceImpl implements AuctionService {
     }
 
     @Override
+    public List<AuctionDTO> auctionFooterBidding(Integer cursor) {
+        return auctionDAO.findAuctionByCursor(cursor);
+    }
+
+    @Override
     public void auctionModify(AuctionVO auctionVO) {
         auctionDAO.update(auctionVO);
     }

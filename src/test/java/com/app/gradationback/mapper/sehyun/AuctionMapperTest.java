@@ -67,6 +67,16 @@ public class AuctionMapperTest {
     }
 
     @Test
+    public void selectBiddingTest() {
+        List<AuctionDTO> auctionDTOS = auctionMapper.selectBidding(1);
+        log.info("------------------------------------");
+        for (AuctionDTO auction : auctionDTOS) {
+            log.info(auction.toString());
+        }
+        log.info("------------------------------------");
+    }
+
+    @Test
     public void update() {
 //        AuctionVO auctionVO = new AuctionVO();
 //        auctionVO.setId(2L);

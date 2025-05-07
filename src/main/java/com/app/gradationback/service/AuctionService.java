@@ -9,9 +9,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AuctionService {
+
+//    경매 조회에 사용되는 로직
     public void auctionRegistration(AuctionVO auctionVO);
     public List<AuctionDTO> auctionList(HashMap<String, Object> params);
     public List<AuctionDTO> auctionRead(Long id);
+    public List<AuctionDTO> auctionFooterBidding(Integer cursor);
     public void auctionModify(AuctionVO auctionVO);
     public void auctionDelete(Long id);
 // 입찰에 사용되는 로직
