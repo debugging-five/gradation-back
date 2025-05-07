@@ -26,11 +26,11 @@ public class UserMapperTests {
     @Test
     public void insertUserTest() {
         UserVO userVO = new UserVO();
-        userVO.setUserName("유저3");
-        userVO.setUserEmail("user3@gmail.com");
-        userVO.setUserIdentification("아이디3");
-        userVO.setUserPassword("1234");
-        userVO.setUserPhone("01033331234");
+        userVO.setUserName("서민아");
+        userVO.setUserEmail("alsdk6761@gmail.com");
+        userVO.setUserIdentification("mina1234");
+        userVO.setUserPassword("mina1234!@#");
+        userVO.setUserPhone("01012345678");
         userMapper.insert(userVO);
         log.info("{}", userVO);
     }
