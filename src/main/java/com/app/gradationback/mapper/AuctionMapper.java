@@ -12,6 +12,7 @@ public interface AuctionMapper {
     public void insert(AuctionVO auctionVO);
     public List<AuctionDTO> selectAll(HashMap<String, Object> params);
     public List<AuctionDTO> select(Long id);
+    public List<AuctionDTO> selectBidding(Integer cursor);
     public void update(AuctionVO auctionVO);
     public void delete(Long id);
 }
