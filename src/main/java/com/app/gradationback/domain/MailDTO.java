@@ -40,7 +40,7 @@ public class MailDTO {
     private String sendUserArtCategory;
     private String sendUserBackgroundImgName;
     private String sendUserBackgroundImgPath;
-    private String userProvider;
+    private String sendUserProvider;
     private Long majorId;
 
 //    TBL_USER (RECEIVE)
@@ -57,7 +57,7 @@ public class MailDTO {
     private String receiveUserpostalCode;
     private boolean receiveUserSnsOk;
     private boolean receiveUserMailOk;
-    private boolean receiveUserAgreement;
+    private boolean receiveUserAgreementOk;
     private String receiveUserIntroduce;
     private String receiveUserInstagram;
     private String receiveUserYoutube;
@@ -74,6 +74,7 @@ public class MailDTO {
     private String receiveUserArtCategory;
     private String receiveUserBackgroundImgName;
     private String receiveUserBackgroundImgPath;
+    private String receiveUserProvider;
 
 //    TBL_MAIL
     private String mailTitle;
