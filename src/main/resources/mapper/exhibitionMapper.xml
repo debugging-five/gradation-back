@@ -3,56 +3,34 @@
 <mapper namespace="com.app.gradationback.mapper.ExhibitionMapper">
 
     <!--    그라데이션 -->
-    <select id="selectGradation" resultType="GradationExhibitionDTO">
-        SELECT
-            TGE.ID,
-            TGE.GRADATION_EXHIBITION_TITLE,
-            TGE.GRADATION_EXHIBITION_ART,
-            TGE.GRADATION_EXHIBITION_CATEGORY,
-            TGE.GRADATION_EXHIBITION_TIME,
-            TGE.GRADATION_EXHIBITION_FEE,
-            TGE.GRADATION_EXHIBITION_TEL,
-            TGE.GRADATION_EXHIBITION_ADDRESS,
-            TGE.GRADATION_EXHIBITION_DATE,
-            TGEI.GRADATION_EXHIBITION_IMG_NAME,
-            TGEI.GRADATION_EXHIBITION_IMG_PATH
-        FROM TBL_GRADATION_EXHIBITION TGE
-                 JOIN TBL_GRADATION_EXHIBITION_IMG TGEI
-                      ON TGE.ID = TGEI.GRADATION_EXHIBITION_ID
-        WHERE TGE.ID = (
-            SELECT MAX(ID) FROM TBL_GRADATION_EXHIBITION
-        )
-    </select>
-
-
-    <!--    전시회 정보 화면에 보여주기-->
-    <!--    <select id="selectGradation" resultType="GradationExhibitionVO">-->
-    <!--        SELECT-->
-    <!--            ID,-->
-    <!--            GRADATION_EXHIBITION_TITLE,-->
-    <!--            GRADATION_EXHIBITION_ART,-->
-    <!--            GRADATION_EXHIBITION_CATEGORY,-->
-    <!--            GRADATION_EXHIBITION_TIME,-->
-    <!--            GRADATION_EXHIBITION_FEE,-->
-    <!--            GRADATION_EXHIBITION_TEL,-->
-    <!--            GRADATION_EXHIBITION_ADDRESS,-->
-    <!--            GRADATION_EXHIBITION_DATE-->
-    <!--        FROM (-->
-    <!--            SELECT-->
-    <!--                ID,-->
-    <!--                GRADATION_EXHIBITION_TITLE,-->
-    <!--                GRADATION_EXHIBITION_ART,-->
-    <!--                GRADATION_EXHIBITION_CATEGORY,-->
-    <!--                GRADATION_EXHIBITION_TIME,-->
-    <!--                GRADATION_EXHIBITION_FEE,-->
-    <!--                GRADATION_EXHIBITION_TEL,-->
-    <!--                GRADATION_EXHIBITION_ADDRESS,-->
-    <!--                GRADATION_EXHIBITION_DATE-->
-    <!--            FROM TBL_GRADATION_EXHIBITION-->
-    <!--            ORDER BY ID DESC-->
-    <!--        )-->
-    <!--        WHERE ROWNUM = 1-->
-    <!--    </select>-->
+<!--    전시회 정보 -->
+        <select id="selectGradation" resultType="GradationExhibitionVO">
+            SELECT
+                ID,
+                GRADATION_EXHIBITION_TITLE,
+                GRADATION_EXHIBITION_ART,
+                GRADATION_EXHIBITION_CATEGORY,
+                GRADATION_EXHIBITION_TIME,
+                GRADATION_EXHIBITION_FEE,
+                GRADATION_EXHIBITION_TEL,
+                GRADATION_EXHIBITION_ADDRESS,
+                GRADATION_EXHIBITION_DATE
+            FROM (
+                SELECT
+                    ID,
+                    GRADATION_EXHIBITION_TITLE,
+                    GRADATION_EXHIBITION_ART,
+                    GRADATION_EXHIBITION_CATEGORY,
+                    GRADATION_EXHIBITION_TIME,
+                    GRADATION_EXHIBITION_FEE,
+                    GRADATION_EXHIBITION_TEL,
+                    GRADATION_EXHIBITION_ADDRESS,
+                    GRADATION_EXHIBITION_DATE
+                FROM TBL_GRADATION_EXHIBITION
+                ORDER BY ID DESC
+            )
+            WHERE ROWNUM = 1
+        </select>
 
     <!--    전시회 등록 -->
     <insert id="insertGradation" parameterType="GradationExhibitionVO">
@@ -101,16 +79,16 @@
         #{gradationExhibitionId})
     </insert>
 
-    <!--    전시회 장소 이미지 리스트로 불러오기 -->
-    <!--    <select id="selectGradationExhibitionImgAll" parameterType="Long" resultType="GradationExhibitionImgVO">-->
-    <!--        SELECT-->
-    <!--            ID,-->
-    <!--            GRADATION_EXHIBITION_IMG_NAME,-->
-    <!--            GRADATION_EXHIBITION_IMG_PATH,-->
-    <!--            GRADATION_EXHIBITION_ID-->
-    <!--        FROM TBL_GRADATION_EXHIBITION_IMG-->
-    <!--        WHERE GRADATION_EXHIBITION_ID = #{gradationExhibitionId}-->
-    <!--    </select>-->
+<!--        전시회 장소 이미지 리스트로 불러오기 -->
+        <select id="selectGradationExhibitionImgAll" parameterType="Long" resultType="GradationExhibitionImgVO">
+            SELECT
+                ID,
+                GRADATION_EXHIBITION_IMG_NAME,
+                GRADATION_EXHIBITION_IMG_PATH,
+                GRADATION_EXHIBITION_ID
+            FROM TBL_GRADATION_EXHIBITION_IMG
+            WHERE GRADATION_EXHIBITION_ID = #{gradationExhibitionId}
+        </select>
 
     <!--    전시회 정보 수정 -->
     <update id="updateGradation" parameterType="GradationExhibitionVO">
@@ -125,13 +103,6 @@
             GRADATION_EXHIBITION_DATE = #{gradationExhibitionDate}
         WHERE ID = #{id}
     </update>
-
-    <!--    전시회 장소 이미지 수정 -->
-<!--    <update id="updateGradationImg" parameterType="GradationExhibitionImgVO">-->
-<!--        UPDATE TBL_GRADATION_EXHIBITION_IMG-->
-<!--        SET GRADATION_EXHIBITION_IMG_NAME = #{gradationExhibitionImgName}, GRADATION_EXHIBITION_IMG_PATH = #{gradationExhibitionImgPath}-->
-<!--        WHERE ID = #{id}-->
-<!--    </update>-->
 
     <!--    전시회 장소 이미지 삭제 -->
     <delete id="deleteGradationImg" parameterType="Long">
