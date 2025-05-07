@@ -69,10 +69,6 @@ public class UserController {
         }
 
         UserVO foundUser = userIdentification.get();
-        System.out.println("입력 ID: " + userVO.getUserIdentification());
-        System.out.println("입력 PW: " + userVO.getUserPassword());
-        System.out.println("DB PW: " + foundUser.getUserPassword());
-
 
         if(!foundUser.getUserPassword().equals(userVO.getUserPassword())) {
             response.put("message", "비밀번호가 틀렸습니다.");

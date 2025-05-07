@@ -103,4 +103,5 @@
     <select id="selectUserByIdForWrite" resultType="userVO" parameterType="long">
         SELECT * FROM TBL_USER WHERE ID = #{id}
     </select>
+
 </mapper>
