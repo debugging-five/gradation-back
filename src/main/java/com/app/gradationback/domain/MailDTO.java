@@ -23,7 +23,7 @@ public class MailDTO {
     private String sendUserPostalCode;
     private boolean sendUserSnsOk;
     private boolean sendUserMailOk;
-    private boolean sendUserAgreement;
+    private boolean sendUserAgreementOk;
     private String sendUserIntroduce;
     private String sendUserInstagram;
     private String sendUserYoutube;
@@ -40,6 +40,7 @@ public class MailDTO {
     private String sendUserArtCategory;
     private String sendUserBackgroundImgName;
     private String sendUserBackgroundImgPath;
+    private String userProvider;
     private Long majorId;
 
 //    TBL_USER (RECEIVE)
