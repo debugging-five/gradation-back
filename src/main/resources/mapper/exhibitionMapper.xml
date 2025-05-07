@@ -3,7 +3,7 @@
 <mapper namespace="com.app.gradationback.mapper.ExhibitionMapper">
 
     <!--    그라데이션 -->
-<!--    전시회 정보 -->
+<!--    전시회 정보 불러오기 -->
         <select id="selectGradation" resultType="GradationExhibitionVO">
             SELECT
                 ID,
@@ -31,6 +31,17 @@
             )
             WHERE ROWNUM = 1
         </select>
+
+<!--        전시관 장소 이미지 리스트로 불러오기 -->
+    <select id="selectGradationImgAll" parameterType="Long" resultType="GradationExhibitionImgVO">
+        SELECT
+            ID,
+            GRADATION_EXHIBITION_IMG_NAME,
+            GRADATION_EXHIBITION_IMG_PATH,
+            GRADATION_EXHIBITION_ID
+        FROM TBL_GRADATION_EXHIBITION_IMG
+        WHERE GRADATION_EXHIBITION_ID = #{gradationExhibitionId}
+    </select>
 
     <!--    전시회 등록 -->
     <insert id="insertGradation" parameterType="GradationExhibitionVO">
@@ -61,7 +72,7 @@
         )
     </insert>
 
-    <!--    전시회 장소 이미지 추가 -->
+    <!--    전시관 장소 이미지 추가 -->
     <insert id="insertGradationImg" parameterType="GradationExhibitionImgVO">
         <selectKey keyProperty="id" order="BEFORE" resultType="Long">
             SELECT SEQ_GRADATION_EXHIBITION_IMG.NEXTVAL FROM DUAL
@@ -78,17 +89,6 @@
         #{gradationExhibitionImgPath},
         #{gradationExhibitionId})
     </insert>
-
-<!--        전시회 장소 이미지 리스트로 불러오기 -->
-        <select id="selectGradationExhibitionImgAll" parameterType="Long" resultType="GradationExhibitionImgVO">
-            SELECT
-                ID,
-                GRADATION_EXHIBITION_IMG_NAME,
-                GRADATION_EXHIBITION_IMG_PATH,
-                GRADATION_EXHIBITION_ID
-            FROM TBL_GRADATION_EXHIBITION_IMG
-            WHERE GRADATION_EXHIBITION_ID = #{gradationExhibitionId}
-        </select>
 
     <!--    전시회 정보 수정 -->
     <update id="updateGradation" parameterType="GradationExhibitionVO">

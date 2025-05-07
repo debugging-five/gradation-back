@@ -21,7 +21,7 @@ public class ExhibitionTests {
     @Test
     public void registerGradationTest() {
         GradationExhibitionVO gradationExhibitionVO = new GradationExhibitionVO();
-        gradationExhibitionVO.setGradationExhibitionTitle("테스트 제목1");
+        gradationExhibitionVO.setGradationExhibitionTitle("테스트 제목2");
         gradationExhibitionVO.setGradationExhibitionArt("대학교 학생들의 졸업전시품 TOP100");
         gradationExhibitionVO.setGradationExhibitionCategory("한국화, 회화, 공예 등 100점");
         gradationExhibitionVO.setGradationExhibitionTime("10:00 ~ 18:00(입장 마감 17:30)");
@@ -30,13 +30,7 @@ public class ExhibitionTests {
         gradationExhibitionVO.setGradationExhibitionAddress("디지털 플라자");
         gradationExhibitionVO.setGradationExhibitionDate("2025.05.10 - 2025.06.10");
 
-        GradationExhibitionImgVO gradationExhibitionImgVO = new GradationExhibitionImgVO();
-        gradationExhibitionImgVO.setGradationExhibitionImgName("gradationExhibitionImg.jpg");
-        gradationExhibitionImgVO.setGradationExhibitionImgPath("public/images/gradation");
-
-        List<GradationExhibitionImgVO> gradationImageList = List.of(gradationExhibitionImgVO);
-
-        exhibitionService.registerGradation(gradationExhibitionVO, gradationImageList);
+        exhibitionService.registerGradation(gradationExhibitionVO);
     }
 
     @Test
