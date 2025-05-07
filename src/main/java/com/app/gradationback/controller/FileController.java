@@ -6,6 +6,7 @@ import com.app.gradationback.repository.ArtImgDAO;
 import com.app.gradationback.repository.ExhibitionDAO;
 import com.app.gradationback.service.ArtImgService;
 import com.app.gradationback.service.ExhibitionService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,7 @@ public class FileController {
     private final ArtImgService artImgService;
     private final ExhibitionService exhibitionService;
 
-
+    @Operation(summary = "작품 이미지 업로드", description = "작품 이미지 파일 저장 API")
     @PostMapping("upload/art/{artId}")
     public ResponseEntity<Map<String, Object>> artFileUpload(@RequestParam("files")List<MultipartFile> files, @RequestParam Long artId) throws IOException {
         Map<String, Object> response = new HashMap<>();
@@ -56,6 +57,7 @@ public class FileController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "그라데이션 전시회 이미지 업로드", description = "그라데이션 전시회 이미지 파일 저장 API")
     @PostMapping("upload/exhibition/gradation/{id}")
     public ResponseEntity<Map<String, Object>> gradationExhibitionFileUpload(@RequestParam("files")List<MultipartFile> files, @RequestParam Long id) throws IOException {
         Map<String, Object> response = new HashMap<>();
@@ -78,6 +80,7 @@ public class FileController {
     }
 //   대학 ExhibitionService 생기면 추가
 
+    @Operation(summary = "이미지 조회", description = "패스와 이름을 적으면 이미지를 반환해주는 API")
     @GetMapping("get")
     @ResponseBody
     public byte[] display(String fileName, String filePath) throws IOException {
