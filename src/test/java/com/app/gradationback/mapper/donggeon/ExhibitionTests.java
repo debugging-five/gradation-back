@@ -18,10 +18,25 @@ public class ExhibitionTests {
     @Autowired
     private ExhibitionService exhibitionService;
 
+//    전시회 정보 불러오기
+    @Test
+    public void getGradationTest() {
+        exhibitionService.getGradation();
+        log.info(exhibitionService.getGradation().toString());
+    }
+
+//    전시회 장소 이미지 불러오기
+    @Test
+    public void getGradationImgTest() {
+        List<GradationExhibitionImgVO> images = exhibitionService.getGradationImgAll(2L);
+        images.forEach(image -> log.info(image.toString()));
+    }
+
+//    전시회 등록
     @Test
     public void registerGradationTest() {
         GradationExhibitionVO gradationExhibitionVO = new GradationExhibitionVO();
-        gradationExhibitionVO.setGradationExhibitionTitle("테스트 제목2");
+        gradationExhibitionVO.setGradationExhibitionTitle("테스트 제목3");
         gradationExhibitionVO.setGradationExhibitionArt("대학교 학생들의 졸업전시품 TOP100");
         gradationExhibitionVO.setGradationExhibitionCategory("한국화, 회화, 공예 등 100점");
         gradationExhibitionVO.setGradationExhibitionTime("10:00 ~ 18:00(입장 마감 17:30)");
@@ -33,12 +48,25 @@ public class ExhibitionTests {
         exhibitionService.registerGradation(gradationExhibitionVO);
     }
 
+//    전시회 장소 이미지 등록
+    @Test
+    public void registerGradationImage() {
+        GradationExhibitionImgVO gradationExhibitionImgVO = new GradationExhibitionImgVO();
+        gradationExhibitionImgVO.setGradationExhibitionId(2L);
+        gradationExhibitionImgVO.setGradationExhibitionImgName("img1.jpg");
+        gradationExhibitionImgVO.setGradationExhibitionImgPath("public/images/gradation");
+    
+        exhibitionService.registerGradationImage(gradationExhibitionImgVO);
+    }
+
+
+//    전시회 정보 수정
     @Test
     public void updateGradationTest() {
         Long gradationExhibitionId = 1L;
         GradationExhibitionVO gradationExhibitionVO = new GradationExhibitionVO();
         gradationExhibitionVO.setId(gradationExhibitionId);
-        gradationExhibitionVO.setGradationExhibitionTitle("수정테스트 제목");
+        gradationExhibitionVO.setGradationExhibitionTitle("테스트 제목1");
         gradationExhibitionVO.setGradationExhibitionArt("대학교 학생들의 졸업전시품 TOP50");
         gradationExhibitionVO.setGradationExhibitionCategory("한국화, 회화, 공예 등 50점");
         gradationExhibitionVO.setGradationExhibitionTime("10:00 ~ 18:00(입장 마감 17:30)");
@@ -47,26 +75,10 @@ public class ExhibitionTests {
         gradationExhibitionVO.setGradationExhibitionAddress("제주도 대형카페");
         gradationExhibitionVO.setGradationExhibitionDate("2025.05.10 - 2025.06.10");
 
-//        GradationExhibitionImgVO gradationExhibitionImgVO = new GradationExhibitionImgVO();
-//        gradationExhibitionImgVO.setId(1L);
-//        gradationExhibitionImgVO.setGradationExhibitionImgName("img1.jpg");
-//        gradationExhibitionImgVO.setGradationExhibitionImgPath("public/images/gradation");
-//
-//        List<GradationExhibitionImgVO> gradationImageList = List.of(gradationExhibitionImgVO);
-
         exhibitionService.editGradation(gradationExhibitionVO);
     }
 
-    @Test
-    public void registerGradationImage() {
-        GradationExhibitionImgVO gradationExhibitionImgVO = new GradationExhibitionImgVO();
-        gradationExhibitionImgVO.setGradationExhibitionId(1L);
-        gradationExhibitionImgVO.setGradationExhibitionImgName("img2.jpg");
-        gradationExhibitionImgVO.setGradationExhibitionImgPath("public/images/gradation");
-
-        exhibitionService.registerGradationImage(gradationExhibitionImgVO);
-    }
-
+//    전시회 장소 이미지 삭제
     @Test
     public void deleteGradationTest() {
         Long imageId = 2L;

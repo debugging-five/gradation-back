@@ -110,6 +110,8 @@
         WHERE ID = #{id}
     </delete>
 
+
+
     <!--    과거 전시회용-->
     <!--        <select id="selectGradation" resultType="GradationExhibitionDTO">-->
     <!--        SELECT TGE.ID,-->
