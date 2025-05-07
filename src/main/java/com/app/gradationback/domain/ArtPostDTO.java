@@ -88,7 +88,7 @@ public class ArtPostDTO {
     @Schema(description = "메일 수신 여부", example = "1")
     private boolean userMailOk;
     @Schema(description = "약관 동의 여부", example = "1")
-    private boolean userAgreement;
+    private boolean userAgreementOk;
     @Schema(description = "작가 소개", example = "작가 소개")
     private String userIntroduce;
     @Schema(description = "인스타그램 계정", example = "@user")
@@ -122,5 +122,6 @@ public class ArtPostDTO {
     @Schema(description = "작가 배경화면 이름", example = "assets/images/user/background.jpg")
     private String userBackgroundImgPath;
     @Schema(description = "학과", example = "1")
+    private String userProvider;
     private Long majorId;
 }

@@ -40,13 +40,9 @@ public class UserController {
 
 //        회원가입 후 다시 로그인
         Optional<UserVO> userEmail = userService.getUserByEmail(userVO.getUserEmail());
-        if(userEmail != null) {
-            UserVO foundUser = userEmail.get();
-
-            if(foundUser != null && foundUser.getUserEmail().equals(userVO.getUserEmail())) {
-                response.put("message", "이미 사용중인 이메일입니다.");
-                return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
-            }
+        if (userEmail.isPresent()) {
+            response.put("message", "이미 사용중인 이메일입니다.");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         }
 //        회원가입
         userService.join(userVO);
@@ -54,7 +50,7 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-//    로그인
+    //    로그인
     @Operation(summary = "로그인", description = "로그인을 할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "로그인 성공")
     @PostMapping("login")
