@@ -23,17 +23,17 @@ public class GradationExhibitionDTO {
     private String gradationExhibitionImgName;
     private String gradationExhibitionImgPath;
 
-//    TBL_EXHIBITION_PAST_ART
-    private Long gradationExhibitionId;
-    private Long artId;
+////    TBL_EXHIBITION_PAST_ART
+//    private Long gradationExhibitionId;
+//    private Long artId;
 
-//    TBL_ART
-    private String artTitle;
-
-//    TBL_ART_IMG
-    private String artImgName;
-    private String artImgPath;
-
-//    TBL_USER
-    private String userName;
+////    TBL_ART
+//    private String artTitle;
+//
+////    TBL_ART_IMG
+//    private String artImgName;
+//    private String artImgPath;
+//
+////    TBL_USER
+//    private String userName;
 }
