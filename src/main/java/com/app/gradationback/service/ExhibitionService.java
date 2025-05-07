@@ -28,6 +28,8 @@ public interface ExhibitionService {
 //    전시회 장소 이미지 삭제
     public void removeGradationImage(Long id);
 
+//    최근 전시회 3개 조회
+    public List<GradationExhibitionVO> getRecentGradations();
 
 
 }

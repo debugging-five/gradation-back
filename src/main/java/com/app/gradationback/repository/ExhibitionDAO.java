@@ -47,6 +47,11 @@ public class ExhibitionDAO {
         exhibitionMapper.deleteGradationImg(id);
     }
 
+//    최근 전시회 3개 조회
+    public List<GradationExhibitionVO> findRecentGradations() {
+        return exhibitionMapper.selectRecentGradations();
+    }
+
 }
 
 

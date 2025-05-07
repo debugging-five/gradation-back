@@ -41,6 +41,7 @@
             GRADATION_EXHIBITION_ID
         FROM TBL_GRADATION_EXHIBITION_IMG
         WHERE GRADATION_EXHIBITION_ID = #{gradationExhibitionId}
+        ORDER BY ID
     </select>
 
     <!--    전시회 등록 -->
@@ -110,6 +111,23 @@
         WHERE ID = #{id}
     </delete>
 
+<!--    최근 전시회 년도 + 제목 3개 List(올해 제외)  -->
+    <select id="selectRecentGradations" resultType="GradationExhibitionVO">
+        SELECT
+            ID,
+            GRADATION_EXHIBITION_TITLE,
+            GRADATION_EXHIBITION_DATE
+        FROM (
+            SELECT
+                ID,
+                GRADATION_EXHIBITION_TITLE,
+                GRADATION_EXHIBITION_DATE
+            FROM TBL_GRADATION_EXHIBITION
+            WHERE TO_NUMBER(SUBSTR(GRADATION_EXHIBITION_DATE, 1, 4)) &lt; TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY'))
+            ORDER BY TO_NUMBER(SUBSTR(GRADATION_EXHIBITION_DATE, 1, 4)) DESC
+        )
+        WHERE ROWNUM &lt;=3
+    </select>
 
 
     <!--    과거 전시회용-->

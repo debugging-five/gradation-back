@@ -36,7 +36,7 @@ public class ExhibitionTests {
     @Test
     public void registerGradationTest() {
         GradationExhibitionVO gradationExhibitionVO = new GradationExhibitionVO();
-        gradationExhibitionVO.setGradationExhibitionTitle("테스트 제목3");
+        gradationExhibitionVO.setGradationExhibitionTitle("테스트 제목5");
         gradationExhibitionVO.setGradationExhibitionArt("대학교 학생들의 졸업전시품 TOP100");
         gradationExhibitionVO.setGradationExhibitionCategory("한국화, 회화, 공예 등 100점");
         gradationExhibitionVO.setGradationExhibitionTime("10:00 ~ 18:00(입장 마감 17:30)");
@@ -53,7 +53,7 @@ public class ExhibitionTests {
     public void registerGradationImage() {
         GradationExhibitionImgVO gradationExhibitionImgVO = new GradationExhibitionImgVO();
         gradationExhibitionImgVO.setGradationExhibitionId(2L);
-        gradationExhibitionImgVO.setGradationExhibitionImgName("img1.jpg");
+        gradationExhibitionImgVO.setGradationExhibitionImgName("전시회2/img3.jpg");
         gradationExhibitionImgVO.setGradationExhibitionImgPath("public/images/gradation");
     
         exhibitionService.registerGradationImage(gradationExhibitionImgVO);
@@ -63,17 +63,17 @@ public class ExhibitionTests {
 //    전시회 정보 수정
     @Test
     public void updateGradationTest() {
-        Long gradationExhibitionId = 1L;
+        Long gradationExhibitionId = 2L;
         GradationExhibitionVO gradationExhibitionVO = new GradationExhibitionVO();
         gradationExhibitionVO.setId(gradationExhibitionId);
-        gradationExhibitionVO.setGradationExhibitionTitle("테스트 제목1");
+        gradationExhibitionVO.setGradationExhibitionTitle("테스트 제목2");
         gradationExhibitionVO.setGradationExhibitionArt("대학교 학생들의 졸업전시품 TOP50");
         gradationExhibitionVO.setGradationExhibitionCategory("한국화, 회화, 공예 등 50점");
         gradationExhibitionVO.setGradationExhibitionTime("10:00 ~ 18:00(입장 마감 17:30)");
         gradationExhibitionVO.setGradationExhibitionFee("성인 17,000원 / 청소년 10,000원 / 어린이 7,000");
         gradationExhibitionVO.setGradationExhibitionTel("02-585-8999");
         gradationExhibitionVO.setGradationExhibitionAddress("제주도 대형카페");
-        gradationExhibitionVO.setGradationExhibitionDate("2025.05.10 - 2025.06.10");
+        gradationExhibitionVO.setGradationExhibitionDate("2022.05.10 - 2022.06.10");
 
         exhibitionService.editGradation(gradationExhibitionVO);
     }
@@ -81,8 +81,16 @@ public class ExhibitionTests {
 //    전시회 장소 이미지 삭제
     @Test
     public void deleteGradationTest() {
-        Long imageId = 2L;
+        Long imageId = 8L;
         exhibitionService.removeGradationImage(imageId);
     }
+
+//    최근 전시회 3개 조회
+    @Test
+    public void getRecentGradationsTest() {
+        List<GradationExhibitionVO> recentGradations = exhibitionService.getRecentGradations();
+        recentGradations.forEach(gradation -> log.info("{} {}", gradation.getGradationExhibitionDate(), gradation.getGradationExhibitionTitle()));
+    }
+
 
 }

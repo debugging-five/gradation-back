@@ -30,4 +30,7 @@ public interface ExhibitionMapper {
 //    전시회 장소 이미지 삭제
     public void deleteGradationImg(Long id);
 
+//    최근 전시회 3개 조회
+    public List<GradationExhibitionVO> selectRecentGradations();
+
 }
