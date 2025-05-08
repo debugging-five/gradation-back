@@ -7,11 +7,13 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -50,7 +52,7 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    //    로그인
+//    로그인
     @Operation(summary = "로그인", description = "로그인을 할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "로그인 성공")
     @PostMapping("login")
@@ -116,7 +118,7 @@ public class UserController {
     }
 
 
-    //    단일 회원 정보 조회
+//    단일 회원 정보 조회
     @Operation(summary = "회원 정보 조회", description = "회원 1명의 정보를 조회할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "회원 정보 조회 성공")
     @Parameter(
@@ -146,6 +148,40 @@ public class UserController {
             return true;
         }
         return false;
+    }
+
+//    아이디 찾기 (이름 + 이메일)
+    @Operation(summary = "아이디 찾기", description = "아이디를 찾을 수 있는 API")
+    @Parameters({
+            @Parameter(name = "userName", description = "회원명", example = "회원명"),
+            @Parameter(name = "userEmail", description = "회원 이메일", example = "user@test.app"),
+    })
+    @ApiResponse(responseCode = "200", description = "아이디 찾기 성공")
+    @PostMapping("/find-id")
+    public ResponseEntity<Map<String, Object>> findId(@RequestBody UserVO userVO) {
+        Map<String, Object> response = new HashMap<>();
+        String foundIdentification = userService.getIdentificationByEmailAndName(userVO);
+        if(foundIdentification == null) {
+            response.put("message", "입력하신 정보에 일치하는 아이디가 존재하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        }
+        response.put("foundIdentification", foundIdentification);
+        return ResponseEntity.ok(response);
+    }
+
+//    비밀번호 찾기 (이메일)
+    @Operation(summary = "비밀번호 찾기", description = "비밀번호를 찾을 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "비밀번호 찾기 성공")
+    @GetMapping("/find-password/{userEmail}")
+    public ResponseEntity<Map<String, Object>> findPassword(@PathVariable String userEmail) {
+        Map<String, Object> response = new HashMap<>();
+        String foundPassword = userService.getPasswordByEmail(userEmail);
+        if (foundPassword != null) {
+            response.put("foundPassword", foundPassword);
+            return ResponseEntity.ok(response);
+        }
+        response.put("message", "입력하신 이메일에 해당하는 비밀번호가 존재하지 않습니다.");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
 //    회원 정보 수정
