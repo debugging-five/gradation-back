@@ -6,6 +6,7 @@ import com.app.gradationback.repository.ArtImgDAO;
 import com.app.gradationback.repository.ExhibitionDAO;
 import com.app.gradationback.service.ArtImgService;
 import com.app.gradationback.service.ExhibitionService;
+import com.app.gradationback.util.FileSaveUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,14 +34,12 @@ public class FileController {
 
     @Operation(summary = "작품 이미지 업로드", description = "작품 이미지 파일 저장 API")
     @PostMapping("upload/art/{artId}")
-    public ResponseEntity<Map<String, Object>> artFileUpload(@RequestParam("files")List<MultipartFile> files, @RequestParam Long artId) throws IOException {
+    public ResponseEntity<Map<String, Object>> artFileUpload(@RequestParam("files")List<MultipartFile> files, @PathVariable Long artId) throws IOException {
         Map<String, Object> response = new HashMap<>();
-        String filePath = "C:/upload/art";
+        String filePath = "art";
         String uuid = UUID.randomUUID().toString();
-        File dir = new File(filePath);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
+        FileSaveUtil fileSave = new FileSaveUtil();
+
         for(MultipartFile file : files) {
             ArtImgVO artImgVO = new ArtImgVO();
             artImgVO.setArtImgName(uuid + file.getOriginalFilename());
@@ -48,8 +47,7 @@ public class FileController {
             artImgVO.setArtId(artId);
             artImgService.register(artImgVO);
 
-            File dest = new File(filePath + "/" + uuid + file.getOriginalFilename());
-            file.transferTo(dest);
+            fileSave.fileSave(file, artImgVO.getArtImgPath(), artImgVO.getArtImgName());
         }
 
         response.put("uuid", uuid);
@@ -61,17 +59,19 @@ public class FileController {
     @PostMapping("upload/exhibition/gradation/{id}")
     public ResponseEntity<Map<String, Object>> gradationExhibitionFileUpload(@RequestParam("files")List<MultipartFile> files, @RequestParam Long id) throws IOException {
         Map<String, Object> response = new HashMap<>();
-        String filePath = "C:/upload/exhibition/gradation";
+        String filePath = "exhibition/gradation";
+        String uuid = UUID.randomUUID().toString();
+        FileSaveUtil fileSave = new FileSaveUtil();
+
         for(MultipartFile file : files) {
             GradationExhibitionImgVO gradationImgVO = new GradationExhibitionImgVO();
-            gradationImgVO.setGradationExhibitionImgName(file.getOriginalFilename());
+            gradationImgVO.setGradationExhibitionImgName(uuid + file.getOriginalFilename());
             gradationImgVO.setGradationExhibitionImgPath(filePath);
             gradationImgVO.setGradationExhibitionId(id);
             exhibitionService.registerGradationImage(gradationImgVO);
             log.info("file : {}", file.getOriginalFilename());
 
-            File dest = new File(filePath + "/" + file.getOriginalFilename());
-            file.transferTo(dest);
+            fileSave.fileSave(file, gradationImgVO.getGradationExhibitionImgPath(), gradationImgVO.getGradationExhibitionImgName());
         }
 
         response.put("uuid", UUID.randomUUID().toString());
