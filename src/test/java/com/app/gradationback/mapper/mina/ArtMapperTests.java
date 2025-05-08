@@ -1,6 +1,7 @@
 package com.app.gradationback.mapper.mina;
 
 import com.app.gradationback.domain.ArtVO;
+import com.app.gradationback.domain.AuctionDTO;
 import com.app.gradationback.mapper.ArtMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;

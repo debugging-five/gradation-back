@@ -6,6 +6,7 @@ import com.app.gradationback.domain.ArtVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Mapper
@@ -19,6 +20,9 @@ public interface ArtPostMapper {
 
 //    작품 게시글 단일 조회
     public Optional<ArtPostDTO> select(Long id);
+
+//    카테고리 + 드롭다운 + 페이지네이션
+    public List<ArtPostDTO> selectArtListByCategoryAndDropdown(Map<String, Object> params);
 
     public List<ArtPostDTO> selectAllByUserId(Long userId);
 

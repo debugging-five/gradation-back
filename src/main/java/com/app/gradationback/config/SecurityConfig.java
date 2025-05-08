@@ -41,6 +41,8 @@ public class SecurityConfig {
                                 OAuth2User oAuth2User = authToken.getPrincipal();
                                 Map<String, Object> attributes = oAuth2User.getAttributes();
 
+                                log.info(attributes.toString());
+
                                 String provider = authToken.getAuthorizedClientRegistrationId();
                                 String email = "";
                                 String name = "";

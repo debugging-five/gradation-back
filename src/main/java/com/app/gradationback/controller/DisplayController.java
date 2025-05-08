@@ -29,7 +29,7 @@ public class DisplayController {
     private final CommentService commentService;
     private final ArtImgService artImgService;
 
-    //    전시 등록 (게시글 + 작품 + 이미지)
+//    전시 등록 (게시글 + 작품 + 이미지)
     @Operation(summary = "전시 등록", description = "전시를 등록할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "전시 등록 성공")
     @PostMapping("register")
@@ -54,8 +54,8 @@ public class DisplayController {
     })
     @ApiResponse(responseCode = "200", description = "전시 전체 조회 성공")
     @GetMapping("list")
-    public List<Map<String, Object>> getAllPosts() {
-        List<ArtPostDTO> posts = artPostService.getArtPostList();
+    public List<Map<String, Object>> getAllPosts(@RequestParam HashMap<String, Object> params) {
+        List<ArtPostDTO> posts = artPostService.getArtListByCategoryAndDropdown(params);
 //        게시글 + 댓글
         List<Map<String, Object>> postListWithComments = new ArrayList<>();
 
