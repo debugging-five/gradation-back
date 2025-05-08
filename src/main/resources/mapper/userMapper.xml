@@ -4,9 +4,26 @@
 
     <!--  회원가입  -->
     <insert id="insert" parameterType="UserVO">
-        INSERT INTO TBL_USER (ID, USER_NAME, USER_EMAIL, USER_IDENTIFICATION, USER_PASSWORD, USER_PHONE, USER_NICKNAME, USER_SNS_OK, USER_MAIL_OK, USER_AGREEMENT_OK)
-        VALUES ( SEQ_USER.NEXTVAL, #{userName}, #{userEmail}, #{userIdentification}, #{userPassword},
-                #{userPhone}, #{userNickName}, #{userSnsOk}, #{userMailOk}, #{userAgreement} )
+        INSERT INTO TBL_USER (ID, USER_NAME, USER_EMAIL, USER_IDENTIFICATION, USER_PASSWORD, USER_PHONE, USER_NICKNAME, USER_SNS_OK, USER_MAIL_OK, USER_AGREEMENT_OK, USER_PROVIDER)
+        VALUES (
+        SEQ_USER.NEXTVAL,
+        #{userName},
+        #{userEmail},
+        #{userIdentification},
+        <if test="userPassword != null">#{userPassword}</if>
+        <if test="userPassword == null">NULL</if>,
+        #{userPhone},
+        <if test="userNickName != null">#{userNickName}</if>
+        <if test="userNickName == null">#{userName}</if>,
+        <if test="userSnsOk != null">#{userSnsOk}</if>
+        <if test="userSnsOk == null">DEFAULT</if>,
+        <if test="userMailOk != null">#{userMailOk}</if>
+        <if test="userMailOk == null">DEFAULT</if>,
+        <if test="userAgreementOk != null">#{userAgreementOk}</if>
+        <if test="userAgreementOk == null">DEFAULT</if>,
+        <if test="userProvider != null">#{userProvider}</if>
+        <if test="userProvider == null">DEFAULT</if>
+        )
     </insert>
 
     <!--  전체 회원 조회  -->

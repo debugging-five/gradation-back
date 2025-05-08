@@ -21,6 +21,13 @@
         WHERE ID = #{id}
     </select>
 
+    <!--  작품 이미지 전체 조회 ( artId로 ) -->
+    <select id="selectAllByArtId" parameterType="Long" resultType="ArtImgVO">
+        SELECT ID, ART_IMG_NAME, ART_IMG_PATH, ART_ID
+        FROM TBL_ART_IMG
+        WHERE ART_ID = #{artId}
+    </select>
+
     <!--  작품 이미지 전체 삭제 (작품 ID로)  -->
     <delete id="deleteAllByArtId" parameterType="Long">
         DELETE FROM TBL_ART_IMG

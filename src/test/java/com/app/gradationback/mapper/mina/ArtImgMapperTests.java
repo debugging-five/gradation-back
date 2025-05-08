@@ -22,7 +22,7 @@ public class ArtImgMapperTests {
         ArtImgVO artImgVO = new ArtImgVO();
         artImgVO.setArtImgName("이미지이름");
         artImgVO.setArtImgPath("이미지경로");
-        artImgVO.setArtId(446L);
+        artImgVO.setArtId(438L);
         artImgMapper.insert(artImgVO);
         log.info("{}", artImgVO);
     }

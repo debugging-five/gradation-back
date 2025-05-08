@@ -18,6 +18,9 @@ public interface ArtImgMapper {
 //    단일 작품 이미지 조회
     public Optional<ArtImgVO> select(Long id);
 
+//    작품 이미지 조회 (작품 ID로)
+    public List<ArtImgVO> selectAllByArtId(Long artId);
+
 //    작품 이미지 전체 삭제 (작품 ID로)
     public void deleteAllByArtId(Long artId);
 }
