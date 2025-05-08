@@ -29,6 +29,10 @@ public class ArtImgDAO {
         return artImgMapper.select(id);
     }
 
+    public List<ArtImgVO> findAllByArtId(Long artId) {
+        return artImgMapper.selectAllByArtId(artId);
+    }
+
 //    작품 이미지 전체 삭제 (작품 ID로)
     public void deleteAllByArtId(Long artId) {
         artImgMapper.deleteAllByArtId(artId);

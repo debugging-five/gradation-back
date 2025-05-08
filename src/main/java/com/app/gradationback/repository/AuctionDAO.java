@@ -23,6 +23,9 @@ public class AuctionDAO {
     public List<AuctionDTO> findById(Long id) {
         return auctionMapper.select(id);
     }
+    public List<AuctionDTO> findAuctionByCursor(Integer cursor) {
+        return auctionMapper.selectBidding(cursor);
+    }
     public void update(AuctionVO auctionVO) {
         auctionMapper.update(auctionVO);
     }

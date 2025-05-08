@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
     private final ArtImgDAO artImgDAO;
     private final ArtPostDAO artPostDAO;
 
-    //    회원가입
+//    회원가입
     @Override
     public void join(UserVO userVO) {
         userDAO.save(userVO);

@@ -34,7 +34,12 @@ public class ArtImgServiceImpl implements ArtImgService {
         return artImgDAO.findById(id);
     }
 
-//    작품 이미지 전체 삭제 (작품 ID로)
+    @Override
+    public List<ArtImgVO> getArtImgListByArtId(Long artId) {
+        return artImgDAO.findAllByArtId(artId);
+    }
+
+    //    작품 이미지 전체 삭제 (작품 ID로)
     @Override
     public void removeAllByArtId(Long artId) {
         artImgDAO.deleteAllByArtId(artId);
