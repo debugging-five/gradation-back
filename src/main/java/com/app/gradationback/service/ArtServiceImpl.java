@@ -56,19 +56,19 @@ public class ArtServiceImpl implements ArtService {
 
 //    관리자용 승인 대기 목록 조회
     @Override
-    public List<ArtDTO> getAllPending() {
+    public List<ArtDTO> getAllArtPending() {
         return artDAO.findAllPending();
     }
 
 //    관리자용 승인 대기 상세 조회
     @Override
-    public Optional<ArtDTO> getPendingById(Long id) {
+    public Optional<ArtDTO> getArtPendingById(Long id) {
         return artDAO.findPendingById(id);
     }
 
 //    관리자용 승인 상태 변경
     @Override
-    public void updateStatus(ArtDTO artDTO) {
+    public void updateArtStatus(ArtDTO artDTO) {
         artDAO.updateStatus(artDTO);
     }
 }

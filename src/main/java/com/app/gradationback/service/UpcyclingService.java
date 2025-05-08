@@ -1,5 +1,7 @@
 package com.app.gradationback.service;
 
+import com.app.gradationback.domain.ArtDTO;
+import com.app.gradationback.domain.UpcyclingDTO;
 import com.app.gradationback.domain.UpcyclingVO;
 
 import java.util.List;
@@ -16,4 +18,14 @@ public interface UpcyclingService {
     public void modify(UpcyclingVO upcyclingVO);
     // 삭제
     public void remove(Long id);
+
+    //    관리자용 승인 대기 목록
+    public List<UpcyclingDTO> getAllUpcyclingPending();
+
+    //    관리자용 상세
+    public Optional<UpcyclingDTO> getUpcyclingPendingById(Long id);
+
+    //    관리자 승인/반려 처리
+    public void updateUpcyclingStatus(UpcyclingDTO upcyclingDTO);
+
 }

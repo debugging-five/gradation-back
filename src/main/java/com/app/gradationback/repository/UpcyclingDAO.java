@@ -1,5 +1,7 @@
 package com.app.gradationback.repository;
 
+import com.app.gradationback.domain.ArtDTO;
+import com.app.gradationback.domain.UpcyclingDTO;
 import com.app.gradationback.domain.UpcyclingVO;
 import com.app.gradationback.mapper.UpcyclingMapper;
 import lombok.RequiredArgsConstructor;
@@ -24,4 +26,17 @@ public class UpcyclingDAO {
     public void update(UpcyclingVO upcyclingVO) {upcyclingMapper.update(upcyclingVO);}
     // 삭제
     public void delete(Long id) {upcyclingMapper.delete(id);}
+
+    //    관리자 승인 대기 목록 조회
+    public List<UpcyclingDTO> findAllUpcyclingPending() {
+        return upcyclingMapper.selectAllUpcyclingPending();
+    }
+    //    관리자 승인 대기 상세 조회
+    public Optional<UpcyclingDTO> findUpcyclingPendingById(Long id) {
+        return upcyclingMapper.selectUpcyclingPendingById(id);
+    }
+    //    관리자 승인, 반려 처리
+    public void updateUpcyclingStatus(UpcyclingDTO upcyclingDTO) {
+        upcyclingMapper.updateUpcyclingStatus(upcyclingDTO);
+    }
 }

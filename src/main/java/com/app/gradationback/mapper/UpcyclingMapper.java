@@ -1,5 +1,7 @@
 package com.app.gradationback.mapper;
 
+import com.app.gradationback.domain.ArtDTO;
+import com.app.gradationback.domain.UpcyclingDTO;
 import com.app.gradationback.domain.UpcyclingVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -18,4 +20,12 @@ public interface UpcyclingMapper {
     public void update(UpcyclingVO upcyclingVO);
     //삭제
     public void delete(Long id);
+    //    관리자용 승인 대기 목록 조회
+    public List<UpcyclingDTO> selectAllUpcyclingPending();
+
+    //    관리자용 승인 대기 상세 조회
+    public Optional<UpcyclingDTO> selectUpcyclingPendingById(Long id);
+
+    //    관리자용 승인 상태 변경
+    public void updateUpcyclingStatus(UpcyclingDTO upcyclingDTO);
 }

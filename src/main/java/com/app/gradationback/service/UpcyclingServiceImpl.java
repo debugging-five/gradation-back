@@ -1,5 +1,6 @@
 package com.app.gradationback.service;
 
+import com.app.gradationback.domain.UpcyclingDTO;
 import com.app.gradationback.domain.UpcyclingVO;
 import com.app.gradationback.repository.UpcyclingDAO;
 import lombok.RequiredArgsConstructor;
@@ -39,5 +40,23 @@ public class UpcyclingServiceImpl implements UpcyclingService {
     @Override
     public void remove(Long id) {
         upcyclingDAO.delete(id);
+    }
+
+    //    관리자용 승인 대기 목록 조회
+    @Override
+    public List<UpcyclingDTO> getAllUpcyclingPending() {
+        return upcyclingDAO.findAllUpcyclingPending();
+    }
+
+    //    관리자용 승인 대기 상세 조회
+    @Override
+    public Optional<UpcyclingDTO> getUpcyclingPendingById(Long id) {
+        return upcyclingDAO.findUpcyclingPendingById(id);
+    }
+
+    //    관리자용 승인 상태 변경
+    @Override
+    public void updateUpcyclingStatus(UpcyclingDTO upcyclingDTO) {
+        upcyclingDAO.updateUpcyclingStatus(upcyclingDTO);
     }
 }
