@@ -162,7 +162,7 @@ public class UserController {
         Map<String, Object> response = new HashMap<>();
         String foundIdentification = userService.getIdentificationByEmailAndName(userVO);
         if(foundIdentification == null) {
-            response.put("message", "일치하는 아이디가 존재하지 않습니다.");
+            response.put("message", "입력하신 정보에 일치하는 아이디가 존재하지 않습니다.");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         }
         response.put("foundIdentification", foundIdentification);
