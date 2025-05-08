@@ -15,10 +15,13 @@ public class UserDAO {
 
     private final UserMapper userMapper;
 
-//    회원가입
-    public void save(UserVO userVO) {
-        userMapper.insert(userVO);
+//    일반 회원가입
+    public void saveNormal(UserVO userVO) {
+        userMapper.insertNormal(userVO);
     }
+
+//    소셜 로그인 후 회원가입
+    public void saveSocial(UserVO userVO) { userMapper.insertSocial(userVO); }
 
 //    전체 회원 조회
     public List<UserVO> findAllUser() {
