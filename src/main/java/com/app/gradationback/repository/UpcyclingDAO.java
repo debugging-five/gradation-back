@@ -1,6 +1,5 @@
 package com.app.gradationback.repository;
 
-import com.app.gradationback.domain.ArtDTO;
 import com.app.gradationback.domain.UpcyclingDTO;
 import com.app.gradationback.domain.UpcyclingVO;
 import com.app.gradationback.mapper.UpcyclingMapper;

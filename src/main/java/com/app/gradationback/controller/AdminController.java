@@ -118,64 +118,6 @@ public class AdminController {
         qnaService.remove(id);
     }
 
-    // 승인 대기 작품 전체 조회
-    @Operation(summary = "작품 승인 대기 전체 조회", description = "관리자 전용: 작품 승인 대기 중인 목록을 조회하는 API")
-    @GetMapping("/pending/art")
-    public List<ArtDTO> getPendingArtList(HttpSession session) {
-        if (!AdminCheckUtil.isAdmin(session)) {
-            throw new RuntimeException("관리자만 접근 가능합니다.");
-        }
-        return artService.getAllArtPending();
-    }
-    @Operation(summary = "업사이클링 승인 대기 전체 조회", description = "관리자 전용: 업사이클링 승인 대기 중인 목록을 조회하는 API")
-    @GetMapping("/pending/upcycling")
-    public List<UpcyclingDTO> getPendingUpcyclingList(HttpSession session) {
-        if (!AdminCheckUtil.isAdmin(session)) {
-            throw new RuntimeException("관리자만 접근 가능합니다.");
-        }
-        return upcyclingService.getAllUpcyclingPending();
-    }
-
-    // 승인 대기 작품 상세 조회
-    @Operation(summary = "작품 승인 대기 상세 조회", description = "관리자 전용: 작품 승인 대기 중인 내역을 상세 조회하는 API")
-    @GetMapping("/art/pending/{id}")
-    public ArtDTO getPendingArt(@PathVariable Long id, HttpSession session) {
-        if (!AdminCheckUtil.isAdmin(session)) {
-            throw new RuntimeException("관리자만 접근 가능합니다.");
-        }
-        Optional<ArtDTO> found = artService.getArtPendingById(id);
-        return found.orElseThrow(() -> new RuntimeException("해당 작품을 찾을 수 없습니다."));
-    }
-    @Operation(summary = "업사이클링 승인 대기 내역 상세 조회", description = "관리자 전용: 업사이클링 승인 대기 내역을 상세 조회하는 API")
-    @GetMapping("/pending/art/{id}")
-    public UpcyclingDTO getPendingUpcycling(@PathVariable Long id, HttpSession session) {
-        if (!AdminCheckUtil.isAdmin(session)) {
-            throw new RuntimeException("관리자만 접근 가능합니다.");
-        }
-        Optional<UpcyclingDTO> found = upcyclingService.getUpcyclingPendingById(id);
-        return found.orElseThrow(() -> new RuntimeException("해당 작품을 찾을 수 없습니다."));
-    }
-
-    // 승인 또는 반려 처리
-    @Operation(summary = "작품 상태 변경 (승인 / 반려)", description = "관리자 전용: 작품을 승인 또는 반려 처리하는 API")
-    @PatchMapping("/status/art/{id}")
-    public void updateArtStatus(@PathVariable Long id, @RequestBody ArtDTO artDTO, HttpSession session) {
-        if (!AdminCheckUtil.isAdmin(session)) {
-            throw new RuntimeException("관리자만 접근 가능합니다.");
-        }
-        artDTO.setId(id);
-        artService.updateArtStatus(artDTO);
-    }
-    @Operation(summary = "업사이클링 상태 변경 (승인 / 반려)", description = "관리자 전용: 업사이클링 신청 승인 또는 반려 처리하는 API")
-    @PatchMapping("/status/upcycling/{id}")
-    public void updateUpcyclingStatus(@PathVariable Long id, @RequestBody UpcyclingDTO upcyclingDTO, HttpSession session) {
-        if (!AdminCheckUtil.isAdmin(session)) {
-            throw new RuntimeException("관리자만 접근 가능합니다.");
-        }
-        upcyclingDTO.setId(id);
-        upcyclingService.updateUpcyclingStatus(upcyclingDTO);
-    }
-
     // 회원 정지 처리
     // 0 = 일반회원 1 = 댓글 정지 2 = 영구 정지
     @Operation(summary = "회원 정지 처리", description = "관리자 전용: 회원을 댓글 정지/영구 정지/정지 해제하는 API")

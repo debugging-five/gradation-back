@@ -9,8 +9,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,12 +44,13 @@ public class UpcyclingController {
     // 신청 등록
     @Operation(summary = "업사이클링 신청 등록", description = "업사이클링 신청 정보를 등록하는 API")
     @ApiResponse(responseCode = "200", description = "신청 등록 성공")
-    @PostMapping("register")
-    public UpcyclingVO register(@RequestBody UpcyclingVO upcyclingVO) {
-        log.info("신청 : {}", upcyclingVO);
-        upcyclingService.register(upcyclingVO);
-        return upcyclingService.getByUpcyclingUser(upcyclingVO.getId()).orElse(new UpcyclingVO());
+    @PostMapping(value = "register", consumes = "multipart/form-data")
+    public ResponseEntity<UpcyclingVO> register(@RequestPart("info") UpcyclingVO upcyclingVO, @RequestPart("file") MultipartFile file) {
+        upcyclingService.register(upcyclingVO, file);
+        return ResponseEntity.ok(upcyclingService.getByUpcyclingUser(upcyclingVO.getId()).orElse(new UpcyclingVO()));
     }
+
+
     // 상태 수정
     @Operation(summary = "업사이클링 신청 상태 수정", description = "업사이클링 신청 상태를 변경하는 API.")
     @ApiResponse(responseCode = "200", description = "상태 수정 성공")

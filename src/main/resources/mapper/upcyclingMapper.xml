@@ -41,8 +41,7 @@
     <!-- 수정 (상태 변경) -->
     <update id="update" parameterType="UpcyclingVO">
         UPDATE TBL_UPCYCLING
-        SET
-            UPCYCLING_STATUS = #{upcyclingStatus}
+        SET UPCYCLING_STATUS = #{upcyclingStatus}
         WHERE ID = #{id}
     </update>
 
