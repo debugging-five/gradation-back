@@ -29,7 +29,7 @@ public class AuctionController {
     @ApiResponse(responseCode = "200", description = "등록 성공")
     @PostMapping("registration")
     public void registration(AuctionVO auctionVO) {
-        log.info(auctionVO.toString());
+//        log.info(auctionVO.toString());
         auctionService.auctionRegistration(auctionVO);
     }
 
@@ -52,8 +52,8 @@ public class AuctionController {
     @ApiResponse(responseCode = "200", description = "조회 성공")
     @GetMapping("list")
     public List<AuctionDTO> list(@RequestParam HashMap<String, Object> params) {
-        log.info(params.toString());
-        log.info("{}",auctionService.auctionList(params));
+//        log.info(params.toString());
+//        log.info("{}",auctionService.auctionList(params));
         return auctionService.auctionList(params);
     }
 
