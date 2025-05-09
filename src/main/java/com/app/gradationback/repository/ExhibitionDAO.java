@@ -1,8 +1,6 @@
 package com.app.gradationback.repository;
 
-import com.app.gradationback.domain.GradationExhibitionDTO;
-import com.app.gradationback.domain.GradationExhibitionImgVO;
-import com.app.gradationback.domain.GradationExhibitionVO;
+import com.app.gradationback.domain.*;
 import com.app.gradationback.mapper.ExhibitionMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -52,7 +50,39 @@ public class ExhibitionDAO {
         return exhibitionMapper.selectRecentGradations();
     }
 
+//    좋아요순 50개 작품
+    public List<DisplayDTO> findTopLikedArts() {
+        return exhibitionMapper.selectTopLikedArts();
+    }
+
+
+//    대학교 전시회
+//    신청 양식(대학교)
+    public void saveUniversity(UniversityExhibitionDTO universityExhibitionDTO) {
+        exhibitionMapper.insertUniversity(universityExhibitionDTO);
+    }
+
+//    신청 양식(학과)
+    public void saveMajor(UniversityExhibitionDTO universityExhibitionDTO){
+        exhibitionMapper.insertMajor(universityExhibitionDTO);
+    }
+
+//    신청 양식(대학교 전시회)
+    public void saveUniversityExhibition(UniversityExhibitionDTO universityExhibitionDTO) {
+        exhibitionMapper.insertUniversityExhibition(universityExhibitionDTO);
+    }
+
+//    신청 양식(대학교 전시회 이미지)
+    public void saveUniversityExhibitionImg(UniversityExhibitionDTO universityExhibitionDTO) {
+        exhibitionMapper.insertUniversityExhibitionImg(universityExhibitionDTO);
+    }
+
 }
+
+
+
+
+
 
 
 

@@ -24,9 +24,11 @@ public class JwtTokenUtil {
         HashMap<String, Object> userInfo = new HashMap<String, Object>();
         String email = (String) claims.get("email"); // 이메일 추출
         String name = (String) claims.get("name"); // 이름 추출
+        String identification = (String) claims.get("identification");
 
         userInfo.put("email", email);
         userInfo.put("name", name);
+        userInfo.put("identification", identification);
 
 //        24시간
         long expirationTimeInMillis = 24 * 60 * 60 * 1000;
@@ -69,6 +71,12 @@ public class JwtTokenUtil {
     public String getNameFromToken(String token) {
         Claims claims = parseToken(token);
         return claims.get("name", String.class); // 이름 클레임 가져오기
+    }
+
+//    JWT 토큰에서 이메일 추출
+    public String getIdentificationFromToken(String token) {
+        Claims claims = parseToken(token);
+        return claims.get("identification", String.class);
     }
 
 //    토큰이 유효한지 아닌지 검증

@@ -33,21 +33,41 @@ public class UserController {
     private final JwtTokenUtil jwtTokenUtil;
 
 
-//    회원 가입
+//    일반 회원가입
     @Operation(summary = "회원가입", description = "회원가입을 할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "회원가입 성공")
-    @PostMapping("join")
-    public ResponseEntity<Map<String, Object>> join(@RequestBody UserVO userVO) {
+    @PostMapping("join/normal")
+    public ResponseEntity<Map<Object, String>> normalJoin(@RequestBody UserVO userVO) {
+        Map<Object, String> response = new HashMap<>();
+
+        Optional<UserVO> foundUser = userService.getUserByEmail(userVO.getUserName());
+        if (foundUser.isPresent()) {
+            response.put("message", "이미 사용중인 이메일입니다.");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        }
+        userService.joinNormal(userVO);
+        response.put("message", "회원가입이 완료되었습니다.");
+        return ResponseEntity.ok(response);
+    }
+
+
+//    소셜 로그인 후 회원가입
+    @Operation(summary = "소셜 로그인 후 회원가입", description = "소셜 로그인 후 회원가입을 할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "회원가입 성공")
+    @PostMapping("join/social")
+    public ResponseEntity<Map<String, Object>> socialJoin(@RequestBody UserVO userVO) {
         Map<String, Object> response = new HashMap<>();
+        String provider = userVO.getUserProvider();
 
 //        회원가입 후 다시 로그인
         Optional<UserVO> userEmail = userService.getUserByEmail(userVO.getUserEmail());
         if (userEmail.isPresent()) {
             response.put("message", "이미 사용중인 이메일입니다.");
+            response.put("provider", provider);
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         }
-//        회원가입
-        userService.join(userVO);
+//        소셜 로그인 후 회원가입
+        userService.joinSocial(userVO);
         response.put("message", "회원가입이 완료되었습니다.");
         return ResponseEntity.ok(response);
     }
@@ -95,11 +115,19 @@ public class UserController {
         Map<String, Object> response = new HashMap<>();
         String token = jwtToken != null ? jwtToken.replace("Bearer ", "") : null;
 
+        log.info("token : {}", token);
+
         try {
             if (token != null && jwtTokenUtil.isTokenValid(token)) {
 
                 Claims claims = jwtTokenUtil.parseToken(token);
                 String userIdentification = claims.get("identification").toString();
+
+                if (userIdentification == null) {
+                    response.put("message", "Identification not found in the token.");
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+                }
+
                 UserVO foundUser = userService.getUserByIdentification(userIdentification).orElseThrow(() -> {
                     throw new RuntimeException("User profile, Not found User");
                 });
@@ -138,16 +166,22 @@ public class UserController {
         return new UserVO();
     }
 
+
 //    아이디 중복 체크
     @Operation(summary = "아이디 중복 검사", description = "아이디 중복 검사를 할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "아이디 중복 검사 성공")
     @GetMapping("/check-id/{userIdentification}")
-    public boolean checkIdentification(@PathVariable String userIdentification) {
+    public ResponseEntity<Map<String, Object>> checkIdentification(@PathVariable String userIdentification) {
+        Map<String, Object> response = new HashMap<>();
         Optional<UserVO> foundUser = userService.getUserByIdentification(userIdentification);
         if (foundUser.isPresent()) {
-            return true;
+            response.put("check-id", true);
+            response.put("message", "이미 사용중인 아이디입니다.");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         }
-        return false;
+        response.put("check-id", false);
+        response.put("message", "사용 가능한 아이디입니다.");
+        return ResponseEntity.ok(response);
     }
 
 //    아이디 찾기 (이름 + 이메일)

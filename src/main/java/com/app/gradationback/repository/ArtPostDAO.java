@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -30,6 +31,11 @@ public class ArtPostDAO {
 //    작품 게시글 단일 조회
     public Optional<ArtPostDTO> findById(Long id) {
         return artPostMapper.select(id);
+    }
+
+//    카테고리 + 드롭다운 + 페이지네이션
+    public List<ArtPostDTO> findArtListByCategoryAndDropdown(Map<String, Object> params) {
+        return artPostMapper.selectArtListByCategoryAndDropdown(params);
     }
 
     public List<ArtPostDTO> findAllByUserId(Long userId) { return artPostMapper.selectAllByUserId(userId); }

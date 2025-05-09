@@ -41,6 +41,8 @@ public class SecurityConfig {
                                 OAuth2User oAuth2User = authToken.getPrincipal();
                                 Map<String, Object> attributes = oAuth2User.getAttributes();
 
+                                log.info(attributes.toString());
+
                                 String provider = authToken.getAuthorizedClientRegistrationId();
                                 String email = "";
                                 String name = "";
@@ -63,11 +65,13 @@ public class SecurityConfig {
                                 String foundUserProvider = userService.getUserByEmail(email).map(UserVO::getUserProvider).orElse(null);
                                 String redirectUrl = "";
 
-                                if(userId != null && foundUserProvider.equals(provider)) {
+                                log.info("provider: {}", foundUserProvider);
+
+                                if(userId != null && foundUserProvider != null && foundUserProvider.equals(provider)) {
                                     String jwtToken = jwtTokenUtil.generateToken(claims);
                                     redirectUrl = "http://localhost:3000/?jwtToken=" + jwtToken;
 
-                                }else if(userId != null && !foundUserProvider.equals(provider)) {
+                                }else if(userId != null && foundUserProvider != null && !foundUserProvider.equals(provider)) {
                                     if(foundUserProvider.equals("자사로그인")){
                                     String jwtToken = jwtTokenUtil.generateToken(claims);
                                     userService.getUserByEmail(email).ifPresent(user -> {
@@ -82,15 +86,17 @@ public class SecurityConfig {
                                         userVO.setUserPhone(user.getUserPhone());
                                         userVO.setUserNickName(user.getUserNickName());
                                         userVO.setUserProvider(provider);
+                                        log.info("provider: {}", userVO.getUserProvider());
                                         userService.modifyUser(userVO);
+                                        log.info("provider: {}", userVO.getUserProvider());
                                     });
                                     redirectUrl = "http://localhost:3000/?jwtToken=" + jwtToken;
 
                                     }else{
-                                        redirectUrl = "http://localhost:3000/sign-in?error=true";
+                                        redirectUrl = "http://localhost:3000/login?provider=" + foundUserProvider + "&login=false";
                                     }
                                 }else{
-                                    redirectUrl = "http://localhost:3000/sign-up?provider=" + provider + "&email=" + email;
+                                    redirectUrl = "http://localhost:3000/join?provider=" + provider + "&email=" + email;
                                 }
 
                                 response.sendRedirect(redirectUrl);
@@ -99,13 +105,13 @@ public class SecurityConfig {
                 )
             .logout(logout -> logout
             .logoutUrl("/logout")
-            .logoutSuccessUrl("http://localhost:3000/sign-in")
+            .logoutSuccessUrl("http://localhost:3000/login")
                         .logoutSuccessHandler((request, response, authentication) -> {
-        HttpSession session = request.getSession(false); // false : 세션이 있으면 가져와라
+        HttpSession session = request.getSession(false);
         if(session != null){
             session.invalidate();
         }
-        response.sendRedirect("http://localhost:3000/sign-in");
+        response.sendRedirect("http://localhost:3000/login");
         })
             );
 
