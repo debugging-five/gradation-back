@@ -223,7 +223,7 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "회원 정보 수정 성공")
     @PutMapping("modify")
     public void modify(@RequestBody UserVO userVO) {
-        userService.modifyUser(userVO);g
+        userService.modifyUser(userVO);
         log.info("{}", userVO);
     }
 
