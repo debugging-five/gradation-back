@@ -89,4 +89,8 @@ public class AuctionDTO {
 //    TBL_ART_IMG
     private String artImgName;
     private String artImgPath;
+
+//    ARTIST_INFO
+    private String artistName;
 }
+

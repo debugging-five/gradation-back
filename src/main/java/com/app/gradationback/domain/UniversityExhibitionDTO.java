@@ -3,12 +3,13 @@ package com.app.gradationback.domain;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Component
 @Data
 public class UniversityExhibitionDTO {
-//    TBL_UNIVERSITY
+//    TBL_UNIVERSITY(로고)
     private Long id;
     private String universityName;
     private String universityLocation;
@@ -19,6 +20,7 @@ public class UniversityExhibitionDTO {
 //    TBL_UNIVERSITY_EXHIBITION
     private Date universityExhibitionStartDate;
     private Date universityExhibitionEndDate;
+//    전시상태
     private String universityExhibitionState;
     private String universityExhibitionTitle;
     private String universityExhibitionLocation;
@@ -29,6 +31,14 @@ public class UniversityExhibitionDTO {
     private String universityExhibitionImgName;
     private String universityExhibitionImgPath;
     private Long universityExhibitionId;
+
+//    TBL_MAJOR
+    private String majorName;
+    private Long universityId;
+
+//    TBL_UNIVERSITY_LIKE
+    private Timestamp universityLikeTime;
+    private Long userId;
 
 //    TBL_USER
     private String userImgName;
@@ -62,4 +72,6 @@ public class UniversityExhibitionDTO {
     private String userBackgroundImgName;
     private String userBackgroundImgPath;
     private String userProvider;
+
+
 }

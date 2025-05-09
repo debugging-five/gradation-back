@@ -24,9 +24,9 @@ public class AuthController {
     @Operation(summary = "이메일로 인증번호 전송", description = "이메일로 인증번호를 전송할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "인증번호 전송 성공")
     @PostMapping("sendEmail")
-    public ResponseEntity<Map<String, Object>> sendEmail(@RequestBody String memberEmail){
-        log.info(memberEmail);
-        return smsService.sendEmailVerification(memberEmail);
+    public ResponseEntity<Map<String, Object>> sendEmail(@RequestBody String userEmail){
+        log.info(userEmail);
+        return smsService.sendEmailVerification(userEmail);
     }
 
 //    인증코드 검증

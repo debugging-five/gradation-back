@@ -1,7 +1,9 @@
 package com.app.gradationback.service;
 
+import com.app.gradationback.domain.DisplayDTO;
 import com.app.gradationback.domain.GradationExhibitionImgVO;
 import com.app.gradationback.domain.GradationExhibitionVO;
+import com.app.gradationback.domain.UniversityExhibitionDTO;
 import com.app.gradationback.mapper.ExhibitionMapper;
 import com.app.gradationback.repository.ExhibitionDAO;
 import lombok.RequiredArgsConstructor;
@@ -52,4 +54,31 @@ public class ExhibitionServiceImpl implements ExhibitionService {
     public List<GradationExhibitionVO> getRecentGradations() {
         return exhibitionDAO.findRecentGradations();
     }
+
+    @Override
+    public List<DisplayDTO> getTopLikedArts() {
+        return exhibitionDAO.findTopLikedArts();
+    }
+
+    @Override
+    public void registerUniversity(UniversityExhibitionDTO universityExhibitionDTO) {
+//        대학교 저장
+        exhibitionDAO.saveUniversity(universityExhibitionDTO);
+//        학과 저장
+        exhibitionDAO.saveMajor(universityExhibitionDTO);
+//        전시회 저장
+        exhibitionDAO.saveUniversityExhibition(universityExhibitionDTO);
+//        이미지 저장
+        if(universityExhibitionDTO.getUniversityExhibitionImgName() != null && universityExhibitionDTO.getUniversityExhibitionImgPath() != null) {
+            universityExhibitionDTO.setUniversityExhibitionId(universityExhibitionDTO.getId());
+            exhibitionDAO.saveUniversityExhibitionImg(universityExhibitionDTO);
+        }
+    }
+
+
+
 }
+
+
+
+

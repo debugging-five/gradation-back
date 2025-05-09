@@ -148,13 +148,16 @@
             ART_DESCRIPTION,
             ART_END_DATE,
             TAR.USER_ID,
+            TU.USER_NAME AS ARTIST_NAME,
             TAI.ART_IMG_NAME,
             TAI.ART_IMG_PATH
         FROM TBL_AUCTION TAU
-        JOIN HR.TBL_ART TAR
+        JOIN TBL_ART TAR
         ON TAU.ART_ID = TAR.ID
         JOIN HR.TBL_ART_IMG TAI
         ON TAR.ID = TAI.ART_ID
+        JOIN TBL_USER TU
+        ON TAR.USER_ID = TU.ID
         WHERE TAU.ID = #{id}
     </select>
 
