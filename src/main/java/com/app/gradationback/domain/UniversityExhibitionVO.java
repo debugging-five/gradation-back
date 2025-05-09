@@ -11,7 +11,6 @@ public class UniversityExhibitionVO {
     private Long id;
     private Date universityExhibitionStartDate;
     private Date universityExhibitionEndDate;
-    private String universityExhibitionState;
     private String universityExhibitionTitle;
     private String universityExhibitionLocation;
     private String universityExhibitionStatus;
