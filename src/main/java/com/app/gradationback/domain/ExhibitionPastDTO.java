@@ -23,10 +23,6 @@ public class ExhibitionPastDTO {
     private String gradationExhibitionAddress;
     private String gradationExhibitionDate;
 
-//    TBL_GRADATION_EXHIBITION_IMG
-    private String gradationExhibitionImgName;
-    private String gradationExhibitionImgPath;
-
 //    TBL_ART
     private String artTitle;
     private String artCategory;

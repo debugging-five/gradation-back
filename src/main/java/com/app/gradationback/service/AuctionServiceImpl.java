@@ -101,6 +101,7 @@ public class AuctionServiceImpl implements AuctionService {
 //                최상위 자동응찰이 없는 경우
                 auctionBiddingVO.setAuctionBiddingAutoOk(false);
                 auctionBiddingVO.setAuctionBiddingPrice((int)Math.ceil(topBidding.getAuctionBiddingPrice() * 1.1 / 1000) * 1000);
+                auctionBiddingDAO.save(auctionBiddingVO);
 
             }
 //            두 자동응찰이 서로의 최소 응찰가를 동시에 만족하지 못할경우 더 높은 응찰금의 자동응찰이 응찰 우선권을 가진다.

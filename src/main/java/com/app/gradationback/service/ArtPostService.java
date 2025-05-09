@@ -5,6 +5,7 @@ import com.app.gradationback.domain.ArtPostVO;
 import com.app.gradationback.domain.ArtVO;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface ArtPostService {
@@ -17,6 +18,9 @@ public interface ArtPostService {
 
 //    작품 게시글 단일 조회
     public Optional<ArtPostDTO> getArtPostById(Long id);
+
+//    카테고리 + 드롭다운 + 페이지네이션
+    public List<ArtPostDTO> getArtListByCategoryAndDropdown(Map<String, Object> params);
 
 //    작품 게시글 수정
     public void edit(ArtPostVO artPostVO);

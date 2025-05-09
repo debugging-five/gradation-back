@@ -1,8 +1,6 @@
 package com.app.gradationback.mapper;
 
-import com.app.gradationback.domain.GradationExhibitionDTO;
-import com.app.gradationback.domain.GradationExhibitionImgVO;
-import com.app.gradationback.domain.GradationExhibitionVO;
+import com.app.gradationback.domain.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -11,7 +9,7 @@ import java.util.Optional;
 @Mapper
 public interface ExhibitionMapper {
 
-    //    그라데이션
+//    그라데이션
 //    전시회 정보 불러오기
     public Optional<GradationExhibitionVO> selectGradation();
 
@@ -33,4 +31,25 @@ public interface ExhibitionMapper {
 //    최근 전시회 3개 조회
     public List<GradationExhibitionVO> selectRecentGradations();
 
+//    좋아요순 50개 작품
+    public List<DisplayDTO> selectTopLikedArts();
+
+
+//    대학교 전시회
+//    신청 양식(대학교)
+    public void insertUniversity(UniversityExhibitionDTO universityExhibitionDTO);
+
+//    신청 양식(학과)
+    public void insertMajor(UniversityExhibitionDTO universityExhibitionDTO);
+
+//    신청 양식(대학교 전시회)
+    public void insertUniversityExhibition(UniversityExhibitionDTO universityExhibitionDTO);
+
+//    신청 양식(대학교 전시회 이미지)
+    public void insertUniversityExhibitionImg(UniversityExhibitionDTO universityExhibitionDTO);
+
+
 }
+
+
+

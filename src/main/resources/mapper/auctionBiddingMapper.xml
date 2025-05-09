@@ -31,7 +31,7 @@
             FROM TBL_AUCTION_BIDDING
             WHERE AUCTION_ID = #{auctionId}
                 AND AUCTION_BIDDING_AUTO_OK = 0
-            ORDER BY AUCTION_BIDDING_TIME DESC
+            ORDER BY AUCTION_BIDDING_PRICE DESC
              )
         WHERE ROWNUM = 1
     </select>

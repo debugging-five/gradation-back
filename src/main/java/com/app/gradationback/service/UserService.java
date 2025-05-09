@@ -8,8 +8,11 @@ import java.util.Optional;
 
 public interface UserService {
 
-//    회원가입
-    public void join(UserVO userVO);
+//    일반 회원가입
+    public void joinNormal(UserVO userVO);
+
+//    소셜 로그인 후 회원가입
+    public void joinSocial(UserVO userVO);
 
 //    전체 회원 조회
     public List<UserVO> getUserList();

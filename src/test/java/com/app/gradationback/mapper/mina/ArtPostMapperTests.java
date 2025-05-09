@@ -31,8 +31,8 @@ public class ArtPostMapperTests {
     public void insertArtPostTest() {
         ArtPostVO artPostVO = new ArtPostVO();
         artPostVO.setArtPostDate(new Timestamp(System.currentTimeMillis()));
-        artPostVO.setUserId(95L);
-        artPostVO.setArtId(446L);
+        artPostVO.setUserId(7L);
+        artPostVO.setArtId(46L);
         artPostMapper.insert(artPostVO);
         log.info("{}", artPostVO);
     }
