@@ -22,16 +22,25 @@ public class UserMapperTests {
     @Autowired
     private UserService userService;
 
-    //    회원 가입
+//    일반 회원가입
     @Test
-    public void insertUserTest() {
+    public void insertNormalUserTest() {
         UserVO userVO = new UserVO();
-        userVO.setUserName("서민아");
-        userVO.setUserEmail("alsdk6761@gmail.com");
-        userVO.setUserIdentification("mina1234");
-        userVO.setUserPassword("mina1234!@#");
+        userVO.setUserName("회원임");
+        userVO.setUserEmail("test10@gmail.com");
+        userVO.setUserIdentification("test10");
+        userVO.setUserPassword("test1234!@#");
         userVO.setUserPhone("01012345678");
-        userMapper.insert(userVO);
+        userMapper.insertNormal(userVO);
+        log.info("{}", userVO);
+    }
+
+//    소셜 로그인 후 회원가입
+    @Test
+    public void insertSocialUserTest() {
+        UserVO userVO = new UserVO();
+        userVO.setUserName("닉네임없는 회원4");
+        userMapper.insertSocial(userVO);
         log.info("{}", userVO);
     }
 
@@ -56,10 +65,12 @@ public class UserMapperTests {
     @Test
     public void updateUserTest() {
         UserVO userVO = new UserVO();
-        userVO.setUserIdentification("아이디1");
-        userVO.setUserName("회원 이름 수정!");
-        userVO.setUserPhone("01012341234");
-        userVO.setUserEmail("user1234@gmail.com");
+        userVO.setUserName("회원임");
+        userVO.setUserEmail("test10@gmail.com");
+        userVO.setUserIdentification("test10");
+        userVO.setUserPassword("test1234!@#");
+        userVO.setUserPhone("01012345678");
+        userVO.setUserProvider("google");
         userMapper.updateUser(userVO);
         log.info("{}", userVO);
     }

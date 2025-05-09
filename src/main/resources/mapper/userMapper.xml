@@ -2,25 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.gradationback.mapper.UserMapper">
 
-    <!--  회원가입  -->
-    <insert id="insert" parameterType="UserVO">
-        INSERT INTO TBL_USER (ID, USER_NAME, USER_EMAIL, USER_IDENTIFICATION, USER_PASSWORD, USER_PHONE, USER_NICKNAME, USER_SNS_OK, USER_MAIL_OK, USER_AGREEMENT_OK, USER_PROVIDER)
+    <!--  일반 회원가입  -->
+    <insert id="insertNormal" parameterType="UserVO">
+        INSERT INTO TBL_USER (ID, USER_NAME, USER_EMAIL, USER_IDENTIFICATION, USER_PASSWORD, USER_PHONE, USER_NICKNAME)
         VALUES (
         SEQ_USER.NEXTVAL,
         #{userName},
         #{userEmail},
         #{userIdentification},
-        <if test="userPassword != null">#{userPassword}</if>
-        <if test="userPassword == null">NULL</if>,
+        #{userPassword},
         #{userPhone},
         <if test="userNickName != null">#{userNickName}</if>
+        <if test="userNickName == null">#{userName}</if>
+        )
+    </insert>
+
+    <!-- 소셜 로그인 후 회원가입 -->
+    <insert id="insertSocial" parameterType="UserVO">
+        INSERT INTO TBL_USER (ID, USER_NAME, USER_EMAIL, USER_NICKNAME, USER_PROVIDER)
+        VALUES (
+        SEQ_USER.NEXTVAL,
+        #{userName},
+        #{userEmail},
+        <if test="userNickName != null">#{userNickName}</if>
         <if test="userNickName == null">#{userName}</if>,
-        <if test="userSnsOk != null">#{userSnsOk}</if>
-        <if test="userSnsOk == null">DEFAULT</if>,
-        <if test="userMailOk != null">#{userMailOk}</if>
-        <if test="userMailOk == null">DEFAULT</if>,
-        <if test="userAgreementOk != null">#{userAgreementOk}</if>
-        <if test="userAgreementOk == null">DEFAULT</if>,
         <if test="userProvider != null">#{userProvider}</if>
         <if test="userProvider == null">DEFAULT</if>
         )
@@ -42,7 +47,7 @@
                USER_PHONE, USER_NICKNAME, USER_ADDRESS, USER_DETAIL_ADDRESS, USER_POSTAL_CODE, USER_SNS_OK,
                USER_MAIL_OK, USER_AGREEMENT_OK, USER_INTRODUCE, USER_INSTAGRAM, USER_YOUTUBE, USER_BLOG,
                USER_KAKAO, USER_GOOGLE, USER_NAVER, USER_ADMIN_OK, USER_BAN_OK, MAJOR_ID, USER_MAJOR_IMG_NAME, USER_MAJOR_IMG_PATH,
-               USER_WRITER_STATUS, USER_UNIVERSITY_STATUS, USER_ART_CATEGORY, USER_BACKGROUND_IMG_NAME, USER_BACKGROUND_IMG_PATH
+               USER_WRITER_STATUS, USER_UNIVERSITY_STATUS, USER_ART_CATEGORY, USER_BACKGROUND_IMG_NAME, USER_BACKGROUND_IMG_PATH, USER_PROVIDER
         FROM TBL_USER
         WHERE USER_EMAIL = #{userEmail}
     </select>
@@ -94,7 +99,7 @@
         SET USER_NICKNAME = #{userNickName}, USER_NAME = #{userName},
             USER_PHONE = #{userPhone}, USER_EMAIL = #{userEmail},
             USER_ADDRESS = #{userAddress}, USER_DETAIL_ADDRESS = #{userDetailAddress},
-            USER_PASSWORD = #{userPassword}
+            USER_PASSWORD = #{userPassword}, USER_PROVIDER = #{userProvider}
         WHERE USER_IDENTIFICATION = #{userIdentification}
     </update>
 

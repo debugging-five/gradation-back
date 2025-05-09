@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -67,7 +68,12 @@ public class ArtPostServiceImpl implements ArtPostService {
         return artPostDAO.findById(id);
     }
 
-//    작품 게시글 수정
+    @Override
+    public List<ArtPostDTO> getArtListByCategoryAndDropdown(Map<String, Object> params) {
+        return artPostDAO.findArtListByCategoryAndDropdown(params);
+    }
+
+    //    작품 게시글 수정
     @Override
     public void edit(ArtPostVO artPostVO) {
         artPostDAO.update(artPostVO);

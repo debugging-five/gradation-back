@@ -42,6 +42,101 @@
         WHERE TBP.ID = #{id}
     </select>
 
+    <!--  카테고리 + 드롭다운 + 페이지네이션  -->
+    <select id="selectArtListByCategoryAndDropdown" parameterType="Map" resultType="ArtPostDTO">
+        SELECT TBA.ID, TBA.ART_TITLE, TBA.ART_CATEGORY, TBA.ART_MATERIAL, TBA.ART_SIZE, TBA.ART_DESCRIPTION, TBA.ART_END_DATE,
+        TBA.USER_ID, TBP.ART_POST_DATE, TBU.USER_NAME, COALESCE(TAL.ART_LIKE_COUNT, 0) AS ART_LIKE_COUNT, COALESCE(TBC.COMMENT_COUNT, 0) AS COMMENT_COUNT,
+        TAI.ART_IMG_NAME, TAI.ART_IMG_PATH
+        FROM TBL_ART TBA
+        JOIN TBL_ART_POST TBP
+        ON TBA.ID = TBP.ART_ID
+        JOIN TBL_USER TBU
+        ON TBA.USER_ID = TBU.ID
+        LEFT JOIN (
+        SELECT ART_ID, COUNT(*) AS ART_LIKE_COUNT
+        FROM TBL_ART_LIKE
+        GROUP BY ART_ID
+        ) TAL
+        ON TBA.ID = TAL.ART_ID
+        LEFT JOIN (
+        SELECT ART_POST_ID, COUNT(*) AS COMMENT_COUNT
+        FROM TBL_COMMENT
+        GROUP BY ART_POST_ID
+        ) TBC
+        ON TBP.ID = TBC.ART_POST_ID
+        LEFT JOIN (
+        SELECT TAI1.ART_ID, TAI1.ART_IMG_NAME, TAI1.ART_IMG_PATH
+        FROM TBL_ART_IMG TAI1
+        JOIN (
+        SELECT ART_ID, MIN(ID) AS MIN_ID
+        FROM TBL_ART_IMG
+        GROUP BY ART_ID
+        ) TAI2
+        ON TAI1.ART_ID = TAI2.ART_ID AND TAI1.ID = TAI2.MIN_ID
+        ) TAI
+        ON TBA.ID = TAI.ART_ID
+        WHERE
+        <!-- 카테고리 필터링 -->
+        <choose>
+            <when test="category != null and category.equals('공예')">
+                TBA.ART_CATEGORY = '공예'
+            </when>
+            <when test="category != null and category.equals('건축')">
+                TBA.ART_CATEGORY = '건축'
+            </when>
+            <when test="category != null and category.equals('서예')">
+                TBA.ART_CATEGORY = '서예'
+            </when>
+            <when test="category != null and category.equals('회화')">
+                TBA.ART_CATEGORY = '회화'
+            </when>
+            <when test="category != null and category.equals('조각')">
+                TBA.ART_CATEGORY = '조각'
+            </when>
+            <when test="category != null and category.equals('한국화')">
+                TBA.ART_CATEGORY = '한국화'
+            </when>
+            <otherwise>
+                TBA.ART_CATEGORY = '한국화'
+            </otherwise>
+        </choose>
+
+        <!-- 검색 (작품명, 작가명) -->
+        <if test="keyword != null and keyword != ''">
+            AND (
+            TBA.ART_TITLE LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+            OR TBU.USER_NAME LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+            )
+        </if>
+
+        <!-- 드롭다운 필터링 (좋아요순, 댓글순, 등록순) -->
+        <choose>
+            <when test="order != null and order.equals('popular')">
+                ORDER BY ART_LIKE_COUNT
+            </when>
+            <when test="order != null and order.equals('comment')">
+                ORDER BY COMMENT_COUNT
+            </when>
+            <when test="order != null and order.equals('date')">
+                ORDER BY TBP.ART_POST_DATE
+            </when>
+            <otherwise>
+                ORDER BY TBA.ID
+            </otherwise>
+        </choose>
+
+        <choose>
+            <when test="direction != null and direction.equals('asc')">
+                ASC
+            </when>
+            <otherwise>
+                DESC
+            </otherwise>
+        </choose>
+        OFFSET (#{cursor} - 1) * 15 ROWS
+        FETCH NEXT 15 ROWS ONLY
+    </select>
+
     <select id="selectAllByUserId" parameterType="Long" resultType="ArtPostDTO">
         SELECT ID, ART_ID, USER_ID, ART_POST_DATE
         FROM TBL_ART_POST

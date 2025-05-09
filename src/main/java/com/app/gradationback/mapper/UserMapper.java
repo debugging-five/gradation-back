@@ -10,8 +10,11 @@ import java.util.Optional;
 @Mapper
 public interface UserMapper {
 
-//    회원가입
-    public void insert(UserVO userVO);
+//    일반 회원가입
+    public void insertNormal(UserVO userVO);
+
+//    소셜 로그인 후 회원가입
+    public void insertSocial(UserVO userVO);
 
 //    전체 회원 조회
     public List<UserVO> selectAllUser();
