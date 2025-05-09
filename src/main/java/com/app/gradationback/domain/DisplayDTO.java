@@ -57,4 +57,6 @@ public class DisplayDTO {
     private String userBackgroundImgPath;
     private String userProvider;
     private Long majorId;
+
+    private int likeCount;
 }

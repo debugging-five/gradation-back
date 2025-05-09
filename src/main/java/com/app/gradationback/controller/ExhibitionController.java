@@ -1,5 +1,6 @@
 package com.app.gradationback.controller;
 
+import com.app.gradationback.domain.DisplayDTO;
 import com.app.gradationback.domain.GradationExhibitionDTO;
 import com.app.gradationback.domain.GradationExhibitionImgVO;
 import com.app.gradationback.domain.GradationExhibitionVO;
@@ -119,7 +120,24 @@ public class ExhibitionController {
         return ResponseEntity.ok(exhibitionList);
 
     }
+
+//    좋아요순 작품 50개
+    @Operation(summary = "현재 인기 작품 조회", description = "현재 인기 작품을 조회할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "인기 작품 조회 성공")
+    @GetMapping("gradation/top-liked-art")
+    public ResponseEntity<List<DisplayDTO>> getTopLikedArts() {
+        List<DisplayDTO> topLikedArts = exhibitionService.getTopLikedArts();
+
+        if (topLikedArts.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(topLikedArts);
+    }
+
 }
+
+
+
 
 
 

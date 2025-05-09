@@ -129,31 +129,131 @@
         WHERE ROWNUM &lt;=3
     </select>
 
+<!--   좋아요순 50개 작품 -->
+    <select id="selectTopLikedArts" resultType="DisplayDTO">
+        SELECT
+            TAI.ART_IMG_NAME,
+            TAI.ART_IMG_PATH,
+            TAR.ART_TITLE,
+            TU.USER_NAME,
+            TAL.LIKE_COUNT
+        FROM TBL_ART TAR
+        JOIN (
+            SELECT ART_ID, COUNT(ID) AS LIKE_COUNT
+            FROM TBL_ART_LIKE
+            WHERE EXTRACT(YEAR FROM ART_LIKE_TIME) = EXTRACT(YEAR FROM CURRENT_DATE)
+            GROUP BY ART_ID
+            ORDER BY LIKE_COUNT DESC
+                FETCH NEXT 50 ROWS ONLY
+        ) TAL
+            ON TAR.ID = TAL.ART_ID
+            JOIN (
+                SELECT T1.ART_ID, T1.ART_IMG_NAME, T1.ART_IMG_PATH
+                FROM TBL_ART_IMG T1
+                JOIN (
+                    SELECT ART_ID, MIN(ID) AS MIN_ID
+                    FROM TBL_ART_IMG
+                    GROUP BY ART_ID
+                ) T2
+                    ON T1.ART_ID = T2.ART_ID
+                    AND T1.ID = T2.MIN_ID
+            ) TAI
+                ON TAR.ID = TAI.ART_ID
+            JOIN TBL_USER TU
+                ON TAR.USER_ID = TU.ID
+    </select>
 
-    <!--    과거 전시회용-->
-    <!--        <select id="selectGradation" resultType="GradationExhibitionDTO">-->
-    <!--        SELECT TGE.ID,-->
-    <!--               TGE.GRADATION_EXHIBITION_TITLE,-->
-    <!--               TGE.GRADATION_EXHIBITION_ART,-->
-    <!--               TGE.GRADATION_EXHIBITION_CATEGORY,-->
-    <!--               TGE.GRADATION_EXHIBITION_TIME,-->
-    <!--               TGE.GRADATION_EXHIBITION_FEE,-->
-    <!--               TGE.GRADATION_EXHIBITION_TEL,-->
-    <!--               TGE.GRADATION_EXHIBITION_ADDRESS,-->
-    <!--               TGE.GRADATION_EXHIBITION_DATE-->
-    <!--        FROM TBL_GRADATION_EXHIBITION TGE-->
-    <!--        JOIN TBL_GRADATION_EXHIBITION_IMG TGEI-->
-    <!--        ON TGE.ID = TGEI.GRADATION_EXHIBITION_ID-->
-    <!--        JOIN TBL_EXHIBITION_PAST_ART TEPA-->
-    <!--        ON TGE.ID = TEPA.GRADATION_EXHIBITION_ID-->
-    <!--        JOIN TBL_ART TA-->
-    <!--        ON TEPA.ART_ID = TA.ID-->
-    <!--        JOIN TBL_ART_IMG TAI-->
-    <!--        ON TA.ID = TAI.ART_ID-->
-    <!--        LEFT JOIN TBL_USER TU-->
-    <!--        ON TA.USER_ID = TU.ID-->
-    <!--    </select>-->
 
-    <!--    대학교 전시회 -->
+
+<!--    대학교 전시회 -->
+<!--    신청 양식(학교) -->
+    <insert id="insertUniversity" parameterType="UniversityExhibitionDTO">
+        <selectKey keyProperty="id" order="BEFORE" resultType="Long">
+            SELECT SEQ_UNIVERSITY.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO TBL_UNIVERSITY(
+            ID,
+            UNIVERSITY_NAME,
+            UNIVERSITY_LOGO_IMG_NAME,
+            UNIVERSITY_LOGO_IMG_PATH,
+            UNIVERSITY_HOMEPAGE
+        )
+        VALUES (
+            #{id},
+            #{universityName},
+            #{universityLogoImgName},
+            #{universityLogoImgPath},
+            #{universityHomepage}
+        )
+    </insert>
+
+<!--    신청 양식(학과) -->
+    <insert id="insertMajor" parameterType="UniversityExhibitionDTO">
+        <selectKey keyProperty="majorId" resultType="Long" order="BEFORE">
+            SELECT SEQ_MAJOR.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO TBL_MAJOR (
+            ID,
+            UNIVERSITY_ID,
+            MAJOR_NAME
+        )
+        VALUES (
+            #{majorId},
+            #{id},
+            #{majorName}
+        )
+    </insert>
+
+<!--    신청 양식(대학교 전시회) -->
+    <insert id="insertUniversityExhibition" parameterType="UniversityExhibitionDTO">
+        <selectKey keyProperty="id" order="BEFORE" resultType="Long">
+            SELECT SEQ_UNIVERSITY_EXHIBITION.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO TBL_UNIVERSITY_EXHIBITION(
+            ID,
+            UNIVERSITY_EXHIBITION_START_DATE,
+            UNIVERSITY_EXHIBITION_END_DATE,
+            UNIVERSITY_EXHIBITION_TITLE,
+            UNIVERSITY_EXHIBITION_LOCATION,
+            MAJOR_ID
+        )
+        VALUES (
+            #{id},
+            #{universityExhibitionStartDate},
+            #{universityExhibitionEndDate},
+            #{universityExhibitionTitle},
+            #{universityExhibitionLocation},
+            #{majorId}
+        )
+    </insert>
+    
+    <insert id="insertUniversityExhibitionImg" parameterType="UniversityExhibitionDTO" >
+        INSERT INTO TBL_UNIVERSITY_EXHIBITION_IMG (
+            ID,
+            UNIVERSITY_EXHIBITION_IMG_NAME,
+            UNIVERSITY_EXHIBITION_IMG_PATH,
+            UNIVERSITY_EXHIBITION_ID
+        )
+        VALUES (
+            SEQ_UNIVERSITY_EXHIBITION_IMG.NEXTVAL,
+            #{universityExhibitionImgName},
+            #{universityExhibitionImgPath},
+            #{universityExhibitionId}
+        )
+    </insert>
+
+<!--    로고 매칭을 위한 대학교 조회 -->
+    <select id="findUniversityByName" resultType="UniversityVO" parameterType="Long">
+        SELECT
+            ID,
+            UNIVERSITY_NAME,
+            UNIVERSITY_LOGO_IMG_NAME,
+            UNIVERSITY_LOGO_IMG_PATH,
+            UNIVERSITY_HOMEPAGE
+        FROM TBL_UNIVERSITY
+        WHERE UNIVERSITY_NAME = #{universityName}
+    </select>
+
+
 
 </mapper>

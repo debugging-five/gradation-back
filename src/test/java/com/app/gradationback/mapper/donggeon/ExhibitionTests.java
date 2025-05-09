@@ -1,5 +1,6 @@
 package com.app.gradationback.mapper.donggeon;
 
+import com.app.gradationback.domain.DisplayDTO;
 import com.app.gradationback.domain.GradationExhibitionImgVO;
 import com.app.gradationback.domain.GradationExhibitionVO;
 import com.app.gradationback.mapper.ExhibitionMapper;
@@ -90,6 +91,24 @@ public class ExhibitionTests {
     public void getRecentGradationsTest() {
         List<GradationExhibitionVO> recentGradations = exhibitionService.getRecentGradations();
         recentGradations.forEach(gradation -> log.info("{} {}", gradation.getGradationExhibitionDate(), gradation.getGradationExhibitionTitle()));
+    }
+
+//    좋아요순 작품 50개
+    @Test
+    public void getTopLikedArtsTest() {
+        List<DisplayDTO> topLikedArts = exhibitionService.getTopLikedArts();
+
+        DisplayDTO top1 = topLikedArts.get(0);
+        log.info("이미지 {}, {}", top1.getArtImgName(), top1.getArtImgPath());
+        log.info("작품 제목 {}", top1.getArtTitle());
+        log.info("작가 이름 {}", top1.getUserName());
+
+        DisplayDTO top2 = topLikedArts.get(1);
+        log.info("이미지 {}, {}", top2.getArtImgName(), top2.getArtImgPath());
+        log.info("작품 제목 {}", top2.getArtTitle());
+        log.info("작가 이름 {}", top2.getUserName());
+
+
     }
 
 
