@@ -27,8 +27,8 @@ public class UserMapperTests {
     public void insertNormalUserTest() {
         UserVO userVO = new UserVO();
         userVO.setUserName("회원임");
-        userVO.setUserEmail("test10@gmail.com");
-        userVO.setUserIdentification("test10");
+        userVO.setUserEmail("test100@gmail.com");
+        userVO.setUserIdentification("test100");
         userVO.setUserPassword("test1234!@#");
         userVO.setUserPhone("01012345678");
         userMapper.insertNormal(userVO);
