@@ -28,9 +28,5 @@ public interface ArtPostService {
 //    작품 게시글 삭제
     public void removeById(Long id);
 
-//    작품 게시글 전체 삭제 (회원 탈퇴)
-//    public void removeAllByUserId(Long userId);
-
-//    public void removeAllByArtId(Long artId);
 
 }
