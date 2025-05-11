@@ -113,29 +113,6 @@ public class DisplayController {
         artPostService.removeById(postId);
     }
 
-//    좋아요 등록
-    @Operation(summary = "좋아요 등록", description = "좋아요를 등록할 수 있는 API")
-    @ApiResponse(responseCode = "200", description = "좋아요 등록 성공")
-    @PostMapping("/like")
-    public void registerLike(@RequestBody ArtLikeVO artLikeVO) {
-        artLikeService.register(artLikeVO);
-    }
-
-//    좋아요 수
-    @Operation(summary = "좋아요 수 조회", description = "좋아요 수를 조회할 수 있는 API")
-    @ApiResponse(responseCode = "200", description = "좋아요 수 조회 성공")
-    @GetMapping("/like/count/{artId}")
-    public int getLikeCount(Long artId) {
-        return artLikeService.getLikeCount(artId);
-    }
-
-//    좋아요 삭제
-    @Operation(summary = "좋아요 삭제", description = "좋아요를 삭제할 수 있는 API")
-    @ApiResponse(responseCode = "200", description = "좋아요 삭제 성공")
-    @DeleteMapping("/like")
-    public void deleteLike(@RequestBody ArtLikeVO artLikeVO) {
-        artLikeService.remove(artLikeVO);
-    }
 
 }
 
