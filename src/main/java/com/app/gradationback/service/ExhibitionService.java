@@ -36,6 +36,14 @@ public interface ExhibitionService {
 //    신청 양식(대학교 + 학과 + 대학교 전시회 + 대학교 전시회 이미지)
     public void registerUniversity(UniversityExhibitionDTO universityExhibitionDTO);
 
+//    대학 젼시회 정보 조회
+    public List<UniversityExhibitionDTO> getUniversity();
+
+//    전시회 이미지
+    public List<UniversityExhibitionImgVO> getUniversityImgAll(Long universityExhibitionId);
+
+
+
 }
 
 

@@ -1,8 +1,6 @@
 package com.app.gradationback.mapper.donggeon;
 
-import com.app.gradationback.domain.DisplayDTO;
-import com.app.gradationback.domain.GradationExhibitionImgVO;
-import com.app.gradationback.domain.GradationExhibitionVO;
+import com.app.gradationback.domain.*;
 import com.app.gradationback.mapper.ExhibitionMapper;
 import com.app.gradationback.service.ExhibitionService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
@@ -18,6 +19,8 @@ public class ExhibitionTests {
 
     @Autowired
     private ExhibitionService exhibitionService;
+
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 //    전시회 정보 불러오기
     @Test
@@ -108,8 +111,89 @@ public class ExhibitionTests {
         log.info("작품 제목 {}", top2.getArtTitle());
         log.info("작가 이름 {}", top2.getUserName());
 
-
     }
 
 
+//    University
+//    신청 양식(대학교 + 학과 + 대학교 전시회 + 대학교 전시회 이미지)
+//    해당학교가 DB 없을때
+
+    @Test
+    public void registerNoneUniversityTest() {
+        UniversityExhibitionDTO universityExhibitionDTO = new UniversityExhibitionDTO();
+        universityExhibitionDTO.setUniversityName("테스트 대학교");
+        universityExhibitionDTO.setUniversityHomepage("https://www.banggooso.com");
+
+        universityExhibitionDTO.setMajorName("테스트학과");
+
+        universityExhibitionDTO.setUniversityExhibitionTitle("제 1회 졸업전시회");
+        universityExhibitionDTO.setUniversityExhibitionLocation("조형관 2층");
+        universityExhibitionDTO.setUniversityExhibitionStartDate(new Date());
+        universityExhibitionDTO.setUniversityExhibitionEndDate(new Date());
+
+        universityExhibitionDTO.setUniversityExhibitionImgName("테스트대학교 작년 전시회 사진.jpg");
+        universityExhibitionDTO.setUniversityExhibitionImgPath("assets/images/university");
+
+        if (universityExhibitionDTO.getUniversityLogoImgName() == null) {
+            universityExhibitionDTO.setUniversityLogoImgName("default-logo.png");
+        }
+        if (universityExhibitionDTO.getUniversityLogoImgPath() == null) {
+            universityExhibitionDTO.setUniversityLogoImgPath("public/images/default");
+        }
+
+        exhibitionService.registerUniversity(universityExhibitionDTO);
+    }
+
+//    해당학교가 DB 있을때
+    @Test
+    public void registerUniversityTest() {
+        UniversityExhibitionDTO universityExhibitionDTO = new UniversityExhibitionDTO();
+        universityExhibitionDTO.setUniversityName("고려대학교");
+        universityExhibitionDTO.setUniversityHomepage("https://www.banggooso.com");
+
+        universityExhibitionDTO.setMajorName("테스트학과");
+
+        universityExhibitionDTO.setUniversityExhibitionTitle("제 2회 졸업전시");
+        universityExhibitionDTO.setUniversityExhibitionLocation("체육관 1F");
+        try {
+            universityExhibitionDTO.setUniversityExhibitionStartDate(sdf.parse("2025-11-24"));
+            universityExhibitionDTO.setUniversityExhibitionEndDate(sdf.parse("2025-11-30"));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+        universityExhibitionDTO.setUniversityExhibitionImgName("고려대 테스트 이미지2.jpg");
+        universityExhibitionDTO.setUniversityExhibitionImgPath("assets/images/university");
+
+        exhibitionService.registerUniversity(universityExhibitionDTO);
+    }
+
+//    대학교 전시회 조회
+    @Test
+    public void getUniversityTest() {
+        exhibitionService.getUniversity();
+        log.info(exhibitionService.getUniversity().toString());
+    }
+
+//    대학 전시회 이미지 조회
+    @Test
+    public void getUniversityImgTest() {
+        List<UniversityExhibitionImgVO> images = exhibitionService.getUniversityImgAll(6L);
+        images.forEach(image -> log.info(image.toString()));
+    }
+
+
+
+
+
+
 }
+
+
+
+
+
+
+
+
+

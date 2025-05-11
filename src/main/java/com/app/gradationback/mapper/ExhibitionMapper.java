@@ -48,8 +48,19 @@ public interface ExhibitionMapper {
 //    신청 양식(대학교 전시회 이미지)
     public void insertUniversityExhibitionImg(UniversityExhibitionDTO universityExhibitionDTO);
 
+//    대학교 조회
+    public Optional<UniversityVO> findUniversityByName(String universityName);
+
+//    전시회 정보 조회
+    public List<UniversityExhibitionDTO> selectUniversity();
+
+//    해당 전시회 이미지 띄우기
+    public List<UniversityExhibitionImgVO> selectUniversityImgAll(Long universityExhibitionId);
 
 }
+
+
+
 
 
 

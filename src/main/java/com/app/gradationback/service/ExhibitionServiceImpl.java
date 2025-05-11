@@ -1,9 +1,6 @@
 package com.app.gradationback.service;
 
-import com.app.gradationback.domain.DisplayDTO;
-import com.app.gradationback.domain.GradationExhibitionImgVO;
-import com.app.gradationback.domain.GradationExhibitionVO;
-import com.app.gradationback.domain.UniversityExhibitionDTO;
+import com.app.gradationback.domain.*;
 import com.app.gradationback.mapper.ExhibitionMapper;
 import com.app.gradationback.repository.ExhibitionDAO;
 import lombok.RequiredArgsConstructor;
@@ -62,8 +59,19 @@ public class ExhibitionServiceImpl implements ExhibitionService {
 
     @Override
     public void registerUniversity(UniversityExhibitionDTO universityExhibitionDTO) {
-//        대학교 저장
-        exhibitionDAO.saveUniversity(universityExhibitionDTO);
+//        대학교 중복 확인(로고)
+        Optional<UniversityVO> university = exhibitionDAO.findUniversityByName(universityExhibitionDTO.getUniversityName());
+
+        if(university.isPresent()) {
+            UniversityVO universityVO = university.get();
+            universityExhibitionDTO.setId(universityVO.getId());
+            universityExhibitionDTO.setUniversityLogoImgName(universityVO.getUniversityLogoImgName());
+            universityExhibitionDTO.setUniversityLogoImgPath(universityVO.getUniversityLogoImgPath());
+        } else {
+            universityExhibitionDTO.setUniversityLogoImgName("default-logo.png");
+            universityExhibitionDTO.setUniversityLogoImgPath("assets/images/university/logo");
+            exhibitionDAO.saveUniversity(universityExhibitionDTO);
+        }
 //        학과 저장
         exhibitionDAO.saveMajor(universityExhibitionDTO);
 //        전시회 저장
@@ -74,6 +82,19 @@ public class ExhibitionServiceImpl implements ExhibitionService {
             exhibitionDAO.saveUniversityExhibitionImg(universityExhibitionDTO);
         }
     }
+
+//    대학 전시회 정보
+    @Override
+    public List<UniversityExhibitionDTO> getUniversity() {
+        return exhibitionDAO.findUniversity();
+    }
+
+    @Override
+    public List<UniversityExhibitionImgVO> getUniversityImgAll(Long universityExhibitionId) {
+        return exhibitionDAO.findUniversityImgAll(universityExhibitionId);
+    }
+
+//    대학 전시회 사진
 
 
 
