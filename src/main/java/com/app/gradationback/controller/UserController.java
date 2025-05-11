@@ -40,11 +40,16 @@ public class UserController {
     public ResponseEntity<Map<Object, String>> normalJoin(@RequestBody UserVO userVO) {
         Map<Object, String> response = new HashMap<>();
 
-        Optional<UserVO> foundUser = userService.getUserByEmail(userVO.getUserName());
+        Optional<UserVO> foundUser = userService.getUserByEmail(userVO.getUserEmail());
         if (foundUser.isPresent()) {
             response.put("message", "이미 사용중인 이메일입니다.");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         }
+
+        if (userVO.getUserNickName() == null || userVO.getUserNickName().length() == 0) {
+            userVO.setUserNickName(userVO.getUserName());
+        }
+
         userService.joinNormal(userVO);
         response.put("message", "회원가입이 완료되었습니다.");
         return ResponseEntity.ok(response);
@@ -181,6 +186,23 @@ public class UserController {
         }
         response.put("check-id", false);
         response.put("message", "사용 가능한 아이디입니다.");
+        return ResponseEntity.ok(response);
+    }
+
+//    이메일 중복 체크
+    @Operation(summary = "이메일 중복 검사", description = "이메일 중복 검사를 할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "이메일 중복 검사 성공")
+    @GetMapping("/check-email/{userEmail}")
+    public ResponseEntity<Map<String, Object>> checkEmail(@PathVariable String userEmail) {
+        Map<String, Object> response = new HashMap<>();
+        Optional<UserVO> foundUser = userService.getUserByEmail(userEmail);
+        if (foundUser.isPresent()) {
+            response.put("check-email", true);
+            response.put("message", "이미 사용중인 이메일입니다.");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        }
+        response.put("check-email", false);
+        response.put("message", "사용 가능한 이메일입니다.");
         return ResponseEntity.ok(response);
     }
 
