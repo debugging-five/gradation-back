@@ -1,8 +1,6 @@
 package com.app.gradationback.service;
 
-import com.app.gradationback.domain.ArtDTO;
-import com.app.gradationback.domain.UpcyclingDTO;
-import com.app.gradationback.domain.UserVO;
+import com.app.gradationback.domain.*;
 import com.app.gradationback.repository.ApprovalDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +16,9 @@ public class ApprovalServiceImpl implements ApprovalService {
     private final UpcyclingDTO upcyclingDTO;
     private final ArtDTO artDTO;
     private final UserVO userVO;
+    private final ExhibitionPastDTO exhibitionPastDTO;
+    private final UniversityDTO universityDTO;
+    private final UniversityExhibitionDTO universityExhibitionDTO;
 
     @Override
 //    리스트 객체 타입은 4개 중 하나가 들어오므로 와일드카드로, 스트링 타입으로 항목 식별(upcycling, art 등)
@@ -28,7 +29,8 @@ public class ApprovalServiceImpl implements ApprovalService {
             case "art" -> approvalDAO.findAllArtPending();
             case "writer" -> approvalDAO.findAllWriterPending();
             case "university" -> approvalDAO.findAllUniversityPending();
-//            방어코드 IllegalArgumentException > 매개변수 잘못 들어왔을 때!
+            case "exhibition" -> approvalDAO.findAllUniversityExhibitionPending();
+//            방어코드, IllegalArgumentException > 매개변수 잘못 들어왔을 때!
             default -> throw new IllegalArgumentException("지원하지 않는 타입");
         };
     }
@@ -40,6 +42,7 @@ public class ApprovalServiceImpl implements ApprovalService {
             case "art" -> approvalDAO.findArtPendingById(id);
             case "writer" -> approvalDAO.findWriterPendingById(id);
             case "university" -> approvalDAO.findUniversityPendingById(id);
+            case "exhibition" -> approvalDAO.findUniversityExhibitionPendingById(id);
             default -> throw new IllegalArgumentException("지원하지 않는 타입");
         };
     }
@@ -53,6 +56,7 @@ public class ApprovalServiceImpl implements ApprovalService {
             case "art" -> approvalDAO.updateArtStatus((ArtDTO) artDTO);
             case "writer" -> approvalDAO.updateWriterStatus((UserVO) userVO );
             case "university" -> approvalDAO.updateUniversityStatus((UserVO) userVO );
+            case "exhibition" -> approvalDAO.updateUniversityExhibitionStatus((UniversityExhibitionDTO) universityExhibitionDTO);
             default -> throw new IllegalArgumentException("지원하지 않는 타입");
         }
 

@@ -1,6 +1,7 @@
 package com.app.gradationback.mapper;
 
 import com.app.gradationback.domain.ArtDTO;
+import com.app.gradationback.domain.UniversityExhibitionDTO;
 import com.app.gradationback.domain.UpcyclingDTO;
 import com.app.gradationback.domain.UserVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -29,4 +30,9 @@ public interface ApprovalMapper {
     public List<UserVO> selectAllUniversityPending();
     public Optional<UserVO> selectUniversityPendingById(Long id);
     public void updateUniversityStatus(UserVO userVO);
+
+    // 대학 전시회 인증
+    public List<UniversityExhibitionDTO> selectAllUniversityExhibitionPending();
+    public Optional<UniversityExhibitionDTO> selectUniversityExhibitionPendingById(Long id);
+    public void updateUniversityExhibitionStatus(UniversityExhibitionDTO universityExhibitionDTO);
 }

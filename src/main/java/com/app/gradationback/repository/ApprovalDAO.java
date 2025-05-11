@@ -1,6 +1,7 @@
 package com.app.gradationback.repository;
 
 import com.app.gradationback.domain.ArtDTO;
+import com.app.gradationback.domain.UniversityExhibitionDTO;
 import com.app.gradationback.domain.UpcyclingDTO;
 import com.app.gradationback.domain.UserVO;
 import com.app.gradationback.mapper.ApprovalMapper;
@@ -66,12 +67,20 @@ public class ApprovalDAO {
     }
 
 //    대학교 인증 대기 목록 중 단일 내용 조회
-    public Optional<UserVO> findUniversityPendingById(Long id) {
-        return approvalMapper.selectUniversityPendingById(id);
-    }
+    public Optional<UserVO> findUniversityPendingById(Long id) { return approvalMapper.selectUniversityPendingById(id); }
 
 //    대학교 인증 상태 변경 (승인.반려)
-    public void updateUniversityStatus(UserVO userVO) {
-        approvalMapper.updateUniversityStatus(userVO);
+    public void updateUniversityStatus(UserVO userVO) { approvalMapper.updateUniversityStatus(userVO);
+    }
+
+    //    대학교 인증 대기 목록 조회
+    public List<UniversityExhibitionDTO> findAllUniversityExhibitionPending() { return approvalMapper.selectAllUniversityExhibitionPending();
+    }
+
+    //    대학교 인증 대기 목록 중 단일 내용 조회
+    public Optional<UniversityExhibitionDTO> findUniversityExhibitionPendingById(Long id) { return approvalMapper.selectUniversityExhibitionPendingById(id); }
+
+    //    대학교 인증 상태 변경 (승인.반려)
+    public void updateUniversityExhibitionStatus(UniversityExhibitionDTO universityExhibitionDTO) { approvalMapper.updateUniversityExhibitionStatus(universityExhibitionDTO);
     }
 }

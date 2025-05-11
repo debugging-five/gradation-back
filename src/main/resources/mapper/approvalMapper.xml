@@ -98,7 +98,7 @@
     <!--    학교 인증 관련    -->
 
     <!-- 대학 인증 승인 대기 목록 -->
-    <select id="selectAllUnivPending" resultType="UserVO">
+    <select id="selectAllUniversityPending" resultType="UserVO">
         SELECT ID, USER_NAME, USER_EMAIL, USER_UNIVERSITY_STATUS
         FROM TBL_USER
         WHERE USER_UNIVERSITY_STATUS = '미신청'
@@ -106,7 +106,7 @@
     </select>
 
     <!-- 대학 인증 승인 대기 중 단일 내용 조회 조회 -->
-    <select id="selectUnivPendingById" parameterType="Long" resultType="UserVO">
+    <select id="selectUniversityPendingById" parameterType="Long" resultType="UserVO">
         SELECT ID, USER_NAME, USER_EMAIL, USER_UNIVERSITY_STATUS
         FROM TBL_USER
         WHERE ID = #{id}
@@ -116,6 +116,34 @@
     <update id="updateUniversityStatus" parameterType="UserVO">
         UPDATE TBL_USER
         SET USER_UNIVERSITY_STATUS = #{userUniversityStatus}
+        WHERE ID = #{id}
+    </update>
+
+    <!--    전시회 인증 관련    -->
+
+    <!-- 전시회 인증 승인 대기 목록 -->
+    <select id="selectAllUniversityExhibitionPending" resultType="UniversityExhibitionDTO">
+        SELECT TUE.ID, UNIVERSITY_EXHIBITION_START_DATE, UNIVERSITY_EXHIBITION_END_DATE, UNIVERSITY_EXHIBITION_TITLE, UNIVERSITY_EXHIBITION_LOCATION, UNIVERSITY_EXHIBITION_STATUS,
+               TUS.ID AD USER_ID, USER_NAME, USER_EMAIL
+        FROM TBL_UNIVERSITY_EXHIBITION TUE
+            JOIN TBL_USER TUS ON TUE.USER_ID = TUS.ID
+        WHERE USER_UNIVERSITY_EXHIBITION_STATUS = '대기'
+        ORDER BY TUE.UNIVERSITY_EXHIBITION_START_DATE DESC
+    </select>
+
+    <!-- 대학 인증 승인 대기 중 단일 내용 조회 조회 -->
+    <select id="selectUniversityExhibitionPendingById" parameterType="Long" resultType="UniversityExhibitionDTO">
+        SELECT TUE.UNIVERSITY_EXHIBITION_START_DATE, UNIVERSITY_EXHIBITION_END_DATE, UNIVERSITY_EXHIBITION_TITLE, UNIVERSITY_EXHIBITION_LOCATION, UNIVERSITY_EXHIBITION_STATUS,
+               TUS.ID AD USER_ID, USER_NAME, USER_EMAIL
+        FROM TBL_UNIVERSITY_EXHIBITION TUE
+            JOIN TBL_USER TUS ON TUE.USER_ID = TUS.ID
+        WHERE TUE.ID = #{id}
+    </select>
+
+    <!-- 대학 인증 상태 변경 (승인/반려) -->
+    <update id="updateUniversityExhibitionStatus" parameterType="UniversityExhibitionDTO">
+        UPDATE TBL_UNIVERSITY_EXHIBITION
+        SET UNIVERSITY_EXHIBITION_STATUS = #{universityExhibitionStatus}
         WHERE ID = #{id}
     </update>
 
