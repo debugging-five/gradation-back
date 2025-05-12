@@ -13,6 +13,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -35,6 +37,9 @@ public class DisplayController {
     public ArtPostDTO register(@RequestBody ArtPostDTO artPostDTO) {
         log.info("{}", artPostDTO);
         artPostService.register(artPostDTO);
+//        Map<String, Object> response = new HashMap<>();
+//        ResponseEntity.ok().body
+//        ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         Optional<ArtPostDTO> foundArtPost = artPostService.getArtPostById(artPostDTO.getArtPostId());
         if(foundArtPost.isPresent()) {
             return foundArtPost.get();

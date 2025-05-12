@@ -13,9 +13,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -28,8 +33,7 @@ public class CommentController {
     private final UserService userService;
 
 
-
-    //    댓글 등록
+//    댓글 등록
     @Operation(summary = "댓글 등록", description = "댓글을 등록할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "댓글 등록 성공")
     @PostMapping("registration")
@@ -76,17 +80,23 @@ public class CommentController {
     @Parameter(
             name = "id",
             description = "댓글번호",
-            schema = @Schema(type = "number"), // 스키마 타입, 자바 타입X, swagger에서 정의되고 있는 타입
-            in = ParameterIn.PATH, // 어디에서 받는지
+            schema = @Schema(type = "number"),
+            in = ParameterIn.PATH,
             required = true
     )
     @GetMapping("comment/{id}")
-    public CommentVO getReply(@PathVariable Long id) {
-        Optional<CommentVO> foundReply = commentService.getComment(id);
-        if (foundReply.isPresent()) {
-            return foundReply.get();
+    public ResponseEntity<Map<Object, String>> getReply(@PathVariable Long id) {
+        Map<Object, String> response = new HashMap<>();
+        Optional<CommentVO> foundComment = commentService.getComment(id);
+
+        if (foundComment.isPresent()) {
+        String comment = foundComment.get().getCommentContent();
+            response.put("message", "댓글 조회 성공했습니다.");
+            response.put("comment", comment);
+            return ResponseEntity.ok(response);
         }
-        return new CommentVO();
+        response.put("message", "댓글 조회 실패했습니다.");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
 //    댓글 수정
