@@ -12,10 +12,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -28,17 +31,36 @@ public class AuctionController {
     @Operation(summary = "경매 등록", description = "경매 등록 API")
     @ApiResponse(responseCode = "200", description = "등록 성공")
     @PostMapping("registration")
-    public void registration(AuctionVO auctionVO) {
-//        log.info(auctionVO.toString());
-        auctionService.auctionRegistration(auctionVO);
+    public ResponseEntity<Map<String, Object>> registration(AuctionVO auctionVO) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            auctionService.auctionRegistration(auctionVO);
+        } catch (Exception e) {
+            response.put("message", "등록 실패" + e.getMessage());
+            response.put("status", auctionVO);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        }
+        response.put("message", "등록이 완료되었습니다");
+        response.put("status", auctionVO);
+        return ResponseEntity.ok(response);
+
     }
 
     @Operation(summary = "경매 수정", description = "경매 수정 API")
     @ApiResponse(responseCode = "200", description = "수정 성공")
     @PutMapping("modify")
-    public void modify(AuctionVO auctionVO) {
-//        log.info(auctionVO.toString());
-        auctionService.auctionModify(auctionVO);
+    public ResponseEntity<Map<String, Object>> modify(AuctionVO auctionVO) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            auctionService.auctionModify(auctionVO);
+        } catch (Exception e) {
+            response.put("message", "수정 실패" + e.getMessage());
+            response.put("status", auctionVO);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        }
+        response.put("message", "수정이 완료되었습니다");
+        response.put("status", auctionVO);
+        return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "경매 전체 조회", description = "경매 전체 조회 API")
@@ -52,8 +74,6 @@ public class AuctionController {
     @ApiResponse(responseCode = "200", description = "조회 성공")
     @GetMapping("list")
     public List<AuctionDTO> list(@RequestParam HashMap<String, Object> params) {
-//        log.info(params.toString());
-//        log.info("{}",auctionService.auctionList(params));
         return auctionService.auctionList(params);
     }
 
@@ -95,8 +115,18 @@ public class AuctionController {
             required = true
     )
     @DeleteMapping("delete/{id}")
-    public void delete(@PathVariable Long id) {
-        auctionService.auctionDelete(id);
+    public ResponseEntity<Map<String, Object>> delete(@PathVariable Long id) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            auctionService.auctionDelete(id);
+        } catch (Exception e) {
+            response.put("message", "삭제 실패" + e.getMessage());
+            response.put("status", id);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        }
+        response.put("message", "삭제가 완료되었습니다");
+        response.put("status", id);
+        return ResponseEntity.ok(response);
     }
 
 //    입찰
