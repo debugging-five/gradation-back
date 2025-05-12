@@ -147,8 +147,9 @@ public class AuctionController {
             required = true
     )
     @GetMapping("read-bidder-count/{auctionId}")
-    public Integer readBidderCount(@PathVariable Long auctionId) {
-        return auctionService.auctionBidderCount(auctionId).orElse(0);
+    public ResponseEntity<Integer> readBidderCount(@PathVariable Long auctionId) {
+        Integer response = auctionService.auctionBidderCount(auctionId).orElse(0);
+        return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "입찰자 조회", description = "현재 입찰자를 조회할 수 있는 API")
