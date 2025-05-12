@@ -16,10 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("auction/api/*")
@@ -73,8 +70,8 @@ public class AuctionController {
     })
     @ApiResponse(responseCode = "200", description = "조회 성공")
     @GetMapping("list")
-    public List<AuctionDTO> list(@RequestParam HashMap<String, Object> params) {
-        return auctionService.auctionList(params);
+    public ResponseEntity<List<AuctionDTO>> list(@RequestParam HashMap<String, Object> params) {
+        return ResponseEntity.ok(auctionService.auctionList(params));
     }
 
     @Operation(summary = "경매 정보 조회", description = "경매 1개 정보를 조회할 수 있는 API")
@@ -86,8 +83,8 @@ public class AuctionController {
             required = true
     )
     @GetMapping("detail/{id}")
-    public List<AuctionDTO> read(@PathVariable Long id) {
-        return auctionService.auctionRead(id);
+    public ResponseEntity<List<AuctionDTO>> read(@PathVariable Long id) {
+        return ResponseEntity.ok(auctionService.auctionRead(id));
     }
 
     @Operation(summary = "하단 경매 조회", description = "페이지 하단의 경매 4개씩을 조회할 수 있는 API")
@@ -99,11 +96,17 @@ public class AuctionController {
             required = false
     )
     @GetMapping("footer/{cursor}")
-    public List<AuctionDTO> read(@PathVariable int cursor) {
-        if (cursor == 0) {
-            return auctionService.auctionFooterBidding(1);
+    public ResponseEntity<List<AuctionDTO>> read(@PathVariable int cursor) {
+        List<AuctionDTO> footerList = null;
+        try {
+            if (cursor == 0) {
+                footerList = auctionService.auctionFooterBidding(1);
+            }
+            footerList = auctionService.auctionFooterBidding(cursor);
+            return ResponseEntity.ok(footerList);
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(footerList);
         }
-        return auctionService.auctionFooterBidding(cursor);
     }
 
     @Operation(summary = "경매 삭제", description = "경매를 삭제할 수 있는 API")
@@ -133,8 +136,19 @@ public class AuctionController {
     @Operation(summary = "경매 응찰", description = "경매 입찰 API")
     @ApiResponse(responseCode = "200", description = "응찰 성공")
     @PostMapping("bidding")
-    public void bidding(AuctionBiddingVO auctionBiddingVO) {
-        auctionService.auctionBidding(auctionBiddingVO);
+    public ResponseEntity<Map<String,Object>> bidding(AuctionBiddingVO auctionBiddingVO) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            auctionService.auctionBidding(auctionBiddingVO);
+            response.put("message", "응찰 성공");
+            response.put("status", auctionBiddingVO);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("message", e.getMessage());
+            response.put("status", auctionBiddingVO);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        }
+
     }
 
 //    해당 겸매의 경쟁응찰자 조회
@@ -161,12 +175,13 @@ public class AuctionController {
             required = true
     )
     @GetMapping("read-bidder/{auctionId}")
-    public AuctionBiddingVO readBidder(@PathVariable Long auctionId) {
+    public ResponseEntity<AuctionBiddingVO> readBidder(@PathVariable Long auctionId) {
         Optional<AuctionBiddingVO> foundBidder = auctionService.auctionStatus(auctionId);
         if(foundBidder.isPresent()) {
-            return foundBidder.get();
+            AuctionBiddingVO bidding = foundBidder.get();
+            return ResponseEntity.ok(bidding);
         }
-        return new AuctionBiddingVO();
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new AuctionBiddingVO());
     }
 
 
