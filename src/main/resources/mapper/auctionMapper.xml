@@ -46,6 +46,7 @@
             TAR.USER_ID,
             TAI.ART_IMG_NAME,
             TAI.ART_IMG_PATH,
+            TUS.USER_NAME AS ARTIST_NAME,
         COALESCE(TAL.ART_LIKE_COUNT, 0) AS ART_LIKE_COUNT
         FROM TBL_AUCTION TAU
         JOIN TBL_ART TAR
@@ -63,11 +64,13 @@
         ) TAI
         ON TAR.ID = TAI.ART_ID
         LEFT OUTER JOIN (
-            SELECT ART_ID, COUNT(*) AS ART_LIKE_COUNT
+            SELECT ART_ID, COUNT(ID) AS ART_LIKE_COUNT
             FROM TBL_ART_LIKE
             GROUP BY ART_ID
         ) TAL
         ON TAR.ID = TAL.ART_ID
+        JOIN TBL_USER TUS
+        ON TAR.USER_ID = TUS.ID
         <choose>
             <when test="category != null and category.equals('공예')">
                 WHERE ART_CATEGORY = '공예'
@@ -200,7 +203,7 @@
         ) TAI
         ON TAR.ID = TAI.ART_ID
         LEFT OUTER JOIN (
-        SELECT ART_ID, COUNT(*) AS ART_LIKE_COUNT
+        SELECT ART_ID, COUNT(ID) AS ART_LIKE_COUNT
         FROM TBL_ART_LIKE
         GROUP BY ART_ID
         ) TAL
