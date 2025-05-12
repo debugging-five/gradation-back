@@ -1,5 +1,6 @@
 package com.app.gradationback.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,7 @@ public class UpcyclingVO implements Serializable {
     @Schema(description = "연락처", example = "010-1234-5678")
     private String upcyclingPhone;
     @Schema(description = "수거 신청일", example = "2025-04-25")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date upcyclingDate;
     @Schema(description = "소형 갯수", example = "2")
     private Integer upcyclingSizeSmall;

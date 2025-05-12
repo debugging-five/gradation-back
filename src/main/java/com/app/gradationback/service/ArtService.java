@@ -26,12 +26,12 @@ public interface ArtService {
     public void removeArtById(Long id);
 
 //    관리자용 승인 대기 목록
-    public List<ArtDTO> getAllPending();
+    public List<ArtDTO> getAllArtPending();
 
 //    관리자용 상세
-    public Optional<ArtDTO> getPendingById(Long id);
+    public Optional<ArtDTO> getArtPendingById(Long id);
 
 //    관리자 승인/반려 처리
-    public void updateStatus(ArtDTO artDTO);
+    public void updateArtStatus(ArtDTO artDTO);
 
 }
