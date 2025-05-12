@@ -11,7 +11,7 @@ public class UniversityLikeDTO {
 //    TBL_UNIVERSITY_LIKE
     private Long id;
     private Timestamp universityLikeTime;
-    private Long universityId;
+    private Long universityExhibitionId;
     private Long userId;
 
 //    TBL_UNIVERSITY

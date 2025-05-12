@@ -26,6 +26,10 @@ public class UniversityExhibitionDTO {
     private String universityExhibitionLocation;
     private String universityExhibitionStatus;
     private Long majorId;
+//    드롭다운용 지역필터
+    private String location;
+//    검색
+    private String keyword;
 
 //    TBL_UNIVERSITY_EXHIBITION_IMG
     private String universityExhibitionImgName;
@@ -37,6 +41,7 @@ public class UniversityExhibitionDTO {
     private Long universityId;
 
 //    TBL_UNIVERSITY_LIKE
+    private Long universityLikeId;
     private Timestamp universityLikeTime;
     private Long userId;
 

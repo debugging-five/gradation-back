@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -85,16 +87,41 @@ public class ExhibitionServiceImpl implements ExhibitionService {
 
 //    대학 전시회 정보
     @Override
-    public List<UniversityExhibitionDTO> getUniversity() {
-        return exhibitionDAO.findUniversity();
+    public List<UniversityExhibitionDTO> getUniversity(UniversityExhibitionDTO universityExhibitionDTO) {
+        List<UniversityExhibitionDTO> universityList = exhibitionDAO.findUniversity(universityExhibitionDTO);
+
+        for(UniversityExhibitionDTO university : universityList) {
+            Date now = new Date();
+            Date startDate = university.getUniversityExhibitionStartDate();
+            Date endDate = university.getUniversityExhibitionEndDate();
+
+            if(now.before(startDate)) {
+                university.setUniversityExhibitionState("전시 예정");
+            } else {
+                university.setUniversityExhibitionState("전시 중");
+            }
+        }
+
+        return universityList;
     }
 
+//    대학 전시회 사진
     @Override
     public List<UniversityExhibitionImgVO> getUniversityImgAll(Long universityExhibitionId) {
         return exhibitionDAO.findUniversityImgAll(universityExhibitionId);
     }
 
-//    대학 전시회 사진
+//    대학교 좋아요
+    @Override
+    public void registerUniversityLike(UniversityLikeVO universityLikeVO) {
+        exhibitionDAO.saveUniversityLike(universityLikeVO);
+    }
+
+//    좋아요 취소
+    @Override
+    public void removeUniversityLike(UniversityLikeVO universityLikeVO) {
+        exhibitionDAO.deleteUniversityLike(universityLikeVO);
+    }
 
 
 

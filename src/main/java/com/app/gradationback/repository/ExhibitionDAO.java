@@ -83,8 +83,8 @@ public class ExhibitionDAO {
     }
 
 //    대학 전시회 정보 조회
-    public List<UniversityExhibitionDTO> findUniversity() {
-        return exhibitionMapper.selectUniversity();
+    public List<UniversityExhibitionDTO> findUniversity(UniversityExhibitionDTO universityExhibitionDTO) {
+        return exhibitionMapper.selectUniversity(universityExhibitionDTO);
     }
 
 //    대학 전시회 이미지 조회
@@ -92,6 +92,15 @@ public class ExhibitionDAO {
         return exhibitionMapper.selectUniversityImgAll(universityExhibitionId);
     }
 
+//    좋아요
+    public void saveUniversityLike(UniversityLikeVO universityLikeVO) {
+        exhibitionMapper.insertUniversityLike(universityLikeVO);
+    }
+
+//    좋아요 취소
+    public void deleteUniversityLike(UniversityLikeVO universityLikeVO) {
+        exhibitionMapper.deleteUniversityLike(universityLikeVO);
+    }
 
 
 }

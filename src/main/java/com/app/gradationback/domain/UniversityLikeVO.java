@@ -10,6 +10,6 @@ import java.sql.Timestamp;
 public class UniversityLikeVO {
     private Long id;
     private Timestamp universityLikeTime;
-    private Long universityId;
+    private Long universityExhibitionId;
     private Long userId;
 }

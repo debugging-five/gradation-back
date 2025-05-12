@@ -4,6 +4,7 @@ import com.app.gradationback.domain.*;
 import com.app.gradationback.mapper.ExhibitionMapper;
 import com.app.gradationback.service.ExhibitionService;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -171,15 +172,48 @@ public class ExhibitionTests {
 //    대학교 전시회 조회
     @Test
     public void getUniversityTest() {
-        exhibitionService.getUniversity();
-        log.info(exhibitionService.getUniversity().toString());
+        UniversityExhibitionDTO dto = new UniversityExhibitionDTO();
+        dto.setUserId(2L); // 테스트용 유저 ID
+
+        List<UniversityExhibitionDTO> list = exhibitionService.getUniversity(dto);
+        log.info("조회된 전시회 수: {}", list.size());
+
+        for (UniversityExhibitionDTO exhibition : list) {
+
+            log.info("==== 전시회 정보 ====");
+            log.info("대학명: {}", exhibition.getUniversityName());
+            log.info("전시 제목: {}", exhibition.getUniversityExhibitionTitle());
+            log.info("학과: {}", exhibition.getMajorName());
+            log.info("{},{}",exhibition.getUniversityExhibitionStartDate(),exhibition.getUniversityExhibitionEndDate());
+            log.info("전시 위치: {}", exhibition.getUniversityExhibitionLocation());
+            log.info("전시 상태: {}", exhibition.getUniversityExhibitionState());
+            log.info("좋아요 여부: {}", exhibition.getUniversityLikeId() != null ? "❤️" : "🤍");
+        }
     }
 
 //    대학 전시회 이미지 조회
     @Test
     public void getUniversityImgTest() {
-        List<UniversityExhibitionImgVO> images = exhibitionService.getUniversityImgAll(6L);
+        List<UniversityExhibitionImgVO> images = exhibitionService.getUniversityImgAll(1L);
         images.forEach(image -> log.info(image.toString()));
+    }
+
+//    대학교 좋아요
+    @Test
+    public void insertUniversityLike() {
+        UniversityLikeVO universityLikeVO = new UniversityLikeVO();
+        universityLikeVO.setUniversityExhibitionId(1L);
+        universityLikeVO.setUserId(2L);
+        exhibitionService.registerUniversityLike(universityLikeVO);
+    }
+
+//    대학교 좋아요 취소
+    @Test
+    public void deleteUniversityLike() {
+        UniversityLikeVO universityLikeVO = new UniversityLikeVO();
+        universityLikeVO.setUniversityExhibitionId(1L);
+        universityLikeVO.setUserId(2L);
+        exhibitionService.removeUniversityLike(universityLikeVO);
     }
 
 
