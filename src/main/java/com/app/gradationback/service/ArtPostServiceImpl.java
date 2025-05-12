@@ -86,8 +86,7 @@ public class ArtPostServiceImpl implements ArtPostService {
             Long postId = post.getId();
             Long artId = post.getArtId();
             commentDAO.deleteAllByPostId(postId);
-
-            // 그 후 나머지 삭제
+            artDAO.deleteAllLike(artId);
             artPostDAO.deleteById(postId);
             artImgDAO.deleteAllByArtId(artId);
             artDAO.deleteById(artId);
