@@ -1,10 +1,8 @@
 package com.app.gradationback.controller;
 
-import com.app.gradationback.domain.ArtImgVO;
-import com.app.gradationback.domain.ArtPostDTO;
-import com.app.gradationback.domain.ArtVO;
-import com.app.gradationback.domain.CommentVO;
+import com.app.gradationback.domain.*;
 import com.app.gradationback.service.ArtImgService;
+import com.app.gradationback.service.ArtLikeService;
 import com.app.gradationback.service.ArtPostService;
 import com.app.gradationback.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,8 +26,9 @@ public class DisplayController {
     private final ArtPostService artPostService;
     private final CommentService commentService;
     private final ArtImgService artImgService;
+    private final ArtLikeService artLikeService;
 
-//    전시 등록 (게시글 + 작품 + 이미지)
+    //    전시 등록 (게시글 + 작품 + 이미지)
     @Operation(summary = "전시 등록", description = "전시를 등록할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "전시 등록 성공")
     @PostMapping("register")
@@ -94,6 +93,7 @@ public class DisplayController {
             response.put("post", post);
             response.put("comments", comments);
             response.put("images", images);
+            response.put("likeCount", artLikeService.getLikeCount(artId));
         }
         return response;
     }
@@ -112,6 +112,8 @@ public class DisplayController {
     public void deletePost(@PathVariable Long postId) {
         artPostService.removeById(postId);
     }
+
+
 }
 
 

@@ -1,12 +1,8 @@
 package com.app.gradationback.controller;
 
 import com.app.gradationback.domain.*;
-import com.app.gradationback.service.ArtService;
-import com.app.gradationback.service.FaqService;
-import com.app.gradationback.service.QnaAnswerService;
-import com.app.gradationback.service.QnaService;
+import com.app.gradationback.service.*;
 import com.app.gradationback.util.AdminCheckUtil;
-import com.app.gradationback.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +24,9 @@ public class AdminController {
     private final QnaAnswerService qnaAnswerService;
     private final ArtService artService;
     private final UserService userService;
+    private final UpcyclingService upcyclingService;
 
-    //    관리자용 자주 묻는 질문 목록 조회
+    //    관리자용 FAQ 목록 조회
     @Operation(summary = "FAQ 전체 조회", description = "FAQ 전체 리스트를 조회하는 API")
     @GetMapping("/faq/list")
     public List<FaqVO> getFaqList(FaqDTO faqDTO, HttpSession session) {
@@ -119,38 +116,6 @@ public class AdminController {
             throw new RuntimeException("관리자만 접근 가능합니다.");
         }
         qnaService.remove(id);
-    }
-
-    // 승인 대기 작품 전체 조회
-    @Operation(summary = "승인 대기 작품 전체 조회", description = "관리자 전용: 승인 대기 중인 작품 목록 조회하는 API")
-    @GetMapping("/art/pending")
-    public List<ArtDTO> getPendingArtList(HttpSession session) {
-        if (!AdminCheckUtil.isAdmin(session)) {
-            throw new RuntimeException("관리자만 접근 가능합니다.");
-        }
-        return artService.getAllPending();
-    }
-
-    // 승인 대기 작품 상세 조회
-    @Operation(summary = "승인 대기 작품 상세 조회", description = "관리자 전용: 승인 대기 작품 상세 조회하는 API")
-    @GetMapping("/art/pending/{id}")
-    public ArtDTO getPendingArt(@PathVariable Long id, HttpSession session) {
-        if (!AdminCheckUtil.isAdmin(session)) {
-            throw new RuntimeException("관리자만 접근 가능합니다.");
-        }
-        Optional<ArtDTO> found = artService.getPendingById(id);
-        return found.orElseThrow(() -> new RuntimeException("해당 작품을 찾을 수 없습니다."));
-    }
-
-    // 승인 또는 반려 처리
-    @Operation(summary = "작품 상태 변경 (승인 / 반려)", description = "관리자 전용: 작품을 승인 또는 반려 처리하는 API")
-    @PatchMapping("/art/status/{id}")
-    public void updateArtStatus(@PathVariable Long id, @RequestBody ArtDTO artDTO, HttpSession session) {
-        if (!AdminCheckUtil.isAdmin(session)) {
-            throw new RuntimeException("관리자만 접근 가능합니다.");
-        }
-        artDTO.setId(id);
-        artService.updateStatus(artDTO);
     }
 
     // 회원 정지 처리

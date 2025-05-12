@@ -16,6 +16,12 @@ public class MailServiceImpl implements MailService {
 
     private final MailDAO mailDAO;
 
+//    이메일로 아이디 찾기
+    @Override
+    public Optional<MailDTO> findByIdForEmail(String receiveUserEmail) {
+        return mailDAO.findByIdForEmail(receiveUserEmail);
+    }
+
 //    등록
     @Override
     public void register(MailDTO mailDTO) {
@@ -57,4 +63,26 @@ public class MailServiceImpl implements MailService {
     public void removeSendedMail(Long id, Long sendUserId) {
         mailDAO.deleteSended(id, sendUserId);
     }
+
+//    알림리스트
+    @Override
+    public List<MailDTO> getAlertList(Long receiveUserId) {
+        return mailDAO.getAlertList(receiveUserId);
+    }
+
+//    알림상세
+    public Optional<MailDTO> findAlertOne(Long id, Long receiveUserId) {
+        return mailDAO.findAlertOne(id, receiveUserId);
+    }
+
+//    읽음처리
+    public void readUpdate (Long id, Long receiveUserId) {
+        mailDAO.readUpdate(id, receiveUserId);
+    }
+
+//    읽지않은 메일 갯수 카운트
+    public int countNotRead(Long receiveUserId) {
+        return mailDAO.countNotRead(receiveUserId);
+    }
+
 }
