@@ -5,6 +5,15 @@
 <!--    목차: 1. 작가와 연락 2. 알림, 공통요소(쪽지상세, 삭제, 읽음처리)-->
 
 <!--    1. 작가와 연락  -->
+
+<!--    이메일로 아이디 찾기-->
+    <select id="findByIdForEmail" parameterType="MailDTO" resultType="Long">
+        SELECT ID
+        FROM TBL_USER
+        WHERE USER_EMAIL = #{receiveUserEmail}
+    </select>
+
+
 <!--    쪽지 등록(작가와 연락 등록)-->
     <insert id="insert" parameterType="MailDTO">
         INSERT INTO TBL_MAIL (ID, MAIL_TITLE, MAIL_CONTENT, MAIL_SEND_TIME, MAIL_OPEN_OK, SEND_USER_ID, RECEIVE_USER_ID)
@@ -101,7 +110,7 @@
         SELECT ID, MAIL_TITLE, MAIL_CONTENT, MAIL_SEND_TIME
         FROM TBL_MAIL
         WHERE ID = #{id}
-          AND RECEIVE_USER_ID = #{userId}
+          AND RECEIVE_USER_ID = #{receiveUserId}
     </select>
 
 <!--    알림 삭제 = 75번줄과 동일-->
@@ -110,15 +119,15 @@
     <update id="readUpdate" parameterType="MailDTO">
         UPDATE TBL_MAIL
         SET MAIL_OPEN_OK = 1
-        WHERE ID = #{mailId}
-        AND RECEIVE_USER_ID = #{userId};
+        WHERE ID = #{id}
+        AND RECEIVE_USER_ID = #{receiveUserId}
     </update>
 
 <!--    읽지 않은 알림 갯수-->
     <select id="countNotRead" parameterType="Long" resultType="int">
         SELECT COUNT(ID)
         FROM TBL_MAIL
-        WHERE RECEIVE_USER_ID = #{userId}
+        WHERE RECEIVE_USER_ID = #{receiveUserId}
           AND SEND_USER_ID = 1
           AND MAIL_OPEN_OK = 0
           AND MAIL_RECEIVE_USER_DELETED = 0

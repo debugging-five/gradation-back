@@ -11,6 +11,9 @@ import java.util.Optional;
 @Mapper
 public interface MailMapper {
 
+//    이메일로 아이디 찾기
+    public Optional<MailDTO> findByIdForEmail(String receiveUserEmail);
+
 //    쪽지 보내기
     public void insert (MailDTO mailDTO);
 
@@ -39,8 +42,8 @@ public interface MailMapper {
     public Optional<MailDTO> selectAlertDetail(Long id, Long receiveUserId);
 
 //    읽음처리
-    public void readUpdate (MailDTO mailDTO);
+    public void readUpdate (Long id, Long receiveUserId);
 
 //    읽지않은 메일 갯수 카운트
-    public int countNotRead(Long userId);
+    public int countNotRead(Long receiveUserId);
 }

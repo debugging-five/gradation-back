@@ -23,7 +23,7 @@ public class QnaController {
 
     public final QnaService qnaService;
 
-    //    FAQ 전체조회
+    //    QNA 전체조회
     @Operation(summary = "QNA 전체 조회",description = "QNA를 전체 조회 할 수 있는 API")
     @GetMapping("qna-list")
     public List<QnaDTO> getQnas(String userEmail) {

@@ -19,6 +19,16 @@ public class MailMapperTests {
     @Autowired
     private MailMapper mailMapper;
 
+//    이메일로 아이디 찾기
+    @Test
+    public void findByIdForEmail() {
+    // MailDTO 객체 생성 및 이메일 설정
+        MailDTO mailDTO = new MailDTO();
+        mailDTO.setReceiveUserEmail("minsuyang@daum.net");
+        Optional<MailDTO> receiveUserId = mailMapper.findByIdForEmail(mailDTO.getReceiveUserEmail());
+        log.info("해당유저 id: {}", receiveUserId);
+    }
+
 //      쪽지 등록
     @Test
     public void insertTest() {
@@ -100,6 +110,7 @@ public class MailMapperTests {
         mailMapper.deleteReceivedMail(41L, 12L);
     }
 
+
     @Test
     public void selectAlertTest() {
         List<MailDTO> receivedList = mailMapper.selectAlert(12L);
@@ -111,24 +122,35 @@ public class MailMapperTests {
         }
     }
 
-//    @Test
-//    public void selectAlertDetailTest() {
-//        MailDTO mailDTO = new MailDTO();
-//        mailDTO.setId(42L);
-//        mailDTO.setReceiveUserId(12L);
-//
-//        Optional<MailDTO> mailOptional = mailMapper.selectAlertDetail(mailDTO);
-//
-//        if (mailOptional.isPresent()) {
-//            MailDTO mail = mailOptional.get();
-//            log.info(": {}", mail.getMailTitle());
-//            log.info(": {}", mail.getMailContent());
-//            log.info(": {}", mail.getMailSendTime());
-//        } else {
-//            log.info("해당 쪽지를 찾을 수 없습니다.");
-//        }
-//    }
+    @Test
+    public void selectAlertDetailTest() {
+        MailDTO mailDTO = new MailDTO();
+        mailDTO.setId(42L);
+        mailDTO.setReceiveUserId(12L);
 
+        Optional<MailDTO> mailOptional = mailMapper.selectAlertDetail(42L, 12L);
+
+        if (mailOptional.isPresent()) {
+            MailDTO mail = mailOptional.get();
+            log.info(": {}", mail.getMailTitle());
+            log.info(": {}", mail.getMailContent());
+            log.info(": {}", mail.getMailSendTime());
+        } else {
+            log.info("해당 쪽지를 찾을 수 없습니다.");
+        }
+    }
+
+    @Test
+    public void readUpdateTest() {
+        mailMapper.readUpdate(43L, 12L);
+    }
+
+    @Test
+    public void testCountNotRead() {
+        Long receiveUserId = 12L;
+        int count = mailMapper.countNotRead(receiveUserId);
+        log.info("읽지 않은 알림 수: {}", count);
+    }
 
 
 }
