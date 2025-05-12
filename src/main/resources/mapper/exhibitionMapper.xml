@@ -242,8 +242,8 @@
         )
     </insert>
 
-<!--    로고 매칭을 위한 대학교 조회 -->
-    <select id="findUniversityByName" resultType="UniversityVO" parameterType="Long">
+<!--   대학교 조회 -->
+    <select id="findUniversityByName" parameterType="String" resultType="UniversityVO">
         SELECT
             ID,
             UNIVERSITY_NAME,
@@ -254,6 +254,98 @@
         WHERE UNIVERSITY_NAME = #{universityName}
     </select>
 
+<!--    대학교 전시회 정보 조회 (지역 + 전시상태 + 검색) -->
+    <select id="selectUniversity" parameterType="UniversityExhibitionDTO" resultType="UniversityExhibitionDTO">
+        SELECT
+            TUE.ID,
+            TU.UNIVERSITY_LOGO_IMG_NAME,
+            TU.UNIVERSITY_LOGO_IMG_PATH,
+            TU.UNIVERSITY_NAME,
+            TU.UNIVERSITY_HOMEPAGE,
+            TUE.UNIVERSITY_EXHIBITION_TITLE,
+            TM.MAJOR_NAME,
+            TUE.UNIVERSITY_EXHIBITION_START_DATE,
+            TUE.UNIVERSITY_EXHIBITION_END_DATE,
+            TUE.UNIVERSITY_EXHIBITION_LOCATION,
+            TUE.UNIVERSITY_EXHIBITION_STATUS,
+            TU.UNIVERSITY_LOCATION,
+            TUL.ID AS UNIVERSITY_LIKE_ID
+        FROM TBL_UNIVERSITY_EXHIBITION TUE
+        JOIN TBL_MAJOR TM
+            ON TUE.MAJOR_ID = TM.ID
+        JOIN TBL_UNIVERSITY TU
+            ON TM.UNIVERSITY_ID = TU.ID
+        LEFT JOIN TBL_UNIVERSITY_LIKE TUL
+            ON TUL.UNIVERSITY_EXHIBITION_ID = TUE.ID AND TUL.USER_ID = #{userId}
+        WHERE TUE.UNIVERSITY_EXHIBITION_STATUS = '승인' AND TUE.UNIVERSITY_EXHIBITION_END_DATE >= SYSDATE
+
+        <if test="location != null and location != '' and location != '전체지역'">
+            AND (
+            REGEXP_SUBSTR(TU.UNIVERSITY_LOCATION, '^[^ ]+') = #{location}
+            OR SUBSTR(TU.UNIVERSITY_LOCATION, 1, LENGTH(#{location})) = #{location}
+            )
+        </if>
+
+        <if test="universityExhibitionStatus != null and universityExhibitionStatus.equals('예정 전시')">
+            AND TUE.UNIVERSITY_EXHIBITION_START_DATE &gt; SYSDATE
+        </if>
+        <if test="universityExhibitionStatus != null and universityExhibitionStatus.equals('현재 전시')">
+            AND TUE.UNIVERSITY_EXHIBITION_START_DATE &lt;= SYSDATE
+            AND TUE.UNIVERSITY_EXHIBITION_END_DATE &gt;= SYSDATE
+        </if>
+
+        <if test="keyword != null and keyword != ''">
+            AND TU.UNIVERSITY_NAME LIKE '%' || #{keyword} || '%'
+        </if>
+    </select>
+
+<!--    대학교 전시회 이미지 조회 -->
+    <select id="selectUniversityImgAll" parameterType="Long" resultType="UniversityExhibitionImgVO">
+        SELECT
+            ID,
+            UNIVERSITY_EXHIBITION_IMG_NAME,
+            UNIVERSITY_EXHIBITION_IMG_PATH,
+            UNIVERSITY_EXHIBITION_ID
+        FROM TBL_UNIVERSITY_EXHIBITION_IMG
+        WHERE UNIVERSITY_EXHIBITION_ID = #{universityExhibitionId}
+    </select>
+
+<!--    대학교 좋아요 -->
+    <insert id="insertUniversityLike" parameterType="UniversityLikeVO">
+        INSERT INTO TBL_UNIVERSITY_LIKE (ID, UNIVERSITY_LIKE_TIME, UNIVERSITY_EXHIBITION_ID, USER_ID)
+        VALUES (SEQ_UNIVERSITY_LIKE.NEXTVAL, SYSTIMESTAMP, #{universityExhibitionId}, #{userId})
+    </insert>
+
+<!--    좋아요 취소 -->
+    <delete id="deleteUniversityLike" parameterType="UniversityLikeVO">
+        DELETE FROM TBL_UNIVERSITY_LIKE
+        WHERE USER_ID = #{userId} AND UNIVERSITY_EXHIBITION_ID  = #{universityExhibitionId}
+    </delete>
+
+
+
+
+
+
+
+
+
+
 
 
 </mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

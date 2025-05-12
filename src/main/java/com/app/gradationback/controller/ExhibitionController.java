@@ -1,9 +1,6 @@
 package com.app.gradationback.controller;
 
-import com.app.gradationback.domain.DisplayDTO;
-import com.app.gradationback.domain.GradationExhibitionDTO;
-import com.app.gradationback.domain.GradationExhibitionImgVO;
-import com.app.gradationback.domain.GradationExhibitionVO;
+import com.app.gradationback.domain.*;
 import com.app.gradationback.service.ExhibitionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -134,7 +131,89 @@ public class ExhibitionController {
         return ResponseEntity.ok(topLikedArts);
     }
 
+//    University
+//    대학교 전시회 등록
+    @Operation(summary = "대학교 전시회 신청", description = "대학교 전시회를 신청할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "대학교 전시회 신청 성공")
+    @PostMapping("university/register")
+    public UniversityExhibitionDTO registerUniversity(@RequestBody UniversityExhibitionDTO universityExhibitionDTO) {
+        exhibitionService.registerUniversity(universityExhibitionDTO);
+        return universityExhibitionDTO;
+    }
+
+//    대학교 전시회 불러오기
+    @Operation(summary = "대학교 전시회 조회", description = "대학교 전시회를 조회할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "대학교 전시회 조회 성공")
+    @GetMapping("university/list")
+    public ResponseEntity<List<UniversityExhibitionDTO>> getUniversity(
+            @RequestParam(required = false) String location,
+            @RequestParam(required = false) String universityExhibitionStatus,
+            @RequestParam(required = false) String keyword,
+            @RequestParam Long userId
+    ) {
+        UniversityExhibitionDTO universityExhibitionDTO = new UniversityExhibitionDTO();
+        universityExhibitionDTO.setLocation(location);
+        universityExhibitionDTO.setUniversityExhibitionStatus(universityExhibitionStatus);
+        universityExhibitionDTO.setKeyword(keyword);
+        universityExhibitionDTO.setUserId(userId);
+
+        List<UniversityExhibitionDTO> universityList = exhibitionService.getUniversity(universityExhibitionDTO);
+        return ResponseEntity.ok(universityList);
+    }
+
+//    해당 대학교 전시회 이미지 조회
+    @Operation(summary = "대학교 전시회 이미지 조회", description = "대학교 전시회에 등록된 이미지를 모두 조회할 수 있는 API.")
+    @ApiResponse(responseCode = "200", description = "해당 대학교 이미지 조회 성공")
+    @Parameter(
+            name = "universityExhibitionId",
+            description = "전시회 ID",
+            required = true,
+            in = ParameterIn.PATH,
+            schema = @Schema(type = "integer")
+    )
+    @GetMapping("university/{universityExhibitionId}/images")
+    public ResponseEntity<List<UniversityExhibitionImgVO>> getUniversityImg(@PathVariable("universityExhibitionId") Long universityExhibitionId) {
+        List<UniversityExhibitionImgVO> images = exhibitionService.getUniversityImgAll(universityExhibitionId);
+        return ResponseEntity.ok(images);
+    }
+
+
+//    대학교 좋아요
+    @Operation(summary = "대학교 전시회 좋아요", description = "대학교 전시회 좋아요를 할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "대학교 전시회 좋아요 성공")
+    @PostMapping("university/like")
+    public UniversityLikeVO registerUniversityLike(@RequestBody UniversityLikeVO universityLikeVO) {
+        exhibitionService.registerUniversityLike(universityLikeVO);
+        return universityLikeVO;
+    }
+
+//    좋아요 취소
+    @Operation(summary = "대학교 전시회 좋아요 취소", description = "대학교 전시회 좋아요를 취소할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "대학교 전시회 좋아요 취소 성공")
+    @PostMapping("university/unlike")
+    public UniversityLikeVO removeUniversityLike(@RequestBody UniversityLikeVO universityLikeVO) {
+        exhibitionService.removeUniversityLike(universityLikeVO);
+        return universityLikeVO;
+    }
+
+
+
+
+
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
 
 
 

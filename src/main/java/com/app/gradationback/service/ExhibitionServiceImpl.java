@@ -1,15 +1,14 @@
 package com.app.gradationback.service;
 
-import com.app.gradationback.domain.DisplayDTO;
-import com.app.gradationback.domain.GradationExhibitionImgVO;
-import com.app.gradationback.domain.GradationExhibitionVO;
-import com.app.gradationback.domain.UniversityExhibitionDTO;
+import com.app.gradationback.domain.*;
 import com.app.gradationback.mapper.ExhibitionMapper;
 import com.app.gradationback.repository.ExhibitionDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,8 +61,19 @@ public class ExhibitionServiceImpl implements ExhibitionService {
 
     @Override
     public void registerUniversity(UniversityExhibitionDTO universityExhibitionDTO) {
-//        대학교 저장
-        exhibitionDAO.saveUniversity(universityExhibitionDTO);
+//        대학교 중복 확인(로고)
+        Optional<UniversityVO> university = exhibitionDAO.findUniversityByName(universityExhibitionDTO.getUniversityName());
+
+        if(university.isPresent()) {
+            UniversityVO universityVO = university.get();
+            universityExhibitionDTO.setId(universityVO.getId());
+            universityExhibitionDTO.setUniversityLogoImgName(universityVO.getUniversityLogoImgName());
+            universityExhibitionDTO.setUniversityLogoImgPath(universityVO.getUniversityLogoImgPath());
+        } else {
+            universityExhibitionDTO.setUniversityLogoImgName("default-logo.png");
+            universityExhibitionDTO.setUniversityLogoImgPath("assets/images/university/logo");
+            exhibitionDAO.saveUniversity(universityExhibitionDTO);
+        }
 //        학과 저장
         exhibitionDAO.saveMajor(universityExhibitionDTO);
 //        전시회 저장
@@ -73,6 +83,44 @@ public class ExhibitionServiceImpl implements ExhibitionService {
             universityExhibitionDTO.setUniversityExhibitionId(universityExhibitionDTO.getId());
             exhibitionDAO.saveUniversityExhibitionImg(universityExhibitionDTO);
         }
+    }
+
+//    대학 전시회 정보
+    @Override
+    public List<UniversityExhibitionDTO> getUniversity(UniversityExhibitionDTO universityExhibitionDTO) {
+        List<UniversityExhibitionDTO> universityList = exhibitionDAO.findUniversity(universityExhibitionDTO);
+
+        for(UniversityExhibitionDTO university : universityList) {
+            Date now = new Date();
+            Date startDate = university.getUniversityExhibitionStartDate();
+            Date endDate = university.getUniversityExhibitionEndDate();
+
+            if(now.before(startDate)) {
+                university.setUniversityExhibitionState("전시 예정");
+            } else {
+                university.setUniversityExhibitionState("전시 중");
+            }
+        }
+
+        return universityList;
+    }
+
+//    대학 전시회 사진
+    @Override
+    public List<UniversityExhibitionImgVO> getUniversityImgAll(Long universityExhibitionId) {
+        return exhibitionDAO.findUniversityImgAll(universityExhibitionId);
+    }
+
+//    대학교 좋아요
+    @Override
+    public void registerUniversityLike(UniversityLikeVO universityLikeVO) {
+        exhibitionDAO.saveUniversityLike(universityLikeVO);
+    }
+
+//    좋아요 취소
+    @Override
+    public void removeUniversityLike(UniversityLikeVO universityLikeVO) {
+        exhibitionDAO.deleteUniversityLike(universityLikeVO);
     }
 
 

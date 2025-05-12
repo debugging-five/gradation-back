@@ -77,8 +77,33 @@ public class ExhibitionDAO {
         exhibitionMapper.insertUniversityExhibitionImg(universityExhibitionDTO);
     }
 
-}
+//    대학교 조회
+    public Optional<UniversityVO> findUniversityByName(String universityName) {
+        return exhibitionMapper.findUniversityByName(universityName);
+    }
 
+//    대학 전시회 정보 조회
+    public List<UniversityExhibitionDTO> findUniversity(UniversityExhibitionDTO universityExhibitionDTO) {
+        return exhibitionMapper.selectUniversity(universityExhibitionDTO);
+    }
+
+//    대학 전시회 이미지 조회
+    public List<UniversityExhibitionImgVO> findUniversityImgAll(Long universityExhibitionId) {
+        return exhibitionMapper.selectUniversityImgAll(universityExhibitionId);
+    }
+
+//    좋아요
+    public void saveUniversityLike(UniversityLikeVO universityLikeVO) {
+        exhibitionMapper.insertUniversityLike(universityLikeVO);
+    }
+
+//    좋아요 취소
+    public void deleteUniversityLike(UniversityLikeVO universityLikeVO) {
+        exhibitionMapper.deleteUniversityLike(universityLikeVO);
+    }
+
+
+}
 
 
 
