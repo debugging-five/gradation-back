@@ -37,8 +37,8 @@ public class UserController {
     @Operation(summary = "회원가입", description = "회원가입을 할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "회원가입 성공")
     @PostMapping("join/normal")
-    public ResponseEntity<Map<Object, String>> normalJoin(@RequestBody UserVO userVO) {
-        Map<Object, String> response = new HashMap<>();
+    public ResponseEntity<Map<String, Object>> normalJoin(@RequestBody UserVO userVO) {
+        Map<String, Object> response = new HashMap<>();
 
         Optional<UserVO> foundUser = userService.getUserByEmail(userVO.getUserEmail());
         if (foundUser.isPresent()) {

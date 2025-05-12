@@ -37,7 +37,8 @@ public class CommentController {
     @Operation(summary = "댓글 등록", description = "댓글을 등록할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "댓글 등록 성공")
     @PostMapping("registration")
-    public ArtPostDTO write(@RequestBody CommentVO commentVO, HttpSession session) {
+    public ResponseEntity<Map<String, Object>> write(@RequestBody CommentVO commentVO, HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
         Long userId = (Long) session.getAttribute("id");
 
         if (userId == null) {
@@ -58,20 +59,32 @@ public class CommentController {
         commentVO.setUserId(userId);
         commentService.write(commentVO);
 
-
-        Optional<CommentVO> foundReply = commentService.getComment(commentVO.getId());
-        if (foundReply.isPresent()) {
-            commentVO.setId(foundReply.get().getId());
+        Optional<CommentVO> foundComment = commentService.getComment(commentVO.getId());
+        if (foundComment.isPresent()) {
+//            commentVO.setId(foundReply.get().getId());
+            response.put("message", "댓글 등록 성공했습니다.");
+            response.put("reply", foundComment.get());
+            return ResponseEntity.ok(response);
         }
-        return new ArtPostDTO();
+        response.put("message", "댓글 등록 실패했습니다.");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
 //    댓글 전체 조회
     @Operation(summary = "댓글 전체 조회", description = "댓글을 전체 조회할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "댓글 전체 조회 성공")
     @GetMapping("comments")
-    public List<CommentVO> getReplies() {
-        return commentService.getCommentList();
+    public ResponseEntity<Map<String, Object>> getReplies() {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            List<CommentVO> commentList = commentService.getCommentList();
+            response.put("message", "댓글 전체 조회 성공했습니다.");
+            response.put("commentList", commentList);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("message", "댓글 전체 조회 실패했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
 //    댓글 단일 조회
@@ -85,18 +98,22 @@ public class CommentController {
             required = true
     )
     @GetMapping("comment/{id}")
-    public ResponseEntity<Map<Object, String>> getReply(@PathVariable Long id) {
-        Map<Object, String> response = new HashMap<>();
-        Optional<CommentVO> foundComment = commentService.getComment(id);
-
-        if (foundComment.isPresent()) {
-        String comment = foundComment.get().getCommentContent();
-            response.put("message", "댓글 조회 성공했습니다.");
-            response.put("comment", comment);
-            return ResponseEntity.ok(response);
+    public ResponseEntity<Map<String, Object>> getReply(@PathVariable Long id) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Optional<CommentVO> foundComment = commentService.getComment(id);
+            if (foundComment.isPresent()) {
+                String comment = foundComment.get().getCommentContent();
+                response.put("message", "댓글 조회 성공했습니다.");
+                response.put("comment", comment);
+                return ResponseEntity.ok(response);
+            }
+            response.put("message", "해당 댓글이 존재하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } catch (Exception e) {
+            response.put("message", "서버 오류 발생");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-        response.put("message", "댓글 조회 실패했습니다.");
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
 //    댓글 수정
@@ -110,14 +127,28 @@ public class CommentController {
             required = true
     )
     @PutMapping("comment/{id}")
-    public CommentVO modify(@PathVariable Long id, @RequestBody CommentVO commentVO) {
-        commentVO.setId(id);
-        commentService.modifyComment(commentVO);
-        Optional<CommentVO> foundReply = commentService.getComment(commentVO.getId());
-        if (foundReply.isPresent()) {
-            return foundReply.get();
+    public ResponseEntity<Map<String, Object>> modify(@PathVariable Long id, @RequestBody CommentVO commentVO) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Optional<CommentVO> foundReply = commentService.getComment(commentVO.getId());
+            if (foundReply.isPresent()) {
+                commentVO.setId(id);
+                commentService.modifyComment(commentVO);
+
+                Optional<CommentVO> updateComment = commentService.getComment(id);
+                if(updateComment.isPresent()) {
+                    response.put("message", "댓글 수정 성공했습니다.");
+                    response.put("comment", commentVO.getCommentContent());
+                    return ResponseEntity.ok(response);
+                }
+            }
+            response.put("message", "해당 댓글이 존재하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+//        return new CommentVO();
+        } catch (Exception e) {
+            response.put("message", "서버 오류");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-        return new CommentVO();
     }
 
 //    댓글 삭제
@@ -131,9 +162,24 @@ public class CommentController {
             required = true
     )
     @DeleteMapping("comment/{id}")
-    public void removeReply(@PathVariable Long id) {
-        commentService.removeComment(id);
+    public ResponseEntity<Map<String, Object>> removeReply(@PathVariable Long id) {
+        Map<String, Object> response = new HashMap<>();
+//        commentService.removeComment(id);
+        try {
+            Optional<CommentVO> foundComment = commentService.getComment(id);
+            if (foundComment.isPresent()) {
+                commentService.removeComment(id);
+                response.put("message", "댓글 삭제 성공했습니다.");
+                return ResponseEntity.ok(response);
+            }
+            response.put("message", "해당 댓글이 존재하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } catch (Exception e) {
+            response.put("message", "서버 오류");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
+
 
 
 
