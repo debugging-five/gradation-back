@@ -41,8 +41,7 @@
     <!-- 수정 (상태 변경) -->
     <update id="update" parameterType="UpcyclingVO">
         UPDATE TBL_UPCYCLING
-        SET
-            UPCYCLING_STATUS = #{upcyclingStatus}
+        SET UPCYCLING_STATUS = #{upcyclingStatus}
         WHERE ID = #{id}
     </update>
 
@@ -51,6 +50,38 @@
         DELETE FROM TBL_UPCYCLING
         WHERE ID = #{id}
     </delete>
+
+    <!-- 관리자용 업사이클링 승인 대기 목록 조회 -->
+    <select id="selectAllUpcyclingPending" resultType="UpcyclingDTO">
+        SELECT
+            TUC.ID, UPCYCLING_ADDRESS, UPCYCLING_DETAIL_ADDRESS, UPCYCLING_EMAIL, UPCYCLING_PHONE, UPCYCLING_DATE,
+            UPCYCLING_SIZE_SMALL, UPCYCLING_SIZE_MEDIUM, UPCYCLING_SIZE_LARGE, UPCYCLING_MATERIALS, UPCYCLING_IMG_NAME,
+            UPCYCLING_IMG_PATH, UPCYCLING_SIGNIFICANT, UPCYCLING_STATUS,
+            TBU.ID AS USER_ID, USER_NAME, USER_EMAIL
+        FROM TBL_UPCYCLING TUC
+            JOIN TBL_USER TBU ON TUC.USER_ID = TBU.ID
+        WHERE TUC.UPCYCLING_STATUS = '미신청'
+        ORDER BY TUC.UPCYCLING_DATE DESC
+    </select>
+
+    <!-- 관리자용 업사이클링 상세 조회 -->
+    <select id="selectUpcyclingPendingById" parameterType="Long" resultType="UpcyclingDTO">
+        SELECT
+            TUC.ID, UPCYCLING_ADDRESS, UPCYCLING_DETAIL_ADDRESS, UPCYCLING_EMAIL, UPCYCLING_PHONE, UPCYCLING_DATE,
+            UPCYCLING_SIZE_SMALL, UPCYCLING_SIZE_MEDIUM, UPCYCLING_SIZE_LARGE, UPCYCLING_MATERIALS, UPCYCLING_IMG_NAME,
+            UPCYCLING_IMG_PATH, UPCYCLING_SIGNIFICANT, UPCYCLING_STATUS,
+            TBU.ID AS USER_ID, USER_NAME, USER_EMAIL
+        FROM TBL_UPCYCLING TUC
+            JOIN TBL_USER TBU ON TUC.USER_ID = TBU.ID
+        WHERE TUC.ID = #{id}
+    </select>
+
+    <!-- 관리자용 업사이클링 상태 변경 (승인 / 반려) -->
+    <update id="updateUpcyclingStatus" parameterType="UpcyclingDTO">
+        UPDATE TBL_UPCYCLING
+        SET UPCYCLING_STATUS = #{upcyclingStatus}
+        WHERE ID = #{id}
+    </update>
 
 
 

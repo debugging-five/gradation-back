@@ -42,8 +42,8 @@
             TAI.ART_IMG_NAME, TAI.ART_IMG_PATH,
             TBU.ID AS USER_ID, USER_NAME, USER_EMAIL
         FROM TBL_ART TBA
-                 JOIN TBL_USER TBU ON TBA.USER_ID = TBU.ID
-                 LEFT JOIN TBL_ART_IMG TAI ON TAI.ART_ID = TBA.ID
+            JOIN TBL_USER TBU ON TBA.USER_ID = TBU.ID
+            LEFT JOIN TBL_ART_IMG TAI ON TAI.ART_ID = TBA.ID
         WHERE ART_STATUS = '미신청'
         ORDER BY ART_END_DATE DESC
     </select>
@@ -55,8 +55,8 @@
             TAI.ART_IMG_NAME, TAI.ART_IMG_PATH,
             TBU.ID AS USER_ID, USER_NAME, USER_EMAIL
         FROM TBL_ART TBA
-                 JOIN TBL_USER TBU ON TBA.USER_ID = TBU.ID
-                 LEFT JOIN TBL_ART_IMG TAI ON TAI.ART_ID = TBA.ID
+            JOIN TBL_USER TBU ON TBA.USER_ID = TBU.ID
+            LEFT JOIN TBL_ART_IMG TAI ON TAI.ART_ID = TBA.ID
         WHERE TBA.ID = #{id}
     </select>
 
