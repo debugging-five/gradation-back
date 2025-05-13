@@ -46,8 +46,9 @@ public class AuctionController {
     @Operation(summary = "경매 수정", description = "경매 수정 API")
     @ApiResponse(responseCode = "200", description = "수정 성공")
     @PutMapping("modify")
-    public ResponseEntity<Map<String, Object>> modify(AuctionVO auctionVO) {
+    public ResponseEntity<Map<String, Object>> modify(@RequestBody AuctionVO auctionVO) {
         Map<String, Object> response = new HashMap<>();
+        log.info(auctionVO.toString());
         try {
             auctionService.auctionModify(auctionVO);
         } catch (Exception e) {
