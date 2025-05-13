@@ -137,7 +137,7 @@ public class AuctionController {
     @Operation(summary = "경매 응찰", description = "경매 입찰 API")
     @ApiResponse(responseCode = "200", description = "응찰 성공")
     @PostMapping("bidding")
-    public ResponseEntity<Map<String,Object>> bidding(AuctionBiddingVO auctionBiddingVO) {
+    public ResponseEntity<Map<String,Object>> bidding(@RequestBody AuctionBiddingVO auctionBiddingVO) {
         Map<String, Object> response = new HashMap<>();
         try {
             auctionService.auctionBidding(auctionBiddingVO);
@@ -162,8 +162,11 @@ public class AuctionController {
             required = true
     )
     @GetMapping("read-bidder-count/{auctionId}")
-    public ResponseEntity<Integer> readBidderCount(@PathVariable Long auctionId) {
-        Integer response = auctionService.auctionBidderCount(auctionId).orElse(0);
+    public ResponseEntity<Map<String, Object>> readBidderCount(@PathVariable Long auctionId) {
+        Map<String, Object> response = new HashMap<>();
+        int count = auctionService.auctionBidderCount(auctionId).orElse(0);
+        response.put("message", "조회 성공");
+        response.put("count", count);
         return ResponseEntity.ok(response);
     }
 
