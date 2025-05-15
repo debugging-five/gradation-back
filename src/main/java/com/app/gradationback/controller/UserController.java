@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.User;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,19 +41,27 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> normalJoin(@RequestBody UserVO userVO) {
         Map<String, Object> response = new HashMap<>();
 
-        Optional<UserVO> foundUser = userService.getUserByEmail(userVO.getUserEmail());
-        if (foundUser.isPresent()) {
-            response.put("message", "이미 사용중인 이메일입니다.");
+        try {
+            Optional<UserVO> foundUser = userService.getUserByEmail(userVO.getUserEmail());
+            if (foundUser.isPresent()) {
+                response.put("message", "이미 사용 중인 이메일입니다.");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+            }
+            if (userVO.getUserNickName() == null || userVO.getUserNickName().length() == 0) {
+                userVO.setUserNickName(userVO.getUserName());
+            }
+            userService.joinNormal(userVO);
+            response.put("message", "회원가입이 완료되었습니다.");
+            return ResponseEntity.ok(response);
+
+        } catch (DuplicateKeyException e) {
+            response.put("message", "이미 사용 중인 이메일입니다.");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
-        }
 
-        if (userVO.getUserNickName() == null || userVO.getUserNickName().length() == 0) {
-            userVO.setUserNickName(userVO.getUserName());
+        } catch (Exception e) {
+            response.put("message", "서버 오류");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-
-        userService.joinNormal(userVO);
-        response.put("message", "회원가입이 완료되었습니다.");
-        return ResponseEntity.ok(response);
     }
 
 
@@ -65,16 +74,26 @@ public class UserController {
         String provider = userVO.getUserProvider();
 
 //        회원가입 후 다시 로그인
-        Optional<UserVO> userEmail = userService.getUserByEmail(userVO.getUserEmail());
-        if (userEmail.isPresent()) {
-            response.put("message", "이미 사용중인 이메일입니다.");
+        try {
+            Optional<UserVO> userEmail = userService.getUserByEmail(userVO.getUserEmail());
+            if (userEmail.isPresent()) {
+                response.put("message", "이미 사용 중인 이메일입니다.");
+                response.put("provider", provider);
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+            }
+//        소셜 로그인 후 회원가입
+            userService.joinSocial(userVO);
+            response.put("message", "회원가입이 완료되었습니다.");
+            return ResponseEntity.ok(response);
+
+        } catch (DuplicateKeyException e) {
+            response.put("message", "이미 사용 중인 이메일입니다.");
             response.put("provider", provider);
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        } catch (Exception e) {
+            response.put("message", "서버 오류");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-//        소셜 로그인 후 회원가입
-        userService.joinSocial(userVO);
-        response.put("message", "회원가입이 완료되었습니다.");
-        return ResponseEntity.ok(response);
     }
 
 //    로그인
@@ -88,27 +107,33 @@ public class UserController {
         Map<String, Object> response = new HashMap<>();
         Map<String, Object> claims = new HashMap<>();
 
-        Optional<UserVO> userIdentification = userService.getUserByIdentification(userVO.getUserIdentification());
+        try {
+            Optional<UserVO> userIdentification = userService.getUserByIdentification(userVO.getUserIdentification());
 
-        if (!userIdentification.isPresent()) {
-            response.put("message", "등록되지 않은 아이디입니다.");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+            if (!userIdentification.isPresent()) {
+                response.put("message", "아이디 또는 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시 확인해주세요.");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+
+            UserVO foundUser = userIdentification.get();
+
+            if(!foundUser.getUserPassword().equals(userVO.getUserPassword())) {
+                response.put("message", "아이디 또는 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시 확인해주세요.");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+
+            claims.put("email", foundUser.getUserEmail());
+            claims.put("identification", foundUser.getUserIdentification());
+
+            String jwtToken = jwtTokenUtil.generateToken(claims);
+            response.put("jwtToken", jwtToken);
+            response.put("message", "로그인 성공하였습니다.");
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            response.put("message", "서버 오류");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-
-        UserVO foundUser = userIdentification.get();
-
-        if(!foundUser.getUserPassword().equals(userVO.getUserPassword())) {
-            response.put("message", "비밀번호가 틀렸습니다.");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
-        }
-
-        claims.put("email", foundUser.getUserEmail());
-        claims.put("identification", foundUser.getUserIdentification());
-        String jwtToken = jwtTokenUtil.generateToken(claims);
-        response.put("jwtToken", jwtToken);
-        response.put("message", "로그인 성공하였습니다.");
-
-        return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "회원 프로필 조회", description = "JWT 토큰을 통해 현재 로그인한 회원의 정보를 조회할 수 있는 API")
@@ -129,25 +154,28 @@ public class UserController {
                 String userIdentification = claims.get("identification").toString();
 
                 if (userIdentification == null) {
-                    response.put("message", "Identification not found in the token.");
+                    response.put("message", "토큰에 identification이 존재하지 않습니다.");
                     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
                 }
 
                 UserVO foundUser = userService.getUserByIdentification(userIdentification).orElseThrow(() -> {
-                    throw new RuntimeException("User profile, Not found User");
+                    throw new RuntimeException("회원 정보가 존재하지 않습니다.");
                 });
 
                 foundUser.setUserPassword(null);
                 response.put("currentUser", foundUser);
                 return ResponseEntity.ok(response);
             }
+            response.put("message", "토큰이 만료되었습니다.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+
         } catch (ExpiredJwtException e) {
             response.put("message", "토큰이 만료되었습니다.");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        } catch (Exception e) {
+            response.put("message", "서버 오류");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-
-        response.put("message", "토큰이 만료되었습니다");
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
 
@@ -162,13 +190,23 @@ public class UserController {
             required = true
     )
     @GetMapping("user/{userEmail}")
-    public UserVO getUser(@PathVariable String userEmail) {
-        Optional<UserVO> foundUser = userService.getUserByEmail(userEmail);
+    public ResponseEntity<Map<String, Object>> getUser(@PathVariable String userEmail) {
+        Map<String, Object> response = new HashMap<>();
         log.info("{}", userEmail);
-        if (foundUser.isPresent()) {
-            return foundUser.get();
+        try {
+            Optional<UserVO> foundUser = userService.getUserByEmail(userEmail);
+            if (foundUser.isPresent()) {
+                foundUser.get().setUserPassword(null);
+                response.put("message", "회원 정보 조회 성공했습니다.");
+                response.put("currentUser", foundUser.get());
+                return ResponseEntity.ok(response);
+            }
+            response.put("message", "회원 정보가 존재하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } catch (Exception e) {
+            response.put("message", "서버 오류");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-        return new UserVO();
     }
 
 
@@ -178,15 +216,20 @@ public class UserController {
     @GetMapping("/check-id/{userIdentification}")
     public ResponseEntity<Map<String, Object>> checkIdentification(@PathVariable String userIdentification) {
         Map<String, Object> response = new HashMap<>();
-        Optional<UserVO> foundUser = userService.getUserByIdentification(userIdentification);
-        if (foundUser.isPresent()) {
-            response.put("check-id", true);
-            response.put("message", "이미 사용중인 아이디입니다.");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        try {
+            Optional<UserVO> foundUser = userService.getUserByIdentification(userIdentification);
+            if (foundUser.isPresent()) {
+                response.put("check-id", true);
+                response.put("message", "이미 사용중인 아이디입니다.");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+            }
+            response.put("check-id", false);
+            response.put("message", "사용 가능한 아이디입니다.");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("message", "서버 오류");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-        response.put("check-id", false);
-        response.put("message", "사용 가능한 아이디입니다.");
-        return ResponseEntity.ok(response);
     }
 
 //    이메일 중복 체크
@@ -195,15 +238,20 @@ public class UserController {
     @GetMapping("/check-email/{userEmail}")
     public ResponseEntity<Map<String, Object>> checkEmail(@PathVariable String userEmail) {
         Map<String, Object> response = new HashMap<>();
-        Optional<UserVO> foundUser = userService.getUserByEmail(userEmail);
-        if (foundUser.isPresent()) {
-            response.put("check-email", true);
-            response.put("message", "이미 사용중인 이메일입니다.");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        try {
+            Optional<UserVO> foundUser = userService.getUserByEmail(userEmail);
+            if (foundUser.isPresent()) {
+                response.put("check-email", true);
+                response.put("message", "이미 사용중인 이메일입니다.");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+            }
+            response.put("check-email", false);
+            response.put("message", "사용 가능한 이메일입니다.");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("message", "서버 오류");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-        response.put("check-email", false);
-        response.put("message", "사용 가능한 이메일입니다.");
-        return ResponseEntity.ok(response);
     }
 
 //    아이디 찾기 (이름 + 이메일)
@@ -216,37 +264,101 @@ public class UserController {
     @PostMapping("/find-id")
     public ResponseEntity<Map<String, Object>> findId(@RequestBody UserVO userVO) {
         Map<String, Object> response = new HashMap<>();
-        String foundIdentification = userService.getIdentificationByEmailAndName(userVO);
-        if(foundIdentification == null) {
-            response.put("message", "입력하신 정보에 일치하는 아이디가 존재하지 않습니다.");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+
+        try {
+            UserVO foundUser = userService.getIdentificationByEmailAndName(userVO);
+
+            if(foundUser == null) {
+                response.put("message", "입력하신 정보에 일치하는 아이디가 존재하지 않습니다.");
+                response.put("socialLogin", false);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }else if(foundUser.getUserIdentification() == null) {
+                response.put("message", "소셜 로그인 회원입니다.");
+                response.put("socialLogin", true);
+                return ResponseEntity.ok(response);
+            } else {
+                response.put("foundIdentification", foundUser.getUserIdentification());
+                response.put("message", "아이디 찾기 성공했습니다.");
+                return ResponseEntity.ok(response);
+            }
+
+        } catch (Exception e) {
+            response.put("message", "서버 오류");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-        response.put("foundIdentification", foundIdentification);
-        return ResponseEntity.ok(response);
     }
 
-//    비밀번호 찾기 (이메일)
+//    비밀번호 찾기 (이메일) 암호화 필요
     @Operation(summary = "비밀번호 찾기", description = "비밀번호를 찾을 수 있는 API")
     @ApiResponse(responseCode = "200", description = "비밀번호 찾기 성공")
     @GetMapping("/find-password/{userEmail}")
     public ResponseEntity<Map<String, Object>> findPassword(@PathVariable String userEmail) {
         Map<String, Object> response = new HashMap<>();
-        String foundPassword = userService.getPasswordByEmail(userEmail);
-        if (foundPassword != null) {
-            response.put("foundPassword", foundPassword);
-            return ResponseEntity.ok(response);
+        try {
+            String foundPassword = userService.getPasswordByEmail(userEmail);
+            if (foundPassword != null) {
+                response.put("foundPassword", foundPassword);
+                response.put("message", "비밀번호 찾기 성공했습니다.");
+                return ResponseEntity.ok(response);
+            }
+            response.put("message", "입력하신 이메일에 해당하는 비밀번호가 존재하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } catch (Exception e) {
+            response.put("message", "서버 오류");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-        response.put("message", "입력하신 이메일에 해당하는 비밀번호가 존재하지 않습니다.");
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
+//    비밀번호 재설정
+    @Operation(summary = "비밀번호 수정", description = "비밀번호를 수정할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "비밀번호 수정 성공")
+    @PutMapping("modify-password")
+    public ResponseEntity<Map<String, Object>> modifyPassword(@RequestBody UserVO userVO) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Optional<UserVO> foundUser = userService.getUserByIdentification(userVO.getUserIdentification());
+
+            if (foundUser.isPresent()) {
+                userService.modifyPassword(userVO);
+                response.put("message", "비밀번호가 수정되었습니다.");
+                return ResponseEntity.ok(response);
+            }
+
+            response.put("message", "회원 정보가 존재하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+
+        } catch (Exception e) {
+            response.put("message", "서버 오류");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
 //    회원 정보 수정
     @Operation(summary = "회원 정보 수정", description = "회원 정보를 수정할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "회원 정보 수정 성공")
     @PutMapping("modify")
-    public void modify(@RequestBody UserVO userVO) {
-        userService.modifyUser(userVO);
-        log.info("{}", userVO);
+    public ResponseEntity<Map<String, Object>> modify(@RequestBody UserVO userVO) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Optional<UserVO> foundUser = userService.getUserByEmail(userVO.getUserEmail());
+            if(foundUser.isPresent()) {
+                userService.modifyUser(userVO);
+
+                Optional<UserVO> modifyUser = userService.getUserByEmail(userVO.getUserEmail());
+                if(modifyUser.isPresent()) {
+                    UserVO user = modifyUser.get();
+                    user.setUserPassword(null);
+                    response.put("modifyUser", user);
+                    response.put("message", "회원 정보 수정이 완료되었습니다.");
+                    return ResponseEntity.ok(response);
+                }
+            }
+            response.put("message", "회원 정보가 존재하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } catch (Exception e) {
+            response.put("message", "서버 오류");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
 //    회원 탈퇴
@@ -260,9 +372,23 @@ public class UserController {
             in = ParameterIn.PATH,
             required = true
     )
-    public void withdraw(@PathVariable String userEmail) {
-        userService.withdraw(userEmail);
-    }
+    public ResponseEntity<Map<String, Object>> withdraw(@PathVariable String userEmail) {
+        Map<String, Object> response = new HashMap<>();
+//        userService.withdraw(userEmail);
 
+        try {
+            Optional<UserVO> foundUser = userService.getUserByEmail(userEmail);
+            if(foundUser.isPresent()) {
+                userService.withdraw(userEmail);
+                response.put("message", "회원 탈퇴되었습니다.");
+                return ResponseEntity.ok(response);
+            }
+            response.put("message", "해당 회원이 존재하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } catch (Exception e) {
+            response.put("message", "서버 오류");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 
 }

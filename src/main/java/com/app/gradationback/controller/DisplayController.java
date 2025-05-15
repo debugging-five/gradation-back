@@ -30,7 +30,7 @@ public class DisplayController {
     private final ArtImgService artImgService;
     private final ArtLikeService artLikeService;
 
-    //    전시 등록 (게시글 + 작품 + 이미지)
+//    전시 등록 (게시글 + 작품 + 이미지)
     @Operation(summary = "전시 등록", description = "전시를 등록할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "전시 등록 성공")
     @PostMapping("register")

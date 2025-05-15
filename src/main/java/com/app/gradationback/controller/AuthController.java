@@ -25,8 +25,16 @@ public class AuthController {
     @ApiResponse(responseCode = "200", description = "인증번호 전송 성공")
     @PostMapping("sendEmail")
     public ResponseEntity<Map<String, Object>> sendEmail(@RequestBody String userEmail){
+        Map<String, Object> response = new HashMap<>();
         log.info(userEmail);
-        return smsService.sendEmailVerification(userEmail);
+        try {
+//            smsService.sendEmailVerification(userEmail);
+            response.put("code", smsService.sendEmailVerification(userEmail));
+            return smsService.sendEmailVerification(userEmail);
+        } catch (Exception e) {
+            response.put("message", "인증코드 발송 실패");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
 //    인증코드 검증
