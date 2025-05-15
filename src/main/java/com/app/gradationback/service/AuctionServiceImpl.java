@@ -58,6 +58,8 @@ public class AuctionServiceImpl implements AuctionService {
         AuctionBiddingVO topAutoBidding = auctionBiddingDAO.findAutoByAuctionId(auctionBiddingVO.getAuctionId()).orElse(null);
 //        최상위 일반 응찰
         AuctionBiddingVO topBidding = auctionBiddingDAO.findByAuctionId(auctionBiddingVO.getAuctionId()).orElse(null);
+//        시작응찰가 구하기
+        int startPrice = auctionDAO.findById(auctionBiddingVO.getAuctionId()).get(0).getAuctionStartPrice();
 
 //        인풋 응찰 등록
         auctionBiddingDAO.save(auctionBiddingVO);
@@ -97,12 +99,16 @@ public class AuctionServiceImpl implements AuctionService {
                 auctionBiddingVO.setAuctionBiddingAutoOk(false);
                 auctionBiddingVO.setAuctionBiddingPrice(autoMinPrice);
                 auctionBiddingDAO.save(auctionBiddingVO);
+
             }else if (topAutoBidding == null && topBidding != null) {
 //                최상위 자동응찰이 없는 경우
                 auctionBiddingVO.setAuctionBiddingAutoOk(false);
-                auctionBiddingVO.setAuctionBiddingPrice((int)Math.ceil(topBidding.getAuctionBiddingPrice() * 1.1 / 1000) * 1000);
+                auctionBiddingVO.setAuctionBiddingPrice((int) Math.ceil(topBidding.getAuctionBiddingPrice() * 1.1 / 1000) * 1000);
                 auctionBiddingDAO.save(auctionBiddingVO);
-
+            }else {
+                auctionBiddingVO.setAuctionBiddingAutoOk(false);
+                auctionBiddingVO.setAuctionBiddingPrice(startPrice);
+                auctionBiddingDAO.save(auctionBiddingVO);
             }
 //            두 자동응찰이 서로의 최소 응찰가를 동시에 만족하지 못할경우 더 높은 응찰금의 자동응찰이 응찰 우선권을 가진다.
 //            이는 해당 응찰이 최상위 자동응찰이 되므로 만족된다.

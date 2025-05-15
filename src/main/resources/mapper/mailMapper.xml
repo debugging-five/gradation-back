@@ -78,7 +78,6 @@
         UPDATE TBL_MAIL
         SET MAIL_RECEIVE_USER_DELETED = 1
         WHERE ID = #{id}
-          AND RECEIVE_USER_ID = #{receiveUserId}
     </update>
 
     <!--    보낸 쪽지 삭제 (내가 보낸 쪽지 삭제, 알림 삭제)-->
@@ -86,7 +85,6 @@
         UPDATE TBL_MAIL
         SET MAIL_SEND_USER_DELETED = 1
         WHERE ID = #{id}
-          AND SEND_USER_ID = #{sendUserId}
     </update>
 
 
@@ -106,11 +104,10 @@
     </select>
 
 <!--    알림 상세-->
-    <select id="selectAlertDetail" parameterType="MailDTO" resultType="MailDTO">
+    <select id="selectDetail" parameterType="long" resultType="MailDTO">
         SELECT ID, MAIL_TITLE, MAIL_CONTENT, MAIL_SEND_TIME
         FROM TBL_MAIL
         WHERE ID = #{id}
-          AND RECEIVE_USER_ID = #{receiveUserId}
     </select>
 
 <!--    알림 삭제 = 75번줄과 동일-->
