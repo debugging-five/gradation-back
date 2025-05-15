@@ -29,7 +29,7 @@ public interface UserMapper {
     public String login(UserVO userVO);
 
 //    아이디 찾기 (이름 + 이메일)
-    public String selectIdentificationByEmailAndName(UserVO userVO);
+    public UserVO selectIdentificationByEmailAndName(UserVO userVO);
 
 //    비밀번호 찾기 (이메일)
     public String selectPasswordByEmail(String userEmail);

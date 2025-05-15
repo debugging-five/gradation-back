@@ -44,7 +44,7 @@ public class UserDAO {
     }
 
 //    아이디 찾기 (이름 + 이메일)
-    public String findIdentificationByEmailAndName(UserVO userVO) {
+    public UserVO findIdentificationByEmailAndName(UserVO userVO) {
         return userMapper.selectIdentificationByEmailAndName(userVO);
     }
 
