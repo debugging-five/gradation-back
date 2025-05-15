@@ -35,8 +35,8 @@ public class MailDAO {
     }
 
 //    받은쪽지 단일조회
-    public Optional<MailDTO> findReceivedOne(Long id, Long receiveUserId) {
-        return mailMapper.selectReceivedDetail(id, receiveUserId);
+    public Optional<MailDTO> findReceivedOne(Long id, Long receviedUserId) {
+        return mailMapper.selectReceivedDetail(id, receviedUserId);
     }
 
 //    보낸쪽지 단일조회
@@ -45,13 +45,13 @@ public class MailDAO {
     }
 
 //    받은쪽지 삭제
-    public void deleteReceived(Long id, Long receiveUserId) {
-        mailMapper.deleteReceivedMail(id, receiveUserId);
+    public void deleteReceived(Long id) {
+        mailMapper.deleteReceivedMail(id);
     }
 
 //    보낸쪽지 삭제
-    public void deleteSended(Long id, Long sendUserId) {
-        mailMapper.deleteSendedMail(id, sendUserId);
+    public void deleteSended(Long id) {
+        mailMapper.deleteSendedMail(id);
     }
 
 //    알림리스트
@@ -60,8 +60,8 @@ public class MailDAO {
     }
 
 //    알림상세
-    public Optional<MailDTO> findAlertOne(Long id, Long receiveUserId) {
-        return mailMapper.selectAlertDetail(id, receiveUserId);
+    public Optional<MailDTO> findByDetail(Long id) {
+        return mailMapper.selectDetail(id);
     }
 
 //    읽음처리

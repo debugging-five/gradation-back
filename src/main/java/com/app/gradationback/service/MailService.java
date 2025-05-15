@@ -26,16 +26,16 @@ public interface MailService {
     public Optional<MailDTO> findSendedOne(Long id, Long sendUserId);
 
 //    받은쪽지 삭제
-    public void removeReceivedMail(Long id, Long receiveUserId);
+    public void removeReceivedMail(Long id);
 
 //    보낸쪽지 삭제
-    public void removeSendedMail(Long id, Long sendUserId);
+    public void removeSendedMail(Long id);
 
 //    알림리스트
     public List<MailDTO> getAlertList(Long receiveUserId);
 
 //    알림상세
-    public Optional<MailDTO> findAlertOne(Long id, Long receiveUserId);
+    public Optional<MailDTO> findByDetail(Long id);
 
 //    읽음처리
     public void readUpdate(Long id, Long receiveUserId);
