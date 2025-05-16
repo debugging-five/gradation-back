@@ -2,6 +2,7 @@ package com.app.gradationback.controller;
 
 import com.app.gradationback.domain.QnaDTO;
 import com.app.gradationback.domain.QnaVO;
+import com.app.gradationback.domain.UpcyclingVO;
 import com.app.gradationback.service.QnaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -10,7 +11,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -50,17 +53,16 @@ public class QnaController {
     }
 
     //    QNA 작성
-    @Operation(summary = "QNA 작성", description = "QNA를 작성할 수 있는 API")
+    @Operation(summary = "문의 작성", description = "QNA를 작성할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "QNA 작성 성공")
-    @PostMapping("registraction")
-    public QnaDTO registraction(@RequestBody QnaVO qnaVO){
-        qnaService.registraction(qnaVO);
-        Optional<QnaDTO> foundQna = qnaService.getQna(qnaVO.getId());
-        if (foundQna.isPresent()) {
-            return foundQna.get();
-        }
-        return new QnaDTO();
+    @PostMapping(value = "register", consumes = "multipart/form-data")
+    public ResponseEntity<QnaDTO> register(
+            @RequestPart("info") QnaVO qnaVO,
+            @RequestPart(value = "file", required = false) MultipartFile file) {  // <-- required=false 추가
+        qnaService.registraction(qnaVO, file);
+        return ResponseEntity.ok(qnaService.getQna(qnaVO.getId()).orElse(new QnaDTO()));
     }
+
 
     //    QNA 수정
     @Operation(summary = "QNA 수정", description = "QNA를 수정할 수 있는 API")

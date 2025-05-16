@@ -3,12 +3,15 @@ package com.app.gradationback.service;
 import com.app.gradationback.domain.QnaDTO;
 import com.app.gradationback.domain.QnaVO;
 import com.app.gradationback.repository.QnaDAO;
+import com.app.gradationback.util.FileSaveUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -19,8 +22,24 @@ public class QnaServiceImpl implements QnaService {
 
 //    등록
     @Override
-    public void registraction(QnaVO qnaVO) {
-        qnaDAO.save(qnaVO);
+    public void registraction(QnaVO qnaVO, MultipartFile file) {
+        try {
+            if (file != null && !file.isEmpty()) {
+                String uuid = UUID.randomUUID().toString();
+                String fileName = uuid + "_" + file.getOriginalFilename();
+                String filePath = "C:/upload/images/qna";
+
+                FileSaveUtil fileSaveUtil = new FileSaveUtil();
+                fileSaveUtil.fileSave(file, filePath, fileName);
+
+                qnaVO.setQnaImgName(fileName);
+                qnaVO.setQnaImgPath(filePath);
+            }
+
+            qnaDAO.save(qnaVO);
+        } catch (Exception e) {
+            throw new RuntimeException("파일 저장에 실패하였습니다.", e);
+        }
     }
 
 //    단일조회

@@ -3,6 +3,7 @@ package com.app.gradationback.service;
 import com.app.gradationback.domain.FaqVO;
 import com.app.gradationback.domain.QnaDTO;
 import com.app.gradationback.domain.QnaVO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +11,7 @@ import java.util.Optional;
 public interface QnaService {
 
     //    문의 등록
-    public void registraction(QnaVO qnaVO);
+    public void registraction(QnaVO qnaVO, MultipartFile file);
 
     //    단일 조회
     public Optional<QnaDTO> getQna(Long id);
