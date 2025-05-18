@@ -1,6 +1,9 @@
 package com.app.gradationback.service;
 
 import com.app.gradationback.domain.ArtistDTO;
+import com.app.gradationback.domain.ArtistDetailDTO;
+import com.app.gradationback.domain.HistoryVO;
+import com.app.gradationback.domain.UserVO;
 
 import java.util.List;
 import java.util.Map;
@@ -11,5 +14,13 @@ public interface ArtistService {
     public Optional<ArtistDTO> getMyArtistProfile(Map<String, Object> param);
 
     public List<ArtistDTO> getArtistList(Map<String, Object> param);
+
+    public ArtistDetailDTO getArtistDetailById(Long userId);
+
+    public void editArtist(UserVO userVO);
+
+    public void registerUserHistory(HistoryVO historyVO);
+
+    public void removeUserHistory(Long id);
 
 }

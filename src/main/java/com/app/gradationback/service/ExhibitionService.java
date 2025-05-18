@@ -3,6 +3,7 @@ package com.app.gradationback.service;
 import com.app.gradationback.domain.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface ExhibitionService {
@@ -14,9 +15,10 @@ public interface ExhibitionService {
 //    전시관 장소 이미지 불러오기
     public List<GradationExhibitionImgVO> getGradationImgAll(Long gradationExhibitionId);
 
-//    전시회 등록
-    public void registerGradation(GradationExhibitionVO gradationExhibitionVO);
-
+//    전시회 등록(전시회 정보 + 작품 50개 가져오기 + 지난 전시회 등록)
+    public GradationExhibitionVO registerGradation(GradationExhibitionDTO gradationExhibitionDTO);
+//    지난 전시회 등록
+//    public void registerPastGradationArt(Map<String, Object> params);
 //    전시회 장소 이미지 추가
     public void registerGradationImage(GradationExhibitionImgVO gradationExhibitionImgVO);
 
@@ -31,6 +33,12 @@ public interface ExhibitionService {
 
 //    좋아요순 50개 작품
     public List<DisplayDTO> getTopLikedArts();
+
+//    지난 전시회 리스트
+    public List<ExhibitionPastDTO> getPastExhibitions();
+
+//    지난 전시회 작품 리스트
+    public List<ExhibitionPastDTO> getExhibitionArtList(Map<String, Object> params);
 
 //    대학교 전시회
 //    신청 양식(대학교 + 학과 + 대학교 전시회 + 대학교 전시회 이미지)
