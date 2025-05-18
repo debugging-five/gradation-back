@@ -91,6 +91,7 @@ public class AuctionDTO {
     private String artImgPath;
 
 //    ARTIST_INFO
+    private Long artistId;
     private String artistName;
 }
 
