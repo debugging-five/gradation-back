@@ -53,13 +53,13 @@
         JOIN TBL_USER TBU
         ON TBA.USER_ID = TBU.ID
         LEFT JOIN (
-        SELECT ART_ID, COUNT(*) AS ART_LIKE_COUNT
+        SELECT ART_ID, COUNT(ID) AS ART_LIKE_COUNT
         FROM TBL_ART_LIKE
         GROUP BY ART_ID
         ) TAL
         ON TBA.ID = TAL.ART_ID
         LEFT JOIN (
-        SELECT ART_POST_ID, COUNT(*) AS COMMENT_COUNT
+        SELECT ART_POST_ID, COUNT(ID) AS COMMENT_COUNT
         FROM TBL_COMMENT
         GROUP BY ART_POST_ID
         ) TBC
@@ -171,7 +171,7 @@
         JOIN TBL_USER TBU
         ON TBA.USER_ID = TBU.ID
         LEFT JOIN (
-        SELECT ART_ID, COUNT(*) AS ART_LIKE_COUNT
+        SELECT ART_ID, COUNT(ID) AS ART_LIKE_COUNT
         FROM TBL_ART_LIKE
         GROUP BY ART_ID
         ) TAL ON TBA.ID = TAL.ART_ID
@@ -188,20 +188,16 @@
 
     <select id="selectAllForAuction" resultType="ArtPostDTO">
         SELECT
-            TBP.ID,
-            TBP.ART_ID,
+            TBA.ID AS artId,
             TBA.ART_TITLE,
-            COALESCE(ART_LIKE.LIKE_COUNT, 0)
-        FROM TBL_ART_POST TBP
-                 JOIN TBL_ART TBA
-                      ON TBP.ART_ID = TBA.ID
-                 LEFT JOIN (
-            SELECT ART_ID, COUNT(*) AS LIKE_COUNT
+            COALESCE(ART_LIKE.LIKE_COUNT, 0) AS artLikeCount
+        FROM TBL_ART TBA
+                 JOIN (
+            SELECT ART_ID, COUNT(ID) AS LIKE_COUNT
             FROM TBL_ART_LIKE
             GROUP BY ART_ID
-        ) ART_LIKE
-                           ON TBP.ART_ID = ART_LIKE.ART_ID
-        WHERE COALESCE(ART_LIKE.LIKE_COUNT, 0) >= 50
+            HAVING COUNT(ID) >= 50
+        ) ART_LIKE ON TBA.ID = ART_LIKE.ART_ID
     </select>
 
 

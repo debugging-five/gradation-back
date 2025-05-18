@@ -121,6 +121,18 @@ public class DisplayController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/display/auction")
+    public ResponseEntity<Map<String, Object>> getArtListForAuction() {
+        Map<String, Object> response = new HashMap<>();
+        List<ArtPostDTO> artListForAuction = artPostService.getArtListForAuction();
+        response.put("artListForAuction", artListForAuction);
+        response.put("message", "경매 가능 작품 조회 성공했습니다.");
+        return ResponseEntity.ok(response);
+
+    }
+
+
+
 //    전시 삭제 (작품 + 이미지 + 댓글 삭제)
     @Operation(summary = "전시 삭제", description = "전시를 삭제할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "전시 삭제 성공")
