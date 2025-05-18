@@ -58,7 +58,7 @@ public class QnaController {
     @PostMapping(value = "register", consumes = "multipart/form-data")
     public ResponseEntity<QnaDTO> register(
             @RequestPart("info") QnaVO qnaVO,
-            @RequestPart(value = "file", required = false) MultipartFile file) {  // <-- required=false 추가
+            @RequestPart(value = "file", required = false) MultipartFile file) {
         qnaService.registraction(qnaVO, file);
         return ResponseEntity.ok(qnaService.getQna(qnaVO.getId()).orElse(new QnaDTO()));
     }

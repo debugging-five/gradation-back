@@ -27,13 +27,13 @@ public class QnaServiceImpl implements QnaService {
             if (file != null && !file.isEmpty()) {
                 String uuid = UUID.randomUUID().toString();
                 String fileName = uuid + "_" + file.getOriginalFilename();
-                String filePath = "C:/upload/images/qna";
+                String filePath = "images/qna";
 
                 FileSaveUtil fileSaveUtil = new FileSaveUtil();
                 fileSaveUtil.fileSave(file, filePath, fileName);
 
                 qnaVO.setQnaImgName(fileName);
-                qnaVO.setQnaImgPath(filePath);
+                qnaVO.setQnaImgPath("C:/upload/" + filePath);
             }
 
             qnaDAO.save(qnaVO);

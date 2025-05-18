@@ -30,6 +30,7 @@
         ON TM.SEND_USER_ID = TU.ID
         WHERE TM.RECEIVE_USER_ID = #{receiveUserId}
         AND TM.MAIL_RECEIVE_USER_DELETED = 0
+        AND TM.SEND_USER_ID != 1
         ORDER BY TM.MAIL_SEND_TIME DESC
     </select>
 
