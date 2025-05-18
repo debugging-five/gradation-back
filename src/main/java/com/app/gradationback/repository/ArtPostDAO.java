@@ -40,6 +40,14 @@ public class ArtPostDAO {
 
     public List<ArtPostDTO> findAllByUserId(Long userId) { return artPostMapper.selectAllByUserId(userId); }
 
+    public List<ArtPostDTO> findAllMyArt(Long userId) { return artPostMapper.selectAllMyArt(userId); }
+
+    public List<ArtPostDTO> findAllLikedArt(Long userId) { return artPostMapper.selectAllLikedArt(userId); }
+
+    public List<ArtPostDTO> findAllForAuction() {
+        return artPostMapper.selectAllForAuction();
+    }
+
 //    작품 게시글 수정
     public void update(ArtPostVO artPostVO) {
         artPostMapper.update(artPostVO);

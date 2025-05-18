@@ -25,6 +25,12 @@ public interface ArtPostMapper {
     public List<ArtPostDTO> selectArtListByCategoryAndDropdown(Map<String, Object> params);
 
     public List<ArtPostDTO> selectAllByUserId(Long userId);
+    //
+    public List<ArtPostDTO> selectAllMyArt(Long userId);
+
+    public List<ArtPostDTO> selectAllLikedArt(Long userId);
+
+    public List<ArtPostDTO> selectAllForAuction();
 
 //    작품 게시글 수정
     public void update(ArtPostVO artPostVO);

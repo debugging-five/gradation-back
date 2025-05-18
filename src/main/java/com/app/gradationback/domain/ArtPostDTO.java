@@ -43,6 +43,8 @@ public class ArtPostDTO {
     private String artImgPath;
 
 //    TBL_ART_LIKE
+    private int artLikeCount;
+    private int commentCount;
 
 //    TBL_COMMENT
     @Schema(description = "댓글 내용", required = true, example = "댓글")

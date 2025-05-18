@@ -1,5 +1,6 @@
 package com.app.gradationback.service;
 
+import com.app.gradationback.domain.ArtPostDTO;
 import com.app.gradationback.domain.CommentVO;
 
 import java.util.List;
@@ -15,6 +16,8 @@ public interface CommentService {
 
 //    댓글 단일 조회
     public Optional<CommentVO> getComment(Long id);
+
+    public List<ArtPostDTO> getCommentListByUserId(Long userId);
 
 //    댓글 삭제
     public void removeComment(Long id);

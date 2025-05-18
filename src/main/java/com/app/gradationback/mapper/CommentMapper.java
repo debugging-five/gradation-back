@@ -1,5 +1,6 @@
 package com.app.gradationback.mapper;
 
+import com.app.gradationback.domain.ArtPostDTO;
 import com.app.gradationback.domain.CommentVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -17,6 +18,8 @@ public interface CommentMapper {
 
 //    댓글 단일 조회
     public Optional<CommentVO> select(Long id);
+
+    public List<ArtPostDTO> selectAllByUserId(Long userId);
 
 //    댓글 수정
     public void update(CommentVO commentVO);

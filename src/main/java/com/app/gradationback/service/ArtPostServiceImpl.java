@@ -73,6 +73,21 @@ public class ArtPostServiceImpl implements ArtPostService {
         return artPostDAO.findArtListByCategoryAndDropdown(params);
     }
 
+    @Override
+    public List<ArtPostDTO> getMyArtList(Long userId) {
+        return artPostDAO.findAllMyArt(userId);
+    }
+
+    @Override
+    public List<ArtPostDTO> getLikedArtList(Long userId) {
+        return artPostDAO.findAllLikedArt(userId);
+    }
+
+    @Override
+    public List<ArtPostDTO> getArtListForAuction() {
+        return artPostDAO.findAllForAuction();
+    }
+
     //    작품 게시글 수정
     @Override
     public void edit(ArtPostVO artPostVO) {

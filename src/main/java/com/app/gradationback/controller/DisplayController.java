@@ -103,6 +103,24 @@ public class DisplayController {
         return response;
     }
 
+    @GetMapping("/display/my")
+    public ResponseEntity<Map<String, Object>> getMyArtList(@RequestParam Long userId) {
+        Map<String, Object> response = new HashMap<>();
+        List<ArtPostDTO> myArtList = artPostService.getMyArtList(userId);
+        response.put("myArtList", myArtList);
+        response.put("message", "내 작품 조회 성공했습니다.");
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/display/liked")
+    public ResponseEntity<Map<String, Object>> getLikedArtList(@RequestParam Long userId) {
+        Map<String, Object> response = new HashMap<>();
+        List<ArtPostDTO> artLikeList = artPostService.getLikedArtList(userId);
+        response.put("likedArtList", artLikeList);
+        response.put("message", "내 작품 좋아요 성공했습니다.");
+        return ResponseEntity.ok(response);
+    }
+
 //    전시 삭제 (작품 + 이미지 + 댓글 삭제)
     @Operation(summary = "전시 삭제", description = "전시를 삭제할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "전시 삭제 성공")

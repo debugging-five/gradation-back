@@ -33,7 +33,7 @@ public class CommentController {
     private final UserService userService;
 
 
-//    댓글 등록
+    //    댓글 등록
     @Operation(summary = "댓글 등록", description = "댓글을 등록할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "댓글 등록 성공")
     @PostMapping("registration")
@@ -70,7 +70,7 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
-//    댓글 전체 조회
+    //    댓글 전체 조회
     @Operation(summary = "댓글 전체 조회", description = "댓글을 전체 조회할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "댓글 전체 조회 성공")
     @GetMapping("comments")
@@ -87,7 +87,7 @@ public class CommentController {
         }
     }
 
-//    댓글 단일 조회
+    //    댓글 단일 조회
     @Operation(summary = "댓글 조회", description = "댓글을 1개 조회할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "댓글 1개 조회 성공")
     @Parameter(
@@ -114,6 +114,15 @@ public class CommentController {
             response.put("message", "서버 오류 발생");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
+    }
+
+    @GetMapping("comment/user/{userId}")
+    public ResponseEntity<Map<String, Object>> getComment(@PathVariable Long userId) {
+        Map<String, Object> response = new HashMap<>();
+        List<ArtPostDTO> commentList = commentService.getCommentListByUserId(userId);
+        response.put("commentList", commentList);
+        response.put("message", "댓글 조회 성공했습니다.");
+        return ResponseEntity.ok(response);
     }
 
 //    댓글 수정

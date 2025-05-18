@@ -1,5 +1,6 @@
 package com.app.gradationback.service;
 
+import com.app.gradationback.domain.ArtPostDTO;
 import com.app.gradationback.domain.CommentVO;
 import com.app.gradationback.repository.CommentDAO;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,12 @@ public class CommentServiceImpl implements CommentService {
         return commentDAO.findById(id);
     }
 
-//    댓글 수정
+    @Override
+    public List<ArtPostDTO> getCommentListByUserId(Long userId) {
+        return commentDAO.findAllByUserId(userId);
+    }
+
+    //    댓글 수정
     @Override
     public void modifyComment(CommentVO commentVO) {
         commentDAO.update(commentVO);

@@ -18,6 +18,14 @@
         WHERE ID = #{id}
     </select>
 
+    <select id="selectAllByUserId" parameterType="Long" resultType="ArtPostDTO">
+        SELECT TBC.ID, TBC.ART_POST_ID, TBC.USER_ID, TBC.COMMENT_CONTENT, TBC.COMMENT_DATE, TBA.ART_TITLE
+        FROM TBL_COMMENT TBC
+        JOIN TBL_ART TBA
+        ON TBC.ART_POST_ID = TBA.ID
+        WHERE TBC.USER_ID = #{userId}
+    </select>
+
     <update id="update" parameterType="CommentVO">
         UPDATE TBL_COMMENT
         SET COMMENT_CONTENT = #{commentContent}, COMMENT_DATE = #{commentDate}
