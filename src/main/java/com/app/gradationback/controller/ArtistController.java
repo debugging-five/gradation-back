@@ -1,6 +1,9 @@
 package com.app.gradationback.controller;
 
 import com.app.gradationback.domain.ArtistDTO;
+import com.app.gradationback.domain.ArtistDetailDTO;
+import com.app.gradationback.domain.HistoryVO;
+import com.app.gradationback.domain.UserVO;
 import com.app.gradationback.service.ArtistService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -54,5 +57,69 @@ public class ArtistController {
     public ResponseEntity<List<ArtistDTO>> getArtistList(@RequestParam Map<String, Object> param) {
         return ResponseEntity.ok(artistService.getArtistList(param));
     }
+
+//    artist detail
+    @Operation(summary = "작가 상세 조회", description = "작가 상세를 조회할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "작가 상세 조회 성공")
+    @Parameter(
+            name = "userId",
+            description = "조회할 작가 ID",
+            in = ParameterIn.PATH,
+            required = true
+    )
+    @GetMapping("detail/{userId}")
+    public ResponseEntity<ArtistDetailDTO> getArtistDetailById(@PathVariable Long userId) {
+        ArtistDetailDTO artistDetailDTO = artistService.getArtistDetailById(userId);
+        return ResponseEntity.ok(artistDetailDTO);
+    }
+
+
+    @Operation(summary = "작가 정보 수정", description = "작가 정보를 수정할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "작가 정보 수정 성공")
+    @Parameter(
+            name = "userId",
+            description = "수정할 작가 ID",
+            in = ParameterIn.PATH,
+            required = true
+    )
+    @PatchMapping("detail/{userId}/modify")
+    public ResponseEntity<UserVO> editArtist(@PathVariable Long userId, @RequestBody UserVO userVO) {
+        userVO.setId(userId);
+        artistService.editArtist(userVO);
+        return ResponseEntity.ok(userVO);
+    }
+
+    @Operation(summary = "작가 이력 추가", description = "작가의 이력을 추가할 수 하는 API")
+    @ApiResponse(responseCode = "200", description = "작가 이력 추가 성공")
+    @Parameter(
+            name = "userId",
+            description = "추가할 작가 이력 ID",
+            in = ParameterIn.PATH,
+            required = true
+    )
+    @PostMapping("detail/{userId}/history")
+    public ResponseEntity<HistoryVO> registerUserHistory(@PathVariable Long userId, @RequestBody HistoryVO historyVO) {
+        historyVO.setUserId(userId);
+        artistService.registerUserHistory(historyVO);
+        return ResponseEntity.ok(historyVO);
+    }
+
+    @Operation(summary = "작가 이력 삭제", description = "작가의 이력을 삭제할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "작가 이력 삭제 성공")
+    @Parameter(
+            name = "historyId",
+            description = "삭제할 작가 이력 ID",
+            in = ParameterIn.PATH,
+            required = true
+    )
+    @DeleteMapping("detail/{userId}/history/{historyId}")
+    public void removeUserHistory(@PathVariable Long historyId) {
+        artistService.removeUserHistory(historyId);
+    }
+
+
+
+
+
 
 }

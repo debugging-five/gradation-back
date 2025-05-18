@@ -94,9 +94,102 @@
         FETCH NEXT 15 ROWS ONLY
     </select>
 
-<!--    -->
+<!--    작가 정보 수정 -->
+    <update id="updateArtist" parameterType="UserVO">
+        update TBL_USER
+        SET USER_INTRODUCE = #{userIntroduce},
+            USER_ART_CATEGORY = #{userArtCategory},
+            USER_INSTAGRAM = #{userInstagram},
+            USER_YOUTUBE = #{userYoutube},
+            USER_BLOG = #{userBlog}
+        WHERE ID = #{id}
+    </update>
 
+<!--    작가 이력 추가 -->
+    <insert id="insertUserHistory" parameterType="HistoryVO">
+        <selectKey keyProperty="id" resultType="Long" order="BEFORE">
+            SELECT SEQ_HISTORY.NEXTVAL FROM DUAL
+        </selectKey>
+
+        INSERT INTO TBL_HISTORY (
+            ID,
+            HISTORY_DATE,
+            HISTORY_CONTENT,
+            USER_ID
+        )
+        VALUES (
+            #{id},
+            #{historyDate},
+            #{historyContent},
+            #{userId}
+        )
+    </insert>
+
+<!--    작가이력 삭제 -->
+    <delete id="deleteUserHistory" parameterType="Long">
+        DELETE FROM TBL_HISTORY
+        WHERE ID = #{id}
+    </delete>
+
+<!--    ARTIST 디테일(user정보 + 이력)-->
+    <select id="selectArtistById" parameterType="Long" resultType="ArtistDetailDTO">
+        SELECT
+            TU.USER_IMG_NAME,
+            TU.USER_IMG_PATH,
+            TU.USER_NAME,
+            TUN.UNIVERSITY_NAME,
+            TU.USER_INSTAGRAM,
+            TU.USER_BLOG,
+            TU.USER_YOUTUBE,
+            TU.USER_INTRODUCE,
+            TU.USER_ART_CATEGORY,
+            TH.HISTORY_DATE,
+            TH.HISTORY_CONTENT
+        FROM TBL_USER TU
+        LEFT JOIN TBL_MAJOR TM
+            ON TU.MAJOR_ID = TM.ID
+        JOIN TBL_UNIVERSITY TUN
+            ON TM.UNIVERSITY_ID = TUN.ID
+        LEFT JOIN TBL_HISTORY TH
+            ON TU.ID = TH.USER_ID
+        WHERE TU.ID = #{userId}
+    </select>
+
+<!--    작품들 썸네일 -->
+    <select id="selectArtistArt" parameterType="Long" resultType="ArtistDetailDTO">
+        SELECT
+            TA.ID,
+            AI.ART_IMG_NAME,
+            AI.ART_IMG_PATH
+        FROM TBL_ART TA
+        JOIN (
+            SELECT AI1.ART_ID, AI1.ART_IMG_NAME, AI1.ART_IMG_PATH
+            FROM TBL_ART_IMG AI1
+            JOIN (
+                SELECT ART_ID, MIN(ID) AS MIN_ID
+                FROM TBL_ART_IMG
+                GROUP BY ART_ID
+            ) AI2
+                ON AI1.ART_ID = AI2.ART_ID AND AI1.ID = AI2.MIN_ID
+        ) AI
+            ON TA.ID = AI.ART_ID
+        WHERE TA.USER_ID = #{userId}
+    </select>
 
     
 
 </mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

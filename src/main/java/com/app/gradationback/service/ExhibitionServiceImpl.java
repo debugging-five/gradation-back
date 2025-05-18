@@ -1,16 +1,12 @@
 package com.app.gradationback.service;
 
 import com.app.gradationback.domain.*;
-import com.app.gradationback.mapper.ExhibitionMapper;
 import com.app.gradationback.repository.ExhibitionDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -30,8 +26,28 @@ public class ExhibitionServiceImpl implements ExhibitionService {
     }
 
     @Override
-    public void registerGradation(GradationExhibitionVO gradationExhibitionVO) {
+    public GradationExhibitionVO registerGradation(GradationExhibitionDTO gradationExhibitionDTO) {
+        GradationExhibitionVO gradationExhibitionVO = new GradationExhibitionVO();
+        gradationExhibitionVO.setGradationExhibitionTitle(gradationExhibitionDTO.getGradationExhibitionTitle());
+        gradationExhibitionVO.setGradationExhibitionArt(gradationExhibitionDTO.getGradationExhibitionArt());
+        gradationExhibitionVO.setGradationExhibitionCategory(gradationExhibitionDTO.getGradationExhibitionCategory());
+        gradationExhibitionVO.setGradationExhibitionTime(gradationExhibitionDTO.getGradationExhibitionTime());
+        gradationExhibitionVO.setGradationExhibitionFee(gradationExhibitionDTO.getGradationExhibitionFee());
+        gradationExhibitionVO.setGradationExhibitionTel(gradationExhibitionDTO.getGradationExhibitionTel());
+        gradationExhibitionVO.setGradationExhibitionAddress(gradationExhibitionDTO.getGradationExhibitionAddress());
+        gradationExhibitionVO.setGradationExhibitionDate(gradationExhibitionDTO.getGradationExhibitionDate());
         exhibitionDAO.saveGradation(gradationExhibitionVO);
+
+        List<Long> arts = exhibitionDAO.findTop50ArtId();
+        if(arts != null && !arts.isEmpty()) {
+            for(Long artId : arts) {
+                Map<String, Object> params = new HashMap<>();
+                params.put("artId", artId);
+                params.put("gradationExhibitionId", gradationExhibitionVO.getId());
+                exhibitionDAO.savePastExhibition(params);
+            };
+        }
+        return gradationExhibitionVO;
     }
 
     @Override
@@ -59,6 +75,18 @@ public class ExhibitionServiceImpl implements ExhibitionService {
         return exhibitionDAO.findTopLikedArts();
     }
 
+    @Override
+    public List<ExhibitionPastDTO> getPastExhibitions() {
+        return exhibitionDAO.findPastExhibitions();
+    }
+
+    @Override
+    public List<ExhibitionPastDTO> getExhibitionArtList(Map<String, Object> params) {
+        return exhibitionDAO.findExhibitionArtList(params);
+    }
+
+
+//    대학교 전시회
     @Override
     public void registerUniversity(UniversityExhibitionDTO universityExhibitionDTO) {
 //        대학교 중복 확인(로고)

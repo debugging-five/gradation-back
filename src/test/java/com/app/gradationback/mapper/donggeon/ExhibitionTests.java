@@ -12,7 +12,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
 @Slf4j
@@ -40,17 +42,21 @@ public class ExhibitionTests {
 //    전시회 등록
     @Test
     public void registerGradationTest() {
-        GradationExhibitionVO gradationExhibitionVO = new GradationExhibitionVO();
-        gradationExhibitionVO.setGradationExhibitionTitle("테스트 제목5");
-        gradationExhibitionVO.setGradationExhibitionArt("대학교 학생들의 졸업전시품 TOP100");
-        gradationExhibitionVO.setGradationExhibitionCategory("한국화, 회화, 공예 등 100점");
-        gradationExhibitionVO.setGradationExhibitionTime("10:00 ~ 18:00(입장 마감 17:30)");
-        gradationExhibitionVO.setGradationExhibitionFee("성인 17,000원 / 청소년 10,000원 / 어린이 7,000");
-        gradationExhibitionVO.setGradationExhibitionTel("02-585-8999");
-        gradationExhibitionVO.setGradationExhibitionAddress("디지털 플라자");
-        gradationExhibitionVO.setGradationExhibitionDate("2025.05.10 - 2025.06.10");
+        GradationExhibitionDTO gradationExhibitionDTO = new GradationExhibitionDTO();
+        gradationExhibitionDTO.setGradationExhibitionTitle("테스트 제목9");
+        gradationExhibitionDTO.setGradationExhibitionArt("대학교 학생들의 졸업전시품 TOP100");
+        gradationExhibitionDTO.setGradationExhibitionCategory("한국화, 회화, 공예 등 100점");
+        gradationExhibitionDTO.setGradationExhibitionTime("10:00 ~ 18:00(입장 마감 17:30)");
+        gradationExhibitionDTO.setGradationExhibitionFee("성인 17,000원 / 청소년 10,000원 / 어린이 7,000");
+        gradationExhibitionDTO.setGradationExhibitionTel("02-585-8999");
+        gradationExhibitionDTO.setGradationExhibitionAddress("디지털 플라자");
+        gradationExhibitionDTO.setGradationExhibitionDate("2026.12.10 - 2026.12.18");
 
-        exhibitionService.registerGradation(gradationExhibitionVO);
+        // 서비스 실행
+        GradationExhibitionVO gradation = exhibitionService.registerGradation(gradationExhibitionDTO);
+
+        // 결과 확인 (출력만 함)
+        log.info(gradation.toString());
     }
 
 //    전시회 장소 이미지 등록
@@ -60,7 +66,7 @@ public class ExhibitionTests {
         gradationExhibitionImgVO.setGradationExhibitionId(2L);
         gradationExhibitionImgVO.setGradationExhibitionImgName("전시회2/img3.jpg");
         gradationExhibitionImgVO.setGradationExhibitionImgPath("public/images/gradation");
-    
+
         exhibitionService.registerGradationImage(gradationExhibitionImgVO);
     }
 
@@ -111,7 +117,28 @@ public class ExhibitionTests {
         log.info("이미지 {}, {}", top2.getArtImgName(), top2.getArtImgPath());
         log.info("작품 제목 {}", top2.getArtTitle());
         log.info("작가 이름 {}", top2.getUserName());
+    }
 
+    @Test
+    public void getPastExhibitionsTest() {
+        List<ExhibitionPastDTO> PastExhibitions = exhibitionService.getPastExhibitions();
+        for (ExhibitionPastDTO past : PastExhibitions) {
+            log.info("{}", past.getGradationExhibitionTitle());
+        }
+    }
+
+    @Test
+    public void getPastExhibitionArtListTest() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("exhibitionId", 2L);
+        params.put("cursor", 1);
+
+        List<ExhibitionPastDTO> PastArtList = exhibitionService.getExhibitionArtList(params);
+        for (ExhibitionPastDTO past : PastArtList) {
+            log.info("================");
+            log.info("{}    {}", past.getArtImgName(), past.getArtImgPath());
+            log.info("{}    {}", past.getArtTitle(), past.getUserName());
+        }
     }
 
 
@@ -215,11 +242,6 @@ public class ExhibitionTests {
         universityLikeVO.setUserId(2L);
         exhibitionService.removeUniversityLike(universityLikeVO);
     }
-
-
-
-
-
 
 }
 

@@ -4,11 +4,13 @@ import com.app.gradationback.domain.*;
 import com.app.gradationback.service.ExhibitionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,44 +26,51 @@ public class ExhibitionController {
     private final ExhibitionService exhibitionService;
 
 //    gradation
-//    전시회 정보 불러오기 0
+//    전시회 정보 불러오기
     @Operation(summary = "현재 gradation 전시회 조회", description = "현재 gradation 전시회를 조회할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "현재 gradation 전시회 조회 성공")
     @GetMapping("gradation/current")
     public ResponseEntity<Map<String, Object>> getGradation() {
         Optional<GradationExhibitionVO> gradationExhibitionVO = exhibitionService.getGradation();
+            Map<String, Object> response = new HashMap<>();
 
         if (gradationExhibitionVO.isPresent()) {
             GradationExhibitionVO gradationExhibition = gradationExhibitionVO.get();
             List<GradationExhibitionImgVO> images = exhibitionService.getGradationImgAll(gradationExhibition.getId());
 
-            Map<String, Object> response = new HashMap<>();
             response.put("gradation", gradationExhibition);
             response.put("images", images);
-
+            response.put("message", "전시회 조회를 성공하였습니다.");
             return ResponseEntity.ok(response);
         }
-        return ResponseEntity.notFound().build();
+        response.put("message", "전시회 조회를 실패하였습니다.");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
-//    전시회 등록 0
+//    전시회 등록
     @Operation(summary = "전시회 등록", description = "전시회를 등록할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "전시회 등록 성공")
-    @PostMapping("register")
-    public GradationExhibitionVO registerGradation(@RequestBody GradationExhibitionVO gradationExhibitionVO) {
-        exhibitionService.registerGradation(gradationExhibitionVO);
-        return gradationExhibitionVO;
+    @PostMapping("gradation/registration")
+    public ResponseEntity<Map<String, Object>> registerGradation(@RequestBody GradationExhibitionDTO gradationExhibitionDTO) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            GradationExhibitionVO gradationVO = exhibitionService.registerGradation(gradationExhibitionDTO);
+
+            if (gradationVO != null) {
+                response.put("message", "전시회 등록 성공");
+                response.put("gradation", gradationVO);
+                return ResponseEntity.ok(response);
+            } else {
+                response.put("message", "전시회 등록 실패");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+            }
+
+        } catch (Exception e) {
+            response.put("message", "서버 오류: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
-
-//    전시회 장소 이미지 추가
-//    @Operation(summary = "전시관 이미지 추가", description = "전시관 이미지를 추가할 수 있는 API")
-//    @ApiResponse(responseCode = "200", description = "이미지 추가 성공")
-//    @PostMapping("gradation/image")
-//    public GradationExhibitionImgVO addGradationImage(@RequestBody GradationExhibitionImgVO gradationExhibitionImgVO) {
-//        exhibitionService.registerGradationImage(gradationExhibitionImgVO);
-//        return gradationExhibitionImgVO;
-//    }
-
 
 //    전시회 정보 수정 0
     @Operation(summary = "전시회 정보 수정", description = "전시회 정보를 수정할 수 있는 API")
@@ -130,6 +139,39 @@ public class ExhibitionController {
         }
         return ResponseEntity.ok(topLikedArts);
     }
+
+    @Operation(summary = "지난 전시회 목록", description = "지난 전시회를 조회할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "지난 전시회 조회 성공")
+    @GetMapping("gradation/past")
+    public ResponseEntity<List<ExhibitionPastDTO>> getPastExhibitions() {
+        List<ExhibitionPastDTO> exhibitions = exhibitionService.getPastExhibitions();
+
+        if (exhibitions.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(exhibitions);
+    }
+
+    @Operation(summary = "지난 전시회 작품 목록", description = "지난 전시회에 전시되었던 작품목록을 조회할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "지난 전시회 작품 목록 조회 성공")
+    @GetMapping("gradation/past/{exhibitionId}/arts")
+    @Parameters({
+        @Parameter(name = "exhibitionId", description = "전시회 ID", example = "1"),
+        @Parameter(name = "cursor", description = "페이지", example = "1")
+    })
+    public ResponseEntity<List<ExhibitionPastDTO>> getExhibitionArtList(@PathVariable String exhibitionId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("exhibitionId", exhibitionId);
+        params.put("cursor", 1);
+
+        List<ExhibitionPastDTO> exhibitionArts = exhibitionService.getExhibitionArtList(params);
+        return ResponseEntity.ok(exhibitionArts);
+    }
+
+
+
+
+
 
 //    University
 //    대학교 전시회 등록
