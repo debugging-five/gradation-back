@@ -43,8 +43,6 @@ public class ArtPostDTO {
     private String artImgPath;
 
 //    TBL_ART_LIKE
-    @Schema(description = "작품 좋아요 누른 시간", example = "2025-01-01T13:30:00")
-    private Timestamp artLikeTime;
 
 //    TBL_COMMENT
     @Schema(description = "댓글 내용", required = true, example = "댓글")

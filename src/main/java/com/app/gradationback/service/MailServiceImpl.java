@@ -54,14 +54,14 @@ public class MailServiceImpl implements MailService {
 
 //    받은 메시지 삭제
     @Override
-    public void removeReceivedMail(Long id, Long receiveUserId) {
-        mailDAO.deleteReceived(id, receiveUserId);
+    public void removeReceivedMail(Long id) {
+        mailDAO.deleteReceived(id);
     }
 
 //    보낸 메시지 삭제
     @Override
-    public void removeSendedMail(Long id, Long sendUserId) {
-        mailDAO.deleteSended(id, sendUserId);
+    public void removeSendedMail(Long id) {
+        mailDAO.deleteSended(id);
     }
 
 //    알림리스트
@@ -71,8 +71,8 @@ public class MailServiceImpl implements MailService {
     }
 
 //    알림상세
-    public Optional<MailDTO> findAlertOne(Long id, Long receiveUserId) {
-        return mailDAO.findAlertOne(id, receiveUserId);
+    public Optional<MailDTO> findByDetail(Long id) {
+        return mailDAO.findByDetail(id);
     }
 
 //    읽음처리

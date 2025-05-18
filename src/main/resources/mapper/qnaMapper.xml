@@ -33,7 +33,7 @@
 
 <!--    문의 작성-->
     <insert id="insert" parameterType="QnaVO">
-        INSERT INTO TBL_QNA
+        INSERT INTO TBL_QNA (ID, QNA_TITLE, QNA_CONTENT, QNA_TIME, QNA_IMG_NAME, QNA_IMG_PATH, QNA_CATEGORY, USER_ID)
         VALUES (SEQ_QNA.NEXTVAL, #{qnaTitle}, #{qnaContent}, CURRENT_TIMESTAMP, #{qnaImgName}, #{qnaImgPath}, #{qnaCategory}, #{userId})
     </insert>
 

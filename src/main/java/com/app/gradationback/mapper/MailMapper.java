@@ -30,16 +30,16 @@ public interface MailMapper {
     public Optional<MailDTO> selectSendedDetail(Long id, Long sendUserId);
 
 //    내가 보낸 쪽지 삭제
-    public void deleteSendedMail(Long id , Long sendUserId);
+    public void deleteSendedMail(Long id);
 
 //    받은 쪽지 삭제
-    public void deleteReceivedMail(Long id, Long receiveUserId);
+    public void deleteReceivedMail(Long id);
 
 //    알림리스트
     public List<MailDTO> selectAlert(Long receiveUserId);
 
 //    알림상세
-    public Optional<MailDTO> selectAlertDetail(Long id, Long receiveUserId);
+    public Optional<MailDTO> selectDetail(Long id);
 
 //    읽음처리
     public void readUpdate (Long id, Long receiveUserId);

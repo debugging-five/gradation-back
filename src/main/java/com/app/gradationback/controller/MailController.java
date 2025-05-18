@@ -111,8 +111,8 @@ public class MailController {
             required = true
     )
     @PatchMapping("mail/{id}/delete-received")
-    public void deleteReceivedMail(@PathVariable Long id, @RequestParam Long receiveUserId) {
-        mailService.removeReceivedMail(id, receiveUserId);
+    public void deleteReceivedMail(@PathVariable Long id) {
+        mailService.removeReceivedMail(id);
     }
 
 //    보낸 메시지 삭제
@@ -126,8 +126,8 @@ public class MailController {
             required = true
     )
     @PatchMapping("mail/{id}/delete-sended")
-    public void deleteSendedMail(@PathVariable Long id, @RequestParam Long sendUserId) {
-        mailService.removeSendedMail(id, sendUserId);
+    public void deleteSendedMail(@PathVariable Long id) {
+        mailService.removeSendedMail(id);
     }
 
 //    알림리스트
@@ -137,7 +137,7 @@ public class MailController {
     return mailService.getAlertList(receiveUserId);
 }
 
-//    알림상세
+    // 알림상세
     @Operation(summary = "알림 단일 내용 조회", description = "알림 단일 내용을 조회할 수 있는 API")
     @Parameter(
             name = "id",
@@ -147,13 +147,10 @@ public class MailController {
             required = true
     )
     @GetMapping("alert/{id}")
-    public MailDTO getAlert(@PathVariable Long id, @RequestParam Long receiveUserId) {
-        log.info("id: {}, receiveUserId: {}", id, receiveUserId);
-        Optional<MailDTO> foundAlert = mailService.findAlertOne(id, receiveUserId);
-        if (foundAlert.isPresent()) {
-            return foundAlert.get();
-        }
-        return new MailDTO();
+    public MailDTO getAlert(@PathVariable Long id) {
+        log.info("id: {}", id);
+        Optional<MailDTO> foundAlert = mailService.findByDetail(id);
+        return foundAlert.orElseGet(MailDTO::new);
     }
 
 //    읽음처리

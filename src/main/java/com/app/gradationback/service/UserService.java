@@ -27,7 +27,7 @@ public interface UserService {
     public String login(UserVO userVO);
 
 //    아이디 찾기 (이름 + 이메일)
-    public String getIdentificationByEmailAndName(UserVO userVO);
+    public UserVO getIdentificationByEmailAndName(UserVO userVO);
 
 //    비밀번호 찾기 (이메일)
     public String getPasswordByEmail(String userEmail);
@@ -37,6 +37,9 @@ public interface UserService {
 
 //    이메일로 ID 조회
     public Long getIdByEmail(String userEmail);
+
+//    비밀번호 재설정
+    public void modifyPassword(UserVO userVO);
 
 //    회원 정보 수정
     public void modifyUser(UserVO userVO);
