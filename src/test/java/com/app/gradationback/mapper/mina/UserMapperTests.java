@@ -108,5 +108,14 @@ public class UserMapperTests {
         userService.withdraw("회원이메일");
     }
 
+//    비밀번호 수정
+//    @Test
+//    public void modifyPassword() {
+//        UserVO userVO = new UserVO();
+//        userVO.setUserIdentification("user1234");
+//        userVO.setUserPassword("test1234!@#");
+//        userService.modifyPassword();
+//    }
+
 
 }

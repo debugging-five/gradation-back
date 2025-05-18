@@ -13,6 +13,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -28,13 +30,16 @@ public class DisplayController {
     private final ArtImgService artImgService;
     private final ArtLikeService artLikeService;
 
-    //    전시 등록 (게시글 + 작품 + 이미지)
+//    전시 등록 (게시글 + 작품 + 이미지)
     @Operation(summary = "전시 등록", description = "전시를 등록할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "전시 등록 성공")
     @PostMapping("register")
     public ArtPostDTO register(@RequestBody ArtPostDTO artPostDTO) {
         log.info("{}", artPostDTO);
         artPostService.register(artPostDTO);
+//        Map<String, Object> response = new HashMap<>();
+//        ResponseEntity.ok().body
+//        ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         Optional<ArtPostDTO> foundArtPost = artPostService.getArtPostById(artPostDTO.getArtPostId());
         if(foundArtPost.isPresent()) {
             return foundArtPost.get();

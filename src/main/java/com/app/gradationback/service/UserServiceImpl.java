@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
         userDAO.saveSocial(userVO);
     }
 
-    //    전체 회원 조회
+//    전체 회원 조회
     @Override
     public List<UserVO> getUserList() {
         return userDAO.findAllUser();
@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
 
 //    아이디 찾기 (이름 + 이메일)
     @Override
-    public String getIdentificationByEmailAndName(UserVO userVO) {
+    public UserVO getIdentificationByEmailAndName(UserVO userVO) {
         return userDAO.findIdentificationByEmailAndName(userVO);
     }
 
@@ -78,6 +78,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public Long getIdByEmail(String userEmail) {
         return userDAO.findIdByEmail(userEmail);
+    }
+
+//    비밀번호 재설정
+    @Override
+    public void modifyPassword(UserVO userVO) {
+//        UserVO userVO = new UserVO();
+//        userVO.setUserIdentification(userIdentification);
+//        userVO.setUserPassword(userPassword);
+        userDAO.updateUser(userVO);
     }
 
 //    회원 정보 수정

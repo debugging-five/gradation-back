@@ -101,13 +101,13 @@ public class MailMapperTests {
 //    내가 보낸 쪽지 삭제
     @Test
     public void deleteSendedMailTest() {
-        mailMapper.deleteSendedMail(41L, 2L);
+        mailMapper.deleteSendedMail(41L);
     }
 
 //    받은 쪽지 삭제
     @Test
     public void deleteReceivedMailTest(){
-        mailMapper.deleteReceivedMail(41L, 12L);
+        mailMapper.deleteReceivedMail(41L);
     }
 
 
@@ -128,7 +128,7 @@ public class MailMapperTests {
         mailDTO.setId(42L);
         mailDTO.setReceiveUserId(12L);
 
-        Optional<MailDTO> mailOptional = mailMapper.selectAlertDetail(42L, 12L);
+        Optional<MailDTO> mailOptional = mailMapper.selectDetail(42L);
 
         if (mailOptional.isPresent()) {
             MailDTO mail = mailOptional.get();
