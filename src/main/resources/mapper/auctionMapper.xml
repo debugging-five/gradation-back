@@ -47,6 +47,7 @@
             TAI.ART_IMG_NAME,
             TAI.ART_IMG_PATH,
             TUS.USER_NAME AS ARTIST_NAME,
+            TUS.ID AS ARTIST_ID,
         COALESCE(TAL.ART_LIKE_COUNT, 0) AS ART_LIKE_COUNT
         FROM TBL_AUCTION TAU
         JOIN TBL_ART TAR
@@ -152,6 +153,7 @@
             ART_END_DATE,
             TAR.USER_ID,
             TU.USER_NAME AS ARTIST_NAME,
+            TU.ID AS ARTIST_ID,
             TAI.ART_IMG_NAME,
             TAI.ART_IMG_PATH
         FROM TBL_AUCTION TAU
