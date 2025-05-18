@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -35,7 +36,16 @@ public class ExhibitionDAO {
         exhibitionMapper.insertGradationImg(gradationExhibitionImgVO);
     }
 
-//    전시회 정보 수정
+    //    올해 좋아요 50개 작품 id값
+    public List<Long> findTop50ArtId() {
+        return exhibitionMapper.selectTop50ArtId();
+    }
+    //    지난 전시회 등록
+    public void savePastExhibition(Map<String, Object> params) {
+        exhibitionMapper.insertPastGradationArt(params);
+    }
+
+    //    전시회 정보 수정
     public void updateGradation(GradationExhibitionVO gradationExhibitionVO) {
         exhibitionMapper.updateGradation(gradationExhibitionVO);
     }
@@ -53,6 +63,16 @@ public class ExhibitionDAO {
 //    좋아요순 50개 작품
     public List<DisplayDTO> findTopLikedArts() {
         return exhibitionMapper.selectTopLikedArts();
+    }
+
+//    지난 전시회 리스트
+    public List<ExhibitionPastDTO> findPastExhibitions() {
+        return exhibitionMapper.selectPastExhibitions();
+    }
+
+//    지난 전시회 작품 리스트
+    public List<ExhibitionPastDTO> findExhibitionArtList(Map<String, Object> params) {
+        return exhibitionMapper.selectExhibitionArtList(params);
     }
 
 

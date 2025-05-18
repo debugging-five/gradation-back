@@ -28,7 +28,7 @@ public class AuctionController {
     @Operation(summary = "경매 등록", description = "경매 등록 API")
     @ApiResponse(responseCode = "200", description = "등록 성공")
     @PostMapping("registration")
-    public ResponseEntity<Map<String, Object>> registration(AuctionVO auctionVO) {
+    public ResponseEntity<Map<String, Object>> registration(@RequestBody AuctionVO auctionVO) {
         Map<String, Object> response = new HashMap<>();
         try {
             auctionService.auctionRegistration(auctionVO);
