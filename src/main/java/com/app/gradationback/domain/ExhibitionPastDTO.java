@@ -15,25 +15,15 @@ public class ExhibitionPastDTO {
 
 //    TBL_GRADATION_EXHIBITION
     private String gradationExhibitionTitle;
-    private String gradationExhibitionArt;
-    private String gradationExhibitionCategory;
-    private String gradationExhibitionTime;
-    private String gradationExhibitionFee;
-    private String gradationExhibitionTel;
-    private String gradationExhibitionAddress;
     private String gradationExhibitionDate;
 
 //    TBL_ART
     private String artTitle;
-    private String artCategory;
-    private String artMaterial;
-    private String artSize;
-    private String artDescription;
-    private Date artEndDate;
-    private String artStatus;
-    private Long userId;
 
 //    TBL_ART_IMG
     private String artImgName;
     private String artImgPath;
+
+//    TBL_USER
+    private String userName;
 }
