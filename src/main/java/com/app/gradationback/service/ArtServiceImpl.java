@@ -28,17 +28,6 @@ public class ArtServiceImpl implements ArtService {
         artDAO.save(artVO);
     }
 
-//    전체 작품 조회
-    @Override
-    public List<ArtVO> getArtList() {
-        return artDAO.findAll();
-    }
-
-    @Override
-    public Optional<ArtVO> getArt(Long id) {
-        return artDAO.findById(id);
-    }
-
     @Override
     public List<ArtVO> getArtListByCategoryAndDropdown(Map<String, Object> params) {
         return artDAO.findArtListByCategoryAndDropdown(params);
