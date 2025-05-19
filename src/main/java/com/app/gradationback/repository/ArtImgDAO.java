@@ -19,16 +19,6 @@ public class ArtImgDAO {
         artImgMapper.insert(artImgVO);
     }
 
-//    전체 작품 이미지 조회
-    public List<ArtImgVO> findAll() {
-        return artImgMapper.selectAll();
-    }
-
-//    단일 작품 이미지 조회
-    public Optional<ArtImgVO> findById(Long id) {
-        return artImgMapper.select(id);
-    }
-
     public List<ArtImgVO> findAllByArtId(Long artId) {
         return artImgMapper.selectAllByArtId(artId);
     }

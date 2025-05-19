@@ -21,15 +21,19 @@ public interface ArtPostMapper {
 //    작품 게시글 단일 조회
     public Optional<ArtPostDTO> select(Long id);
 
+//    작품 게시글 전체 조회 (userId로)
+    public List<ArtPostDTO> selectAllByUserId(Long userId);
+
 //    카테고리 + 드롭다운 + 페이지네이션
     public List<ArtPostDTO> selectArtListByCategoryAndDropdown(Map<String, Object> params);
 
-    public List<ArtPostDTO> selectAllByUserId(Long userId);
-    //
+//    내 작품 리스트
     public List<ArtPostDTO> selectAllMyArt(Long userId);
 
+//    내 작품 좋아요
     public List<ArtPostDTO> selectAllLikedArt(Long userId);
 
+//    경매 가능 작품 조회 (좋아요 50개 이상)
     public List<ArtPostDTO> selectAllForAuction();
 
 //    작품 게시글 수정

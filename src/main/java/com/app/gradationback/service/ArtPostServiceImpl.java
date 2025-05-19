@@ -42,14 +42,12 @@ public class ArtPostServiceImpl implements ArtPostService {
         Long artId = artVO.getId();
 
         ArtImgVO artImgVO = new ArtImgVO();
-//        artImgVO.setArtId(artPostDTO.getArtId());
         artImgVO.setArtId(artId);
         artImgVO.setArtImgName(artPostDTO.getArtImgName());
         artImgVO.setArtImgPath(artPostDTO.getArtImgPath());
         artImgDAO.save(artImgVO);
 
         ArtPostVO artPostVO = new ArtPostVO();
-//        artPostVO.setArtId(artPostDTO.getArtId());
         artPostVO.setArtId(artId);
         artPostVO.setArtPostDate(artPostDTO.getArtPostDate());
         artPostVO.setUserId(artPostDTO.getUserId());
@@ -62,33 +60,42 @@ public class ArtPostServiceImpl implements ArtPostService {
         return artPostDAO.findAll();
     }
 
+//    작품 게시글 전체 조회 (userId로)
+    public List<ArtPostDTO> getArtPostListByUserId(Long userId) {
+        return artPostDAO.findAllByUserId(userId);
+    }
+
 //    작품 게시글 단일 조회
     @Override
     public Optional<ArtPostDTO> getArtPostById(Long id) {
         return artPostDAO.findById(id);
     }
 
+//    카테고리 + 드롭다운 + 페이지네이션
     @Override
     public List<ArtPostDTO> getArtListByCategoryAndDropdown(Map<String, Object> params) {
         return artPostDAO.findArtListByCategoryAndDropdown(params);
     }
 
+//    내 작품 리스트
     @Override
     public List<ArtPostDTO> getMyArtList(Long userId) {
         return artPostDAO.findAllMyArt(userId);
     }
 
+//    내 작품 좋아요
     @Override
     public List<ArtPostDTO> getLikedArtList(Long userId) {
         return artPostDAO.findAllLikedArt(userId);
     }
 
+//    경매 가능 작품 조회 (좋아요 50개 이상)
     @Override
     public List<ArtPostDTO> getArtListForAuction() {
         return artPostDAO.findAllForAuction();
     }
 
-    //    작품 게시글 수정
+//    작품 게시글 수정
     @Override
     public void edit(ArtPostVO artPostVO) {
         artPostDAO.update(artPostVO);

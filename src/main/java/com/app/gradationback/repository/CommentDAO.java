@@ -30,8 +30,14 @@ public class CommentDAO {
         return commentMapper.select(id);
     }
 
+//   댓글 전체 조회 (userId로)
     public List<ArtPostDTO> findAllByUserId(Long userId) {
         return commentMapper.selectAllByUserId(userId);
+    }
+
+//    댓글 전체 조회 (postId로)
+    public List<CommentVO> findAllByPostId(Long postId) {
+        return commentMapper.selectAllByPostId(postId);
     }
 
 //    댓글 수정
@@ -54,7 +60,4 @@ public class CommentDAO {
         commentMapper.deleteAllByPostId(postId);
     }
 
-    public List<CommentVO> findAllByPostId(Long postId) {
-        return commentMapper.selectAllByPostId(postId);
-    }
 }

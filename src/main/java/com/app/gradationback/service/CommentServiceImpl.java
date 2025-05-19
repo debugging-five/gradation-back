@@ -35,12 +35,19 @@ public class CommentServiceImpl implements CommentService {
         return commentDAO.findById(id);
     }
 
+//    댓글 전체 조회 (userId로)
     @Override
     public List<ArtPostDTO> getCommentListByUserId(Long userId) {
         return commentDAO.findAllByUserId(userId);
     }
 
-    //    댓글 수정
+//    댓글 전체 조회 (postId로)
+    @Override
+    public List<CommentVO> getAllCommentByPostId(Long postId) {
+        return commentDAO.findAllByPostId(postId);
+    }
+
+//    댓글 수정
     @Override
     public void modifyComment(CommentVO commentVO) {
         commentDAO.update(commentVO);
@@ -64,8 +71,4 @@ public class CommentServiceImpl implements CommentService {
         commentDAO.deleteAllByPostId(postId);
     }
 
-    @Override
-    public List<CommentVO> getAllCommentByPostId(Long postId) {
-        return commentDAO.findAllByPostId(postId);
-    }
 }

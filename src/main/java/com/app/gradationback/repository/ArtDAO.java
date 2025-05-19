@@ -17,20 +17,11 @@ public class ArtDAO {
 
     private final ArtMapper artMapper;
 
-    //    작품 등록
+//    작품 등록
     public void save(ArtVO artVO) {
         artMapper.insert(artVO);
     }
 
-//    전체 작품 조회
-    public List<ArtVO> findAll() {
-        return artMapper.selectAll();
-    }
-
-//    단일 작품 조회
-    public Optional<ArtVO> findById(Long id) {
-        return artMapper.select(id);
-    }
 
 //    카테고리 + 드롭다운 + 페이지네이션
     public List<ArtVO> findArtListByCategoryAndDropdown(Map<String, Object> params) {

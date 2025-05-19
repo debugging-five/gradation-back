@@ -33,7 +33,7 @@ public class CommentController {
     private final UserService userService;
 
 
-    //    댓글 등록
+//    댓글 등록
     @Operation(summary = "댓글 등록", description = "댓글을 등록할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "댓글 등록 성공")
     @PostMapping("registration")
@@ -70,7 +70,7 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
-    //    댓글 전체 조회
+//    댓글 전체 조회
     @Operation(summary = "댓글 전체 조회", description = "댓글을 전체 조회할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "댓글 전체 조회 성공")
     @GetMapping("comments")
@@ -87,12 +87,12 @@ public class CommentController {
         }
     }
 
-    //    댓글 단일 조회
+//    댓글 단일 조회
     @Operation(summary = "댓글 조회", description = "댓글을 1개 조회할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "댓글 1개 조회 성공")
     @Parameter(
             name = "id",
-            description = "댓글번호",
+            description = "댓글 번호",
             schema = @Schema(type = "number"),
             in = ParameterIn.PATH,
             required = true
@@ -116,7 +116,17 @@ public class CommentController {
         }
     }
 
-    @GetMapping("comment/user/{userId}")
+//    내가 작성한 댓글 리스트
+    @Operation(summary = "내가 작성한 댓글 조회", description = "내가 작성한 댓글을 조회할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "내가 작성한 댓글 조회 성공")
+    @Parameter(
+            name = "userId",
+            description = "회원 번호",
+            schema = @Schema(type = "number"),
+            in = ParameterIn.PATH,
+            required = true
+    )
+    @GetMapping("comment/my/{userId}")
     public ResponseEntity<Map<String, Object>> getComment(@PathVariable Long userId) {
         Map<String, Object> response = new HashMap<>();
         List<ArtPostDTO> commentList = commentService.getCommentListByUserId(userId);
@@ -188,10 +198,6 @@ public class CommentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-
-
-
-
 
 
 }
