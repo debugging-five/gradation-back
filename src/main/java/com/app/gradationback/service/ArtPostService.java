@@ -22,6 +22,9 @@ public interface ArtPostService {
 //    작품 게시글 단일 조회
     public Optional<ArtPostDTO> getArtPostById(Long id);
 
+//    등록순으로 상위 50개 작품 조회
+    public List<ArtPostDTO> getArtListForMain();
+
 //    카테고리 + 드롭다운 + 페이지네이션
     public List<ArtPostDTO> getArtListByCategoryAndDropdown(Map<String, Object> params);
 
