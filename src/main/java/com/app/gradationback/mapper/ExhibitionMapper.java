@@ -4,6 +4,7 @@ import com.app.gradationback.domain.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Mapper
@@ -33,6 +34,18 @@ public interface ExhibitionMapper {
 
 //    좋아요순 50개 작품
     public List<DisplayDTO> selectTopLikedArts();
+
+//    올해의 좋아요 50개 작품 id값
+    public List<Long> selectTop50ArtId();
+
+//    지난 전시회 등록
+    public void insertPastGradationArt(Map<String, Object> params);
+
+//    지난 전시회 리스트
+    public List<ExhibitionPastDTO> selectPastExhibitions();
+
+//    지난 전시회 작품들
+    public List<ExhibitionPastDTO> selectExhibitionArtList(Map<String, Object> params);
 
 
 //    대학교 전시회

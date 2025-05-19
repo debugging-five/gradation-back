@@ -103,6 +103,42 @@ public class DisplayController {
         return response;
     }
 
+//    내 작품 리스트
+    @Operation(summary = "내 작품 목록 조회", description = "내 작품 목록을 조회할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "내 작품 목록 조회 성공")
+    @GetMapping("/display/my/list")
+    public ResponseEntity<Map<String, Object>> getMyArtList(@RequestParam Long userId) {
+        Map<String, Object> response = new HashMap<>();
+        List<ArtPostDTO> myArtList = artPostService.getMyArtList(userId);
+        response.put("myArtList", myArtList);
+        response.put("message", "내 작품 조회 성공했습니다.");
+        return ResponseEntity.ok(response);
+    }
+
+//    내 작품 좋아요
+    @Operation(summary = "내 작품 좋아요 조회", description = "좋아요 누른 작품 목록을 조회할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "좋아요 누른 작품 목록 조회 성공")
+    @GetMapping("/display/my/liked")
+    public ResponseEntity<Map<String, Object>> getLikedArtList(@RequestParam Long userId) {
+        Map<String, Object> response = new HashMap<>();
+        List<ArtPostDTO> artLikeList = artPostService.getLikedArtList(userId);
+        response.put("likedArtList", artLikeList);
+        response.put("message", "내 작품 좋아요 목록 조회 성공했습니다.");
+        return ResponseEntity.ok(response);
+    }
+
+//    경매 가능 작품 조회 (좋아요 50개 이상)
+    @Operation(summary = "경매 가능 작품 조회", description = "경매 가능한 작품 목록을 조회할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "경매 가능 작품 목록 조회 성공")
+    @GetMapping("/display/for-auction")
+    public ResponseEntity<Map<String, Object>> getArtListForAuction() {
+        Map<String, Object> response = new HashMap<>();
+        List<ArtPostDTO> artListForAuction = artPostService.getArtListForAuction();
+        response.put("artListForAuction", artListForAuction);
+        response.put("message", "경매 가능 작품 조회 성공했습니다.");
+        return ResponseEntity.ok(response);
+    }
+
 //    전시 삭제 (작품 + 이미지 + 댓글 삭제)
     @Operation(summary = "전시 삭제", description = "전시를 삭제할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "전시 삭제 성공")

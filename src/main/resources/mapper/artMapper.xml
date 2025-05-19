@@ -12,19 +12,6 @@
                 #{artSize}, #{artDescription}, #{artEndDate}, #{userId})
     </insert>
 
-    <!--  작품 전체 조회  -->
-    <select id="selectAll" resultType="ArtVO">
-        SELECT ID, ART_TITLE, ART_CATEGORY, ART_MATERIAL, ART_SIZE, ART_DESCRIPTION, ART_END_DATE, USER_ID
-        FROM TBL_ART
-    </select>
-
-    <!--  작품 단일 조회  -->
-    <select id="select" parameterType="Long" resultType="ArtVO">
-        SELECT ID, ART_TITLE, ART_CATEGORY, ART_MATERIAL, ART_SIZE, ART_DESCRIPTION, ART_END_DATE, USER_ID
-        FROM TBL_ART
-        WHERE ID = #{id}
-    </select>
-
     <select id="selectAllByUserId" parameterType="Long" resultType="ArtVO">
         SELECT * FROM TBL_ART WHERE USER_ID = #{userId}
     </select>

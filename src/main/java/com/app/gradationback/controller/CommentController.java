@@ -92,7 +92,7 @@ public class CommentController {
     @ApiResponse(responseCode = "200", description = "댓글 1개 조회 성공")
     @Parameter(
             name = "id",
-            description = "댓글번호",
+            description = "댓글 번호",
             schema = @Schema(type = "number"),
             in = ParameterIn.PATH,
             required = true
@@ -114,6 +114,25 @@ public class CommentController {
             response.put("message", "서버 오류 발생");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
+    }
+
+//    내가 작성한 댓글 리스트
+    @Operation(summary = "내가 작성한 댓글 조회", description = "내가 작성한 댓글을 조회할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "내가 작성한 댓글 조회 성공")
+    @Parameter(
+            name = "userId",
+            description = "회원 번호",
+            schema = @Schema(type = "number"),
+            in = ParameterIn.PATH,
+            required = true
+    )
+    @GetMapping("comment/my/{userId}")
+    public ResponseEntity<Map<String, Object>> getComment(@PathVariable Long userId) {
+        Map<String, Object> response = new HashMap<>();
+        List<ArtPostDTO> commentList = commentService.getCommentListByUserId(userId);
+        response.put("commentList", commentList);
+        response.put("message", "댓글 조회 성공했습니다.");
+        return ResponseEntity.ok(response);
     }
 
 //    댓글 수정
@@ -179,10 +198,6 @@ public class CommentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-
-
-
-
 
 
 }

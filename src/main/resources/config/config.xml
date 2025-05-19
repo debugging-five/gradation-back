@@ -50,5 +50,6 @@
         <typeAlias type="com.app.gradationback.domain.UniversityLikeDTO" alias="UniversityLikeDTO" />
         <typeAlias type="com.app.gradationback.domain.UpcyclingDTO" alias="UpcyclingDTO" />
         <typeAlias type="com.app.gradationback.domain.ArtistDTO" alias="ArtistDTO" />
+        <typeAlias type="com.app.gradationback.domain.ArtistDetailDTO" alias="ArtistDetailDTO" />
     </typeAliases>
 </configuration>

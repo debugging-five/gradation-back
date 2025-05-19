@@ -91,6 +91,34 @@
         #{gradationExhibitionId})
     </insert>
 
+    <!--    올해 좋아요 top50 -->
+    <select id="selectTop50ArtId" resultType="Long">
+        SELECT ART_ID
+        FROM (
+                 SELECT ART_ID, COUNT(ID) AS LIKE_COUNT
+                 FROM TBL_ART_LIKE
+                 WHERE EXTRACT(YEAR FROM ART_LIKE_TIME) = EXTRACT(YEAR FROM SYSDATE)
+                 GROUP BY ART_ID
+                 ORDER BY LIKE_COUNT DESC
+             )
+        WHERE ROWNUM &lt;= 50
+    </select>
+
+    <!--    지난 전시회 등록 -->
+    <insert id="insertPastGradationArt" parameterType="map">
+        INSERT INTO TBL_EXHIBITION_PAST_ART(
+            ID,
+            GRADATION_EXHIBITION_ID,
+            ART_ID
+        )
+        VALUES (
+            SEQ_EXHIBITION_PAST_ART.NEXTVAL,
+            #{gradationExhibitionId},
+            #{artId}
+        )
+    </insert>
+
+
     <!--    전시회 정보 수정 -->
     <update id="updateGradation" parameterType="GradationExhibitionVO">
         UPDATE TBL_GRADATION_EXHIBITION
@@ -123,7 +151,10 @@
                 GRADATION_EXHIBITION_TITLE,
                 GRADATION_EXHIBITION_DATE
             FROM TBL_GRADATION_EXHIBITION
-            WHERE TO_NUMBER(SUBSTR(GRADATION_EXHIBITION_DATE, 1, 4)) &lt; TO_NUMBER(TO_CHAR(SYSDATE, 'YYYY'))
+            WHERE TO_NUMBER(SUBSTR(GRADATION_EXHIBITION_DATE, 1, 4)) &lt; (
+                SELECT MAX(TO_NUMBER(SUBSTR(GRADATION_EXHIBITION_DATE, 1, 4)))
+                FROM TBL_GRADATION_EXHIBITION
+            )
             ORDER BY TO_NUMBER(SUBSTR(GRADATION_EXHIBITION_DATE, 1, 4)) DESC
         )
         WHERE ROWNUM &lt;=3
@@ -164,8 +195,51 @@
     </select>
 
 
+<!--    지난 전시회 -->
+    <select id="selectPastExhibitions" resultType="ExhibitionPastDTO">
+        SELECT
+            ID,
+            TO_CHAR(TO_DATE(SUBSTR(GRADATION_EXHIBITION_DATE, 1, 4), 'YYYY'), 'YYYY') || ' ' || GRADATION_EXHIBITION_TITLE AS gradationExhibitionTitle
+        FROM TBL_GRADATION_EXHIBITION
+        WHERE TO_NUMBER(SUBSTR(GRADATION_EXHIBITION_DATE, 1, 4)) &lt; (
+            SELECT MAX(TO_NUMBER(SUBSTR(GRADATION_EXHIBITION_DATE, 1, 4)))
+            FROM TBL_GRADATION_EXHIBITION
+        )
+        ORDER BY TO_NUMBER(SUBSTR(GRADATION_EXHIBITION_DATE, 1, 4)) DESC
+    </select>
 
-<!--    대학교 전시회 -->
+<!--    지난 전시회 작품 리스트 -->
+    <select id="selectExhibitionArtList" parameterType="map" resultType="ExhibitionPastDTO">
+        SELECT
+            TAR.ART_TITLE,
+            TAI.ART_IMG_NAME,
+            TAI.ART_IMG_PATH,
+            TU.USER_NAME
+        FROM TBL_EXHIBITION_PAST_ART EPA
+        JOIN TBL_ART TAR
+            ON EPA.ART_ID = TAR.ID
+        JOIN TBL_USER TU
+            ON TAR.USER_ID = TU.ID
+        JOIN (
+            SELECT T1.ART_ID, T1.ART_IMG_NAME, T1.ART_IMG_PATH
+            FROM TBL_ART_IMG T1
+            JOIN (
+                SELECT ART_ID, MIN(ID) AS MIN_ID
+                FROM TBL_ART_IMG
+                GROUP BY ART_ID
+            )T2
+                ON T1.ART_ID = T2.ART_ID AND T1.ID = T2.MIN_ID
+        )TAI
+            ON TAR.ID = TAI.ART_ID
+        WHERE EPA.GRADATION_EXHIBITION_ID = #{exhibitionId}
+        ORDER BY TAR.ID
+        OFFSET (#{cursor} - 1) * 15 ROWS
+        FETCH NEXT 15 ROWS ONLY
+    </select>
+
+
+
+    <!--    대학교 전시회 -->
 <!--    신청 양식(학교) -->
     <insert id="insertUniversity" parameterType="UniversityExhibitionDTO">
         <selectKey keyProperty="id" order="BEFORE" resultType="Long">

@@ -41,23 +41,6 @@ public class ArtMapperTests {
         log.info("{}", artVO);
     }
 
-//    전체 작품 조회
-    @Test
-    public void selectAllTest() {
-        List<ArtVO> artVOList = artMapper.selectAll();
-        for (ArtVO artVO : artVOList) {
-            log.info("{}", artVO);
-        }
-    }
-
-//    단일 작품 조회
-    @Test
-    public void selectTest() {
-        ArtVO artVO = new ArtVO();
-        artVO.setId(401L);
-        artMapper.select(artVO.getId()).map(ArtVO::toString).ifPresent(log::info);
-    }
-
 //    카테고리 + 드롭다운 + 페이지네이션
     @Test
     public void selectArtByCategoryAndDropdown() {
