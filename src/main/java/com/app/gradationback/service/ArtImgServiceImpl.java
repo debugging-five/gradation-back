@@ -22,18 +22,6 @@ public class ArtImgServiceImpl implements ArtImgService {
         artImgDAO.save(artImgVO);
     }
 
-//    전체 작품 이미지 조회
-    @Override
-    public List<ArtImgVO> getArtImgList() {
-        return artImgDAO.findAll();
-    }
-
-//    단일 작품 이미지 조회
-    @Override
-    public Optional<ArtImgVO> getArtImg(Long id) {
-        return artImgDAO.findById(id);
-    }
-
     @Override
     public List<ArtImgVO> getArtImgListByArtId(Long artId) {
         return artImgDAO.findAllByArtId(artId);

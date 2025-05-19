@@ -8,19 +8,6 @@
         VALUES (SEQ_ART_IMG.NEXTVAL, #{artImgName}, #{artImgPath}, #{artId})
     </insert>
 
-    <!--  작품 이미지 전체 조회  -->
-    <select id="selectAll" resultType="ArtImgVO">
-        SELECT ID, ART_IMG_NAME, ART_IMG_PATH, ART_ID
-        FROM TBL_ART_IMG
-    </select>
-
-    <!--  작품 이미지 단일 조회  -->
-    <select id="select" parameterType="Long" resultType="ArtImgVO">
-        SELECT ID, ART_IMG_NAME, ART_IMG_PATH, ART_ID
-        FROM TBL_ART_IMG
-        WHERE ID = #{id}
-    </select>
-
     <!--  작품 이미지 전체 조회 ( artId로 ) -->
     <select id="selectAllByArtId" parameterType="Long" resultType="ArtImgVO">
         SELECT ID, ART_IMG_NAME, ART_IMG_PATH, ART_ID
