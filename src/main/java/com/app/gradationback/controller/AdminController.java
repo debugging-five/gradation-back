@@ -141,4 +141,13 @@ public class AdminController {
         }
     }
 
+    @PostMapping("/admin/test-login")
+    public void testLogin(HttpSession session) {
+        UserVO userVO = new UserVO();
+        userVO.setId(1L);
+        userVO.setUserAdminOk(true);
+        session.setAttribute("user", userVO);
+    }
+
+
 }
