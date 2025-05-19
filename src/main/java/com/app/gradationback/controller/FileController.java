@@ -2,6 +2,7 @@ package com.app.gradationback.controller;
 
 import com.app.gradationback.domain.ArtImgVO;
 import com.app.gradationback.domain.GradationExhibitionImgVO;
+import com.app.gradationback.domain.UniversityExhibitionDTO;
 import com.app.gradationback.repository.ArtImgDAO;
 import com.app.gradationback.repository.ExhibitionDAO;
 import com.app.gradationback.service.ArtImgService;
@@ -79,6 +80,31 @@ public class FileController {
         return ResponseEntity.ok(response);
     }
 //   대학 ExhibitionService 생기면 추가
+    @Operation(summary = "대학교 전시회 이미지 업로드", description = "대학교 전시회 이미지 파일 저장 API")
+    @PostMapping("upload/exhibition/university/{id}")
+    public ResponseEntity<Map<String, Object>> universityExhibitionFileUpload(@RequestParam("files")List<MultipartFile> files, @PathVariable("id") Long universityExhibitionId) throws IOException {
+        Map<String, Object> response = new HashMap<>();
+        String filePath = "exhibition/university";
+        String uuid = UUID.randomUUID().toString();
+        FileSaveUtil fileSave = new FileSaveUtil();
+
+        for(MultipartFile file : files) {
+            UniversityExhibitionDTO universityExhibitionDTO = new UniversityExhibitionDTO();
+            universityExhibitionDTO.setUniversityExhibitionImgName(uuid + file.getOriginalFilename());
+            universityExhibitionDTO.setUniversityExhibitionImgPath(filePath);
+            universityExhibitionDTO.setUniversityExhibitionId(universityExhibitionId);
+
+            exhibitionService.registerUniversityImg(universityExhibitionDTO);
+            log.info("university image : {}", file.getOriginalFilename());
+
+            // 파일 저장
+            fileSave.fileSave(file, universityExhibitionDTO.getUniversityExhibitionImgPath(), universityExhibitionDTO.getUniversityExhibitionImgName());
+        }
+
+        response.put("uuid", UUID.randomUUID().toString());
+        response.put("message", "정상적으로 업로드가 완료되었습니다.");
+        return ResponseEntity.ok(response);
+    }
 
     @Operation(summary = "이미지 조회", description = "패스와 이름을 적으면 이미지를 반환해주는 API")
     @GetMapping("get/{fileName}")
