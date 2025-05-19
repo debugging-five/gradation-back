@@ -111,6 +111,12 @@
                 AND AUCTION_BID_DATE IS NULL
             </otherwise>
         </choose>
+        <if test="keyword != null and keyword != ''">
+            AND (
+            TAR.ART_TITLE LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+            OR TUS.USER_NAME LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+            )
+        </if>
         ORDER BY
         <choose>
             <when test="order != null and order.equals('popular')">
@@ -215,6 +221,12 @@
         ORDER BY TAU.ID
         OFFSET (#{cursor} - 1) * 4 ROWS
         FETCH NEXT 4 ROWS ONLY
+    </select>
+
+    <select id="selectByArtId" parameterType="Long" resultType="Long">
+        SELECT COUNT(ID)
+        FROM TBL_AUCTION
+        where ART_ID = #{artId}
     </select>
 
 
