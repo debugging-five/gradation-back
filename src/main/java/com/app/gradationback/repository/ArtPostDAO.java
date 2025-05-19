@@ -38,6 +38,11 @@ public class ArtPostDAO {
         return artPostMapper.select(id);
     }
 
+//    등록순으로 상위 50개 작품 조회
+    public List<ArtPostDTO> findAllForMain() {
+        return artPostMapper.selectAllForMain();
+    }
+
 //    카테고리 + 드롭다운 + 페이지네이션
     public List<ArtPostDTO> findArtListByCategoryAndDropdown(Map<String, Object> params) {
         return artPostMapper.selectArtListByCategoryAndDropdown(params);

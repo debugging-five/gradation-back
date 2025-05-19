@@ -103,6 +103,18 @@ public class DisplayController {
         return response;
     }
 
+//    메인 등록순 상위 50개 작품 조회
+    @Operation(summary = "등록순으로 상위 50개 작품 목록 조회", description = "등록순으로 상위 50개 작품 목록을 조회할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "등록순으로 상위 50개 작품 목록 조회 성공")
+    @GetMapping("/display/main")
+    public ResponseEntity<Map<String, Object>> getArtListForMain() {
+        Map<String, Object> response = new HashMap<>();
+        List<ArtPostDTO> artListForMain = artPostService.getArtListForMain();
+        response.put("artListForMain", artListForMain);
+        response.put("message", "작품 조회 성공했습니다.");
+        return ResponseEntity.ok(response);
+    }
+
 //    내 작품 리스트
     @Operation(summary = "내 작품 목록 조회", description = "내 작품 목록을 조회할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "내 작품 목록 조회 성공")

@@ -76,13 +76,13 @@ public class UserMapperTests {
     }
 
 //    비밀번호 조회
-    @Test
-    public void selectPasswordTest() {
-        UserVO userVO = new UserVO();
-        userVO.setUserEmail("user1234@gmail.com");
-        String password = userMapper.selectPasswordByEmail(userVO.getUserEmail());
-        log.info("{}", password);
-    }
+//    @Test
+//    public void selectPasswordTest() {
+//        UserVO userVO = new UserVO();
+//        userVO.setUserEmail("user1234@gmail.com");
+//        String password = userMapper.selectPasswordByEmail(userVO.getUserEmail());
+//        log.info("{}", password);
+//    }
 
 //    이메일 찾기
     @Test

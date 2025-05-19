@@ -73,10 +73,16 @@
     </select>
 
     <!--  비밀번호 찾기 (이메일)  -->
-    <select id="selectPasswordByEmail" parameterType="String" resultType="String">
-        SELECT USER_PASSWORD
+<!--    <select id="selectPasswordByEmail" parameterType="String" resultType="String">-->
+<!--        SELECT USER_PASSWORD-->
+<!--        FROM TBL_USER-->
+<!--        WHERE USER_EMAIL = #{userEmail}-->
+<!--    </select>    -->
+
+    <select id="selectPasswordByEmail" parameterType="UserVO" resultType="UserVO">
+        SELECT USER_PASSWORD, USER_IDENTIFICATION, USER_EMAIL, USER_NAME
         FROM TBL_USER
-        WHERE USER_EMAIL = #{userEmail}
+        WHERE USER_EMAIL = #{userEmail} AND USER_NAME = #{userName}
     </select>
 
     <!--  아이디로 이메일 조회  -->
@@ -96,10 +102,15 @@
     <!--  회원 정보 수정  -->
     <update id="updateUser" parameterType="UserVO">
         UPDATE TBL_USER
-        SET USER_NICKNAME = #{userNickName}, USER_NAME = #{userName},
-            USER_PHONE = #{userPhone}, USER_EMAIL = #{userEmail},
-            USER_ADDRESS = #{userAddress}, USER_DETAIL_ADDRESS = #{userDetailAddress},
-            USER_PASSWORD = #{userPassword}, USER_PROVIDER = #{userProvider}
+        SET
+            <if test="userNickName != null">USER_NICKNAME = #{userNickName},</if>
+            <if test="userName != null">USER_NAME = #{userName},</if>
+            <if test="userPhone != null">USER_PHONE = #{userPhone},</if>
+            <if test="userEmail != null">USER_EMAIL = #{userEmail},</if>
+            <if test="userAddress != null">USER_ADDRESS = #{userAddress},</if>
+            <if test="userDetailAddress != null">USER_DETAIL_ADDRESS = #{userDetailAddress},</if>
+            <if test="userPassword != null">USER_PASSWORD = #{userPassword},</if>
+            <if test="userProvider != null">USER_PROVIDER = #{userProvider}</if>
         WHERE USER_IDENTIFICATION = #{userIdentification}
     </update>
 
