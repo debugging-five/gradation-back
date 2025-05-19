@@ -10,12 +10,6 @@ public interface ArtImgService {
 //    작품 이미지 등록
     public void register(ArtImgVO artImgVO);
 
-//    전체 작품 이미지 조회
-    public List<ArtImgVO> getArtImgList();
-
-//    단일 작품 이미지 조회
-    public Optional<ArtImgVO> getArtImg(Long id);
-
     public List<ArtImgVO> getArtImgListByArtId(Long artId);
 
 //    작품 이미지 전체 삭제 (작품 ID로)

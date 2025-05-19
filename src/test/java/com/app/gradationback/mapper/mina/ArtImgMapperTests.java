@@ -27,23 +27,6 @@ public class ArtImgMapperTests {
         log.info("{}", artImgVO);
     }
 
-//    전체 작품 이미지 조회
-    @Test
-    public void selectArtImgAllTest() {
-        List<ArtImgVO> artImgVOList = artImgMapper.selectAll();
-        for (ArtImgVO artImgVO : artImgVOList) {
-            log.info("{}", artImgVO);
-        }
-    }
-
-//    단일 작품 이미지 조회
-    @Test
-    public void selectArtImgTest() {
-        ArtImgVO artImgVO = new ArtImgVO();
-        artImgVO.setId(401L);
-        artImgMapper.select(artImgVO.getId()).map(ArtImgVO::toString).ifPresent(log::info);
-    }
-
 //    작품 이미지 삭제
     @Test
     public void deleteArtImgTest() {

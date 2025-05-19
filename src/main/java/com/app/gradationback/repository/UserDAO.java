@@ -49,8 +49,11 @@ public class UserDAO {
     }
 
 //    비밀번호 찾기 (이메일)
-    public String findPasswordByEmail(String userEmail) {
-        return userMapper.selectPasswordByEmail(userEmail);
+//    public String findPasswordByEmail(String userEmail) {
+//        return userMapper.selectPasswordByEmail(userEmail);
+//    }
+    public UserVO findPasswordByEmail(UserVO userVO) {
+        return userMapper.selectPasswordByEmail(userVO);
     }
 
 //    아이디로 이메일 조회

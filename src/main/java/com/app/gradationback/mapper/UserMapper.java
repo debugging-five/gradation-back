@@ -32,7 +32,8 @@ public interface UserMapper {
     public UserVO selectIdentificationByEmailAndName(UserVO userVO);
 
 //    비밀번호 찾기 (이메일)
-    public String selectPasswordByEmail(String userEmail);
+//    public String selectPasswordByEmail(String userEmail);
+    public UserVO selectPasswordByEmail(UserVO userVO);
 
 //    아이디로 이메일 조회
     public String selectEmailById(Long id);

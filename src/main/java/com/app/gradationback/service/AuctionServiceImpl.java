@@ -42,6 +42,11 @@ public class AuctionServiceImpl implements AuctionService {
     }
 
     @Override
+    public Long auctionFindByArtId(Long artId) {
+        return auctionDAO.findAuctionCountByArtId(artId);
+    }
+
+    @Override
     public void auctionModify(AuctionVO auctionVO) {
         auctionDAO.update(auctionVO);
     }

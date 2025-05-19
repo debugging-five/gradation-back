@@ -290,19 +290,48 @@ public class UserController {
 
 //    비밀번호 찾기 (이메일) 암호화 필요
     @Operation(summary = "비밀번호 찾기", description = "비밀번호를 찾을 수 있는 API")
+    @Parameters({
+            @Parameter(name = "userName", description = "회원명", example = "회원명"),
+            @Parameter(name = "userEmail", description = "회원 이메일", example = "user@test.app"),
+    })
     @ApiResponse(responseCode = "200", description = "비밀번호 찾기 성공")
-    @GetMapping("/find-password/{userEmail}")
-    public ResponseEntity<Map<String, Object>> findPassword(@PathVariable String userEmail) {
+    @PostMapping("/find-password")
+    public ResponseEntity<Map<String, Object>> findPassword(@RequestBody UserVO userVO) {
         Map<String, Object> response = new HashMap<>();
+//        try {
+//            String foundPassword = userService.getPasswordByEmail(userEmail);
+//            if (foundPassword != null) {
+//                response.put("foundPassword", foundPassword);
+//                response.put("message", "비밀번호 찾기 성공했습니다.");
+//                return ResponseEntity.ok(response);
+//            }
+//            response.put("message", "입력하신 이메일에 해당하는 비밀번호가 존재하지 않습니다.");
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+//        } catch (Exception e) {
+//            response.put("message", "서버 오류");
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+//        }
         try {
-            String foundPassword = userService.getPasswordByEmail(userEmail);
-            if (foundPassword != null) {
-                response.put("foundPassword", foundPassword);
+            UserVO foundUser = userService.getPasswordByEmail(userVO);
+
+            if(foundUser == null) {
+                response.put("message", "입력하신 정보에 일치하는 비밀번호가 존재하지 않습니다.");
+                response.put("socialLogin", false);
+                response.put("status", "fail");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }else if(foundUser.getUserIdentification() == null) {
+                response.put("message", "소셜 로그인 회원입니다.");
+                response.put("socialLogin", true);
+                response.put("status", "social");
+                return ResponseEntity.ok(response);
+            } else {
                 response.put("message", "비밀번호 찾기 성공했습니다.");
+                response.put("socialLogin", false);
+                response.put("status", "success");
+                response.put("userIdentification", foundUser.getUserIdentification());
                 return ResponseEntity.ok(response);
             }
-            response.put("message", "입력하신 이메일에 해당하는 비밀번호가 존재하지 않습니다.");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+
         } catch (Exception e) {
             response.put("message", "서버 오류");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
@@ -316,16 +345,16 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> modifyPassword(@RequestBody UserVO userVO) {
         Map<String, Object> response = new HashMap<>();
         try {
-            Optional<UserVO> foundUser = userService.getUserByIdentification(userVO.getUserIdentification());
+//            Optional<UserVO> foundUser = userService.getUserByIdentification(userVO.getUserIdentification());
+            userService.modifyPassword(userVO);
+            response.put("message", "비밀번호가 수정되었습니다.");
+            response.put("status", "success");
+            return ResponseEntity.ok(response);
 
-            if (foundUser.isPresent()) {
-                userService.modifyPassword(userVO);
-                response.put("message", "비밀번호가 수정되었습니다.");
-                return ResponseEntity.ok(response);
-            }
-
-            response.put("message", "회원 정보가 존재하지 않습니다.");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } catch (IllegalArgumentException e) {
+            response.put("message", "기존 비밀번호와 일치하는 비밀번호는 사용할 수 없습니다.");
+            response.put("status", "fail");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
 
         } catch (Exception e) {
             response.put("message", "서버 오류");

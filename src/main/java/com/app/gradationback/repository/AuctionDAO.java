@@ -26,6 +26,9 @@ public class AuctionDAO {
     public List<AuctionDTO> findAuctionByCursor(Integer cursor) {
         return auctionMapper.selectBidding(cursor);
     }
+    public Long findAuctionCountByArtId(Long artId) {
+        return auctionMapper.selectByArtId(artId);
+    }
     public void update(AuctionVO auctionVO) {
         auctionMapper.update(auctionVO);
     }

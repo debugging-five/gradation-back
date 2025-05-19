@@ -2,49 +2,64 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.gradationback.mapper.CommentMapper">
 
+    <!--  댓글 등록  -->
     <insert id="insert" parameterType="CommentVO">
         INSERT INTO TBL_COMMENT
         VALUES (SEQ_COMMENT.NEXTVAL, #{artPostId}, #{userId}, #{commentContent}, #{commentDate})
     </insert>
 
+    <!--  댓글 전체 조회  -->
     <select id="selectAll" resultType="CommentVO">
         SELECT ID, ART_POST_ID, USER_ID, COMMENT_CONTENT, COMMENT_DATE
         FROM TBL_COMMENT
     </select>
 
+    <!--  댓글 단일 조회  -->
     <select id="select" parameterType="Long" resultType="CommentVO">
         SELECT ID, ART_POST_ID, USER_ID, COMMENT_CONTENT, COMMENT_DATE
         FROM TBL_COMMENT
         WHERE ID = #{id}
     </select>
 
-    <update id="update" parameterType="CommentVO">
-        UPDATE TBL_COMMENT
-        SET COMMENT_CONTENT = #{commentContent}, COMMENT_DATE = #{commentDate}
-        WHERE ID = #{id}
-    </update>
+    <!--  댓글 전체 조회 (userId로)  -->
+    <select id="selectAllByUserId" parameterType="Long" resultType="ArtPostDTO">
+        SELECT TBC.ID, TBC.ART_POST_ID, TBC.USER_ID, TBC.COMMENT_CONTENT, TBC.COMMENT_DATE, TBA.ART_TITLE
+        FROM TBL_COMMENT TBC
+        JOIN TBL_ART TBA
+        ON TBC.ART_POST_ID = TBA.ID
+        WHERE TBC.USER_ID = #{userId}
+    </select>
 
-    <delete id="delete" parameterType="Long">
-        DELETE FROM TBL_COMMENT
-        WHERE ID = #{id}
-    </delete>
-
-    <delete id="deleteAllByUserId" parameterType="Long">
-        DELETE FROM TBL_COMMENT
-        WHERE USER_ID = #{userId}
-    </delete>
-
-    <delete id="deleteAllByPostId" parameterType="Long">
-        DELETE FROM TBL_COMMENT
-        WHERE ART_POST_ID = #{artPostId}
-    </delete>
-
+    <!--  댓글 전체 조회 (postId로)  -->
     <select id="selectAllByPostId" parameterType="Long" resultType="CommentVO">
         SELECT ID, COMMENT_CONTENT, COMMENT_DATE, USER_ID, ART_POST_ID
         FROM TBL_COMMENT
         WHERE ART_POST_ID = #{postId}
     </select>
 
+    <!--  댓글 수정  -->
+    <update id="update" parameterType="CommentVO">
+        UPDATE TBL_COMMENT
+        SET COMMENT_CONTENT = #{commentContent}, COMMENT_DATE = #{commentDate}
+        WHERE ID = #{id}
+    </update>
 
+    <!--  댓글 삭제  -->
+    <delete id="delete" parameterType="Long">
+        DELETE FROM TBL_COMMENT
+        WHERE ID = #{id}
+    </delete>
+
+    <!--  댓글 전체 삭제 (회원 탈퇴)  -->
+    <delete id="deleteAllByUserId" parameterType="Long">
+        DELETE FROM TBL_COMMENT
+        WHERE USER_ID = #{userId}
+    </delete>
+
+    <!--  댓글 전체 삭제 (게시글 삭제)  -->
+    <delete id="deleteAllByPostId" parameterType="Long">
+        DELETE FROM TBL_COMMENT
+        WHERE ART_POST_ID = #{artPostId}
+    </delete>
 
 </mapper>

@@ -42,10 +42,40 @@
         WHERE TBP.ID = #{id}
     </select>
 
+    <!--  작품 게시글 전체 조회 (userId로)  -->
+    <select id="selectAllByUserId" parameterType="Long" resultType="ArtPostDTO">
+        SELECT ID, ART_ID, USER_ID, ART_POST_DATE
+        FROM TBL_ART_POST
+        WHERE USER_ID = #{userId}
+    </select>
+
+    <!-- 등록순으로 상위 50개 (메인)  -->
+    <select id="selectAllForMain" resultType="ArtPostDTO">
+        SELECT TBA.ID, TBA.ART_TITLE, TBU.USER_NAME, TAI.ART_IMG_NAME, TAI.ART_IMG_PATH
+        FROM TBL_ART TBA
+        JOIN TBL_ART_POST TBP
+        ON TBA.ID = TBP.ART_ID
+        JOIN TBL_USER TBU
+        ON TBA.USER_ID = TBU.ID
+        LEFT JOIN (
+        SELECT TAI1.ART_ID, TAI1.ART_IMG_NAME, TAI1.ART_IMG_PATH
+        FROM TBL_ART_IMG TAI1
+        JOIN (
+        SELECT ART_ID, MIN(ID) AS MIN_ID
+        FROM TBL_ART_IMG
+        GROUP BY ART_ID
+        ) TAI2
+        ON TAI1.ART_ID = TAI2.ART_ID AND TAI1.ID = TAI2.MIN_ID
+        ) TAI
+        ON TBA.ID = TAI.ART_ID
+        ORDER BY TBP.ART_POST_DATE DESC
+        FETCH NEXT 50 ROWS ONLY
+    </select>
+
     <!--  카테고리 + 드롭다운 + 페이지네이션  -->
     <select id="selectArtListByCategoryAndDropdown" parameterType="Map" resultType="ArtPostDTO">
         SELECT TBA.ID, TBA.ART_TITLE, TBA.ART_CATEGORY, TBA.ART_MATERIAL, TBA.ART_SIZE, TBA.ART_DESCRIPTION, TBA.ART_END_DATE,
-        TBA.USER_ID, TBP.ART_POST_DATE, TBU.USER_NAME, COALESCE(TAL.ART_LIKE_COUNT, 0) AS ART_LIKE_COUNT, COALESCE(TBC.COMMENT_COUNT, 0) AS COMMENT_COUNT,
+        TBA.USER_ID, TBP.ART_POST_DATE, TBU.USER_NAME, COALESCE(TAL.ART_LIKE_COUNT, 0) AS artLikeCount, COALESCE(TBC.COMMENT_COUNT, 0) AS commentCount,
         TAI.ART_IMG_NAME, TAI.ART_IMG_PATH
         FROM TBL_ART TBA
         JOIN TBL_ART_POST TBP
@@ -53,13 +83,13 @@
         JOIN TBL_USER TBU
         ON TBA.USER_ID = TBU.ID
         LEFT JOIN (
-        SELECT ART_ID, COUNT(*) AS ART_LIKE_COUNT
+        SELECT ART_ID, COUNT(ID) AS ART_LIKE_COUNT
         FROM TBL_ART_LIKE
         GROUP BY ART_ID
         ) TAL
         ON TBA.ID = TAL.ART_ID
         LEFT JOIN (
-        SELECT ART_POST_ID, COUNT(*) AS COMMENT_COUNT
+        SELECT ART_POST_ID, COUNT(ID) AS COMMENT_COUNT
         FROM TBL_COMMENT
         GROUP BY ART_POST_ID
         ) TBC
@@ -137,11 +167,76 @@
         FETCH NEXT 15 ROWS ONLY
     </select>
 
-    <select id="selectAllByUserId" parameterType="Long" resultType="ArtPostDTO">
-        SELECT ID, ART_ID, USER_ID, ART_POST_DATE
-        FROM TBL_ART_POST
-        WHERE USER_ID = #{userId}
+    <!--  내 작품 리스트  -->
+    <select id="selectAllMyArt" parameterType="Long" resultType="ArtPostDTO">
+        SELECT TBA.ID, TBA.ART_TITLE, TAI.ART_IMG_NAME, TAI.ART_IMG_PATH, TBU.USER_NAME
+        FROM TBL_ART TBA
+        JOIN TBL_USER TBU
+        ON TBA.USER_ID = TBU.ID
+        LEFT JOIN (
+        SELECT TAI1.ART_ID, TAI1.ART_IMG_NAME, TAI1.ART_IMG_PATH
+        FROM TBL_ART_IMG TAI1
+        JOIN (
+        SELECT ART_ID, MIN(ID) AS MIN_ID
+        FROM TBL_ART_IMG
+        GROUP BY ART_ID
+        ) TAI2
+        ON TAI1.ART_ID = TAI2.ART_ID AND TAI1.ID = TAI2.MIN_ID
+        ) TAI
+        ON TBA.ID = TAI.ART_ID
+        WHERE TBA.USER_ID = #{userId}
     </select>
+
+    <!--  내 작품 좋아요  -->
+    <select id="selectAllLikedArt" parameterType="Long" resultType="ArtPostDTO">
+        SELECT TBA.ID, COALESCE(TAL.ART_LIKE_COUNT, 0) AS artLikeCount, TAI.ART_IMG_NAME, TAI.ART_IMG_PATH, TBU.USER_NAME
+        FROM TBL_ART TBA
+        JOIN TBL_ART_LIKE TBLU
+        ON TBA.ID = TBLU.ART_ID AND TBLU.USER_ID = #{userId}
+        JOIN TBL_USER TBU
+        ON TBA.USER_ID = TBU.ID
+        LEFT JOIN (
+        SELECT ART_ID, COUNT(ID) AS ART_LIKE_COUNT
+        FROM TBL_ART_LIKE
+        GROUP BY ART_ID
+        ) TAL
+        ON TBA.ID = TAL.ART_ID
+        LEFT JOIN (
+        SELECT TAI1.ART_ID, TAI1.ART_IMG_NAME, TAI1.ART_IMG_PATH
+        FROM TBL_ART_IMG TAI1
+        JOIN (
+        SELECT ART_ID, MIN(ID) AS MIN_ID
+        FROM TBL_ART_IMG
+        GROUP BY ART_ID
+        ) TAI2
+        ON TAI1.ART_ID = TAI2.ART_ID AND TAI1.ID = TAI2.MIN_ID
+        ) TAI
+        ON TBA.ID = TAI.ART_ID
+    </select>
+
+
+    <!--  경매 가능 작품 조회 (좋아요 50개 이상)  -->
+    <select id="selectAllForAuction" resultType="ArtPostDTO">
+        SELECT TBA.ID , TBA.ART_TITLE, COALESCE(TAL.LIKE_COUNT, 0) AS artLikeCount,
+        TAI.ART_IMG_NAME, TAI.ART_IMG_PATH
+        FROM TBL_ART TBA
+        JOIN (
+        SELECT ART_ID, COUNT(ID) AS LIKE_COUNT
+        FROM TBL_ART_LIKE
+        GROUP BY ART_ID
+        HAVING COUNT(ID) >= 50
+        ) TAL ON TBA.ID = TAL.ART_ID
+        LEFT JOIN (
+        SELECT TAI1.ART_ID, TAI1.ART_IMG_NAME, TAI1.ART_IMG_PATH
+        FROM TBL_ART_IMG TAI1
+        JOIN (
+        SELECT ART_ID, MIN(ID) AS MIN_ID
+        FROM TBL_ART_IMG
+        GROUP BY ART_ID
+        ) TAI2 ON TAI1.ART_ID = TAI2.ART_ID AND TAI1.ID = TAI2.MIN_ID
+        ) TAI ON TBA.ID = TAI.ART_ID
+    </select>
+
 
     <!--  작품 게시글 수정  -->
     <update id="update" parameterType="ArtPostVO">
