@@ -28,7 +28,7 @@ public class ArtLikeController {
     @Operation(summary = "작품 좋아요 수 조회", description = "작품 좋아요 수를 조회할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "작품 좋아요 수 조회 성공")
     @GetMapping("/count/{artId}")
-    public int getLikeCount(Long artId) {
+    public int getLikeCount(@PathVariable Long artId) {
         return artLikeService.getLikeCount(artId);
     }
 

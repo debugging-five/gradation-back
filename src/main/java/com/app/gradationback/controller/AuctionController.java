@@ -67,7 +67,8 @@ public class AuctionController {
             @Parameter(name = "cursor", description = "페이지", example = "1"),
             @Parameter(name = "direction", description = "오름차순", example = "asc"),
             @Parameter(name = "category", description = "분류", example = "건축, 회화, 한국화, 조각, 서예, 공예"),
-            @Parameter(name = "status", description = "경매상태", example = "expected, bidding, complete")
+            @Parameter(name = "status", description = "경매상태", example = "expected, bidding, complete"),
+            @Parameter(name = "keyword", description = "검색어", example = "작가이름 or 작품이름")
     })
     @ApiResponse(responseCode = "200", description = "조회 성공")
     @GetMapping("list")
@@ -108,6 +109,20 @@ public class AuctionController {
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(footerList);
         }
+    }
+
+    @Operation(summary = "작품 아이디로 경매 조회", description = "작품의 아이디로 경매를 조회할 수 있는 API")
+    @Parameter(
+            name = "artId",
+            description = "작품 번호",
+            schema = @Schema(type = "number"),
+            in = ParameterIn.PATH,
+            required = true
+    )
+    @GetMapping("read-bidding/{artId}")
+    public ResponseEntity<Boolean> isExist(@PathVariable Long artId) {
+        Boolean read = auctionService.auctionFindByArtId(artId) != 0;
+        return ResponseEntity.ok(read);
     }
 
     @Operation(summary = "경매 삭제", description = "경매를 삭제할 수 있는 API")
