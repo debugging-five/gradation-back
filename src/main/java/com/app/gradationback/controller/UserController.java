@@ -366,11 +366,12 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> modify(@RequestBody UserVO userVO) {
         Map<String, Object> response = new HashMap<>();
         try {
-            Optional<UserVO> foundUser = userService.getUserByEmail(userVO.getUserEmail());
+            Optional<UserVO> foundUser = userService.getUserByIdentification(userVO.getUserIdentification());
+
             if(foundUser.isPresent()) {
                 userService.modifyUser(userVO);
 
-                Optional<UserVO> modifyUser = userService.getUserByEmail(userVO.getUserEmail());
+                Optional<UserVO> modifyUser = userService.getUserByIdentification(userVO.getUserIdentification());
                 if(modifyUser.isPresent()) {
                     UserVO user = modifyUser.get();
                     user.setUserPassword(null);
