@@ -151,14 +151,11 @@ public class UserController {
             if (token != null && jwtTokenUtil.isTokenValid(token)) {
 
                 Claims claims = jwtTokenUtil.parseToken(token);
-                String userIdentification = claims.get("identification").toString();
+//                String userIdentification = claims.get("identification").toString();
+                String userEmail = claims.get("email").toString();
 
-                if (userIdentification == null) {
-                    response.put("message", "토큰에 identification이 존재하지 않습니다.");
-                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-                }
-
-                UserVO foundUser = userService.getUserByIdentification(userIdentification).orElseThrow(() -> {
+                Long userId = userService.getIdByEmail(userEmail);
+                UserVO foundUser = userService.getUserByEmail(userEmail).orElseThrow(() -> {
                     throw new RuntimeException("회원 정보가 존재하지 않습니다.");
                 });
 
@@ -369,11 +366,12 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> modify(@RequestBody UserVO userVO) {
         Map<String, Object> response = new HashMap<>();
         try {
-            Optional<UserVO> foundUser = userService.getUserByEmail(userVO.getUserEmail());
+            Optional<UserVO> foundUser = userService.getUserByIdentification(userVO.getUserIdentification());
+
             if(foundUser.isPresent()) {
                 userService.modifyUser(userVO);
 
-                Optional<UserVO> modifyUser = userService.getUserByEmail(userVO.getUserEmail());
+                Optional<UserVO> modifyUser = userService.getUserByIdentification(userVO.getUserIdentification());
                 if(modifyUser.isPresent()) {
                     UserVO user = modifyUser.get();
                     user.setUserPassword(null);
