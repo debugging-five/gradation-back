@@ -44,7 +44,7 @@ public class FileController {
         categoryMap.put("서예", "calligraphy");
         categoryMap.put("공예", "craft");
 
-        String filePath = "art";
+        String filePath = "images/display/art";
         String uuid = UUID.randomUUID().toString();
         FileSaveUtil fileSave = new FileSaveUtil();
         Optional<ArtVO> foundArt = artService.getArt(artId);

@@ -218,7 +218,7 @@
     <!--  경매 가능 작품 조회 (좋아요 50개 이상)  -->
     <select id="selectAllForAuction" resultType="ArtPostDTO">
         SELECT TBA.ID , TBA.ART_TITLE, COALESCE(TAL.LIKE_COUNT, 0) AS artLikeCount,
-        TAI.ART_IMG_NAME, TAI.ART_IMG_PATH
+        TAI.ART_IMG_NAME, TAI.ART_IMG_PATH, TBA.ART_CATEGORY
         FROM TBL_ART TBA
         JOIN (
         SELECT ART_ID, COUNT(ID) AS LIKE_COUNT
@@ -235,6 +235,7 @@
         GROUP BY ART_ID
         ) TAI2 ON TAI1.ART_ID = TAI2.ART_ID AND TAI1.ID = TAI2.MIN_ID
         ) TAI ON TBA.ID = TAI.ART_ID
+        WHERE TBA.USER_ID = #{userId}
     </select>
 
 
