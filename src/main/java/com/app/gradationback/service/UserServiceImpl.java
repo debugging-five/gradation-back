@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
         return userDAO.findIdByEmail(userEmail);
     }
 
-//    비밀번호 재설정
+//    비밀번호 수정
     @Override
     public void modifyPassword(UserVO userVO) {
 //        UserVO userVO = new UserVO();
@@ -99,7 +99,9 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("기존 비밀번호와 일치하는 비밀번호는 사용할 수 없습니다.");
         }
 
-        userDAO.updateUser(userVO);
+
+//        userDAO.updateUser(userVO);
+        userDAO.updatePassword(userVO);
     }
 
 //    회원 정보 수정

@@ -102,15 +102,17 @@
     <!--  회원 정보 수정  -->
     <update id="updateUser" parameterType="UserVO">
         UPDATE TBL_USER
-        SET
-            <if test="userNickName != null">USER_NICKNAME = #{userNickName},</if>
-            <if test="userName != null">USER_NAME = #{userName},</if>
-            <if test="userPhone != null">USER_PHONE = #{userPhone},</if>
-            <if test="userEmail != null">USER_EMAIL = #{userEmail},</if>
-            <if test="userAddress != null">USER_ADDRESS = #{userAddress},</if>
-            <if test="userDetailAddress != null">USER_DETAIL_ADDRESS = #{userDetailAddress},</if>
-            <if test="userPassword != null">USER_PASSWORD = #{userPassword},</if>
-            <if test="userProvider != null">USER_PROVIDER = #{userProvider}</if>
+        SET USER_NICKNAME = #{userNickName}, USER_NAME = #{userName},
+            USER_PHONE = #{userPhone}, USER_EMAIL = #{userEmail},
+            USER_ADDRESS = #{userAddress}, USER_DETAIL_ADDRESS = #{userDetailAddress},
+            USER_PROVIDER = #{userProvider}
+        WHERE USER_IDENTIFICATION = #{userIdentification}
+    </update>
+
+    <!--  비밀번호 수정  -->
+    <update id="updatePassword" parameterType="UserVO">
+        UPDATE TBL_USER
+        SET USER_PASSWORD = #{userPassword}
         WHERE USER_IDENTIFICATION = #{userIdentification}
     </update>
 

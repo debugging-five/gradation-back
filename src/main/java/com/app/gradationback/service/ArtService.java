@@ -13,8 +13,8 @@ public interface ArtService {
 //    작품 등록
     public void registerArt(ArtVO artVO);
 
-//    카테고리 + 드롭다운 + 페이지네이션
-    public List<ArtVO> getArtListByCategoryAndDropdown(Map<String, Object> params);
+//    작품 단일 조회
+    public Optional<ArtVO> getArt(Long id);
 
 //    작품 삭제
     public void removeArtById(Long id);

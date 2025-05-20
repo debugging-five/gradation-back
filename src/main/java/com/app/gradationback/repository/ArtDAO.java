@@ -22,16 +22,15 @@ public class ArtDAO {
         artMapper.insert(artVO);
     }
 
-
-//    카테고리 + 드롭다운 + 페이지네이션
-    public List<ArtVO> findArtListByCategoryAndDropdown(Map<String, Object> params) {
-        return artMapper.selectArtListByCategoryAndDropdown(params);
-    }
-
+//    작품 전체 조회 (userId)
     public List<ArtVO> findAllByUserId(Long userId) {
         return artMapper.selectAllByUserId(userId);
     }
 
+//    작품 단일 조회
+    public Optional<ArtVO> findById(Long id) {
+        return artMapper.select(id);
+    }
 //    작품 삭제
     public void deleteById(Long id) {
         artMapper.deleteById(id);

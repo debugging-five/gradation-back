@@ -73,7 +73,7 @@ public class CommentController {
 //    댓글 전체 조회
     @Operation(summary = "댓글 전체 조회", description = "댓글을 전체 조회할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "댓글 전체 조회 성공")
-    @GetMapping("comments")
+    @GetMapping("list")
     public ResponseEntity<Map<String, Object>> getReplies() {
         Map<String, Object> response = new HashMap<>();
         try {
@@ -97,7 +97,7 @@ public class CommentController {
             in = ParameterIn.PATH,
             required = true
     )
-    @GetMapping("comment/{id}")
+    @GetMapping("read/{id}")
     public ResponseEntity<Map<String, Object>> getReply(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
         try {
@@ -126,7 +126,7 @@ public class CommentController {
             in = ParameterIn.PATH,
             required = true
     )
-    @GetMapping("comment/my/{userId}")
+    @GetMapping("list/{userId}")
     public ResponseEntity<Map<String, Object>> getComment(@PathVariable Long userId) {
         Map<String, Object> response = new HashMap<>();
         List<ArtPostDTO> commentList = commentService.getCommentListByUserId(userId);
@@ -145,7 +145,7 @@ public class CommentController {
             in = ParameterIn.PATH,
             required = true
     )
-    @PutMapping("comment/{id}")
+    @PutMapping("modify/{id}")
     public ResponseEntity<Map<String, Object>> modify(@PathVariable Long id, @RequestBody CommentVO commentVO) {
         Map<String, Object> response = new HashMap<>();
         try {
@@ -180,7 +180,7 @@ public class CommentController {
             in = ParameterIn.PATH,
             required = true
     )
-    @DeleteMapping("comment/{id}")
+    @DeleteMapping("delete/{id}")
     public ResponseEntity<Map<String, Object>> removeReply(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
 //        commentService.removeComment(id);

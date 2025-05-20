@@ -96,8 +96,8 @@ public class ArtPostServiceImpl implements ArtPostService {
 
 //    경매 가능 작품 조회 (좋아요 50개 이상)
     @Override
-    public List<ArtPostDTO> getArtListForAuction() {
-        return artPostDAO.findAllForAuction();
+    public List<ArtPostDTO> getArtListForAuction(Long userId) {
+        return artPostDAO.findAllForAuction(userId);
     }
 
 //    작품 게시글 수정
