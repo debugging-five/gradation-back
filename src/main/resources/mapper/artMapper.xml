@@ -12,8 +12,18 @@
                 #{artSize}, #{artDescription}, #{artEndDate}, #{userId})
     </insert>
 
+    <!-- 작품 전체 조회 (userId로)   -->
     <select id="selectAllByUserId" parameterType="Long" resultType="ArtVO">
-        SELECT * FROM TBL_ART WHERE USER_ID = #{userId}
+        SELECT ID, ART_TITLE, ART_CATEGORY, ART_MATERIAL, ART_SIZE, ART_DESCRIPTION, ART_END_DATE, ART_STATUS, USER_ID
+        FROM TBL_ART
+        WHERE USER_ID = #{userId}
+    </select>
+
+    <!-- 작품 단일 조회  -->
+    <select id="select" parameterType="Long" resultType="ArtVO">
+        SELECT ID, ART_TITLE, ART_CATEGORY, ART_MATERIAL, ART_SIZE, ART_DESCRIPTION, ART_END_DATE, ART_STATUS, USER_ID
+        FROM TBL_ART
+        WHERE ID = #{id}
     </select>
 
     <!--  작품 삭제 -->
@@ -54,7 +64,6 @@
         WHERE ID = #{id}
     </update>
 
-<!--    -->
     <!--  좋아요  -->
     <insert id="insertLike" parameterType="ArtLikeVO">
         INSERT INTO TBL_ART_LIKE (ID, USER_ID, ART_ID, ART_LIKE_TIME)
