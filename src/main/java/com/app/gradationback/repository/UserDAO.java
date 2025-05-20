@@ -71,6 +71,11 @@ public class UserDAO {
         userMapper.updateUser(userVO);
     }
 
+//    비밀번호 수정
+    public void updatePassword(UserVO userVO) {
+        userMapper.updatePassword(userVO);
+    }
+
 //    회원 탈퇴
     public void deleteUser(String userEmail) {
         userMapper.deleteUser(userEmail);
