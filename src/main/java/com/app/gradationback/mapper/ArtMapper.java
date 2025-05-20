@@ -15,10 +15,11 @@ public interface ArtMapper {
 //    작품 등록
     public void insert(ArtVO artVO);
 
-//    카테고리 + 드롭다운 + 페이지네이션
-    public List<ArtVO> selectArtListByCategoryAndDropdown(Map<String, Object> params);
-
+//    작품 전체 조회 (userId)
     public List<ArtVO> selectAllByUserId(Long userId);
+
+//    작품 단일 조회
+    public Optional<ArtVO> select(Long id);
 
 //    작품 삭제
     public void deleteById(Long id);
