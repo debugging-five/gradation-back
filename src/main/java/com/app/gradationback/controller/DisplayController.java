@@ -33,7 +33,7 @@ public class DisplayController {
 //    전시 등록 (게시글 + 작품 + 이미지)
     @Operation(summary = "전시 등록", description = "전시를 등록할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "전시 등록 성공")
-    @PostMapping("register")
+    @PostMapping("registration")
     public ArtPostDTO register(@RequestBody ArtPostDTO artPostDTO) {
         log.info("{}", artPostDTO);
         artPostService.register(artPostDTO);
@@ -84,7 +84,7 @@ public class DisplayController {
             in = ParameterIn.PATH,
             required = true
     )
-    @GetMapping("/display/{postId}")
+    @GetMapping("/read/{postId}")
     public Map<String, Object> getPost(@PathVariable Long postId) {
         log.info("{}", postId);
         Optional<ArtPostDTO> foundArtPost = artPostService.getArtPostById(postId);
@@ -106,7 +106,7 @@ public class DisplayController {
 //    메인 등록순 상위 50개 작품 조회
     @Operation(summary = "등록순으로 상위 50개 작품 목록 조회", description = "등록순으로 상위 50개 작품 목록을 조회할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "등록순으로 상위 50개 작품 목록 조회 성공")
-    @GetMapping("/display/main")
+    @GetMapping("/list/main")
     public ResponseEntity<Map<String, Object>> getArtListForMain() {
         Map<String, Object> response = new HashMap<>();
         List<ArtPostDTO> artListForMain = artPostService.getArtListForMain();
@@ -118,7 +118,7 @@ public class DisplayController {
 //    내 작품 리스트
     @Operation(summary = "내 작품 목록 조회", description = "내 작품 목록을 조회할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "내 작품 목록 조회 성공")
-    @GetMapping("/display/my/list")
+    @GetMapping("/list/my")
     public ResponseEntity<Map<String, Object>> getMyArtList(@RequestParam Long userId) {
         Map<String, Object> response = new HashMap<>();
         List<ArtPostDTO> myArtList = artPostService.getMyArtList(userId);
@@ -130,7 +130,7 @@ public class DisplayController {
 //    내 작품 좋아요
     @Operation(summary = "내 작품 좋아요 조회", description = "좋아요 누른 작품 목록을 조회할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "좋아요 누른 작품 목록 조회 성공")
-    @GetMapping("/display/my/liked")
+    @GetMapping("/list/my/liked")
     public ResponseEntity<Map<String, Object>> getLikedArtList(@RequestParam Long userId) {
         Map<String, Object> response = new HashMap<>();
         List<ArtPostDTO> artLikeList = artPostService.getLikedArtList(userId);
@@ -142,10 +142,10 @@ public class DisplayController {
 //    경매 가능 작품 조회 (좋아요 50개 이상)
     @Operation(summary = "경매 가능 작품 조회", description = "경매 가능한 작품 목록을 조회할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "경매 가능 작품 목록 조회 성공")
-    @GetMapping("/display/for-auction")
-    public ResponseEntity<Map<String, Object>> getArtListForAuction() {
+    @GetMapping("/list/auction")
+    public ResponseEntity<Map<String, Object>> getArtListForAuction(@RequestParam Long userId) {
         Map<String, Object> response = new HashMap<>();
-        List<ArtPostDTO> artListForAuction = artPostService.getArtListForAuction();
+        List<ArtPostDTO> artListForAuction = artPostService.getArtListForAuction(userId);
         response.put("artListForAuction", artListForAuction);
         response.put("message", "경매 가능 작품 조회 성공했습니다.");
         return ResponseEntity.ok(response);
@@ -161,7 +161,7 @@ public class DisplayController {
             in = ParameterIn.PATH,
             required = true
     )
-    @DeleteMapping("/display/{postId}")
+    @DeleteMapping("/delete/{postId}")
     public void deletePost(@PathVariable Long postId) {
         artPostService.removeById(postId);
     }
