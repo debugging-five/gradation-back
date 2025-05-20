@@ -70,7 +70,7 @@ public class FileController {
 
     @Operation(summary = "그라데이션 전시회 이미지 업로드", description = "그라데이션 전시회 이미지 파일 저장 API")
     @PostMapping("upload/exhibition/gradation/{id}")
-    public ResponseEntity<Map<String, Object>> gradationExhibitionFileUpload(@RequestParam("files")List<MultipartFile> files, @RequestParam Long id) throws IOException {
+    public ResponseEntity<Map<String, Object>> gradationExhibitionFileUpload(@RequestParam("files")List<MultipartFile> files, @PathVariable("id") Long id) throws IOException {
         Map<String, Object> response = new HashMap<>();
         String filePath = "exhibition/gradation";
         String uuid = UUID.randomUUID().toString();
@@ -94,9 +94,20 @@ public class FileController {
 //   대학 ExhibitionService 생기면 추가
     @Operation(summary = "대학교 전시회 이미지 업로드", description = "대학교 전시회 이미지 파일 저장 API")
     @PostMapping("upload/exhibition/university/{id}")
-    public ResponseEntity<Map<String, Object>> universityExhibitionFileUpload(@RequestParam("files")List<MultipartFile> files, @PathVariable("id") Long universityExhibitionId) throws IOException {
+    public ResponseEntity<Map<String, Object>> universityExhibitionFileUpload(@RequestParam("files")List<MultipartFile> files, @PathVariable Long id) throws IOException {
         Map<String, Object> response = new HashMap<>();
-        String filePath = "exhibition/university";
+
+        log.info("=========================================================");
+        log.info(files.toString());
+        log.info("=========================================================");
+
+        if (files == null || files.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("message", "파일이 존재하지 않습니다."));
+        }
+
+        String filePath = "images/exhibition/university";
         String uuid = UUID.randomUUID().toString();
         FileSaveUtil fileSave = new FileSaveUtil();
 
@@ -104,7 +115,9 @@ public class FileController {
             UniversityExhibitionDTO universityExhibitionDTO = new UniversityExhibitionDTO();
             universityExhibitionDTO.setUniversityExhibitionImgName(uuid + file.getOriginalFilename());
             universityExhibitionDTO.setUniversityExhibitionImgPath(filePath);
-            universityExhibitionDTO.setUniversityExhibitionId(universityExhibitionId);
+            universityExhibitionDTO.setUniversityExhibitionId(id);
+
+//            log.info("dto : {}", universityExhibitionDTO);
 
             exhibitionService.registerUniversityImg(universityExhibitionDTO);
             log.info("university image : {}", file.getOriginalFilename());

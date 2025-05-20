@@ -110,7 +110,7 @@ public class ExhibitionServiceImpl implements ExhibitionService {
 
     @Override
     public void registerUniversityImg(UniversityExhibitionDTO universityExhibitionDTO) {
-        if(universityExhibitionDTO.getUniversityLogoImgPath() != null && universityExhibitionDTO.getUniversityLogoImgName() != null) {
+        if(universityExhibitionDTO.getUniversityExhibitionImgPath() != null && universityExhibitionDTO.getUniversityExhibitionImgName() != null) {
             exhibitionDAO.saveUniversityExhibitionImg(universityExhibitionDTO);
         }
     }
