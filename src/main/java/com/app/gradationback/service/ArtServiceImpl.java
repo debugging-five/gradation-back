@@ -22,15 +22,10 @@ public class ArtServiceImpl implements ArtService {
     private final ArtImgDAO artImgDAO;
     private final ArtPostDAO artPostDAO;
 
-    //    작품 등록
+//    작품 등록
     @Override
     public void registerArt(ArtVO artVO) {
         artDAO.save(artVO);
-    }
-
-    @Override
-    public List<ArtVO> getArtListByCategoryAndDropdown(Map<String, Object> params) {
-        return artDAO.findArtListByCategoryAndDropdown(params);
     }
 
     @Override
@@ -41,6 +36,12 @@ public class ArtServiceImpl implements ArtService {
         artImgDAO.deleteAllByArtId(id);
 //        작품 삭제
         artDAO.deleteById(id);
+    }
+
+//    작품 단일 조회
+    @Override
+    public Optional<ArtVO> getArt(Long id) {
+        return artDAO.findById(id);
     }
 
 //    관리자용 승인 대기 목록 조회

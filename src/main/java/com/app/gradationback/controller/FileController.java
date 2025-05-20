@@ -1,10 +1,12 @@
 package com.app.gradationback.controller;
 
 import com.app.gradationback.domain.ArtImgVO;
+import com.app.gradationback.domain.ArtVO;
 import com.app.gradationback.domain.GradationExhibitionImgVO;
 import com.app.gradationback.repository.ArtImgDAO;
 import com.app.gradationback.repository.ExhibitionDAO;
 import com.app.gradationback.service.ArtImgService;
+import com.app.gradationback.service.ArtService;
 import com.app.gradationback.service.ExhibitionService;
 import com.app.gradationback.util.FileSaveUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,10 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,6 +28,7 @@ import java.util.UUID;
 @Slf4j
 public class FileController {
 
+    private final ArtService artService;
     private final ArtImgService artImgService;
     private final ExhibitionService exhibitionService;
 
@@ -36,9 +36,21 @@ public class FileController {
     @PostMapping("upload/art/{artId}")
     public ResponseEntity<Map<String, Object>> artFileUpload(@RequestParam("files")List<MultipartFile> files, @PathVariable Long artId) throws IOException {
         Map<String, Object> response = new HashMap<>();
-        String filePath = "art";
+        Map<String, String> categoryMap = new HashMap<>();
+        categoryMap.put("한국화", "korean");
+        categoryMap.put("회화", "painting");
+        categoryMap.put("건축", "architecture");
+        categoryMap.put("조각", "sculpture");
+        categoryMap.put("서예", "calligraphy");
+        categoryMap.put("공예", "craft");
+
+        String filePath = "images/display/art";
         String uuid = UUID.randomUUID().toString();
         FileSaveUtil fileSave = new FileSaveUtil();
+        Optional<ArtVO> foundArt = artService.getArt(artId);
+        if (foundArt.isPresent()) {
+            filePath = filePath + "/" + categoryMap.get(foundArt.get().getArtCategory());
+        }
 
         for(MultipartFile file : files) {
             ArtImgVO artImgVO = new ArtImgVO();
