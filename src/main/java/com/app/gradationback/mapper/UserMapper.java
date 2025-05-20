@@ -44,6 +44,9 @@ public interface UserMapper {
 //    회원 정보 수정
     public void updateUser(UserVO userVO);
 
+//    비밀번호 수정
+    public void updatePassword(UserVO userVO);
+
 //    회원 탈퇴
     public void deleteUser(String userEmail);
 

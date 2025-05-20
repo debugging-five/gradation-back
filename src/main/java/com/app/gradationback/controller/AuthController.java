@@ -29,7 +29,6 @@ public class AuthController {
         log.info(userEmail);
         try {
 //            smsService.sendEmailVerification(userEmail);
-            response.put("code", smsService.sendEmailVerification(userEmail));
             return smsService.sendEmailVerification(userEmail);
         } catch (Exception e) {
             response.put("message", "인증코드 발송 실패");

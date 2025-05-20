@@ -37,27 +37,32 @@ public class SecurityConfig {
                 )
                 .oauth2Login(oauth -> oauth
                         .successHandler((request, response, authentication) -> {
-                            if (authentication instanceof OAuth2AuthenticationToken authToken) {
+                            if (authentication instanceof OAuth2AuthenticationToken) {
+                                OAuth2AuthenticationToken authToken = (OAuth2AuthenticationToken) authentication;
                                 OAuth2User oAuth2User = authToken.getPrincipal();
                                 Map<String, Object> attributes = oAuth2User.getAttributes();
 
-                                log.info(attributes.toString());
+//                                log.info(attributes.toString());
 
                                 String provider = authToken.getAuthorizedClientRegistrationId();
                                 String email = "";
                                 String name = "";
-                                if("google".equals(provider)) {
+                                if(provider.equals("google")) {
                                     email = (String) attributes.get("email");
                                     name = (String) attributes.get("name");
-                                }else if ("kakao".equals(provider)) {
+                                }else if (provider.equals("kakao")) {
                                     email = ((Map<String, Object>) attributes.get("kakao_account")).get("email").toString();
                                     name = ((Map<String, Object>) attributes.get("properties")).get("nickname").toString();
-                                }else if ("naver".equals(provider)) {
+                                }else if (provider.equals("naver")) {
                                     email = ((Map<String, Object>) attributes.get("response")).get("email").toString();
                                     name = ((Map<String, Object>) attributes.get("response")).get("name").toString();
                                 }
 
+                                name = (String)attributes.get("name");
+
+                                Map<String, Object> responseMap = new HashMap<>();
                                 Map<String, Object> claims = new HashMap<>();
+
                                 claims.put("email", email);
                                 claims.put("name", name);
 
@@ -86,7 +91,6 @@ public class SecurityConfig {
                                         userVO.setUserPhone(user.getUserPhone());
                                         userVO.setUserNickName(user.getUserNickName());
                                         userVO.setUserProvider(provider);
-                                        log.info("provider: {}", userVO.getUserProvider());
                                         userService.modifyUser(userVO);
                                         log.info("provider: {}", userVO.getUserProvider());
                                     });
