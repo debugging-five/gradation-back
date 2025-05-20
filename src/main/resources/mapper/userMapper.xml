@@ -105,7 +105,7 @@
         SET USER_NICKNAME = #{userNickName}, USER_NAME = #{userName},
             USER_PHONE = #{userPhone}, USER_EMAIL = #{userEmail},
             USER_ADDRESS = #{userAddress}, USER_DETAIL_ADDRESS = #{userDetailAddress},
-            USER_PASSWORD = #{userPassword}, USER_PROVIDER = #{userProvider}
+            USER_PROVIDER = #{userProvider}
         WHERE USER_IDENTIFICATION = #{userIdentification}
     </update>
 
