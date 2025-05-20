@@ -295,19 +295,6 @@ public class UserController {
     @PostMapping("/find-password")
     public ResponseEntity<Map<String, Object>> findPassword(@RequestBody UserVO userVO) {
         Map<String, Object> response = new HashMap<>();
-//        try {
-//            String foundPassword = userService.getPasswordByEmail(userEmail);
-//            if (foundPassword != null) {
-//                response.put("foundPassword", foundPassword);
-//                response.put("message", "비밀번호 찾기 성공했습니다.");
-//                return ResponseEntity.ok(response);
-//            }
-//            response.put("message", "입력하신 이메일에 해당하는 비밀번호가 존재하지 않습니다.");
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-//        } catch (Exception e) {
-//            response.put("message", "서버 오류");
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-//        }
         try {
             UserVO foundUser = userService.getPasswordByEmail(userVO);
 

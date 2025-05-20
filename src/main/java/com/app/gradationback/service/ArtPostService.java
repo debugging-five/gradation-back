@@ -35,7 +35,7 @@ public interface ArtPostService {
     public List<ArtPostDTO> getLikedArtList(Long userId);
 
 //    경매 가능 작품 조회 (좋아요 50개 이상)
-    public List<ArtPostDTO> getArtListForAuction();
+    public List<ArtPostDTO> getArtListForAuction(Long userId);
 
 //    작품 게시글 수정
     public void edit(ArtPostVO artPostVO);

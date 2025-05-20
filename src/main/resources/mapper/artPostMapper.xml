@@ -75,8 +75,8 @@
     <!--  카테고리 + 드롭다운 + 페이지네이션  -->
     <select id="selectArtListByCategoryAndDropdown" parameterType="Map" resultType="ArtPostDTO">
         SELECT TBA.ID, TBA.ART_TITLE, TBA.ART_CATEGORY, TBA.ART_MATERIAL, TBA.ART_SIZE, TBA.ART_DESCRIPTION, TBA.ART_END_DATE,
-        TBA.USER_ID, TBP.ART_POST_DATE, TBU.USER_NAME, COALESCE(TAL.ART_LIKE_COUNT, 0) AS artLikeCount, COALESCE(TBC.COMMENT_COUNT, 0) AS commentCount,
-        TAI.ART_IMG_NAME, TAI.ART_IMG_PATH
+               TBA.USER_ID, TBP.ART_POST_DATE, TBU.USER_NAME, COALESCE(TAL.ART_LIKE_COUNT, 0) AS artLikeCount, COALESCE(TBC.COMMENT_COUNT, 0) AS commentCount,
+               TAI.ART_IMG_NAME, TAI.ART_IMG_PATH
         FROM TBL_ART TBA
         JOIN TBL_ART_POST TBP
         ON TBA.ID = TBP.ART_ID
@@ -189,7 +189,7 @@
 
     <!--  내 작품 좋아요  -->
     <select id="selectAllLikedArt" parameterType="Long" resultType="ArtPostDTO">
-        SELECT TBA.ID, COALESCE(TAL.ART_LIKE_COUNT, 0) AS artLikeCount, TAI.ART_IMG_NAME, TAI.ART_IMG_PATH, TBU.USER_NAME
+        SELECT TBA.ID, TBA.ART_TITLE, COALESCE(TAL.ART_LIKE_COUNT, 0) AS artLikeCount, TAI.ART_IMG_NAME, TAI.ART_IMG_PATH, TBU.USER_NAME
         FROM TBL_ART TBA
         JOIN TBL_ART_LIKE TBLU
         ON TBA.ID = TBLU.ART_ID AND TBLU.USER_ID = #{userId}
@@ -214,11 +214,10 @@
         ON TBA.ID = TAI.ART_ID
     </select>
 
-
     <!--  경매 가능 작품 조회 (좋아요 50개 이상)  -->
-    <select id="selectAllForAuction" resultType="ArtPostDTO">
+    <select id="selectAllForAuction" parameterType="Long" resultType="ArtPostDTO">
         SELECT TBA.ID , TBA.ART_TITLE, COALESCE(TAL.LIKE_COUNT, 0) AS artLikeCount,
-        TAI.ART_IMG_NAME, TAI.ART_IMG_PATH, TBA.ART_CATEGORY
+               TAI.ART_IMG_NAME, TAI.ART_IMG_PATH, TBA.ART_CATEGORY
         FROM TBL_ART TBA
         JOIN (
         SELECT ART_ID, COUNT(ID) AS LIKE_COUNT
@@ -237,7 +236,6 @@
         ) TAI ON TBA.ID = TAI.ART_ID
         WHERE TBA.USER_ID = #{userId}
     </select>
-
 
     <!--  작품 게시글 수정  -->
     <update id="update" parameterType="ArtPostVO">

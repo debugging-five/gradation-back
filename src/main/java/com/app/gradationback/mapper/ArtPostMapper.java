@@ -37,7 +37,7 @@ public interface ArtPostMapper {
     public List<ArtPostDTO> selectAllLikedArt(Long userId);
 
 //    경매 가능 작품 조회 (좋아요 50개 이상)
-    public List<ArtPostDTO> selectAllForAuction();
+    public List<ArtPostDTO> selectAllForAuction(Long userId);
 
 //    작품 게시글 수정
     public void update(ArtPostVO artPostVO);
