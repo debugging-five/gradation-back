@@ -24,8 +24,8 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public List<ArtistDTO> getArtistList(Map<String, Object> param) {
-        return artistDAO.findArtistList(param);
+    public List<ArtistDTO> getArtistList(Map<String, Object> params) {
+        return artistDAO.findArtistList(params);
     }
 
     @Override

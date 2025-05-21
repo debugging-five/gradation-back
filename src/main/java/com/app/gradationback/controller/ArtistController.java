@@ -45,17 +45,15 @@ public class ArtistController {
 //    작가 리스트 조회
     @Operation(summary = "작가 리스트 조회", description = "작가 리스트를 조회할 수 있는 API")
     @Parameters({
-            @Parameter(name = "userId", description = "조회 제외 대상 (로그인 유저)"),
             @Parameter(name = "category", description = "작품 카테고리", example = "서예"),
             @Parameter(name = "keyword", description = "작가 이름 검색", example = "김동건"),
             @Parameter(name = "order", description = "정렬 기준: name / recent", example = "name"),
-            @Parameter(name = "direction", description = "오름차순", example = "asc"),
             @Parameter(name = "cursor", description = "페이지 번호", example = "1")
     })
     @ApiResponse(responseCode = "200", description = "작가 리스트 조회 성공")
-    @GetMapping("list")
-    public ResponseEntity<List<ArtistDTO>> getArtistList(@RequestParam Map<String, Object> param) {
-        return ResponseEntity.ok(artistService.getArtistList(param));
+    @PostMapping("list")
+    public ResponseEntity<List<ArtistDTO>> getArtistList(@RequestBody Map<String, Object> params) {
+        return ResponseEntity.ok(artistService.getArtistList(params));
     }
 
 //    artist detail
