@@ -30,7 +30,6 @@ public interface UserService {
     public UserVO getIdentificationByEmailAndName(UserVO userVO);
 
 //    비밀번호 찾기 (이메일)
-//    public String getPasswordByEmail(String userEmail);
     public UserVO getPasswordByEmail(UserVO userVO);
 
 //    아이디로 이메일 조회

@@ -36,15 +36,8 @@ public class DisplayController {
     @PostMapping("registration")
     public ArtPostDTO register(@RequestBody ArtPostDTO artPostDTO) {
         log.info("{}", artPostDTO);
-        artPostService.register(artPostDTO);
-//        Map<String, Object> response = new HashMap<>();
-//        ResponseEntity.ok().body
-//        ResponseEntity.status(HttpStatus.CONFLICT).body(response);
-        Optional<ArtPostDTO> foundArtPost = artPostService.getArtPostById(artPostDTO.getArtPostId());
-        if(foundArtPost.isPresent()) {
-            return foundArtPost.get();
-        }
-        return new ArtPostDTO();
+        Long postId = artPostService.register(artPostDTO);
+        return artPostService.getArtPostById(postId).orElseThrow(() -> new RuntimeException("조회 실패"));
     }
 
 //    게시글 전체 조회 + 댓글 전체 조회
@@ -166,12 +159,5 @@ public class DisplayController {
         artPostService.removeById(postId);
     }
 
-
 }
-
-
-
-
-
-
 
