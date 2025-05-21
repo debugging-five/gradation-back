@@ -41,6 +41,8 @@ public class ArtPostDTO {
 //    TBl_ART_IMG
     @Schema(description = "작품 이미지", required = true, example = "art.jpg")
     List<ArtImgVO> images = new ArrayList<>();
+    private String artImgName;
+    private String artImgPath;
 
 //    게시글에 달린 댓글들
     List<CommentDTO> comments = new ArrayList<>();
