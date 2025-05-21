@@ -35,16 +35,9 @@ public class DisplayController {
     @ApiResponse(responseCode = "200", description = "전시 등록 성공")
     @PostMapping("registration")
     public ArtPostDTO register(@RequestBody ArtPostDTO artPostDTO) {
-        log.info("{}", artPostDTO);
-        artPostService.register(artPostDTO);
-//        Map<String, Object> response = new HashMap<>();
-//        ResponseEntity.ok().body
-//        ResponseEntity.status(HttpStatus.CONFLICT).body(response);
-        Optional<ArtPostDTO> foundArtPost = artPostService.getArtPostById(artPostDTO.getArtPostId());
-        if(foundArtPost.isPresent()) {
-            return foundArtPost.get();
-        }
-        return new ArtPostDTO();
+//        log.info("{}", artPostDTO);
+        Long postId = artPostService.register(artPostDTO);
+        return artPostService.getArtPostById(postId).orElseThrow(() -> new RuntimeException("조회 실패"));
     }
 
 //    게시글 전체 조회 + 댓글 전체 조회
@@ -86,7 +79,7 @@ public class DisplayController {
     )
     @GetMapping("/read/{postId}")
     public Map<String, Object> getPost(@PathVariable Long postId) {
-        log.info("{}", postId);
+//        log.info("{}", postId);
         Optional<ArtPostDTO> foundArtPost = artPostService.getArtPostById(postId);
         Map<String, Object> response = new HashMap<>();
 
@@ -166,12 +159,5 @@ public class DisplayController {
         artPostService.removeById(postId);
     }
 
-
 }
-
-
-
-
-
-
 

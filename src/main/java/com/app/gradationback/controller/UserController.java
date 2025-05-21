@@ -100,9 +100,6 @@ public class UserController {
     @Operation(summary = "로그인", description = "로그인을 할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "로그인 성공")
     @PostMapping("login")
-//    public String login(@RequestBody UserVO userVO) {
-//        return userService.login(userVO);
-//    }
     public ResponseEntity<Map<String, Object>> login(@RequestBody UserVO userVO) {
         Map<String, Object> response = new HashMap<>();
         Map<String, Object> claims = new HashMap<>();
@@ -145,7 +142,7 @@ public class UserController {
         Map<String, Object> response = new HashMap<>();
         String token = jwtToken != null ? jwtToken.replace("Bearer ", "") : null;
 
-        log.info("token : {}", token);
+//        log.info("token : {}", token);
 
         try {
             if (token != null && jwtTokenUtil.isTokenValid(token)) {
