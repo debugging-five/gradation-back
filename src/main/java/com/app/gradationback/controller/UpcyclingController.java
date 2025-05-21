@@ -1,5 +1,6 @@
 package com.app.gradationback.controller;
 
+import com.app.gradationback.domain.UpcyclingDTO;
 import com.app.gradationback.domain.UpcyclingVO;
 import com.app.gradationback.service.UpcyclingService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,12 +19,12 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/upcycling/api/*")
+@RequestMapping("/upcycling/api")
 public class UpcyclingController {
 
     private final UpcyclingService upcyclingService;
+    private final UpcyclingDTO upcyclingDTO;
 
     // 전체 목록 조회
     @Operation(summary = "전체 신청 목록 조회", description = "업사이클링 신청 정보 전체를 조회 할 수 있는 API")
@@ -49,7 +50,6 @@ public class UpcyclingController {
         upcyclingService.register(upcyclingVO, file);
         return ResponseEntity.ok(upcyclingService.getByUpcyclingUser(upcyclingVO.getId()).orElse(new UpcyclingVO()));
     }
-
 
     // 상태 수정
     @Operation(summary = "업사이클링 신청 상태 수정", description = "업사이클링 신청 상태를 변경하는 API.")

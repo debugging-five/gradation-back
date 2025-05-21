@@ -72,4 +72,6 @@ public class UserVO {
     @Schema(description = "학과", example = "1")
     private String userProvider;
     private Long majorId;
+
+
 }
