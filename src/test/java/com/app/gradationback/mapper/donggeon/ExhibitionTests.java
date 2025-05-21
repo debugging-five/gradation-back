@@ -202,7 +202,7 @@ public class ExhibitionTests {
         UniversityExhibitionDTO dto = new UniversityExhibitionDTO();
         dto.setUserId(2L); // 테스트용 유저 ID
 
-        List<UniversityExhibitionDTO> list = exhibitionService.getUniversity(dto);
+        List<UniversityExhibitionDTO> list = exhibitionService.getUniversity(null);
         log.info("조회된 전시회 수: {}", list.size());
 
         for (UniversityExhibitionDTO exhibition : list) {
@@ -241,6 +241,16 @@ public class ExhibitionTests {
         universityLikeVO.setUniversityExhibitionId(1L);
         universityLikeVO.setUserId(2L);
         exhibitionService.removeUniversityLike(universityLikeVO);
+    }
+
+    @Test
+    public void getUniversityTests() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("location", "서울");
+        params.put("keyword", "고려");
+        params.put("universityExhibitionStatus", "예정전시");
+        log.info("{}", exhibitionService.getUniversityImgAll(1L));
+        log.info("{}", exhibitionService.getUniversity(params));
     }
 
 }

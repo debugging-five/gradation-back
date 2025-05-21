@@ -196,21 +196,13 @@ public class ExhibitionController {
 //    대학교 전시회 불러오기
     @Operation(summary = "대학교 전시회 조회", description = "대학교 전시회를 조회할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "대학교 전시회 조회 성공")
-    @GetMapping("university/list")
-    public ResponseEntity<List<UniversityExhibitionDTO>> getUniversity(
-            @RequestParam(required = false) String location,
-            @RequestParam(required = false) String universityExhibitionStatus,
-            @RequestParam(required = false) String keyword,
-            @RequestParam Long userId
+    @PostMapping("university/list")
+    public ResponseEntity<Map<String, Object>> getUniversity(
+            @RequestBody(required = false) Map<String, Object> params
     ) {
-        UniversityExhibitionDTO universityExhibitionDTO = new UniversityExhibitionDTO();
-        universityExhibitionDTO.setLocation(location);
-        universityExhibitionDTO.setUniversityExhibitionStatus(universityExhibitionStatus);
-        universityExhibitionDTO.setKeyword(keyword);
-        universityExhibitionDTO.setUserId(userId);
-
-        List<UniversityExhibitionDTO> universityList = exhibitionService.getUniversity(universityExhibitionDTO);
-        return ResponseEntity.ok(universityList);
+        Map<String, Object> response = new HashMap<>();
+        response.put("university", exhibitionService.getUniversity(params));
+        return ResponseEntity.ok(response);
     }
 
 //    해당 대학교 전시회 이미지 조회

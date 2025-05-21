@@ -24,8 +24,8 @@ public class ArtistDAO {
     }
 
     //    작가 메인페이지
-    public List<ArtistDTO> findArtistList(Map<String, Object> param) {
-        return artistMapper.selectArtistList(param);
+    public List<ArtistDTO> findArtistList(Map<String, Object> params) {
+        return artistMapper.selectArtistList(params);
     }
 
     //    작가 디테일(작가 정보 + history)

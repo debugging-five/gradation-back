@@ -65,7 +65,7 @@ public interface ExhibitionMapper {
     public Optional<UniversityVO> findUniversityByName(String universityName);
 
 //    전시회 정보 조회
-    public List<UniversityExhibitionDTO> selectUniversity(UniversityExhibitionDTO universityExhibitionDTO);
+    public List<UniversityExhibitionDTO> selectUniversity(Map<String, Object> params);
 
 //    해당 전시회 이미지 띄우기
     public List<UniversityExhibitionImgVO> selectUniversityImgAll(Long universityExhibitionId);

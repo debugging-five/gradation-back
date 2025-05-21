@@ -27,7 +27,7 @@ public class PaymentDAO {
     }
 
 //    결제 단독 조회
-    public Optional<DeliveryDTO> findByAuctionId(Long id) {
+    public Optional<DeliveryDTO> findById(Long id) {
         return paymentMapper.select(id);
     }
 
