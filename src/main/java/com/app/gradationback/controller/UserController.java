@@ -142,7 +142,7 @@ public class UserController {
         Map<String, Object> response = new HashMap<>();
         String token = jwtToken != null ? jwtToken.replace("Bearer ", "") : null;
 
-        log.info("token : {}", token);
+//        log.info("token : {}", token);
 
         try {
             if (token != null && jwtTokenUtil.isTokenValid(token)) {
