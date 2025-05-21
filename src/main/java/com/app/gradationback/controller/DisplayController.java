@@ -35,7 +35,7 @@ public class DisplayController {
     @ApiResponse(responseCode = "200", description = "전시 등록 성공")
     @PostMapping("registration")
     public ArtPostDTO register(@RequestBody ArtPostDTO artPostDTO) {
-        log.info("{}", artPostDTO);
+//        log.info("{}", artPostDTO);
         Long postId = artPostService.register(artPostDTO);
         return artPostService.getArtPostById(postId).orElseThrow(() -> new RuntimeException("조회 실패"));
     }
@@ -79,7 +79,7 @@ public class DisplayController {
     )
     @GetMapping("/read/{postId}")
     public Map<String, Object> getPost(@PathVariable Long postId) {
-        log.info("{}", postId);
+//        log.info("{}", postId);
         Optional<ArtPostDTO> foundArtPost = artPostService.getArtPostById(postId);
         Map<String, Object> response = new HashMap<>();
 
