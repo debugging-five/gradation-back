@@ -106,9 +106,11 @@ public class ExhibitionServiceImpl implements ExhibitionService {
         exhibitionDAO.saveMajor(universityExhibitionDTO);
 //        전시회 저장
         exhibitionDAO.saveUniversityExhibition(universityExhibitionDTO);
-//        이미지 저장
-        if(universityExhibitionDTO.getUniversityExhibitionImgName() != null && universityExhibitionDTO.getUniversityExhibitionImgPath() != null) {
-            universityExhibitionDTO.setUniversityExhibitionId(universityExhibitionDTO.getId());
+    }
+
+    @Override
+    public void registerUniversityImg(UniversityExhibitionDTO universityExhibitionDTO) {
+        if(universityExhibitionDTO.getUniversityExhibitionImgPath() != null && universityExhibitionDTO.getUniversityExhibitionImgName() != null) {
             exhibitionDAO.saveUniversityExhibitionImg(universityExhibitionDTO);
         }
     }

@@ -178,9 +178,19 @@ public class ExhibitionController {
     @Operation(summary = "대학교 전시회 신청", description = "대학교 전시회를 신청할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "대학교 전시회 신청 성공")
     @PostMapping("university/register")
-    public UniversityExhibitionDTO registerUniversity(@RequestBody UniversityExhibitionDTO universityExhibitionDTO) {
-        exhibitionService.registerUniversity(universityExhibitionDTO);
-        return universityExhibitionDTO;
+    public ResponseEntity<Map<String, Object>> registerUniversity(@RequestBody UniversityExhibitionDTO universityExhibitionDTO) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            exhibitionService.registerUniversity(universityExhibitionDTO);
+        } catch (Exception e) {
+            response.put("message", e.getMessage());
+            response.put("status", universityExhibitionDTO);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        }
+        response.put("massage", "등록이 완료되었습니다");
+        response.put("status", universityExhibitionDTO);
+        return ResponseEntity.ok(response);
     }
 
 //    대학교 전시회 불러오기
