@@ -39,7 +39,7 @@
             ON TU.MAJOR_ID = TM.ID
         JOIN TBL_UNIVERSITY TUS
             ON TM.UNIVERSITY_ID = TUS.ID
-        WHERE TU.USER_WRITER_STATUS = '승인' AND TU.ID != #{userId}
+        WHERE TU.USER_WRITER_STATUS = '승인'
 
         <choose>
             <when test="category != null and category.equals('공예')">
@@ -68,28 +68,17 @@
         <if test="keyword != null and keyword != ''">
             AND TU.USER_NAME LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
         </if>
-
         <choose>
             <when test="order != null and order.equals('name')">
-                ORDER BY TU.USER_NAME
+                ORDER BY TU.USER_NAME DESC
             </when>
             <when test="order != null and order.equals('recent')">
-                ORDER BY TU.ID
+                ORDER BY TU.ID DESC
             </when>
             <otherwise>
-                ORDER BY TU.ID
+                ORDER BY TU.ID DESC
             </otherwise>
         </choose>
-
-        <choose>
-            <when test="direction != null and direction.equals('asc')">
-                ASC
-            </when>
-            <otherwise>
-                DESC
-            </otherwise>
-        </choose>
-
         OFFSET (#{cursor} - 1) * 15 ROWS
         FETCH NEXT 15 ROWS ONLY
     </select>
