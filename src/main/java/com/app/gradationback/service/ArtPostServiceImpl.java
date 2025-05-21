@@ -1,6 +1,5 @@
 package com.app.gradationback.service;
 
-import com.app.gradationback.domain.ArtImgVO;
 import com.app.gradationback.domain.ArtPostDTO;
 import com.app.gradationback.domain.ArtPostVO;
 import com.app.gradationback.domain.ArtVO;
@@ -9,13 +8,16 @@ import com.app.gradationback.repository.ArtImgDAO;
 import com.app.gradationback.repository.ArtPostDAO;
 import com.app.gradationback.repository.CommentDAO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(rollbackFor = Exception.class)
@@ -28,7 +30,7 @@ public class ArtPostServiceImpl implements ArtPostService {
 
 //    작품 게시글 등록 (작품 정보 + 작품 이미지 + 작품 게시글)
     @Override
-    public void register(ArtPostDTO artPostDTO) {
+    public Long register(ArtPostDTO artPostDTO) {
         ArtVO artVO = new ArtVO();
         artVO.setArtTitle(artPostDTO.getArtTitle());
         artVO.setArtCategory(artPostDTO.getArtCategory());
@@ -38,20 +40,14 @@ public class ArtPostServiceImpl implements ArtPostService {
         artVO.setArtEndDate(artPostDTO.getArtEndDate());
         artVO.setUserId(artPostDTO.getUserId());
         artDAO.save(artVO);
-
         Long artId = artVO.getId();
-
-        ArtImgVO artImgVO = new ArtImgVO();
-        artImgVO.setArtId(artId);
-        artImgVO.setArtImgName(artPostDTO.getArtImgName());
-        artImgVO.setArtImgPath(artPostDTO.getArtImgPath());
-        artImgDAO.save(artImgVO);
 
         ArtPostVO artPostVO = new ArtPostVO();
         artPostVO.setArtId(artId);
-        artPostVO.setArtPostDate(artPostDTO.getArtPostDate());
+        artPostVO.setArtPostDate(new Timestamp(System.currentTimeMillis()));
         artPostVO.setUserId(artPostDTO.getUserId());
         artPostDAO.save(artPostVO);
+        return artPostVO.getId();
     }
 
 //    작품 게시글 전체 조회
@@ -119,5 +115,4 @@ public class ArtPostServiceImpl implements ArtPostService {
             artDAO.deleteById(artId);
         });
     }
-
 }
