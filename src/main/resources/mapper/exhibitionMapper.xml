@@ -329,7 +329,7 @@
     </select>
 
 <!--    대학교 전시회 정보 조회 (지역 + 전시상태 + 검색) -->
-    <select id="selectUniversity" parameterType="UniversityExhibitionDTO" resultType="UniversityExhibitionDTO">
+    <select id="selectUniversity" parameterType="Map" resultType="UniversityExhibitionDTO">
         SELECT
             TUE.ID,
             TU.UNIVERSITY_LOGO_IMG_NAME,
@@ -350,7 +350,7 @@
         JOIN TBL_UNIVERSITY TU
             ON TM.UNIVERSITY_ID = TU.ID
         LEFT JOIN TBL_UNIVERSITY_LIKE TUL
-            ON TUL.UNIVERSITY_EXHIBITION_ID = TUE.ID AND TUL.USER_ID = #{userId}
+            ON TUL.UNIVERSITY_EXHIBITION_ID = TUE.ID
         WHERE TUE.UNIVERSITY_EXHIBITION_STATUS = '승인' AND TUE.UNIVERSITY_EXHIBITION_END_DATE >= SYSDATE
 
         <if test="location != null and location != '' and location != '전체지역'">
@@ -360,10 +360,10 @@
             )
         </if>
 
-        <if test="universityExhibitionStatus != null and universityExhibitionStatus.equals('예정 전시')">
+        <if test="universityExhibitionStatus != null and universityExhibitionStatus.equals('예정전시')">
             AND TUE.UNIVERSITY_EXHIBITION_START_DATE &gt; SYSDATE
         </if>
-        <if test="universityExhibitionStatus != null and universityExhibitionStatus.equals('현재 전시')">
+        <if test="universityExhibitionStatus != null and universityExhibitionStatus.equals('현재전시')">
             AND TUE.UNIVERSITY_EXHIBITION_START_DATE &lt;= SYSDATE
             AND TUE.UNIVERSITY_EXHIBITION_END_DATE &gt;= SYSDATE
         </if>
