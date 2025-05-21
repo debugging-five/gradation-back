@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface PaymentService {
 
 //    결제
-    public String payment(Map<String, Object> paymentData);
+    public Optional<DeliveryDTO> payment(Map<String, Object> paymentData);
 
 //    결제 취소
     public void paymentCancel(PaymentCancellationVO paymentCancellationVO);

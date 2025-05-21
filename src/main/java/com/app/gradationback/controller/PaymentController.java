@@ -14,13 +14,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @Slf4j
@@ -34,10 +32,19 @@ public class PaymentController {
     @Operation(summary = "결제", description = "결제 API")
     @ApiResponse(responseCode = "200", description = "결제 성공")
     @PostMapping("/payment")
-    public ResponseEntity<String> processPayment(@RequestBody Map<String, Object> paymentData) {
-//        log.info("processPayment: " + paymentData);
-        String response = paymentService.payment(paymentData);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<Map<String, Object>> processPayment(@RequestBody Map<String, Object> paymentData) {
+        Map<String, Object> response = new HashMap<>();
+        Optional<DeliveryDTO> foundPayment;
+        try {
+            foundPayment = paymentService.payment(paymentData);
+        }catch (Exception e) {
+            response.put("message", "등록 실패" + e.getMessage());
+            response.put("status", paymentData);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        }
+        response.put("message", "등록 성공");
+        response.put("status", foundPayment.get());
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Operation(summary = "결제취소", description = "결제 취소 API")
