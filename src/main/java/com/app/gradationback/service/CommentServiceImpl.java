@@ -1,6 +1,7 @@
 package com.app.gradationback.service;
 
 import com.app.gradationback.domain.ArtPostDTO;
+import com.app.gradationback.domain.CommentDTO;
 import com.app.gradationback.domain.CommentVO;
 import com.app.gradationback.repository.CommentDAO;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +44,7 @@ public class CommentServiceImpl implements CommentService {
 
 //    댓글 전체 조회 (postId로)
     @Override
-    public List<CommentVO> getAllCommentByPostId(Long postId) {
+    public List<CommentDTO> getAllCommentByPostId(Long postId) {
         return commentDAO.findAllByPostId(postId);
     }
 

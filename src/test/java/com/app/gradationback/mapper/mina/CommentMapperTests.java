@@ -3,6 +3,7 @@ package com.app.gradationback.mapper.mina;
 import com.app.gradationback.domain.CommentVO;
 import com.app.gradationback.mapper.ArtPostMapper;
 import com.app.gradationback.mapper.CommentMapper;
+import com.app.gradationback.repository.CommentDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class CommentMapperTests {
 
     @Autowired
     private ArtPostMapper artPostMapper;
+
+    @Autowired
+    private CommentDAO commentDAO;
 
 //    댓글 등록
     @Test
@@ -71,6 +75,11 @@ public class CommentMapperTests {
     @Test
     public void deleteAllReplyByUserIdTest() {
         commentMapper.deleteAllByUserId(58L);
+    }
+
+    @Test
+    public void getCommentByPostIdTest() {
+        log.info("comments :{}", commentDAO.findAllByPostId(1L));
     }
 
 }
