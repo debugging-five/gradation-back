@@ -43,7 +43,7 @@ public class ApprovalServiceImpl implements ApprovalService {
             case "writer" -> approvalDAO.findWriterPendingById(id);
             case "university" -> approvalDAO.findUniversityPendingById(id);
             case "exhibition" -> approvalDAO.findUniversityExhibitionPendingById(id);
-            default -> throw new IllegalArgumentException("지원하지 않는 타입");
+            default -> throw new RuntimeException("지원하지 않는 타입");
         };
     }
 
@@ -57,7 +57,7 @@ public class ApprovalServiceImpl implements ApprovalService {
             case "writer" -> approvalDAO.updateWriterStatus((UserVO) userVO );
             case "university" -> approvalDAO.updateUniversityStatus((UserVO) userVO );
             case "exhibition" -> approvalDAO.updateUniversityExhibitionStatus((UniversityExhibitionDTO) universityExhibitionDTO);
-            default -> throw new IllegalArgumentException("지원하지 않는 타입");
+            default -> throw new RuntimeException("지원하지 않는 타입");
         }
 
     }
