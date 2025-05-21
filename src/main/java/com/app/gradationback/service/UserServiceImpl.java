@@ -63,10 +63,6 @@ public class UserServiceImpl implements UserService {
     }
 
 //    비밀번호 찾기 (이메일)
-//    @Override
-//    public String getPasswordByEmail(String userEmail) {
-//        return userDAO.findPasswordByEmail(userEmail);
-//    }
     @Override
     public UserVO getPasswordByEmail(UserVO userVO) {
         return userDAO.findPasswordByEmail(userVO);
@@ -87,10 +83,6 @@ public class UserServiceImpl implements UserService {
 //    비밀번호 수정
     @Override
     public void modifyPassword(UserVO userVO) {
-//        UserVO userVO = new UserVO();
-//        userVO.setUserIdentification(userIdentification);
-//        userVO.setUserPassword(userPassword);
-
 //        기존 비밀번호와 일치 여부 확인
         UserVO foundUser = userDAO.findUserByIdentification(userVO.getUserIdentification())
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
@@ -99,8 +91,6 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("기존 비밀번호와 일치하는 비밀번호는 사용할 수 없습니다.");
         }
 
-
-//        userDAO.updateUser(userVO);
         userDAO.updatePassword(userVO);
     }
 
