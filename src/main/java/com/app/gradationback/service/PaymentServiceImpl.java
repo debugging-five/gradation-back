@@ -7,7 +7,6 @@ import com.app.gradationback.domain.PaymentVO;
 import com.app.gradationback.repository.DeliveryDAO;
 import com.app.gradationback.repository.PaymentDAO;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -40,7 +38,7 @@ public class PaymentServiceImpl implements PaymentService {
     private String apiUrl;
 
     @Override
-    public String payment(Map<String, Object> paymentData) {
+    public Optional<DeliveryDTO> payment(Map<String, Object> paymentData) {
 
         RestTemplate restTemplate = new RestTemplate();
         Long auctionId = Long.valueOf(paymentData.get("auctionId").toString());
@@ -79,15 +77,18 @@ public class PaymentServiceImpl implements PaymentService {
             deliveryVO.setDeliveryReceiver(paymentData.get("deliveryReceiver").toString());
             deliveryVO.setDeliveryPhone(paymentData.get("deliveryPhone").toString());
 
-            log.info("deliveryVO: " + deliveryVO);
+//            log.info("deliveryVO: " + deliveryVO);
 
             deliveryDAO.save(deliveryVO);
 
+            return paymentDAO.findById(paymentVO.getId());
+
         } catch (JsonProcessingException e) {
-            return null;
+            log.error(e.getMessage());
         }
 
-        return response.toString();
+        return Optional.empty();
+
     }
 
     @Override
@@ -97,7 +98,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public Optional<DeliveryDTO> getPaymentById(Long id) {
-        return paymentDAO.findByAuctionId(id);
+        return paymentDAO.findById(id);
     }
 
     @Override
