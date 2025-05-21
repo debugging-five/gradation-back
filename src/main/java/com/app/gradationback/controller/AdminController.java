@@ -104,7 +104,7 @@ public class AdminController {
     }
 
     @Operation(summary = "FAQ 삭제", description = "FAQ 내용을 삭제하는 API")
-    @DeleteMapping("/faq/remove/{id}")
+    @DeleteMapping("/faq/{id}")
     public void removeFaq(@PathVariable Long id, HttpServletRequest request) {
         if (!adminCheckUtil.isAdmin(request)) {
             throw new RuntimeException("관리자만 접근 가능합니다.");
