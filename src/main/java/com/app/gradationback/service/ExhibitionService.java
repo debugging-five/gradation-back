@@ -47,7 +47,7 @@ public interface ExhibitionService {
     public void registerUniversityImg(UniversityExhibitionDTO universityExhibitionDTO);
 
 //    대학 젼시회 정보 조회
-    public List<UniversityExhibitionDTO> getUniversity(UniversityExhibitionDTO universityExhibitionDTO);
+    public List<UniversityExhibitionDTO> getUniversity(Map<String, Object> params);
 
 //    전시회 이미지
     public List<UniversityExhibitionImgVO> getUniversityImgAll(Long universityExhibitionId);

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 @Component
 @Data
@@ -35,6 +36,8 @@ public class UniversityExhibitionDTO {
     private String universityExhibitionImgName;
     private String universityExhibitionImgPath;
     private Long universityExhibitionId;
+
+    private List<UniversityExhibitionImgVO> universityExhibitionImgList;
 
 //    TBL_MAJOR
     private String majorName;
