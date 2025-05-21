@@ -50,6 +50,8 @@ public class FileController {
         FileSaveUtil fileSave = new FileSaveUtil();
         Optional<ArtVO> foundArt = artService.getArt(artId);
         if (foundArt.isPresent()) {
+            artId = foundArt.get().getId();
+            log.info(artId.toString());
             filePath = filePath + "/" + categoryMap.get(foundArt.get().getArtCategory());
         }
 
@@ -58,7 +60,9 @@ public class FileController {
             artImgVO.setArtImgName(uuid + file.getOriginalFilename());
             artImgVO.setArtImgPath(filePath);
             artImgVO.setArtId(artId);
+            log.info(artImgVO.toString());
             artImgService.register(artImgVO);
+            log.info(artImgVO.toString());
 
             fileSave.fileSave(file, artImgVO.getArtImgPath(), artImgVO.getArtImgName());
         }

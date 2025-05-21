@@ -1,6 +1,7 @@
 package com.app.gradationback.repository;
 
 import com.app.gradationback.domain.ArtPostDTO;
+import com.app.gradationback.domain.CommentDTO;
 import com.app.gradationback.domain.CommentVO;
 import com.app.gradationback.mapper.CommentMapper;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +37,7 @@ public class CommentDAO {
     }
 
 //    댓글 전체 조회 (postId로)
-    public List<CommentVO> findAllByPostId(Long postId) {
+    public List<CommentDTO> findAllByPostId(Long postId) {
         return commentMapper.selectAllByPostId(postId);
     }
 

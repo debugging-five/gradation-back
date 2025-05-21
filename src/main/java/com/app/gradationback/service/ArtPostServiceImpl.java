@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -75,8 +76,28 @@ public class ArtPostServiceImpl implements ArtPostService {
 //    카테고리 + 드롭다운 + 페이지네이션
     @Override
     public List<ArtPostDTO> getArtListByCategoryAndDropdown(Map<String, Object> params) {
-        return artPostDAO.findArtListByCategoryAndDropdown(params);
-    }
+
+        if (params.get("category").equals("sculpture")) {
+            params.put("category", "조각");
+        }else if(params.get("category").equals("craft")) {
+            params.put("category", "공예");
+        }else if(params.get("category").equals("architecture")) {
+            params.put("category", "건축");
+        }else if(params.get("category").equals("calligraphy")) {
+            params.put("category", "서예");
+        }else if(params.get("category").equals("painting")) {
+            params.put("category", "회화");
+        }else {
+//            korean
+            params.put("category", "한국");
+        }
+
+        return artPostDAO.findArtListByCategoryAndDropdown(params).stream().map(post -> {
+            post.setComments(commentDAO.findAllByPostId(post.getArtPostId()));
+            post.setImages(artImgDAO.findAllByArtId(post.getId()));
+            return post;
+        }).toList();
+    };
 
 //    내 작품 리스트
     @Override
