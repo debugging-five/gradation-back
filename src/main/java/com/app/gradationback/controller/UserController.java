@@ -100,9 +100,6 @@ public class UserController {
     @Operation(summary = "로그인", description = "로그인을 할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "로그인 성공")
     @PostMapping("login")
-//    public String login(@RequestBody UserVO userVO) {
-//        return userService.login(userVO);
-//    }
     public ResponseEntity<Map<String, Object>> login(@RequestBody UserVO userVO) {
         Map<String, Object> response = new HashMap<>();
         Map<String, Object> claims = new HashMap<>();
@@ -145,7 +142,7 @@ public class UserController {
         Map<String, Object> response = new HashMap<>();
         String token = jwtToken != null ? jwtToken.replace("Bearer ", "") : null;
 
-        log.info("token : {}", token);
+//        log.info("token : {}", token);
 
         try {
             if (token != null && jwtTokenUtil.isTokenValid(token)) {
@@ -295,19 +292,6 @@ public class UserController {
     @PostMapping("/find-password")
     public ResponseEntity<Map<String, Object>> findPassword(@RequestBody UserVO userVO) {
         Map<String, Object> response = new HashMap<>();
-//        try {
-//            String foundPassword = userService.getPasswordByEmail(userEmail);
-//            if (foundPassword != null) {
-//                response.put("foundPassword", foundPassword);
-//                response.put("message", "비밀번호 찾기 성공했습니다.");
-//                return ResponseEntity.ok(response);
-//            }
-//            response.put("message", "입력하신 이메일에 해당하는 비밀번호가 존재하지 않습니다.");
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-//        } catch (Exception e) {
-//            response.put("message", "서버 오류");
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-//        }
         try {
             UserVO foundUser = userService.getPasswordByEmail(userVO);
 

@@ -17,8 +17,7 @@ public interface ExhibitionService {
 
 //    전시회 등록(전시회 정보 + 작품 50개 가져오기 + 지난 전시회 등록)
     public GradationExhibitionVO registerGradation(GradationExhibitionDTO gradationExhibitionDTO);
-//    지난 전시회 등록
-//    public void registerPastGradationArt(Map<String, Object> params);
+
 //    전시회 장소 이미지 추가
     public void registerGradationImage(GradationExhibitionImgVO gradationExhibitionImgVO);
 
@@ -41,11 +40,14 @@ public interface ExhibitionService {
     public List<ExhibitionPastDTO> getExhibitionArtList(Map<String, Object> params);
 
 //    대학교 전시회
-//    신청 양식(대학교 + 학과 + 대학교 전시회 + 대학교 전시회 이미지)
+//    신청 양식(대학교 + 학과 + 대학교 전시회)
     public void registerUniversity(UniversityExhibitionDTO universityExhibitionDTO);
 
+//    신청 양식(대학교 작년도 이미지)
+    public void registerUniversityImg(UniversityExhibitionDTO universityExhibitionDTO);
+
 //    대학 젼시회 정보 조회
-    public List<UniversityExhibitionDTO> getUniversity(UniversityExhibitionDTO universityExhibitionDTO);
+    public List<UniversityExhibitionDTO> getUniversity(Map<String, Object> params);
 
 //    전시회 이미지
     public List<UniversityExhibitionImgVO> getUniversityImgAll(Long universityExhibitionId);

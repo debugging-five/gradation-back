@@ -25,6 +25,7 @@
         <typeAlias type="com.app.gradationback.domain.QnaVO" alias="QnaVO" />
         <typeAlias type="com.app.gradationback.domain.CommentLikeVO" alias="CommentLikeVO" />
         <typeAlias type="com.app.gradationback.domain.CommentVO" alias="CommentVO" />
+        <typeAlias type="com.app.gradationback.domain.CommentDTO" alias="CommentDTO" />
         <typeAlias type="com.app.gradationback.domain.UniversityExhibitionImgVO" alias="UniversityExhibitionImgVO" />
         <typeAlias type="com.app.gradationback.domain.UniversityExhibitionVO" alias="UniversityExhibitionVO" />
         <typeAlias type="com.app.gradationback.domain.UniversityLikeVO" alias="UniversityLikeVO" />

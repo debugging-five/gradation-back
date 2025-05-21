@@ -10,14 +10,16 @@ import java.util.Date;
 public class UpcyclingDTO {
 //    TBL_UPCYCLING
     private Long id;
-    private String upcyclingCategory;
-    private String upcyclingSize;
-    private Date upcyclingDate;
     private String upcyclingAddress;
-    private String upcyclingImgName;
-    private String upcyclingImgPath;
+    private String upcyclingDetailAddress;
+    private String upcyclingEmail;
+    private String upcyclingPhone;
+    private String upcyclingDate;
+    private int upcyclingSizeSmall;
+    private int upcyclingSizeMedium;
+    private int upcyclingSizeLarge;
+    private String upcyclingMaterials;
     private String upcyclingSignificant;
-    private String upcyclingStatus;
     private Long userId;
 
 //    TBL_USER

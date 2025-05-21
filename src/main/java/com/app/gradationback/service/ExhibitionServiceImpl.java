@@ -1,6 +1,7 @@
 package com.app.gradationback.service;
 
 import com.app.gradationback.domain.*;
+import com.app.gradationback.mapper.ExhibitionMapper;
 import com.app.gradationback.repository.ExhibitionDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -106,31 +107,34 @@ public class ExhibitionServiceImpl implements ExhibitionService {
         exhibitionDAO.saveMajor(universityExhibitionDTO);
 //        전시회 저장
         exhibitionDAO.saveUniversityExhibition(universityExhibitionDTO);
-//        이미지 저장
-        if(universityExhibitionDTO.getUniversityExhibitionImgName() != null && universityExhibitionDTO.getUniversityExhibitionImgPath() != null) {
-            universityExhibitionDTO.setUniversityExhibitionId(universityExhibitionDTO.getId());
+    }
+
+    @Override
+    public void registerUniversityImg(UniversityExhibitionDTO universityExhibitionDTO) {
+        if(universityExhibitionDTO.getUniversityExhibitionImgPath() != null && universityExhibitionDTO.getUniversityExhibitionImgName() != null) {
             exhibitionDAO.saveUniversityExhibitionImg(universityExhibitionDTO);
         }
     }
 
 //    대학 전시회 정보
     @Override
-    public List<UniversityExhibitionDTO> getUniversity(UniversityExhibitionDTO universityExhibitionDTO) {
-        List<UniversityExhibitionDTO> universityList = exhibitionDAO.findUniversity(universityExhibitionDTO);
+    public List<UniversityExhibitionDTO> getUniversity(Map<String, Object> params) {
+        return exhibitionDAO.findUniversity(params).stream()
+                .map((university) -> {
+                    university.setUniversityExhibitionImgList(exhibitionDAO.findUniversityImgAll(university.getId()));
+                    return university;
+                })
+                .map(university -> {
+                    Date now = new Date();
+                    Date startDate = university.getUniversityExhibitionStartDate();
 
-        for(UniversityExhibitionDTO university : universityList) {
-            Date now = new Date();
-            Date startDate = university.getUniversityExhibitionStartDate();
-            Date endDate = university.getUniversityExhibitionEndDate();
-
-            if(now.before(startDate)) {
-                university.setUniversityExhibitionState("전시 예정");
-            } else {
-                university.setUniversityExhibitionState("전시 중");
-            }
-        }
-
-        return universityList;
+                    if(now.before(startDate)) {
+                        university.setUniversityExhibitionState("전시 예정");
+                    } else {
+                        university.setUniversityExhibitionState("전시 중");
+                    }
+                    return university;
+                }).toList();
     }
 
 //    대학 전시회 사진

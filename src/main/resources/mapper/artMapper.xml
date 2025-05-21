@@ -32,7 +32,7 @@
         WHERE ID = #{id}
     </delete>
 
-    <!--    관리자용 승인 대기 목록-->
+    <!--  관리자용 승인 대기 목록  -->
     <select id="selectAllPending" resultType="ArtDTO">
         SELECT
             TBA.ID, ART_TITLE, ART_CATEGORY, ART_MATERIAL, ART_SIZE, ART_DESCRIPTION, ART_END_DATE, ART_STATUS,
@@ -45,7 +45,7 @@
         ORDER BY ART_END_DATE DESC
     </select>
 
-    <!--    관리자용 대기 작품 상세 조회-->
+    <!--  관리자용 대기 작품 상세 조회  -->
     <select id="selectPendingById" parameterType="Long" resultType="ArtDTO">
         SELECT
             TBA.ID, ART_TITLE, ART_CATEGORY, ART_MATERIAL, ART_SIZE, ART_DESCRIPTION, ART_END_DATE, ART_STATUS,
@@ -57,7 +57,7 @@
         WHERE TBA.ID = #{id}
     </select>
 
-    <!--    관리자용 신청 작품 상태 변경 (승인 / 반려)-->
+    <!--  관리자용 신청 작품 상태 변경 (승인 / 반려)  -->
     <update id="updateStatus" parameterType="ArtDTO">
         UPDATE TBL_ART
         SET ART_STATUS = #{artStatus}
@@ -88,7 +88,5 @@
         DELETE FROM TBL_ART_LIKE
         WHERE ART_ID = #{artId}
     </delete>
-
-
 
 </mapper>

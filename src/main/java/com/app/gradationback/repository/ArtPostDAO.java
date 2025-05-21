@@ -55,8 +55,8 @@ public class ArtPostDAO {
     public List<ArtPostDTO> findAllLikedArt(Long userId) { return artPostMapper.selectAllLikedArt(userId); }
 
 //    경매 가능 작품 조회 (좋아요 50개 이상)
-    public List<ArtPostDTO> findAllForAuction() {
-        return artPostMapper.selectAllForAuction();
+    public List<ArtPostDTO> findAllForAuction(Long userId) {
+        return artPostMapper.selectAllForAuction(userId);
     }
 
 //    작품 게시글 수정

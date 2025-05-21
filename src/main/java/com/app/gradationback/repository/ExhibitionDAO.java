@@ -5,6 +5,7 @@ import com.app.gradationback.mapper.ExhibitionMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -103,8 +104,8 @@ public class ExhibitionDAO {
     }
 
 //    대학 전시회 정보 조회
-    public List<UniversityExhibitionDTO> findUniversity(UniversityExhibitionDTO universityExhibitionDTO) {
-        return exhibitionMapper.selectUniversity(universityExhibitionDTO);
+    public List<UniversityExhibitionDTO> findUniversity(Map<String, Object> params) {
+        return exhibitionMapper.selectUniversity(params);
     }
 
 //    대학 전시회 이미지 조회

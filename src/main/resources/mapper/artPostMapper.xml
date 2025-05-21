@@ -75,8 +75,8 @@
     <!--  카테고리 + 드롭다운 + 페이지네이션  -->
     <select id="selectArtListByCategoryAndDropdown" parameterType="Map" resultType="ArtPostDTO">
         SELECT TBA.ID, TBA.ART_TITLE, TBA.ART_CATEGORY, TBA.ART_MATERIAL, TBA.ART_SIZE, TBA.ART_DESCRIPTION, TBA.ART_END_DATE,
-        TBA.USER_ID, TBP.ART_POST_DATE, TBU.USER_NAME, COALESCE(TAL.ART_LIKE_COUNT, 0) AS artLikeCount, COALESCE(TBC.COMMENT_COUNT, 0) AS commentCount,
-        TAI.ART_IMG_NAME, TAI.ART_IMG_PATH
+               TBA.USER_ID, TBP.ART_POST_DATE, TBU.USER_NAME, COALESCE(TAL.ART_LIKE_COUNT, 0) AS ART_LIKE_COUNT, COALESCE(TBC.COMMENT_COUNT, 0) AS COMMENT_COUNT,
+               TBC.ART_POST_ID
         FROM TBL_ART TBA
         JOIN TBL_ART_POST TBP
         ON TBA.ID = TBP.ART_ID
@@ -142,25 +142,16 @@
         <!-- 드롭다운 필터링 (좋아요순, 댓글순, 등록순) -->
         <choose>
             <when test="order != null and order.equals('popular')">
-                ORDER BY ART_LIKE_COUNT
+                ORDER BY ART_LIKE_COUNT DESC
             </when>
             <when test="order != null and order.equals('comment')">
-                ORDER BY COMMENT_COUNT
+                ORDER BY COMMENT_COUNT DESC
             </when>
             <when test="order != null and order.equals('date')">
-                ORDER BY TBP.ART_POST_DATE
+                ORDER BY TBP.ART_POST_DATE DESC
             </when>
             <otherwise>
-                ORDER BY TBA.ID
-            </otherwise>
-        </choose>
-
-        <choose>
-            <when test="direction != null and direction.equals('asc')">
-                ASC
-            </when>
-            <otherwise>
-                DESC
+                ORDER BY TBA.ID DESC
             </otherwise>
         </choose>
         OFFSET (#{cursor} - 1) * 15 ROWS
@@ -189,7 +180,7 @@
 
     <!--  내 작품 좋아요  -->
     <select id="selectAllLikedArt" parameterType="Long" resultType="ArtPostDTO">
-        SELECT TBA.ID, COALESCE(TAL.ART_LIKE_COUNT, 0) AS artLikeCount, TAI.ART_IMG_NAME, TAI.ART_IMG_PATH, TBU.USER_NAME
+        SELECT TBA.ID, TBA.ART_TITLE, COALESCE(TAL.ART_LIKE_COUNT, 0) AS artLikeCount, TAI.ART_IMG_NAME, TAI.ART_IMG_PATH, TBU.USER_NAME
         FROM TBL_ART TBA
         JOIN TBL_ART_LIKE TBLU
         ON TBA.ID = TBLU.ART_ID AND TBLU.USER_ID = #{userId}
@@ -214,11 +205,10 @@
         ON TBA.ID = TAI.ART_ID
     </select>
 
-
     <!--  경매 가능 작품 조회 (좋아요 50개 이상)  -->
-    <select id="selectAllForAuction" resultType="ArtPostDTO">
+    <select id="selectAllForAuction" parameterType="Long" resultType="ArtPostDTO">
         SELECT TBA.ID , TBA.ART_TITLE, COALESCE(TAL.LIKE_COUNT, 0) AS artLikeCount,
-        TAI.ART_IMG_NAME, TAI.ART_IMG_PATH
+               TAI.ART_IMG_NAME, TAI.ART_IMG_PATH, TBA.ART_CATEGORY
         FROM TBL_ART TBA
         JOIN (
         SELECT ART_ID, COUNT(ID) AS LIKE_COUNT
@@ -235,8 +225,8 @@
         GROUP BY ART_ID
         ) TAI2 ON TAI1.ART_ID = TAI2.ART_ID AND TAI1.ID = TAI2.MIN_ID
         ) TAI ON TBA.ID = TAI.ART_ID
+        WHERE TBA.USER_ID = #{userId}
     </select>
-
 
     <!--  작품 게시글 수정  -->
     <update id="update" parameterType="ArtPostVO">

@@ -1,6 +1,5 @@
 package com.app.gradationback.service;
 
-import com.app.gradationback.domain.ArtImgVO;
 import com.app.gradationback.domain.ArtPostDTO;
 import com.app.gradationback.domain.ArtPostVO;
 import com.app.gradationback.domain.ArtVO;
@@ -9,13 +8,17 @@ import com.app.gradationback.repository.ArtImgDAO;
 import com.app.gradationback.repository.ArtPostDAO;
 import com.app.gradationback.repository.CommentDAO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(rollbackFor = Exception.class)
@@ -28,7 +31,7 @@ public class ArtPostServiceImpl implements ArtPostService {
 
 //    작품 게시글 등록 (작품 정보 + 작품 이미지 + 작품 게시글)
     @Override
-    public void register(ArtPostDTO artPostDTO) {
+    public Long register(ArtPostDTO artPostDTO) {
         ArtVO artVO = new ArtVO();
         artVO.setArtTitle(artPostDTO.getArtTitle());
         artVO.setArtCategory(artPostDTO.getArtCategory());
@@ -38,20 +41,14 @@ public class ArtPostServiceImpl implements ArtPostService {
         artVO.setArtEndDate(artPostDTO.getArtEndDate());
         artVO.setUserId(artPostDTO.getUserId());
         artDAO.save(artVO);
-
         Long artId = artVO.getId();
-
-        ArtImgVO artImgVO = new ArtImgVO();
-        artImgVO.setArtId(artId);
-        artImgVO.setArtImgName(artPostDTO.getArtImgName());
-        artImgVO.setArtImgPath(artPostDTO.getArtImgPath());
-        artImgDAO.save(artImgVO);
 
         ArtPostVO artPostVO = new ArtPostVO();
         artPostVO.setArtId(artId);
-        artPostVO.setArtPostDate(artPostDTO.getArtPostDate());
+        artPostVO.setArtPostDate(new Timestamp(System.currentTimeMillis()));
         artPostVO.setUserId(artPostDTO.getUserId());
         artPostDAO.save(artPostVO);
+        return artPostVO.getId();
     }
 
 //    작품 게시글 전체 조회
@@ -79,8 +76,28 @@ public class ArtPostServiceImpl implements ArtPostService {
 //    카테고리 + 드롭다운 + 페이지네이션
     @Override
     public List<ArtPostDTO> getArtListByCategoryAndDropdown(Map<String, Object> params) {
-        return artPostDAO.findArtListByCategoryAndDropdown(params);
-    }
+
+        if (params.get("category").equals("sculpture")) {
+            params.put("category", "조각");
+        }else if(params.get("category").equals("craft")) {
+            params.put("category", "공예");
+        }else if(params.get("category").equals("architecture")) {
+            params.put("category", "건축");
+        }else if(params.get("category").equals("calligraphy")) {
+            params.put("category", "서예");
+        }else if(params.get("category").equals("painting")) {
+            params.put("category", "회화");
+        }else {
+//            korean
+            params.put("category", "한국");
+        }
+
+        return artPostDAO.findArtListByCategoryAndDropdown(params).stream().map(post -> {
+            post.setComments(commentDAO.findAllByPostId(post.getArtPostId()));
+            post.setImages(artImgDAO.findAllByArtId(post.getId()));
+            return post;
+        }).toList();
+    };
 
 //    내 작품 리스트
     @Override
@@ -96,8 +113,8 @@ public class ArtPostServiceImpl implements ArtPostService {
 
 //    경매 가능 작품 조회 (좋아요 50개 이상)
     @Override
-    public List<ArtPostDTO> getArtListForAuction() {
-        return artPostDAO.findAllForAuction();
+    public List<ArtPostDTO> getArtListForAuction(Long userId) {
+        return artPostDAO.findAllForAuction(userId);
     }
 
 //    작품 게시글 수정
@@ -119,5 +136,4 @@ public class ArtPostServiceImpl implements ArtPostService {
             artDAO.deleteById(artId);
         });
     }
-
 }

@@ -3,6 +3,7 @@ package com.app.gradationback.controller;
 import com.app.gradationback.domain.ArtImgVO;
 import com.app.gradationback.domain.ArtVO;
 import com.app.gradationback.domain.GradationExhibitionImgVO;
+import com.app.gradationback.domain.UniversityExhibitionDTO;
 import com.app.gradationback.repository.ArtImgDAO;
 import com.app.gradationback.repository.ExhibitionDAO;
 import com.app.gradationback.service.ArtImgService;
@@ -44,11 +45,13 @@ public class FileController {
         categoryMap.put("서예", "calligraphy");
         categoryMap.put("공예", "craft");
 
-        String filePath = "art";
+        String filePath = "images/display/art";
         String uuid = UUID.randomUUID().toString();
         FileSaveUtil fileSave = new FileSaveUtil();
         Optional<ArtVO> foundArt = artService.getArt(artId);
         if (foundArt.isPresent()) {
+            artId = foundArt.get().getId();
+            log.info(artId.toString());
             filePath = filePath + "/" + categoryMap.get(foundArt.get().getArtCategory());
         }
 
@@ -57,7 +60,9 @@ public class FileController {
             artImgVO.setArtImgName(uuid + file.getOriginalFilename());
             artImgVO.setArtImgPath(filePath);
             artImgVO.setArtId(artId);
+            log.info(artImgVO.toString());
             artImgService.register(artImgVO);
+            log.info(artImgVO.toString());
 
             fileSave.fileSave(file, artImgVO.getArtImgPath(), artImgVO.getArtImgName());
         }
@@ -69,7 +74,7 @@ public class FileController {
 
     @Operation(summary = "그라데이션 전시회 이미지 업로드", description = "그라데이션 전시회 이미지 파일 저장 API")
     @PostMapping("upload/exhibition/gradation/{id}")
-    public ResponseEntity<Map<String, Object>> gradationExhibitionFileUpload(@RequestParam("files")List<MultipartFile> files, @RequestParam Long id) throws IOException {
+    public ResponseEntity<Map<String, Object>> gradationExhibitionFileUpload(@RequestParam("files")List<MultipartFile> files, @PathVariable("id") Long id) throws IOException {
         Map<String, Object> response = new HashMap<>();
         String filePath = "exhibition/gradation";
         String uuid = UUID.randomUUID().toString();
@@ -91,6 +96,44 @@ public class FileController {
         return ResponseEntity.ok(response);
     }
 //   대학 ExhibitionService 생기면 추가
+    @Operation(summary = "대학교 전시회 이미지 업로드", description = "대학교 전시회 이미지 파일 저장 API")
+    @PostMapping("upload/exhibition/university/{id}")
+    public ResponseEntity<Map<String, Object>> universityExhibitionFileUpload(@RequestParam("files")List<MultipartFile> files, @PathVariable Long id) throws IOException {
+        Map<String, Object> response = new HashMap<>();
+
+        log.info("=========================================================");
+        log.info(files.toString());
+        log.info("=========================================================");
+
+        if (files == null || files.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(Map.of("message", "파일이 존재하지 않습니다."));
+        }
+
+        String filePath = "images/exhibition/university";
+        String uuid = UUID.randomUUID().toString();
+        FileSaveUtil fileSave = new FileSaveUtil();
+
+        for(MultipartFile file : files) {
+            UniversityExhibitionDTO universityExhibitionDTO = new UniversityExhibitionDTO();
+            universityExhibitionDTO.setUniversityExhibitionImgName(uuid + file.getOriginalFilename());
+            universityExhibitionDTO.setUniversityExhibitionImgPath(filePath);
+            universityExhibitionDTO.setUniversityExhibitionId(id);
+
+//            log.info("dto : {}", universityExhibitionDTO);
+
+            exhibitionService.registerUniversityImg(universityExhibitionDTO);
+            log.info("university image : {}", file.getOriginalFilename());
+
+            // 파일 저장
+            fileSave.fileSave(file, universityExhibitionDTO.getUniversityExhibitionImgPath(), universityExhibitionDTO.getUniversityExhibitionImgName());
+        }
+
+        response.put("uuid", UUID.randomUUID().toString());
+        response.put("message", "정상적으로 업로드가 완료되었습니다.");
+        return ResponseEntity.ok(response);
+    }
 
     @Operation(summary = "이미지 조회", description = "패스와 이름을 적으면 이미지를 반환해주는 API")
     @GetMapping("get/{fileName}")
