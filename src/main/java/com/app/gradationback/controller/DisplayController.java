@@ -45,26 +45,15 @@ public class DisplayController {
     @Parameters({
             @Parameter(name = "order", description = "정렬기준", example = "popular"),
             @Parameter(name = "cursor", description = "페이지", example = "1"),
-            @Parameter(name = "direction", description = "오름차순", example = "asc"),
             @Parameter(name = "category", description = "분류", example = "건축, 회화, 한국화, 조각, 서예, 공예"),
             @Parameter(name = "keyword", description = "검색", example = "작가명, 작품명")
     })
     @ApiResponse(responseCode = "200", description = "전시 전체 조회 성공")
-    @GetMapping("list")
-    public List<Map<String, Object>> getAllPosts(@RequestParam HashMap<String, Object> params) {
-        List<ArtPostDTO> posts = artPostService.getArtListByCategoryAndDropdown(params);
-//        게시글 + 댓글
-        List<Map<String, Object>> postListWithComments = new ArrayList<>();
-
-//        게시글 1개 + 댓글
-        for (ArtPostDTO post : posts) {
-            Map<String, Object> postDetail = new HashMap<>();
-            postDetail.put("post", post);
-            postDetail.put("comments", commentService.getAllCommentByPostId(post.getId()));
-            postDetail.put("images", artImgService.getArtImgListByArtId(post.getArtId()));
-            postListWithComments.add(postDetail);
-        }
-        return postListWithComments;
+    @PostMapping("list")
+    public ResponseEntity<Map<String, Object>> getAllPosts(@RequestBody HashMap<String, Object> params) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("posts", artPostService.getArtListByCategoryAndDropdown(params));
+        return ResponseEntity.ok(response);
     }
 
 //    전시 단일 조회
@@ -86,7 +75,7 @@ public class DisplayController {
         if(foundArtPost.isPresent()) {
             ArtPostDTO post = foundArtPost.get();
             Long artId = post.getArtId();
-            List<CommentVO> comments = commentService.getAllCommentByPostId(postId);
+            List<CommentDTO> comments = commentService.getAllCommentByPostId(postId);
             List<ArtImgVO> images = artImgService.getArtImgListByArtId(artId);
             response.put("post", post);
             response.put("comments", comments);

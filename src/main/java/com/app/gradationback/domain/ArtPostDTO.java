@@ -5,7 +5,9 @@ import lombok.Data;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Component
 @Data
@@ -37,22 +39,22 @@ public class ArtPostDTO {
     private Long artId;
 
 //    TBl_ART_IMG
-    @Schema(description = "작품 이미지 제목", required = true, example = "art.jpg")
-    private String artImgName;
-    @Schema(description = "작품 이미지 경로", required = true, example = "assets/images/art.jpg")
-    private String artImgPath;
+    @Schema(description = "작품 이미지", required = true, example = "art.jpg")
+    List<ArtImgVO> images = new ArrayList<>();
+
+//    게시글에 달린 댓글들
+    List<CommentDTO> comments = new ArrayList<>();
 
 //    TBL_ART_LIKE
     @Schema(description = "작품 좋아요 개수", example = "50")
-    private int artLikeCount;
+    private Integer artLikeCount;
     @Schema(description = "댓글 개수", example = "50")
-    private int commentCount;
+    private Integer commentCount;
 
 //    TBL_COMMENT
-//    @Schema(description = "댓글 내용", required = true, example = "댓글")
-//    private String commentContent;
     @Schema(description = "게시글 번호", required = true, example = "1")
     private Long artPostId;
+
 
 //    TBL_COMMENT_LIKE
     @Schema(description = "댓글 좋아요 누른 시간", example = "2025-01-01T13:30:00")
@@ -69,12 +71,4 @@ public class ArtPostDTO {
     private String userName;
     @Schema(description = "이메일", required = true, example = "user@test.app")
     private String userEmail;
-//    @Schema(description = "학생증 이미지 제목", example = "major.jpg")
-//    private String userMajorImgName;
-//    @Schema(description = "학생증 이미지 경로", example = "assets/images/user/major.jpg")
-//    private String userMajorImgPath;
-//    @Schema(description = "작가 배경화면 제목", example = "background.jpg")
-//    private String userBackgroundImgName;
-//    @Schema(description = "작가 배경화면 이름", example = "assets/images/user/background.jpg")
-//    private String userBackgroundImgPath;
 }
