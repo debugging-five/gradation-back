@@ -132,6 +132,7 @@
             TU.USER_YOUTUBE,
             TU.USER_INTRODUCE,
             TU.USER_ART_CATEGORY,
+            TH.ID AS HISTORY_ID,
             TH.HISTORY_DATE,
             TH.HISTORY_CONTENT
         FROM TBL_USER TU
