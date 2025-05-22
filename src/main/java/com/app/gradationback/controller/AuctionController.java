@@ -49,7 +49,6 @@ public class AuctionController {
     @PutMapping("modify")
     public ResponseEntity<Map<String, Object>> modify(@RequestBody AuctionVO auctionVO) {
         Map<String, Object> response = new HashMap<>();
-        log.info(auctionVO.toString());
         try {
             auctionService.auctionModify(auctionVO);
         } catch (Exception e) {
@@ -86,8 +85,11 @@ public class AuctionController {
             required = true
     )
     @GetMapping("detail/{id}")
-    public ResponseEntity<List<AuctionDTO>> read(@PathVariable Long id) {
-        return ResponseEntity.ok(auctionService.auctionRead(id));
+    public ResponseEntity<Map<String, Object>> read(@PathVariable Long id) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "점심 맛있게 먹어 ~ !");
+        response.put("auction", auctionService.auctionRead(id));
+        return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "하단 경매 조회", description = "페이지 하단의 경매 4개씩을 조회할 수 있는 API")
@@ -221,7 +223,10 @@ public class AuctionController {
             response.put("price", price);
             return ResponseEntity.ok(response);
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+
+//        첫 경매일 때 빈 객체
+        response.put("price", new AuctionPriceVO());
+        return ResponseEntity.ok(response);
     }
 
 

@@ -12,4 +12,6 @@ public class AuctionPriceVO {
     private Integer auctionBiddingPrice;
     private Integer AuctionBiddingMinimumPrice;
     private Long auctionId;
+    private Long userId;
+    private Integer bidderCount;
 }

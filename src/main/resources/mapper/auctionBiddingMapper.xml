@@ -73,7 +73,12 @@
     <select id="selectPrice" parameterType="Long" resultType="AuctionPriceVO">
         SELECT ID, AUCTION_BIDDING_PRICE,
                CEIL(AUCTION_BIDDING_PRICE * 1.1 / 1000) * 1000 AS AUCTION_BIDDING_MINIMUM_PRICE,
-               AUCTION_ID
+               AUCTION_ID,
+               (
+                   SELECT COUNT(ID)
+                   FROM TBL_AUCTION_BIDDING
+               ) AS BIDDER_COUNT,
+               USER_ID
         FROM TBL_AUCTION_BIDDING
         WHERE AUCTION_ID = ${auctionId}
         ORDER BY ID DESC

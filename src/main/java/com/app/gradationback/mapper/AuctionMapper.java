@@ -6,12 +6,13 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Mapper
 public interface AuctionMapper {
     public void insert(AuctionVO auctionVO);
     public List<AuctionDTO> selectAll(HashMap<String, Object> params);
-    public List<AuctionDTO> select(Long id);
+    public Optional<AuctionDTO> select(Long id);
     public List<AuctionDTO> selectBidding(Integer cursor);
     public Long selectByArtId(Long artId);
     public void update(AuctionVO auctionVO);
