@@ -50,7 +50,7 @@
         WHERE ID = #{id}
     </delete>
 
-    <!-- 관리자용 전체 문의 내역 조회 -->
+    <!-- 관리자용 전체 문의 내역 조회! -->
     <select id="selectAllForAdmin" resultType="QnaDTO">
         SELECT
             TBQ.ID AS QNA_ID,

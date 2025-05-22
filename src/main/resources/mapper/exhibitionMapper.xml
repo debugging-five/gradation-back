@@ -163,6 +163,7 @@
 <!--   좋아요순 50개 작품 -->
     <select id="selectTopLikedArts" resultType="DisplayDTO">
         SELECT
+            TAR.ID,
             TAI.ART_IMG_NAME,
             TAI.ART_IMG_PATH,
             TAR.ART_TITLE,
