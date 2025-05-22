@@ -2,6 +2,7 @@ package com.app.gradationback.service;
 
 import com.app.gradationback.domain.QnaDTO;
 import com.app.gradationback.domain.QnaVO;
+import com.app.gradationback.repository.QnaAnswerDAO;
 import com.app.gradationback.repository.QnaDAO;
 import com.app.gradationback.util.FileSaveUtil;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +20,9 @@ import java.util.UUID;
 public class QnaServiceImpl implements QnaService {
 
     private final QnaDAO qnaDAO;
+    private final QnaAnswerDAO qnaAnswerDAO;
 
-//    등록
+    //    등록
     @Override
     public void registraction(QnaVO qnaVO, MultipartFile file) {
         try {
@@ -62,9 +64,7 @@ public class QnaServiceImpl implements QnaService {
 
 //    삭제
     @Override
-    public void remove(Long id) {
-        qnaDAO.delete(id);
-    }
+    public void remove(Long id) { qnaDAO.delete(id); }
 
 //    관리자용 전체 문의 내역 조회
     @Override

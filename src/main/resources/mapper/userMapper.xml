@@ -53,7 +53,7 @@
     </select>
 
     <select id="selectUserByIdentification" parameterType="String" resultType="UserVO">
-        SELECT ID, USER_IMG_NAME, USER_IMG_PATH, USER_NAME, USER_EMAIL, USER_IDENTIFICATION, USER_PASSWORD, USER_PHONE, USER_NICKNAME
+        SELECT ID, USER_IMG_NAME, USER_IMG_PATH, USER_NAME, USER_EMAIL, USER_IDENTIFICATION, USER_PASSWORD, USER_PHONE, USER_NICKNAME, USER_ADMIN_OK
         FROM TBL_USER
         WHERE USER_IDENTIFICATION = #{userIdentification}
     </select>
@@ -131,7 +131,7 @@
 <!--    관리자용 유저 정지 상태 업데이트(댓글, 영구)-->
     <update id="updateUserBanStatus" parameterType="banDTO">
         UPDATE TBL_USER
-        SET USER_BAN_OK = #{usdrBanOk}
+        SET USER_BAN_OK = #{userBanOk}
         WHERE ID = #{userId}
     </update>
 <!--    댓글 작성 시 정지 유저 확인용-->

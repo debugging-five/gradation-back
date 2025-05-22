@@ -4,8 +4,8 @@
 
 <!--    자주 묻는 질문 등록-->
     <insert id="insert" parameterType="FaqVO">
-        INSERT INTO TBL_FAQ (ID, FAQ_TITLE, FAQ_CONTENT, FAQ_CATEGORY, USER_ID)
-        VALUES (SEQ_FAQ.NEXTVAL, #{faqTitle}, #{faqContent}, #{faqCategory}, #{userId})
+        INSERT INTO TBL_FAQ (ID, FAQ_TITLE, FAQ_CONTENT, FAQ_CATEGORY)
+        VALUES (SEQ_FAQ.NEXTVAL, #{faqTitle}, #{faqContent}, #{faqCategory})
     </insert>
 
 
