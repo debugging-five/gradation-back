@@ -39,7 +39,7 @@ public class PaymentController {
             foundPayment = paymentService.payment(paymentData);
         }catch (Exception e) {
             response.put("message", "등록 실패" + e.getMessage());
-            response.put("status", paymentData);
+            response.put("status", false);
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         }
         response.put("message", "등록 성공");

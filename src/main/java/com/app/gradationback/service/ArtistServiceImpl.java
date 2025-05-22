@@ -39,6 +39,7 @@ public class ArtistServiceImpl implements ArtistService {
         for(ArtistDetailDTO artistDetailDTO : artistInfoList) {
             if(artistDetailDTO.getHistoryDate() != null && artistDetailDTO.getHistoryContent() != null) {
                 HistoryVO historyVO = new HistoryVO();
+                historyVO.setId(artistDetailDTO.getHistoryId());
                 historyVO.setHistoryDate(artistDetailDTO.getHistoryDate());
                 historyVO.setHistoryContent(artistDetailDTO.getHistoryContent());
                 histories.add(historyVO);
