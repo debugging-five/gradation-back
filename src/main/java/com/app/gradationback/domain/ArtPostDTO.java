@@ -46,6 +46,8 @@ public class ArtPostDTO {
 
 //    게시글에 달린 댓글들
     List<CommentDTO> comments = new ArrayList<>();
+    private String commentContent;
+    private Timestamp commentDate;
 
 //    TBL_ART_LIKE
     @Schema(description = "작품 좋아요 개수", example = "50")
