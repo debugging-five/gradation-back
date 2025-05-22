@@ -228,6 +228,46 @@
         FROM TBL_AUCTION
         where ART_ID = #{artId}
     </select>
+    
+    <select id="selectByUserId" parameterType="Long" resultType="AuctionDTO">
+        SELECT
+            TAU.ID,
+            TAU.ART_ID,
+            TAU.USER_ID,
+            AUCTION_START_DATE,
+            AUCTION_START_PRICE,
+            AUCTION_ESTIMATED_MIN_PRICE,
+            AUCTION_ESTIMATED_MAX_PRICE,
+            AUCTION_ATTRACTED,
+            AUCTION_BID_PRICE,
+            AUCTION_BID_DATE,
+            TAR.ID,
+            ART_TITLE,
+            ART_CATEGORY,
+            ART_MATERIAL,
+            ART_SIZE,
+            ART_DESCRIPTION,
+            ART_END_DATE,
+            TAR.USER_ID,
+            TU.USER_NAME AS ARTIST_NAME,
+            TU.ID AS ARTIST_ID,
+            TAI.ART_IMG_NAME,
+            TAI.ART_IMG_PATH
+        FROM TBL_AUCTION TAU
+        JOIN TBL_ART TAR
+            ON TAU.ART_ID = TAR.ID
+        JOIN HR.TBL_ART_IMG TAI
+            ON TAR.ID = TAI.ART_ID
+        JOIN TBL_USER TU
+            ON TAR.USER_ID = TU.ID
+        JOIN (
+            SELECT AUCTION_ID
+            FROM TBL_AUCTION_BIDDING
+            WHERE USER_ID = #{userId}
+            group by AUCTION_ID
+        ) TAB
+        ON TAB.AUCTION_ID = TAU.ID
+    </select>
 
 
     <update id="update" parameterType="AuctionVO">
