@@ -12,8 +12,8 @@ public class CommentDTO {
     private Long id;
     private Long artPostId;
     private Long userId;
-    private String CommentContent;
-    private Timestamp CommentDate;
+    private String commentContent;
+    private Timestamp commentDate;
     private String userName;
     private String userImgPath;
     private String userImgName;
