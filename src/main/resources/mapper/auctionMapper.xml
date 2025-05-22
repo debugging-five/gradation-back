@@ -10,6 +10,7 @@
             ID,
             ART_ID,
             AUCTION_START_DATE,
+            AUCTION_END_DATE,
             AUCTION_START_PRICE,
             AUCTION_ESTIMATED_MIN_PRICE,
             AUCTION_ESTIMATED_MAX_PRICE
@@ -18,6 +19,7 @@
             #{id},
             #{artId},
             TO_DATE(#{auctionStartDate}, 'YYYY-MM-DD HH24:MI:SS'),
+            TO_DATE(#{auctionEndDate}, 'YYYY-MM-DD HH24:MI:SS'),
             #{auctionStartPrice},
             #{auctionEstimatedMinPrice},
             #{auctionEstimatedMaxPrice}
@@ -30,6 +32,7 @@
             TAU.ART_ID,
             TAU.USER_ID,
             AUCTION_START_DATE,
+            AUCTION_END_DATE,
             AUCTION_START_PRICE,
             AUCTION_ESTIMATED_MIN_PRICE,
             AUCTION_ESTIMATED_MAX_PRICE,
@@ -144,6 +147,7 @@
             TAU.ART_ID,
             TAU.USER_ID,
             AUCTION_START_DATE,
+            AUCTION_END_DATE,
             AUCTION_START_PRICE,
             AUCTION_ESTIMATED_MIN_PRICE,
             AUCTION_ESTIMATED_MAX_PRICE,
@@ -159,14 +163,10 @@
             ART_END_DATE,
             TAR.USER_ID,
             TU.USER_NAME AS ARTIST_NAME,
-            TU.ID AS ARTIST_ID,
-            TAI.ART_IMG_NAME,
-            TAI.ART_IMG_PATH
+            TU.ID AS ARTIST_ID
         FROM TBL_AUCTION TAU
         JOIN TBL_ART TAR
         ON TAU.ART_ID = TAR.ID
-        JOIN HR.TBL_ART_IMG TAI
-        ON TAR.ID = TAI.ART_ID
         JOIN TBL_USER TU
         ON TAR.USER_ID = TU.ID
         WHERE TAU.ID = #{id}
@@ -178,6 +178,7 @@
         TAU.ART_ID,
         TAU.USER_ID,
         AUCTION_START_DATE,
+        AUCTION_END_DATE,
         AUCTION_START_PRICE,
         AUCTION_ESTIMATED_MIN_PRICE,
         AUCTION_ESTIMATED_MAX_PRICE,
@@ -274,6 +275,7 @@
         UPDATE TBL_AUCTION
         SET
             AUCTION_START_DATE = TO_DATE(#{auctionStartDate}, 'YYYY-MM-DD HH24:MI:SS'),
+            AUCTION_END_DATE = TO_DATE(#{auctionEndDate}, 'YYYY-MM-DD HH24:MI:SS'),
             AUCTION_START_PRICE = #{auctionStartPrice},
             AUCTION_ESTIMATED_MIN_PRICE = #{auctionEstimatedMinPrice},
             AUCTION_ESTIMATED_MAX_PRICE = #{auctionEstimatedMaxPrice},

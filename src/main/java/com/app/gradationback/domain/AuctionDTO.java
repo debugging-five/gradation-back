@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 @Component
 @Data
@@ -12,6 +13,7 @@ public class AuctionDTO {
 //    TBL_AUCTION
     private Long id;
     private String auctionStartDate;
+    private String auctionEndDate;
     private int auctionStartPrice;
     private String auctionEstimatedMinPrice;
     private String auctionEstimatedMaxPrice;
@@ -87,6 +89,8 @@ public class AuctionDTO {
     private String artStatus;
 
 //    TBL_ART_IMG
+    private List<ArtImgVO> argImgList;
+
     private String artImgName;
     private String artImgPath;
 

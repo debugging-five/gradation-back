@@ -11,6 +11,7 @@
         <typeAlias type="com.app.gradationback.domain.ArtPostVO" alias="ArtPostVO" />
         <typeAlias type="com.app.gradationback.domain.ArtVO" alias="ArtVO" />
         <typeAlias type="com.app.gradationback.domain.AuctionBiddingVO" alias="AuctionBiddingVO" />
+        <typeAlias type="com.app.gradationback.domain.AuctionPriceVO" alias="AuctionPriceVO" />
         <typeAlias type="com.app.gradationback.domain.AuctionVO" alias="AuctionVO" />
         <typeAlias type="com.app.gradationback.domain.BanVO" alias="BanVO" />
         <typeAlias type="com.app.gradationback.domain.DeliveryVO" alias="DeliveryVO" />

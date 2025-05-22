@@ -2,10 +2,13 @@ package com.app.gradationback.service;
 
 import com.app.gradationback.domain.AuctionBiddingVO;
 import com.app.gradationback.domain.AuctionDTO;
+import com.app.gradationback.domain.AuctionPriceVO;
 import com.app.gradationback.domain.AuctionVO;
+import com.app.gradationback.repository.ArtImgDAO;
 import com.app.gradationback.repository.AuctionBiddingDAO;
 import com.app.gradationback.repository.AuctionDAO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,9 +19,11 @@ import java.util.Optional;
 @Service
 @Transactional(rollbackFor = Exception.class)
 @RequiredArgsConstructor
+@Slf4j
 public class AuctionServiceImpl implements AuctionService {
 
     private final AuctionDAO auctionDAO;
+    private final ArtImgDAO artImgDAO;
     private final AuctionBiddingDAO auctionBiddingDAO;
 
     @Override
@@ -32,8 +37,11 @@ public class AuctionServiceImpl implements AuctionService {
     }
 
     @Override
-    public List<AuctionDTO> auctionRead(Long id) {
-        return auctionDAO.findById(id);
+    public Optional<AuctionDTO> auctionRead(Long id) {
+        return auctionDAO.findById(id).map((auctionDTO -> {
+            auctionDTO.setArgImgList(artImgDAO.findAllByArtId(auctionDTO.getArtId()));
+            return auctionDTO;
+        }));
     }
 
     @Override
@@ -64,7 +72,7 @@ public class AuctionServiceImpl implements AuctionService {
 //        최상위 일반 응찰
         AuctionBiddingVO topBidding = auctionBiddingDAO.findByAuctionId(auctionBiddingVO.getAuctionId()).orElse(null);
 //        시작응찰가 구하기
-        int startPrice = auctionDAO.findById(auctionBiddingVO.getAuctionId()).get(0).getAuctionStartPrice();
+        int startPrice = auctionDAO.findById(auctionBiddingVO.getAuctionId()).get().getAuctionStartPrice();
 
 //        인풋 응찰 등록
         auctionBiddingDAO.save(auctionBiddingVO);
@@ -138,5 +146,9 @@ public class AuctionServiceImpl implements AuctionService {
         return auctionBiddingDAO.findCountByAuctionId(auctionId);
     }
 
+    @Override
+    public Optional<AuctionPriceVO> getLatestPrice(Long auctionId) {
+        return auctionBiddingDAO.findPrice(auctionId);
+    }
 
 }
