@@ -122,7 +122,7 @@ public class AdminController {
         return qnaService.getAllQnaListForAdmin();
     }
 
-    //     관리자용 단일 QnA 조회
+    //     관리자용 단일 QnA 조호
     @Operation(summary = "단일 QnA 조회", description = "관리자가 특정 QnA 내용을 확인할 수 있는 API")
     @GetMapping("/qna/{id}")
     public QnaDTO getQna(@PathVariable Long id, HttpServletRequest request) {
