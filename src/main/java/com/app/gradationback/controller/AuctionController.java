@@ -2,6 +2,7 @@ package com.app.gradationback.controller;
 
 import com.app.gradationback.domain.AuctionBiddingVO;
 import com.app.gradationback.domain.AuctionDTO;
+import com.app.gradationback.domain.AuctionPriceVO;
 import com.app.gradationback.domain.AuctionVO;
 import com.app.gradationback.service.AuctionService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -203,7 +204,25 @@ public class AuctionController {
         return ResponseEntity.ok(new AuctionBiddingVO());
     }
 
-
+    @Operation(summary = "최신 입찰 가격 조회", description = "현재 입찰 가격을 조회할 수 있는 API")
+    @Parameter(
+            name = "auctionId",
+            description = "경매 번호",
+            schema = @Schema(type = "number"),
+            in = ParameterIn.PATH,
+            required = true
+    )
+    @GetMapping("getLatestPrice/{auctionId}")
+    public ResponseEntity<Map<String, Object>> getLatestPrice(@PathVariable Long auctionId) {
+        Map<String, Object> response = new HashMap<>();
+        Optional<AuctionPriceVO> latestPrice = auctionService.getLatestPrice(auctionId);
+        if(latestPrice.isPresent()) {
+            AuctionPriceVO price = latestPrice.get();
+            response.put("price", price);
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
 
 
 }

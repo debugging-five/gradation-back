@@ -2,6 +2,7 @@ package com.app.gradationback.service;
 
 import com.app.gradationback.domain.AuctionBiddingVO;
 import com.app.gradationback.domain.AuctionDTO;
+import com.app.gradationback.domain.AuctionPriceVO;
 import com.app.gradationback.domain.AuctionVO;
 import com.app.gradationback.repository.AuctionBiddingDAO;
 import com.app.gradationback.repository.AuctionDAO;
@@ -138,5 +139,9 @@ public class AuctionServiceImpl implements AuctionService {
         return auctionBiddingDAO.findCountByAuctionId(auctionId);
     }
 
+    @Override
+    public Optional<AuctionPriceVO> getLatestPrice(Long auctionId) {
+        return auctionBiddingDAO.findPrice(auctionId);
+    }
 
 }
