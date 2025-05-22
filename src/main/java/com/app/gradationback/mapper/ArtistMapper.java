@@ -17,7 +17,7 @@ public interface ArtistMapper {
     public Optional<ArtistDTO> selectMyArtistProfile(Map<String, Object> param);
 
 //    작가 메인페이지
-    public List<ArtistDTO> selectArtistList(Map<String, Object> param);
+    public List<ArtistDTO> selectArtistList(Map<String, Object> params);
 
 //    작가 디테일(작가정보 + history)
     public List<ArtistDetailDTO> selectArtistById(Long userId);

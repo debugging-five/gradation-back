@@ -200,7 +200,7 @@ public class AuctionController {
             AuctionBiddingVO bidding = foundBidder.get();
             return ResponseEntity.ok(bidding);
         }
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(new AuctionBiddingVO());
+        return ResponseEntity.ok(new AuctionBiddingVO());
     }
 
 
