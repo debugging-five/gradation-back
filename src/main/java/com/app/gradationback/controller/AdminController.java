@@ -182,7 +182,7 @@ public class AdminController {
             banDTO.setBanDate(new Timestamp(System.currentTimeMillis())); // 정지 일자 자동 세팅
             userService.banUser(banDTO);
         } else {
-            throw new RuntimeException("잘못된 정지 상태입니다.");
+            throw new RuntimeException("잘못된 상태입니다.");
         }
     }
 
