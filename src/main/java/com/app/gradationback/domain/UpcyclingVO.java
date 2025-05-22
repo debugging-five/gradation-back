@@ -39,7 +39,7 @@ public class UpcyclingVO implements Serializable {
     private String upcyclingImgPath;
     @Schema(description = "특이사항", example = "깨지기 쉬운 재질 포함")
     private String upcyclingSignificant;
-    @Schema(description = "신청 상태", example = "미신청 / 신청완료")
+    @Schema(description = "신청 상태", example = "대기 / 신청완료")
     private String upcyclingStatus;
     @Schema(description = "신청자 User ID", example = "10")
     private Long userId;
