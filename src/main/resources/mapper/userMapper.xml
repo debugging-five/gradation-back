@@ -116,7 +116,7 @@
         SET USER_MY_UNIVERSITY = #{userMyUniversity}, USER_MY_MAJOR = #{userMyMajor},
             USER_MAJOR_IMG_NAME = #{userMajorImgName}, USER_MAJOR_IMG_PATH = #{userMajorImgPath},
             USER_UNIVERSITY_STATUS = '신청'
-        WHERE ID = #{id};
+        WHERE ID = #{id}
     </update>
 
 
