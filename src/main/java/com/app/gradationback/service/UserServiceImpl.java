@@ -100,7 +100,13 @@ public class UserServiceImpl implements UserService {
         userDAO.updateUser(userVO);
     }
 
-//    회원 탈퇴 (댓글, 게시글 삭제)
+//    회원 프로필 이미지 수정
+    @Override
+    public void modifyProfileImg(UserVO userVO) {
+        userDAO.updateProfileImg(userVO);
+    }
+
+    //    회원 탈퇴 (댓글, 게시글 삭제)
     @Override
     public void withdraw(String userEmail) {
         Long userId = userDAO.findIdByEmail(userEmail);
