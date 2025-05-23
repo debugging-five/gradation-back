@@ -13,6 +13,7 @@ import com.app.gradationback.util.FileSaveUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.coobird.thumbnailator.Thumbnailator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -46,28 +48,36 @@ public class FileController {
         categoryMap.put("공예", "craft");
 
         String filePath = "images/display/art";
-        String uuid = UUID.randomUUID().toString();
+        List<String> uuids = new ArrayList<>();
         FileSaveUtil fileSave = new FileSaveUtil();
         Optional<ArtVO> foundArt = artService.getArt(artId);
         if (foundArt.isPresent()) {
             artId = foundArt.get().getId();
-            log.info(artId.toString());
+//            log.info(artId.toString());
             filePath = filePath + "/" + categoryMap.get(foundArt.get().getArtCategory());
         }
 
         for(MultipartFile file : files) {
+            String uuid = UUID.randomUUID().toString();
+            uuids.add(uuid);
             ArtImgVO artImgVO = new ArtImgVO();
-            artImgVO.setArtImgName(uuid + file.getOriginalFilename());
+            artImgVO.setArtImgName(uuid + "_" + file.getOriginalFilename());
             artImgVO.setArtImgPath(filePath);
             artImgVO.setArtId(artId);
-            log.info(artImgVO.toString());
             artImgService.register(artImgVO);
-            log.info(artImgVO.toString());
+//            log.info(artImgVO.toString());
 
             fileSave.fileSave(file, artImgVO.getArtImgPath(), artImgVO.getArtImgName());
+
+//            썸네일
+            if (file.getContentType().startsWith("image")) {
+                FileOutputStream out = new FileOutputStream(new File("C:/upload/" + filePath, "t_" + uuid + "_" + file.getOriginalFilename()));
+                Thumbnailator.createThumbnail(file.getInputStream(), out, 300, 300);
+                out.close();
+            }
         }
 
-        response.put("uuid", uuid);
+        response.put("uuids", uuids);
         response.put("message", "정상적으로 업로드가 완료되었습니다.");
         return ResponseEntity.ok(response);
     }
