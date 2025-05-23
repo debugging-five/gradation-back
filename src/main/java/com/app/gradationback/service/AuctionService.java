@@ -17,6 +17,7 @@ public interface AuctionService {
     public Optional<AuctionDTO> auctionRead(Long id);
     public List<AuctionDTO> auctionFooterBidding(Integer cursor);
     public Long auctionFindByArtId(Long artId);
+    public List<AuctionDTO> auctionFindByUserId(Long userId);
     public void auctionModify(AuctionVO auctionVO);
     public void auctionDelete(Long id);
 // 입찰에 사용되는 로직
