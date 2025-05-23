@@ -94,8 +94,9 @@ public class AuctionMapperTest {
 //
 //        auctionMapper.update(auctionVO);
         AuctionVO auctionVO = new AuctionVO();
-        auctionVO.setId(3L);
-        auctionVO.setAuctionStartDate("2025-04-26 14:40:00");
+        auctionVO.setId(1L);
+        auctionVO.setAuctionStartDate("2025-05-26 14:40:00");
+        auctionVO.setAuctionEndDate("2025-05-28 14:40:00");
         auctionVO.setAuctionStartPrice(1000000);
         auctionVO.setAuctionEstimatedMinPrice("2000000");
         auctionVO.setAuctionEstimatedMaxPrice("3000000");

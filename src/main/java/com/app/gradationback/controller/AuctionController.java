@@ -49,6 +49,7 @@ public class AuctionController {
     @PutMapping("modify")
     public ResponseEntity<Map<String, Object>> modify(@RequestBody AuctionVO auctionVO) {
         Map<String, Object> response = new HashMap<>();
+        log.info(auctionVO.toString());
         try {
             auctionService.auctionModify(auctionVO);
         } catch (Exception e) {
