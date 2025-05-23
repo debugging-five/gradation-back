@@ -79,6 +79,9 @@ public class UserDAO {
         userMapper.updatePassword(userVO);
     }
 
+//    대학교 인증
+    public void updateUniversityStatus(UserVO userVO) {userMapper.updateUniversityStatus(userVO);}
+
 //    회원 탈퇴
     public void deleteUser(String userEmail) {
         userMapper.deleteUser(userEmail);
