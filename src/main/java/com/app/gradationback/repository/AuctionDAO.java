@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -20,7 +21,7 @@ public class AuctionDAO {
     public List<AuctionDTO> findAll(HashMap<String, Object> params) {
         return auctionMapper.selectAll(params);
     }
-    public List<AuctionDTO> findById(Long id) {
+    public Optional<AuctionDTO> findById(Long id) {
         return auctionMapper.select(id);
     }
     public List<AuctionDTO> findAuctionByCursor(Integer cursor) {
@@ -28,6 +29,9 @@ public class AuctionDAO {
     }
     public Long findAuctionCountByArtId(Long artId) {
         return auctionMapper.selectByArtId(artId);
+    }
+    public List<AuctionDTO> findAuctionByUserId(Long userId) {
+        return auctionMapper.selectByUserId(userId);
     }
     public void update(AuctionVO auctionVO) {
         auctionMapper.update(auctionVO);

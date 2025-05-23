@@ -2,6 +2,7 @@ package com.app.gradationback.controller;
 
 import com.app.gradationback.domain.AuctionBiddingVO;
 import com.app.gradationback.domain.AuctionDTO;
+import com.app.gradationback.domain.AuctionPriceVO;
 import com.app.gradationback.domain.AuctionVO;
 import com.app.gradationback.service.AuctionService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -48,7 +49,6 @@ public class AuctionController {
     @PutMapping("modify")
     public ResponseEntity<Map<String, Object>> modify(@RequestBody AuctionVO auctionVO) {
         Map<String, Object> response = new HashMap<>();
-        log.info(auctionVO.toString());
         try {
             auctionService.auctionModify(auctionVO);
         } catch (Exception e) {
@@ -85,8 +85,27 @@ public class AuctionController {
             required = true
     )
     @GetMapping("detail/{id}")
-    public ResponseEntity<List<AuctionDTO>> read(@PathVariable Long id) {
-        return ResponseEntity.ok(auctionService.auctionRead(id));
+    public ResponseEntity<Map<String, Object>> read(@PathVariable Long id) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "조회 성공");
+        response.put("auction", auctionService.auctionRead(id));
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "본인 경매 정보 조회", description = "유저 기준으로 본인의 경매 정보를 조회할 수 있는 API")
+    @Parameter(
+            name = "userId",
+            description = "유저 아이디",
+            schema = @Schema(type = "number"),
+            in = ParameterIn.PATH,
+            required = true
+    )
+    @GetMapping("my-bidding/{userId}")
+    public ResponseEntity<Map<String, Object>> readUserBidding(@PathVariable Long userId) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "조회 성공");
+        response.put("auction", auctionService.auctionFindByUserId(userId));
+        return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "하단 경매 조회", description = "페이지 하단의 경매 4개씩을 조회할 수 있는 API")
@@ -110,6 +129,8 @@ public class AuctionController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(footerList);
         }
     }
+
+
 
     @Operation(summary = "작품 아이디로 경매 조회", description = "작품의 아이디로 경매를 조회할 수 있는 API")
     @Parameter(
@@ -203,7 +224,28 @@ public class AuctionController {
         return ResponseEntity.ok(new AuctionBiddingVO());
     }
 
+    @Operation(summary = "최신 입찰 가격 조회", description = "현재 입찰 가격을 조회할 수 있는 API")
+    @Parameter(
+            name = "auctionId",
+            description = "경매 번호",
+            schema = @Schema(type = "number"),
+            in = ParameterIn.PATH,
+            required = true
+    )
+    @GetMapping("getLatestPrice/{auctionId}")
+    public ResponseEntity<Map<String, Object>> getLatestPrice(@PathVariable Long auctionId) {
+        Map<String, Object> response = new HashMap<>();
+        Optional<AuctionPriceVO> latestPrice = auctionService.getLatestPrice(auctionId);
+        if(latestPrice.isPresent()) {
+            AuctionPriceVO price = latestPrice.get();
+            response.put("price", price);
+            return ResponseEntity.ok(response);
+        }
 
+//        첫 경매일 때 빈 객체
+        response.put("price", new AuctionPriceVO());
+        return ResponseEntity.ok(response);
+    }
 
 
 }
