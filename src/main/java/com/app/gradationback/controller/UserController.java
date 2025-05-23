@@ -372,6 +372,36 @@ public class UserController {
         }
     }
 
+//    회원 프로필 이미지 수정
+    @Operation(summary = "회원 프로필 이미지 수정", description = "회원 프로필 이미지를 수정할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "회원 프로필 이미지 수정 성공")
+    @PutMapping("modify/profile-img")
+    public ResponseEntity<Map<String, Object>> modifyProfileImg(@RequestBody  UserVO userVO) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Optional<UserVO> foundUser = userService.getUserByIdentification(userVO.getUserIdentification());
+
+            if(foundUser.isPresent()) {
+                userService.modifyProfileImg(userVO);
+
+                Optional<UserVO> modifyUser = userService.getUserByIdentification(userVO.getUserIdentification());
+                if(modifyUser.isPresent()) {
+                    UserVO user = modifyUser.get();
+                    user.setUserPassword(null);
+                    response.put("modifyUser", user);
+                    response.put("message", "회원 프로필 이미지 수정이 완료되었습니다.");
+                    return ResponseEntity.ok(response);
+                }
+            }
+            response.put("message", "회원 정보가 존재하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } catch (Exception e) {
+            response.put("message", "서버 오류");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+
+    }
+
 //    회원 탈퇴
     @Operation(summary = "회원 탈퇴", description = "회원 탈퇴 할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "회원 탈퇴 성공")

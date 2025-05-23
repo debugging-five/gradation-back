@@ -44,6 +44,9 @@ public interface UserService {
 //    회원 정보 수정
     public void modifyUser(UserVO userVO);
 
+//    회원 프로필 이미지 수정
+    public void modifyProfileImg(UserVO userVO);
+
 //    회원 탈퇴
     public void withdraw(String userEmail);
 

@@ -73,12 +73,6 @@
     </select>
 
     <!--  비밀번호 찾기 (이메일)  -->
-<!--    <select id="selectPasswordByEmail" parameterType="String" resultType="String">-->
-<!--        SELECT USER_PASSWORD-->
-<!--        FROM TBL_USER-->
-<!--        WHERE USER_EMAIL = #{userEmail}-->
-<!--    </select>    -->
-
     <select id="selectPasswordByEmail" parameterType="UserVO" resultType="UserVO">
         SELECT USER_PASSWORD, USER_IDENTIFICATION, USER_EMAIL, USER_NAME
         FROM TBL_USER
@@ -106,6 +100,13 @@
             USER_PHONE = #{userPhone}, USER_EMAIL = #{userEmail},
             USER_ADDRESS = #{userAddress}, USER_DETAIL_ADDRESS = #{userDetailAddress},
             USER_PROVIDER = #{userProvider}
+        WHERE USER_IDENTIFICATION = #{userIdentification}
+    </update>
+
+    <!--  회원 프로필 이미지 수정  -->
+    <update id="updateProfileImg" parameterType="UserVO">
+        UPDATE TBL_USER
+        SET USER_IMG_NAME = #{userImgName}, USER_IMG_PATH = #{userImgPath}
         WHERE USER_IDENTIFICATION = #{userIdentification}
     </update>
 
