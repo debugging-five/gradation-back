@@ -36,7 +36,7 @@ public class DeliveryDTO {
     private String userNickName;
     private String userAddress;
     private String userDetailAddress;
-    private String postalCode;
+    private String userPostalCode;
     private boolean userSnsOk;
     private boolean userMailOk;
     private boolean userAgreementOk;

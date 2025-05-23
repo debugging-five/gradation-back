@@ -110,6 +110,16 @@
         WHERE USER_IDENTIFICATION = #{userIdentification}
     </update>
 
+    <!--  대학교 인증  -->
+    <update id="updateUniversityStatus" parameterType="UserVO">
+        UPDATE TBL_USER
+        SET USER_MY_UNIVERSITY = #{userMyUniversity}, USER_MY_MAJOR = #{userMyMajor},
+            USER_MAJOR_IMG_NAME = #{userMajorImgName}, USER_MAJOR_IMG_PATH = #{userMajorImgPath},
+            USER_UNIVERSITY_STATUS = '신청'
+        WHERE ID = #{id};
+    </update>
+
+
     <!--  비밀번호 수정  -->
     <update id="updatePassword" parameterType="UserVO">
         UPDATE TBL_USER

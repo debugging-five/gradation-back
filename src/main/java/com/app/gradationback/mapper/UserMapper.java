@@ -50,6 +50,9 @@ public interface UserMapper {
 //    비밀번호 수정
     public void updatePassword(UserVO userVO);
 
+//    대학교 인증
+    public void updateUniversityStatus(UserVO userVO);
+
 //    회원 탈퇴
     public void deleteUser(String userEmail);
 

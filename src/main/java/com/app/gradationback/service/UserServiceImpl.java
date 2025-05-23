@@ -94,6 +94,12 @@ public class UserServiceImpl implements UserService {
         userDAO.updatePassword(userVO);
     }
 
+//    대학교 인증
+    @Override
+    public void modifyUniversityStatus(UserVO userVO) {
+        userDAO.updateUniversityStatus(userVO);
+    }
+
 //    회원 정보 수정
     @Override
     public void modifyUser(UserVO userVO) {
