@@ -212,6 +212,7 @@ public class FileController {
 
         userService.modifyUniversityStatus(userVO);
 
+
         response.put("message", "학생증이 정상적으로 등록되었습니다.");
         response.put("fileName", savedFileName);
         response.put("filePath", filePath);
