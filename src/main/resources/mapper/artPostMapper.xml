@@ -160,7 +160,7 @@
 
     <!--  내 작품 리스트  -->
     <select id="selectAllMyArt" parameterType="Long" resultType="ArtPostDTO">
-        SELECT TBA.ID, TBA.ART_TITLE, TAI.ART_IMG_NAME, TAI.ART_IMG_PATH, TBU.USER_NAME
+        SELECT TBA.ID, TBA.ART_TITLE, TAI.ART_IMG_NAME, TAI.ART_IMG_PATH, TBU.USER_NAME, TBA.ART_STATUS
         FROM TBL_ART TBA
         JOIN TBL_USER TBU
         ON TBA.USER_ID = TBU.ID
