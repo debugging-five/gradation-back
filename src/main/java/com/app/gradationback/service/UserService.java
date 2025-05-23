@@ -41,6 +41,9 @@ public interface UserService {
 //    비밀번호 수정
     public void modifyPassword(UserVO userVO);
 
+//    대학교 인증
+    public void modifyUniversityStatus(UserVO userVO);
+
 //    회원 정보 수정
     public void modifyUser(UserVO userVO);
 

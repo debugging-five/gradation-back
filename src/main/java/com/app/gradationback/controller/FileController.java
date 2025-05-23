@@ -151,7 +151,7 @@ public class FileController {
         return FileCopyUtils.copyToByteArray(new File("c:/upload/" + filePath + "/" + fileName));
     }
 
-
+//    프로필 사진 변경
     @Operation(summary = "프로필 이미지 변경", description = "사용자 프로필 이미지 파일 저장 및 DB 업데이트 API")
     @PostMapping("upload/profile/{userIdentification}")
     public ResponseEntity<Map<String, Object>> updateProfileImage(@RequestParam("file") MultipartFile file, @PathVariable String userIdentification) throws IOException {
@@ -178,6 +178,39 @@ public class FileController {
         userService.modifyProfileImg(userVO);
 
         response.put("message", "프로필 이미지가 정상적으로 변경되었습니다.");
+        response.put("fileName", savedFileName);
+        response.put("filePath", filePath);
+
+        return ResponseEntity.ok(response);
+    }
+
+    //    대학교 인증
+    @Operation(summary = "대학교 인증", description = "대학교 학생증 이미지 파일 저장 및 DB 업데이트 API")
+    @PostMapping("upload/certification/{id}")
+    public ResponseEntity<Map<String, Object>> updateProfileImage(@RequestParam("file") MultipartFile file, @PathVariable Long id) throws IOException {
+        Map<String, Object> response = new HashMap<>();
+
+        if (file == null || file.isEmpty()) {
+            response.put("message", "업로드할 파일이 없습니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
+        String filePath = "images/user/certification";
+        String uuid = UUID.randomUUID().toString();
+        String originalFileName = file.getOriginalFilename();
+        String savedFileName = uuid + (originalFileName != null ? originalFileName : "");
+
+        FileSaveUtil fileSave = new FileSaveUtil();
+        fileSave.fileSave(file, filePath, savedFileName);
+
+        UserVO userVO = new UserVO();
+        userVO.setId(id);
+        userVO.setUserMajorImgPath(filePath);
+        userVO.setUserMajorImgName(savedFileName);
+
+        userService.modifyProfileImg(userVO);
+
+        response.put("message", "학생증이 정상적으로 등록되었습니다.");
         response.put("fileName", savedFileName);
         response.put("filePath", filePath);
 

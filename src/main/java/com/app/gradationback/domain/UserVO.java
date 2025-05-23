@@ -30,7 +30,7 @@ public class UserVO {
     @Schema(description = "상세 주소", example = "상세주소")
     private String userDetailAddress;
     @Schema(description = "우편번호", example = "12345")
-    private String postalCode;
+    private String userPostalCode;
     @Schema(description = "SNS 수신 여부", example = "1")
     private boolean userSnsOk;
     @Schema(description = "메일 수신 여부", example = "1")
@@ -71,6 +71,10 @@ public class UserVO {
     private String userBackgroundImgPath;
     @Schema(description = "학과", example = "1")
     private String userProvider;
+    @Schema(description = "재학중인 대학교명", example = "00대학교")
+    private String userMyUniversity;
+    @Schema(description = "재학중인 대학의 학과명", example = "00학과")
+    private String userMyMajor;
     private Long majorId;
 
 
