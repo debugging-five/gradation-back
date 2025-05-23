@@ -75,14 +75,15 @@
                CEIL(AUCTION_BIDDING_PRICE * 1.1 / 1000) * 1000 AS AUCTION_BIDDING_MINIMUM_PRICE,
                AUCTION_ID,
                (
-                   SELECT COUNT(ID)
+                   SELECT COUNT(DISTINCT USER_ID)
                    FROM TBL_AUCTION_BIDDING
+                   WHERE AUCTION_ID = ${auctionId}
                ) AS BIDDER_COUNT,
                USER_ID
         FROM TBL_AUCTION_BIDDING
         WHERE AUCTION_ID = ${auctionId}
         ORDER BY ID DESC
-        FETCH FIRST 1 ROWS ONLY
+            FETCH FIRST 1 ROWS ONLY
     </select>
 
 </mapper>
