@@ -30,6 +30,9 @@ public class AuctionDAO {
     public Long findAuctionCountByArtId(Long artId) {
         return auctionMapper.selectByArtId(artId);
     }
+    public List<AuctionDTO> findAuctionByUserId(Long userId) {
+        return auctionMapper.selectByUserId(userId);
+    }
     public void update(AuctionVO auctionVO) {
         auctionMapper.update(auctionVO);
     }

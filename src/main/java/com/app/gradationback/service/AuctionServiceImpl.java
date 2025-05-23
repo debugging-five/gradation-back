@@ -55,6 +55,11 @@ public class AuctionServiceImpl implements AuctionService {
     }
 
     @Override
+    public List<AuctionDTO> auctionFindByUserId(Long userId) {
+        return auctionDAO.findAuctionByUserId(userId);
+    }
+
+    @Override
     public void auctionModify(AuctionVO auctionVO) {
         auctionDAO.update(auctionVO);
     }

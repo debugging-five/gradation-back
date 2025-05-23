@@ -15,6 +15,7 @@ public interface AuctionMapper {
     public Optional<AuctionDTO> select(Long id);
     public List<AuctionDTO> selectBidding(Integer cursor);
     public Long selectByArtId(Long artId);
+    public List<AuctionDTO> selectByUserId(Long userId);
     public void update(AuctionVO auctionVO);
     public void delete(Long id);
 }

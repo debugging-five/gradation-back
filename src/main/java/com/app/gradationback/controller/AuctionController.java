@@ -87,8 +87,24 @@ public class AuctionController {
     @GetMapping("detail/{id}")
     public ResponseEntity<Map<String, Object>> read(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
-        response.put("message", "점심 맛있게 먹어 ~ !");
+        response.put("message", "조회 성공");
         response.put("auction", auctionService.auctionRead(id));
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "본인 경매 정보 조회", description = "유저 기준으로 본인의 경매 정보를 조회할 수 있는 API")
+    @Parameter(
+            name = "userId",
+            description = "유저 아이디",
+            schema = @Schema(type = "number"),
+            in = ParameterIn.PATH,
+            required = true
+    )
+    @GetMapping("my-bidding/{userId}")
+    public ResponseEntity<Map<String, Object>> readUserBidding(@PathVariable Long userId) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "조회 성공");
+        response.put("auction", auctionService.auctionFindByUserId(userId));
         return ResponseEntity.ok(response);
     }
 
@@ -113,6 +129,8 @@ public class AuctionController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(footerList);
         }
     }
+
+
 
     @Operation(summary = "작품 아이디로 경매 조회", description = "작품의 아이디로 경매를 조회할 수 있는 API")
     @Parameter(
