@@ -136,11 +136,17 @@ public class AdminController {
     @Operation(summary = "QnA 답변 등록", description = "관리자가 QnA에 대한 답변을 등록할 수 있는 API")
     @PostMapping("/qna/answer")
     public void registerQnaAnswer(@RequestBody QnaAnswerVO qnaAnswerVO, HttpServletRequest request) {
+        log.info("받은 ID 값: {}", qnaAnswerVO.getId());
+        qnaAnswerVO.setId(null); // 시퀀스로 자동 생성되게 강제 설정
+
         if (!adminCheckUtil.isAdmin(request)) {
             throw new RuntimeException("관리자만 접근 가능합니다.");
         }
+
         qnaAnswerService.register(qnaAnswerVO);
     }
+
+
 
     // QnA 답변 수정 (옵션)
     @Operation(summary = "QnA 답변 수정", description = "관리자가 QnA에 등록된 답변을 수정할 수 있는 API")
