@@ -58,12 +58,12 @@ public class AuctionMapperTest {
 
     @Test
     public void select() {
-        List<AuctionDTO> auctionDTO = auctionMapper.select(1L);
-        log.info("-------------------------------------");
-        for (AuctionDTO auction : auctionDTO) {
-            log.info(auction.toString());
-        }
-        log.info("------------------------------------");
+//        List<AuctionDTO> auctionDTO = auctionMapper.select(1L);
+//        log.info("-------------------------------------");
+//        for (AuctionDTO auction : auctionDTO) {
+//            log.info(auction.toString());
+//        }
+//        log.info("------------------------------------");
     }
 
     @Test

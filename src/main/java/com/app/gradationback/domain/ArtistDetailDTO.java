@@ -21,6 +21,7 @@ public class ArtistDetailDTO {
 
     private Date historyDate;
     private String historyContent;
+    private Long historyId;
 
     private String artImgPath;
     private String artImgName;

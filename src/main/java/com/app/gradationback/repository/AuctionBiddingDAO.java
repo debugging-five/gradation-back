@@ -2,6 +2,7 @@ package com.app.gradationback.repository;
 
 
 import com.app.gradationback.domain.AuctionBiddingVO;
+import com.app.gradationback.domain.AuctionPriceVO;
 import com.app.gradationback.mapper.AuctionBiddingMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -36,6 +37,11 @@ public class AuctionBiddingDAO {
 
     public Optional<Integer> findCountByAuctionId(Long auctionId) {
         return auctionBiddingMapper.selectCount(auctionId);
+    }
+
+//    가격 조회
+    public Optional<AuctionPriceVO> findPrice(Long auctionId) {
+        return auctionBiddingMapper.selectPrice(auctionId);
     }
 
 }

@@ -20,4 +20,6 @@ public class QnaAnswerDAO {
 
     // 답변 삭제
     public void delete(Long qnaId) {qnaAnswerMapper.delete(qnaId);}
+
+
 }

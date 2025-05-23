@@ -104,7 +104,7 @@ public class AdminController {
     }
 
     @Operation(summary = "FAQ 삭제", description = "FAQ 내용을 삭제하는 API")
-    @DeleteMapping("/faq/remove/{id}")
+    @DeleteMapping("/faq/{id}")
     public void removeFaq(@PathVariable Long id, HttpServletRequest request) {
         if (!adminCheckUtil.isAdmin(request)) {
             throw new RuntimeException("관리자만 접근 가능합니다.");
@@ -122,7 +122,7 @@ public class AdminController {
         return qnaService.getAllQnaListForAdmin();
     }
 
-    //     관리자용 단일 QnA 조회
+    //     관리자용 단일 QnA 조호
     @Operation(summary = "단일 QnA 조회", description = "관리자가 특정 QnA 내용을 확인할 수 있는 API")
     @GetMapping("/qna/{id}")
     public QnaDTO getQna(@PathVariable Long id, HttpServletRequest request) {
@@ -136,11 +136,17 @@ public class AdminController {
     @Operation(summary = "QnA 답변 등록", description = "관리자가 QnA에 대한 답변을 등록할 수 있는 API")
     @PostMapping("/qna/answer")
     public void registerQnaAnswer(@RequestBody QnaAnswerVO qnaAnswerVO, HttpServletRequest request) {
+        log.info("받은 ID 값: {}", qnaAnswerVO.getId());
+        qnaAnswerVO.setId(null); // 시퀀스로 자동 생성되게 강제 설정
+
         if (!adminCheckUtil.isAdmin(request)) {
             throw new RuntimeException("관리자만 접근 가능합니다.");
         }
+
         qnaAnswerService.register(qnaAnswerVO);
     }
+
+
 
     // QnA 답변 수정 (옵션)
     @Operation(summary = "QnA 답변 수정", description = "관리자가 QnA에 등록된 답변을 수정할 수 있는 API")
@@ -182,7 +188,7 @@ public class AdminController {
             banDTO.setBanDate(new Timestamp(System.currentTimeMillis())); // 정지 일자 자동 세팅
             userService.banUser(banDTO);
         } else {
-            throw new RuntimeException("잘못된 정지 상태입니다.");
+            throw new RuntimeException("잘못된 상태입니다.");
         }
     }
 

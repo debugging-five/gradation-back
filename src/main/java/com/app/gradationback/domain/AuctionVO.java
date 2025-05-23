@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Component
@@ -16,6 +17,9 @@ public class AuctionVO {
 
     @Schema(description = "경매 시작 날짜", required = true, example = "2025-01-01 15:30:00")
     private String auctionStartDate;
+
+    @Schema(description = "경매 종료 날짜", required = true, example = "2025-01-01 15:30:00")
+    private String auctionEndDate;
 
     @Schema(description = "시작 입찰가", required = true, example = "100000")
     private Integer auctionStartPrice;

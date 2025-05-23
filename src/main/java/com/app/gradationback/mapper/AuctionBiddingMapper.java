@@ -1,6 +1,7 @@
 package com.app.gradationback.mapper;
 
 import com.app.gradationback.domain.AuctionBiddingVO;
+import com.app.gradationback.domain.AuctionPriceVO;
 import com.app.gradationback.domain.AuctionVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -18,4 +19,6 @@ public interface AuctionBiddingMapper {
     public Optional<AuctionBiddingVO> selectAuto(Long auctionId);
 //    경쟁 입찰자
     public Optional<Integer> selectCount(Long auctionId);
+//    가격 조회
+    public Optional<AuctionPriceVO> selectPrice(Long auctionId);
 }

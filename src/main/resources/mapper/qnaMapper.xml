@@ -16,14 +16,15 @@
 
 <!--    문의 단일 조회-->
     <select id="selectById" parameterType="Long" resultType="QnaDTO">
-        SELECT TQ.ID AS QNA_ID, QNA_TITLE, QNA_CONTENT, QNA_TIME, QNA_IMG_NAME, QNA_IMG_PATH, QNA_CATEGORY, QNA_ANSWER_TITLE, QNA_ANSWER_CONTENT, QNA_ANSWER_TIME
+        SELECT TQ.ID AS QNA_ID, QNA_TITLE, QNA_CONTENT, QNA_TIME, QNA_IMG_NAME, QNA_IMG_PATH, QNA_CATEGORY,
+            TQA.QNA_ANSWER_TITLE, TQA.QNA_ANSWER_CONTENT, TQA.QNA_ANSWER_TIME,
+            TU.USER_NAME, TU.USER_PHONE, TU.USER_EMAIL
         FROM TBL_USER TU
-        JOIN TBL_QNA TQ
-        ON TU.ID = TQ.USER_ID
-        FULL OUTER JOIN TBL_QNA_ANSWER TQA
-        ON TQA.QNA_ID = TQ.ID
+            JOIN TBL_QNA TQ ON TU.ID = TQ.USER_ID
+            LEFT JOIN TBL_QNA_ANSWER TQA ON TQA.QNA_ID = TQ.ID
         WHERE TQ.ID = #{qnaId}
     </select>
+
 
     <select id="selectOne" parameterType="Long" resultType="QnaVO">
         SELECT ID, QNA_TITLE, QNA_CONTENT, QNA_TIME, QNA_IMG_NAME, QNA_IMG_PATH, QNA_CATEGORY, USER_ID
@@ -50,7 +51,7 @@
         WHERE ID = #{id}
     </delete>
 
-    <!-- 관리자용 전체 문의 내역 조회 -->
+    <!-- 관리자용 전체 문의 내역 조회! -->
     <select id="selectAllForAdmin" resultType="QnaDTO">
         SELECT
             TBQ.ID AS QNA_ID,

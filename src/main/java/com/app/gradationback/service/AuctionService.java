@@ -2,6 +2,7 @@ package com.app.gradationback.service;
 
 import com.app.gradationback.domain.AuctionBiddingVO;
 import com.app.gradationback.domain.AuctionDTO;
+import com.app.gradationback.domain.AuctionPriceVO;
 import com.app.gradationback.domain.AuctionVO;
 
 import java.util.HashMap;
@@ -13,9 +14,10 @@ public interface AuctionService {
 //    경매 조회에 사용되는 로직
     public void auctionRegistration(AuctionVO auctionVO);
     public List<AuctionDTO> auctionList(HashMap<String, Object> params);
-    public List<AuctionDTO> auctionRead(Long id);
+    public Optional<AuctionDTO> auctionRead(Long id);
     public List<AuctionDTO> auctionFooterBidding(Integer cursor);
     public Long auctionFindByArtId(Long artId);
+    public List<AuctionDTO> auctionFindByUserId(Long userId);
     public void auctionModify(AuctionVO auctionVO);
     public void auctionDelete(Long id);
 // 입찰에 사용되는 로직
@@ -23,4 +25,5 @@ public interface AuctionService {
     public void endBidding(AuctionVO auctionVO);
     public Optional<AuctionBiddingVO> auctionStatus(Long auctionId);
     public Optional<Integer> auctionBidderCount(Long auctionId);
+    public Optional<AuctionPriceVO> getLatestPrice(Long auctionId);
 }
