@@ -1,14 +1,12 @@
 package com.app.gradationback.controller;
 
-import com.app.gradationback.domain.ArtImgVO;
-import com.app.gradationback.domain.ArtVO;
-import com.app.gradationback.domain.GradationExhibitionImgVO;
-import com.app.gradationback.domain.UniversityExhibitionDTO;
+import com.app.gradationback.domain.*;
 import com.app.gradationback.repository.ArtImgDAO;
 import com.app.gradationback.repository.ExhibitionDAO;
 import com.app.gradationback.service.ArtImgService;
 import com.app.gradationback.service.ArtService;
 import com.app.gradationback.service.ExhibitionService;
+import com.app.gradationback.service.UserService;
 import com.app.gradationback.util.FileSaveUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +32,7 @@ public class FileController {
     private final ArtService artService;
     private final ArtImgService artImgService;
     private final ExhibitionService exhibitionService;
+    private final UserService userService;
 
     @Operation(summary = "작품 이미지 업로드", description = "작품 이미지 파일 저장 API")
     @PostMapping("upload/art/{artId}")
@@ -151,4 +150,40 @@ public class FileController {
     public byte[] display(@PathVariable String fileName, @RequestParam String filePath) throws IOException {
         return FileCopyUtils.copyToByteArray(new File("c:/upload/" + filePath + "/" + fileName));
     }
+
+
+    @Operation(summary = "프로필 이미지 변경", description = "사용자 프로필 이미지 파일 저장 및 DB 업데이트 API")
+    @PostMapping("upload/profile/{userIdentification}")
+    public ResponseEntity<Map<String, Object>> updateProfileImage(@RequestParam("file") MultipartFile file, @PathVariable String userIdentification) throws IOException {
+        Map<String, Object> response = new HashMap<>();
+
+        if (file == null || file.isEmpty()) {
+            response.put("message", "업로드할 파일이 없습니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
+        String filePath = "images/user/profile";
+        String uuid = UUID.randomUUID().toString();
+        String originalFileName = file.getOriginalFilename();
+        String savedFileName = uuid + (originalFileName != null ? originalFileName : "");
+
+        FileSaveUtil fileSave = new FileSaveUtil();
+        fileSave.fileSave(file, filePath, savedFileName);
+
+        UserVO userVO = new UserVO();
+        userVO.setUserIdentification(userIdentification);
+        userVO.setUserImgPath(filePath);
+        userVO.setUserImgName(savedFileName);
+
+        userService.modifyProfileImg(userVO);
+
+        response.put("message", "프로필 이미지가 정상적으로 변경되었습니다.");
+        response.put("fileName", savedFileName);
+        response.put("filePath", filePath);
+
+        return ResponseEntity.ok(response);
+    }
+
+
+
 }

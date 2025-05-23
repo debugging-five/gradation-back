@@ -90,7 +90,9 @@
             USER_ART_CATEGORY = #{userArtCategory},
             USER_INSTAGRAM = #{userInstagram},
             USER_YOUTUBE = #{userYoutube},
-            USER_BLOG = #{userBlog}
+            USER_BLOG = #{userBlog},
+            USER_BACKGROUND_IMG_PATH = #{userBackgroundImgPath},
+            USER_BACKGROUND_IMG_NAME = #{userBackgroundImgName}
         WHERE ID = #{id}
     </update>
 
@@ -134,7 +136,9 @@
             TU.USER_ART_CATEGORY,
             TH.ID AS HISTORY_ID,
             TH.HISTORY_DATE,
-            TH.HISTORY_CONTENT
+            TH.HISTORY_CONTENT,
+            TU.USER_BACKGROUND_IMG_PATH,
+            TU.USER_BACKGROUND_IMG_NAME
         FROM TBL_USER TU
         LEFT JOIN TBL_MAJOR TM
             ON TU.MAJOR_ID = TM.ID
