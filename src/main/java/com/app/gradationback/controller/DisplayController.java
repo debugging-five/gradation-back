@@ -66,16 +66,34 @@ public class DisplayController {
             in = ParameterIn.PATH,
             required = true
     )
-    @GetMapping("/read/{postId}")
-    public Map<String, Object> getPost(@PathVariable Long postId) {
+    @GetMapping("/read/{id}")
+//    public Map<String, Object> getPost(@PathVariable Long postId) {
+////        log.info("{}", postId);
+//        Optional<ArtPostDTO> foundArtPost = artPostService.getArtPostById(postId);
+//        Map<String, Object> response = new HashMap<>();
+//
+//        if(foundArtPost.isPresent()) {
+//            ArtPostDTO post = foundArtPost.get();
+//            Long artId = post.getArtId();
+//            List<CommentDTO> comments = commentService.getAllCommentByPostId(postId);
+//            List<ArtImgVO> images = artImgService.getArtImgListByArtId(artId);
+//            response.put("post", post);
+//            response.put("comments", comments);
+//            response.put("images", images);
+//            response.put("likeCount", artLikeService.getLikeCount(artId));
+//        }
+//        return response;
+//    }
+
+    public Map<String, Object> getPost(@PathVariable Long id) {
 //        log.info("{}", postId);
-        Optional<ArtPostDTO> foundArtPost = artPostService.getArtPostById(postId);
+        Optional<ArtPostDTO> foundArtPost = artPostService.getArtPostById(id);
         Map<String, Object> response = new HashMap<>();
 
         if(foundArtPost.isPresent()) {
             ArtPostDTO post = foundArtPost.get();
             Long artId = post.getArtId();
-            List<CommentDTO> comments = commentService.getAllCommentByPostId(postId);
+            List<CommentDTO> comments = commentService.getAllCommentByPostId(id);
             List<ArtImgVO> images = artImgService.getArtImgListByArtId(artId);
             response.put("post", post);
             response.put("comments", comments);
