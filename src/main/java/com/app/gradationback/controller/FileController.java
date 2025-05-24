@@ -187,7 +187,7 @@ public class FileController {
     //    대학교 인증
     @Operation(summary = "대학교 인증", description = "대학교 학생증 이미지 파일 저장 및 DB 업데이트 API")
     @PostMapping("upload/certification/{id}")
-    public ResponseEntity<Map<String, Object>> updateProfileImage(@RequestParam("file") MultipartFile file, @PathVariable Long id) throws IOException {
+    public ResponseEntity<Map<String, Object>> updateProfileImage(@RequestParam("file") MultipartFile file, @RequestParam("university") String university, @RequestParam("major") String major,@PathVariable Long id) throws IOException {
         Map<String, Object> response = new HashMap<>();
 
         if (file == null || file.isEmpty()) {
@@ -205,10 +205,13 @@ public class FileController {
 
         UserVO userVO = new UserVO();
         userVO.setId(id);
+        userVO.setUserMyUniversity(university);
+        userVO.setUserMyMajor(major);
         userVO.setUserMajorImgPath(filePath);
         userVO.setUserMajorImgName(savedFileName);
 
-        userService.modifyProfileImg(userVO);
+        userService.modifyUniversityStatus(userVO);
+
 
         response.put("message", "학생증이 정상적으로 등록되었습니다.");
         response.put("fileName", savedFileName);
