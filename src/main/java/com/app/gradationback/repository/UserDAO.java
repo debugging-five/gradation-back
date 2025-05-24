@@ -71,10 +71,16 @@ public class UserDAO {
         userMapper.updateUser(userVO);
     }
 
+//    회원 프로필 이미지 수정
+    public void updateProfileImg(UserVO userVO) {userMapper.updateProfileImg(userVO);}
+
 //    비밀번호 수정
     public void updatePassword(UserVO userVO) {
         userMapper.updatePassword(userVO);
     }
+
+//    대학교 인증
+    public void updateUniversityStatus(UserVO userVO) {userMapper.updateUniversityStatus(userVO);}
 
 //    회원 탈퇴
     public void deleteUser(String userEmail) {

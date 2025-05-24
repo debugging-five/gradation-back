@@ -23,7 +23,7 @@
 
     <!--  댓글 전체 조회 (userId로)  -->
     <select id="selectAllByUserId" parameterType="Long" resultType="ArtPostDTO">
-        SELECT TBC.ID, TBC.ART_POST_ID, TBC.USER_ID, TBC.COMMENT_CONTENT, TBC.COMMENT_DATE, TBA.ART_TITLE
+        SELECT TBC.ID, TBC.ART_POST_ID, TBC.USER_ID, TBC.COMMENT_CONTENT, TBC.COMMENT_DATE, TBA.ART_TITLE, TBA.ID AS ART_ID
         FROM TBL_COMMENT TBC
         JOIN TBL_ART TBA
         ON TBC.ART_POST_ID = TBA.ID

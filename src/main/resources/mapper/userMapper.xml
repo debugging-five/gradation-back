@@ -73,12 +73,6 @@
     </select>
 
     <!--  비밀번호 찾기 (이메일)  -->
-<!--    <select id="selectPasswordByEmail" parameterType="String" resultType="String">-->
-<!--        SELECT USER_PASSWORD-->
-<!--        FROM TBL_USER-->
-<!--        WHERE USER_EMAIL = #{userEmail}-->
-<!--    </select>    -->
-
     <select id="selectPasswordByEmail" parameterType="UserVO" resultType="UserVO">
         SELECT USER_PASSWORD, USER_IDENTIFICATION, USER_EMAIL, USER_NAME
         FROM TBL_USER
@@ -108,6 +102,23 @@
             USER_PROVIDER = #{userProvider}
         WHERE USER_IDENTIFICATION = #{userIdentification}
     </update>
+
+    <!--  회원 프로필 이미지 수정  -->
+    <update id="updateProfileImg" parameterType="UserVO">
+        UPDATE TBL_USER
+        SET USER_IMG_NAME = #{userImgName}, USER_IMG_PATH = #{userImgPath}
+        WHERE USER_IDENTIFICATION = #{userIdentification}
+    </update>
+
+    <!--  대학교 인증  -->
+    <update id="updateUniversityStatus" parameterType="UserVO">
+        UPDATE TBL_USER
+        SET USER_MY_UNIVERSITY = #{userMyUniversity}, USER_MY_MAJOR = #{userMyMajor},
+            USER_MAJOR_IMG_NAME = #{userMajorImgName}, USER_MAJOR_IMG_PATH = #{userMajorImgPath},
+            USER_UNIVERSITY_STATUS = '신청'
+        WHERE ID = #{id}
+    </update>
+
 
     <!--  비밀번호 수정  -->
     <update id="updatePassword" parameterType="UserVO">

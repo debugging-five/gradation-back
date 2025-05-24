@@ -106,9 +106,11 @@
 
 <!--    알림 상세-->
     <select id="selectDetail" parameterType="long" resultType="MailDTO">
-        SELECT ID, MAIL_TITLE, MAIL_CONTENT, MAIL_SEND_TIME
-        FROM TBL_MAIL
-        WHERE ID = #{id}
+        SELECT TM.ID, TM.MAIL_TITLE, TM.MAIL_CONTENT, TM.MAIL_SEND_TIME, TU.USER_EMAIL AS sendUserEmail
+        FROM TBL_MAIL TM
+        JOIN TBL_USER TU
+        ON TM.SEND_USER_ID = TU.ID
+        WHERE TM.ID = #{id}
     </select>
 
 <!--    알림 삭제 = 75번줄과 동일-->

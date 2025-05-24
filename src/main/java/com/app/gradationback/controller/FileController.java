@@ -1,18 +1,17 @@
 package com.app.gradationback.controller;
 
-import com.app.gradationback.domain.ArtImgVO;
-import com.app.gradationback.domain.ArtVO;
-import com.app.gradationback.domain.GradationExhibitionImgVO;
-import com.app.gradationback.domain.UniversityExhibitionDTO;
+import com.app.gradationback.domain.*;
 import com.app.gradationback.repository.ArtImgDAO;
 import com.app.gradationback.repository.ExhibitionDAO;
 import com.app.gradationback.service.ArtImgService;
 import com.app.gradationback.service.ArtService;
 import com.app.gradationback.service.ExhibitionService;
+import com.app.gradationback.service.UserService;
 import com.app.gradationback.util.FileSaveUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.coobird.thumbnailator.Thumbnailator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -32,6 +32,7 @@ public class FileController {
     private final ArtService artService;
     private final ArtImgService artImgService;
     private final ExhibitionService exhibitionService;
+    private final UserService userService;
 
     @Operation(summary = "작품 이미지 업로드", description = "작품 이미지 파일 저장 API")
     @PostMapping("upload/art/{artId}")
@@ -46,28 +47,36 @@ public class FileController {
         categoryMap.put("공예", "craft");
 
         String filePath = "images/display/art";
-        String uuid = UUID.randomUUID().toString();
+        List<String> uuids = new ArrayList<>();
         FileSaveUtil fileSave = new FileSaveUtil();
         Optional<ArtVO> foundArt = artService.getArt(artId);
         if (foundArt.isPresent()) {
             artId = foundArt.get().getId();
-            log.info(artId.toString());
+//            log.info(artId.toString());
             filePath = filePath + "/" + categoryMap.get(foundArt.get().getArtCategory());
         }
 
         for(MultipartFile file : files) {
+            String uuid = UUID.randomUUID().toString();
+            uuids.add(uuid);
             ArtImgVO artImgVO = new ArtImgVO();
-            artImgVO.setArtImgName(uuid + file.getOriginalFilename());
+            artImgVO.setArtImgName(uuid + "_" + file.getOriginalFilename());
             artImgVO.setArtImgPath(filePath);
             artImgVO.setArtId(artId);
-            log.info(artImgVO.toString());
             artImgService.register(artImgVO);
-            log.info(artImgVO.toString());
+//            log.info(artImgVO.toString());
 
             fileSave.fileSave(file, artImgVO.getArtImgPath(), artImgVO.getArtImgName());
+
+//            썸네일
+            if (file.getContentType().startsWith("image")) {
+                FileOutputStream out = new FileOutputStream(new File("C:/upload/" + filePath, "t_" + uuid + "_" + file.getOriginalFilename()));
+                Thumbnailator.createThumbnail(file.getInputStream(), out, 300, 300);
+                out.close();
+            }
         }
 
-        response.put("uuid", uuid);
+        response.put("uuids", uuids);
         response.put("message", "정상적으로 업로드가 완료되었습니다.");
         return ResponseEntity.ok(response);
     }
@@ -141,4 +150,76 @@ public class FileController {
     public byte[] display(@PathVariable String fileName, @RequestParam String filePath) throws IOException {
         return FileCopyUtils.copyToByteArray(new File("c:/upload/" + filePath + "/" + fileName));
     }
+
+//    프로필 사진 변경
+    @Operation(summary = "프로필 이미지 변경", description = "사용자 프로필 이미지 파일 저장 및 DB 업데이트 API")
+    @PostMapping("upload/profile/{userIdentification}")
+    public ResponseEntity<Map<String, Object>> updateProfileImage(@RequestParam("file") MultipartFile file, @PathVariable String userIdentification) throws IOException {
+        Map<String, Object> response = new HashMap<>();
+
+        if (file == null || file.isEmpty()) {
+            response.put("message", "업로드할 파일이 없습니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
+        String filePath = "images/user/profile";
+        String uuid = UUID.randomUUID().toString();
+        String originalFileName = file.getOriginalFilename();
+        String savedFileName = uuid + (originalFileName != null ? originalFileName : "");
+
+        FileSaveUtil fileSave = new FileSaveUtil();
+        fileSave.fileSave(file, filePath, savedFileName);
+
+        UserVO userVO = new UserVO();
+        userVO.setUserIdentification(userIdentification);
+        userVO.setUserImgPath(filePath);
+        userVO.setUserImgName(savedFileName);
+
+        userService.modifyProfileImg(userVO);
+
+        response.put("message", "프로필 이미지가 정상적으로 변경되었습니다.");
+        response.put("fileName", savedFileName);
+        response.put("filePath", filePath);
+
+        return ResponseEntity.ok(response);
+    }
+
+    //    대학교 인증
+    @Operation(summary = "대학교 인증", description = "대학교 학생증 이미지 파일 저장 및 DB 업데이트 API")
+    @PostMapping("upload/certification/{id}")
+    public ResponseEntity<Map<String, Object>> updateProfileImage(@RequestParam("file") MultipartFile file, @RequestParam("university") String university, @RequestParam("major") String major,@PathVariable Long id) throws IOException {
+        Map<String, Object> response = new HashMap<>();
+
+        if (file == null || file.isEmpty()) {
+            response.put("message", "업로드할 파일이 없습니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
+        String filePath = "images/user/certification";
+        String uuid = UUID.randomUUID().toString();
+        String originalFileName = file.getOriginalFilename();
+        String savedFileName = uuid + (originalFileName != null ? originalFileName : "");
+
+        FileSaveUtil fileSave = new FileSaveUtil();
+        fileSave.fileSave(file, filePath, savedFileName);
+
+        UserVO userVO = new UserVO();
+        userVO.setId(id);
+        userVO.setUserMyUniversity(university);
+        userVO.setUserMyMajor(major);
+        userVO.setUserMajorImgPath(filePath);
+        userVO.setUserMajorImgName(savedFileName);
+
+        userService.modifyUniversityStatus(userVO);
+
+
+        response.put("message", "학생증이 정상적으로 등록되었습니다.");
+        response.put("fileName", savedFileName);
+        response.put("filePath", filePath);
+
+        return ResponseEntity.ok(response);
+    }
+
+
+
 }
