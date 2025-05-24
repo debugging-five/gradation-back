@@ -14,6 +14,7 @@
                 GRADATION_EXHIBITION_FEE,
                 GRADATION_EXHIBITION_TEL,
                 GRADATION_EXHIBITION_ADDRESS,
+                GRADATION_EXHIBITION_REAL_ADDRESS,
                 GRADATION_EXHIBITION_DATE
             FROM (
                 SELECT
@@ -25,6 +26,7 @@
                     GRADATION_EXHIBITION_FEE,
                     GRADATION_EXHIBITION_TEL,
                     GRADATION_EXHIBITION_ADDRESS,
+                    GRADATION_EXHIBITION_REAL_ADDRESS,
                     GRADATION_EXHIBITION_DATE
                 FROM TBL_GRADATION_EXHIBITION
                 ORDER BY ID DESC
@@ -58,6 +60,7 @@
         GRADATION_EXHIBITION_FEE,
         GRADATION_EXHIBITION_TEL,
         GRADATION_EXHIBITION_ADDRESS,
+        GRADATION_EXHIBITION_REAL_ADDRESS,
         GRADATION_EXHIBITION_DATE
         )
         VALUES (
@@ -69,6 +72,7 @@
         #{gradationExhibitionFee},
         #{gradationExhibitionTel},
         #{gradationExhibitionAddress},
+        #{gradationExhibitionRealAddress},
         #{gradationExhibitionDate}
         )
     </insert>

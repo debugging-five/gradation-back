@@ -143,13 +143,24 @@ public class ExhibitionController {
     @Operation(summary = "지난 전시회 목록", description = "지난 전시회를 조회할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "지난 전시회 조회 성공")
     @GetMapping("gradation/past")
-    public ResponseEntity<List<ExhibitionPastDTO>> getPastExhibitions() {
-        List<ExhibitionPastDTO> exhibitions = exhibitionService.getPastExhibitions();
+    public ResponseEntity<Map<String, Object>> getPastExhibitions() {
+        Map<String, Object> response = new HashMap<>();
 
-        if (exhibitions.isEmpty()) {
-            return ResponseEntity.notFound().build();
+        try {
+            List<ExhibitionPastDTO> exhibitions = exhibitionService.getPastExhibitions();
+
+            if(exhibitions != null) {
+                response.put("message", "지난 전시회 목록 조회 성공");
+                response.put("exhibitions", exhibitions);
+                return ResponseEntity.ok(response);
+            } else {
+                response.put("message", "지난 전시회 목록 조회 실패");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+            }
+        } catch (Exception e) {
+            response.put("message", "서버 오류: " +  e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-        return ResponseEntity.ok(exhibitions);
     }
 
     @Operation(summary = "지난 전시회 작품 목록", description = "지난 전시회에 전시되었던 작품목록을 조회할 수 있는 API")
@@ -159,13 +170,26 @@ public class ExhibitionController {
         @Parameter(name = "exhibitionId", description = "전시회 ID", example = "1"),
         @Parameter(name = "cursor", description = "페이지", example = "1")
     })
-    public ResponseEntity<List<ExhibitionPastDTO>> getExhibitionArtList(@PathVariable String exhibitionId) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("exhibitionId", exhibitionId);
-        params.put("cursor", 1);
+    public ResponseEntity<Map<String, Object>> getExhibitionArtList(@RequestBody HashMap<String, Object> params) {
+        Map<String, Object> response = new HashMap<>();
 
-        List<ExhibitionPastDTO> exhibitionArts = exhibitionService.getExhibitionArtList(params);
-        return ResponseEntity.ok(exhibitionArts);
+        try {
+            List<ExhibitionPastDTO> exhibitionArts = exhibitionService.getExhibitionArtList(response);
+
+            if(exhibitionArts != null) {
+                response.put("arts", exhibitionArts);
+                response.put("exhibitionId", response);
+                response.put("message", "지난 전시회 작품 목록 조회 성공");
+                response.put("cursor", 1);
+                return ResponseEntity.ok(response);
+            } else {
+                response.put("message", "지난 전시회 작품 목록 조회 실패");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+            }
+        } catch (Exception e) {
+            response.put("message", "서버 오류: " +  e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
 
