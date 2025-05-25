@@ -66,24 +66,22 @@ public class DisplayController {
             in = ParameterIn.PATH,
             required = true
     )
-    @GetMapping("/read/{postId}")
-    public Map<String, Object> getPost(@PathVariable Long postId) {
-//        log.info("{}", postId);
-        Optional<ArtPostDTO> foundArtPost = artPostService.getArtPostById(postId);
+    @GetMapping("/read/{id}")
+    public ResponseEntity<Map<String, Object>> getPost(@PathVariable Long id) {
+//        log.info("id : {}", id);
+//        log.info("postId : {}", postId);
+        Optional<ArtPostDTO> foundArtPost = artPostService.getArtPostById(id);
         Map<String, Object> response = new HashMap<>();
 
         if(foundArtPost.isPresent()) {
-            ArtPostDTO post = foundArtPost.get();
-            Long artId = post.getArtId();
-            List<CommentDTO> comments = commentService.getAllCommentByPostId(postId);
-            List<ArtImgVO> images = artImgService.getArtImgListByArtId(artId);
-            response.put("post", post);
-            response.put("comments", comments);
-            response.put("images", images);
-            response.put("likeCount", artLikeService.getLikeCount(artId));
+            response.put("post", foundArtPost.get());
+            response.put("message", "게시글 조회 성공했습니다.");
+            return ResponseEntity.ok(response);
         }
-        return response;
+        response.put("message", "게시글 조회 실패하였습니다.");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
+
 
 //    메인 등록순 상위 50개 작품 조회
     @Operation(summary = "등록순으로 상위 50개 작품 목록 조회", description = "등록순으로 상위 50개 작품 목록을 조회할 수 있는 API")
