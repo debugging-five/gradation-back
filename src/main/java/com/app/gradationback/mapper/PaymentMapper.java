@@ -13,5 +13,6 @@ public interface PaymentMapper {
     public void insert(PaymentVO paymentVO);
     public void insertCancel(PaymentCancellationVO paymentCancellationVO);
     public Optional<DeliveryDTO> select(Long id);
+    public Optional<DeliveryDTO> selectByAuctionId(Long auctionId);
     public List<DeliveryDTO> selectByUserId(Long userId);
 }

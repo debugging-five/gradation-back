@@ -102,6 +102,11 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    public Optional<DeliveryDTO> getPaymentByAuctionId(Long auctionId) {
+        return paymentDAO.findByAuctionId(auctionId);
+    }
+
+    @Override
     public List<DeliveryDTO> getPaymentByUserId(Long userId) {
         return paymentDAO.findAllByUserId(userId);
     }

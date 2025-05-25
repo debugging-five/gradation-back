@@ -53,4 +53,13 @@ public class PaymentServiceTest {
         }
     }
 
+    @Test
+    public void selectByAuctionIdTest() {
+        Optional<DeliveryDTO> foundPayment = paymentMapper.selectByAuctionId(52L);
+        if(foundPayment.isPresent()) {
+            log.info("{}",foundPayment.get());
+        }
+
+    }
+
 }

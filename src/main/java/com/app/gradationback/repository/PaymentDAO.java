@@ -31,6 +31,11 @@ public class PaymentDAO {
         return paymentMapper.select(id);
     }
 
+//    경매로 결제 조회
+    public Optional<DeliveryDTO> findByAuctionId(Long auctionId) {
+        return paymentMapper.selectByAuctionId(auctionId);
+    }
+
 //    유저 결제 리스트 조회
     public List<DeliveryDTO> findAllByUserId(Long userId) {
         return paymentMapper.selectByUserId(userId);
