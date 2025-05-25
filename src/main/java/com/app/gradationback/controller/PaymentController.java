@@ -72,6 +72,29 @@ public class PaymentController {
         return new DeliveryDTO();
     }
 
+    @Operation(summary = "해당 경매 결제 조회", description = "해당 경매의 결제여부를 조회할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "조회 성공")
+    @Parameter(
+            name = "AuctionId",
+            description = "결제 유저 번호",
+            schema = @Schema(type = "number"),
+            in = ParameterIn.PATH,
+            required = true
+    )
+    @GetMapping("/payment/auction/{auctionId}")
+    public ResponseEntity<Map<String, Object>> getPaymentByAuctionId(@PathVariable Long auctionId) {
+        Map<String, Object> response = new HashMap<>();
+        Optional<DeliveryDTO> foundAuction = paymentService.getPaymentByAuctionId(auctionId);
+        if (foundAuction.isEmpty()) {
+            response.put("status", false);
+            response.put("message", "미결제");
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        }
+        response.put("message", "조회 성공");
+        response.put("status", foundAuction.get());
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
     @Operation(summary = "결제 전체 조회", description = "결제 전체 조회 API")
     @ApiResponse(responseCode = "200", description = "조회 성공")
     @Parameter(
