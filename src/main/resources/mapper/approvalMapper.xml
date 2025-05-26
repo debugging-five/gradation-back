@@ -18,7 +18,7 @@
             TUS.ID AS USER_ID, USER_NAME, USER_EMAIL
         FROM TBL_UPCYCLING TUP
             JOIN TBL_USER TUS ON TUP.USER_ID = TUS.ID
-        WHERE TUP.UPCYCLING_STATUS = '미신청'
+        WHERE TUP.UPCYCLING_STATUS = '미승인'
         ORDER BY TUP.UPCYCLING_DATE DESC
     </select>
 
@@ -50,7 +50,7 @@
             TUS.ID AS USER_ID, USER_NAME, USER_EMAIL
         FROM TBL_ART TAR
             JOIN TBL_USER TUS ON TAR.USER_ID = TUS.ID
-        WHERE TAR.ART_STATUS = '미신청'
+        WHERE TAR.ART_STATUS = '미승인'
         ORDER BY TAR.ID DESC
     </select>
 
@@ -77,7 +77,7 @@
     <select id="selectAllWriterPending" resultType="UserVO">
         SELECT ID, USER_NAME, USER_EMAIL, USER_WRITER_STATUS
         FROM TBL_USER
-        WHERE USER_WRITER_STATUS = '미신청'
+        WHERE USER_WRITER_STATUS = '미승인'
         ORDER BY ID DESC
     </select>
 
@@ -101,7 +101,7 @@
     <select id="selectAllUniversityPending" resultType="UserVO">
         SELECT ID, USER_NAME, USER_EMAIL, USER_UNIVERSITY_STATUS
         FROM TBL_USER
-        WHERE USER_UNIVERSITY_STATUS = '미신청'
+        WHERE USER_UNIVERSITY_STATUS = '미승인'
         ORDER BY ID DESC
     </select>
 
@@ -124,10 +124,11 @@
     <!-- 대학 전시회 인증 승인 대기 목록 -->
     <select id="selectAllUniversityExhibitionPending" resultType="UniversityExhibitionDTO">
         SELECT TUE.ID, UNIVERSITY_EXHIBITION_START_DATE, UNIVERSITY_EXHIBITION_END_DATE, UNIVERSITY_EXHIBITION_TITLE, UNIVERSITY_EXHIBITION_LOCATION, UNIVERSITY_EXHIBITION_STATUS,
-               TUS.ID AD USER_ID, USER_NAME, USER_EMAIL
+               TUN.UNIVERSITY_NAME AS UNIVERSITY_NAME
         FROM TBL_UNIVERSITY_EXHIBITION TUE
-            JOIN TBL_USER TUS ON TUE.USER_ID = TUS.ID
-        WHERE USER_UNIVERSITY_EXHIBITION_STATUS = '대기'
+            JOIN TBL_MAJOR TMA ON TUE.MAJOR_ID = TMA.ID
+            JOIN TBL_UNIVERSITY TUN ON TMA.UNIVERSITY_ID = TUN.ID
+        WHERE TUE.UNIVERSITY_EXHIBITION_STATUS = '대기'
         ORDER BY TUE.UNIVERSITY_EXHIBITION_START_DATE DESC
     </select>
 

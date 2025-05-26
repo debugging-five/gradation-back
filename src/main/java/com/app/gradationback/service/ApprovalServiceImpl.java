@@ -13,12 +13,6 @@ import java.util.Optional;
 public class ApprovalServiceImpl implements ApprovalService {
 
     private final ApprovalDAO approvalDAO;
-    private final UpcyclingDTO upcyclingDTO;
-    private final ArtDTO artDTO;
-    private final UserVO userVO;
-    private final ExhibitionPastDTO exhibitionPastDTO;
-    private final UniversityDTO universityDTO;
-    private final UniversityExhibitionDTO universityExhibitionDTO;
 
     @Override
 //    리스트 객체 타입은 4개 중 하나가 들어오므로 와일드카드로, 스트링 타입으로 항목 식별(upcycling, art 등)
@@ -52,11 +46,11 @@ public class ApprovalServiceImpl implements ApprovalService {
     public void updateStatus(String type, Object dto) {
         switch (type.toLowerCase()){
 //          오브젝트 DTO로 형변환(다운캐스팅)
-            case "upcycling" -> approvalDAO.updateUpcyclingStatus((UpcyclingDTO) upcyclingDTO);
-            case "art" -> approvalDAO.updateArtStatus((ArtDTO) artDTO);
-            case "writer" -> approvalDAO.updateWriterStatus((UserVO) userVO );
-            case "university" -> approvalDAO.updateUniversityStatus((UserVO) userVO );
-            case "exhibition" -> approvalDAO.updateUniversityExhibitionStatus((UniversityExhibitionDTO) universityExhibitionDTO);
+            case "upcycling" -> approvalDAO.updateUpcyclingStatus((UpcyclingDTO) dto);
+            case "art" -> approvalDAO.updateArtStatus((ArtDTO) dto);
+            case "writer" -> approvalDAO.updateWriterStatus((UserVO) dto );
+            case "university" -> approvalDAO.updateUniversityStatus((UserVO) dto );
+            case "exhibition" -> approvalDAO.updateUniversityExhibitionStatus((UniversityExhibitionDTO) dto);
             default -> throw new RuntimeException("지원하지 않는 타입");
         }
 
