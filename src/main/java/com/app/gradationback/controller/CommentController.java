@@ -42,6 +42,10 @@ public class CommentController {
     public ResponseEntity<Map<String, Object>> write(@RequestBody CommentVO commentVO, HttpSession session) {
         Map<String, Object> response = new HashMap<>();
         Long userId = (Long) session.getAttribute("id");
+//        System.out.println("userId " + userId);
+//        System.out.println("userId " + userId);
+//        System.out.println("userId " + userId);
+//        System.out.println("userId " + userId);
 
         if (userId == null) {
             throw new RuntimeException("로그인이 필요합니다.");
@@ -62,11 +66,14 @@ public class CommentController {
         commentService.write(commentVO);
 
         Optional<CommentVO> foundComment = commentService.getComment(commentVO.getId());
+
         if (foundComment.isPresent()) {
 //            commentVO.setId(foundReply.get().getId());
             response.put("message", "댓글 등록 성공했습니다.");
             response.put("reply", foundComment.get());
+//            System.out.println("postId : " + commentVO.getArtPostId());
             return ResponseEntity.ok(response);
+
         }
         response.put("message", "댓글 등록 실패했습니다.");
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
