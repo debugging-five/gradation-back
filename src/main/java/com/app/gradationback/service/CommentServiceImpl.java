@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -44,8 +45,8 @@ public class CommentServiceImpl implements CommentService {
 
 //    댓글 전체 조회 (postId로)
     @Override
-    public List<CommentDTO> getAllCommentByPostId(Long postId) {
-        return commentDAO.findAllByPostId(postId);
+    public List<CommentDTO> getAllCommentByPostId(Map<String, Object> params) {
+        return commentDAO.findAllByPostId(params);
     }
 
 //    댓글 수정

@@ -65,7 +65,13 @@ public class ArtPostServiceImpl implements ArtPostService {
 //    작품 게시글 단일 조회
     @Override
     public Optional<ArtPostDTO> getArtPostById(Long id) {
-        return artPostDAO.findById(id);
+
+        return artPostDAO.findById(id).map((post) -> {
+//            post.setComments(commentDAO.findAllByPostId(post.getId()));
+            post.setImages(artImgDAO.findAllByArtId(post.getArtId()));
+            post.setArtLikeCount(artDAO.findLikeCount(post.getArtId()));
+            return post;
+        });
     }
 
 //    등록순으로 상위 50개 작품 조회
@@ -93,7 +99,7 @@ public class ArtPostServiceImpl implements ArtPostService {
         }
 
         return artPostDAO.findArtListByCategoryAndDropdown(params).stream().map(post -> {
-            post.setComments(commentDAO.findAllByPostId(post.getArtPostId()));
+//            post.setComments(commentDAO.findAllByPostId(post.getArtPostId()));
             post.setImages(artImgDAO.findAllByArtId(post.getId()));
             return post;
         }).toList();

@@ -49,6 +49,7 @@ public class AuctionController {
     @PutMapping("modify")
     public ResponseEntity<Map<String, Object>> modify(@RequestBody AuctionVO auctionVO) {
         Map<String, Object> response = new HashMap<>();
+        log.info(auctionVO.toString());
         try {
             auctionService.auctionModify(auctionVO);
         } catch (Exception e) {
@@ -71,9 +72,13 @@ public class AuctionController {
             @Parameter(name = "keyword", description = "검색어", example = "작가이름 or 작품이름")
     })
     @ApiResponse(responseCode = "200", description = "조회 성공")
-    @GetMapping("list")
-    public ResponseEntity<List<AuctionDTO>> list(@RequestParam HashMap<String, Object> params) {
-        return ResponseEntity.ok(auctionService.auctionList(params));
+    @PostMapping("list")
+    public ResponseEntity<Map<String, Object>> list(@RequestBody HashMap<String, Object> params) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("auctionList", auctionService.auctionList(params));
+        response.put("message", "조회완료");
+        response.put("params", params);
+        return ResponseEntity.ok(response);
     }
 
     @Operation(summary = "경매 정보 조회", description = "경매 1개 정보를 조회할 수 있는 API")

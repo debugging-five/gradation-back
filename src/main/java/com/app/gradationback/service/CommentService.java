@@ -5,6 +5,7 @@ import com.app.gradationback.domain.CommentDTO;
 import com.app.gradationback.domain.CommentVO;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface CommentService {
@@ -19,10 +20,10 @@ public interface CommentService {
     public Optional<CommentVO> getComment(Long id);
 
 //    댓글 전체 조회 (userId로)
-List<ArtPostDTO> getCommentListByUserId(Long userId);
+    public List<ArtPostDTO> getCommentListByUserId(Long userId);
 
 //    댓글 전체 조회 (postId로)
-    public List<CommentDTO> getAllCommentByPostId(Long postId);
+    public List<CommentDTO> getAllCommentByPostId(Map<String, Object> params);
 
 //    댓글 삭제
     public void removeComment(Long id);

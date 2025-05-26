@@ -29,7 +29,7 @@ public class ArtMapperTests {
         artVO.setArtDescription("설명설명");
         artVO.setArtSize("700 x 700 x 700");
         artVO.setArtMaterial("재료재료");
-        artVO.setUserId(95L);
+        artVO.setUserId(3L);
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date endDate = formatter.parse("2025-05-05");

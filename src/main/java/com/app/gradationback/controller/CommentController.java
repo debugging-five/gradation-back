@@ -1,12 +1,14 @@
 package com.app.gradationback.controller;
 
 import com.app.gradationback.domain.ArtPostDTO;
+import com.app.gradationback.domain.CommentDTO;
 import com.app.gradationback.domain.CommentVO;
 import com.app.gradationback.domain.UserVO;
 import com.app.gradationback.service.CommentService;
 import com.app.gradationback.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -71,13 +73,33 @@ public class CommentController {
     }
 
 //    댓글 전체 조회
+//    @Operation(summary = "댓글 전체 조회", description = "댓글을 전체 조회할 수 있는 API")
+//    @ApiResponse(responseCode = "200", description = "댓글 전체 조회 성공")
+//    @GetMapping("list")
+//    public ResponseEntity<Map<String, Object>> getReplies() {
+//        Map<String, Object> response = new HashMap<>();
+//        try {
+//            List<CommentVO> commentList = commentService.getCommentList();
+//            response.put("message", "댓글 전체 조회 성공했습니다.");
+//            response.put("commentList", commentList);
+//            return ResponseEntity.ok(response);
+//        } catch (Exception e) {
+//            response.put("message", "댓글 전체 조회 실패했습니다.");
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+//        }
+//    }
+
     @Operation(summary = "댓글 전체 조회", description = "댓글을 전체 조회할 수 있는 API")
+    @Parameters({
+            @Parameter(name = "order", description = "정렬기준", example = "popular"),
+            @Parameter(name = "cursor", description = "페이지", example = "1"),
+    })
     @ApiResponse(responseCode = "200", description = "댓글 전체 조회 성공")
-    @GetMapping("list")
-    public ResponseEntity<Map<String, Object>> getReplies() {
+    @PostMapping("list")
+    public ResponseEntity<Map<String, Object>> getReplies(@RequestBody HashMap<String, Object> params) {
         Map<String, Object> response = new HashMap<>();
         try {
-            List<CommentVO> commentList = commentService.getCommentList();
+            List<CommentDTO> commentList = commentService.getAllCommentByPostId(params);
             response.put("message", "댓글 전체 조회 성공했습니다.");
             response.put("commentList", commentList);
             return ResponseEntity.ok(response);
