@@ -27,10 +27,10 @@ public class UpcyclingController {
     private final UpcyclingDTO upcyclingDTO;
 
     // 전체 목록 조회
-    @Operation(summary = "전체 신청 목록 조회", description = "업사이클링 신청 정보 전체를 조회 할 수 있는 API")
-    @GetMapping("list")
-    public List<UpcyclingVO> getList() {
-        return upcyclingService.getUpcyclingUserList();
+    @Operation(summary = "전체 신청 목록 조회", description = "업사이클링 신청 정보 전체를 조회할 수 있는 API")
+    @GetMapping("list/{userId}")
+    public List<UpcyclingDTO> getList(@PathVariable("userId") Long userId) {
+        return upcyclingService.getUpcyclingUserList(userId);
     }
 
     // 단건 조회

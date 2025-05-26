@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface UpcyclingService {
     // 전체 신청 내역 조회
-    List<UpcyclingVO> getUpcyclingUserList();
+    List<UpcyclingDTO> getUpcyclingUserList(Long userId);
     // ID 단건 조회
     Optional<UpcyclingVO> getByUpcyclingUser(Long id);
     // 신청 등록
