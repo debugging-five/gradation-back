@@ -35,7 +35,7 @@ public class ArtPostServiceTests {
 
     @Test
     public void commentDAOTest() {
-        log.info("comments :{}", commentDAO.findAllByPostId(1L));
+//        log.info("comments :{}", commentDAO.findAllByPostId(1L));
     }
 
     @Test
