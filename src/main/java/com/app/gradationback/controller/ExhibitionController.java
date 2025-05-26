@@ -112,19 +112,30 @@ public class ExhibitionController {
     @Operation(summary = "최근 전시회 3개 조회", description = "최근 전시회 3개를 조회할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "최근 전시회 조회 성공")
     @GetMapping("gradation/recent")
-    public ResponseEntity<List<String>> getRecentGradation() {
-        List<GradationExhibitionVO> exhibitions = exhibitionService.getRecentGradations();
+    public ResponseEntity<Map<String, Object>> getRecentGradation() {
+        Map<String, Object> response = new HashMap<>();
 
-        List<String> exhibitionList = exhibitions
-                .stream()
-                .map(exhibition -> {
-                    String exhibitionDate = exhibition.getGradationExhibitionDate().substring(0, 4);
-                    return exhibitionDate + " " + exhibition.getGradationExhibitionTitle();
-                })
-                .collect(Collectors.toList());
+        try {
+            List<GradationExhibitionVO> exhibitions = exhibitionService.getRecentGradations();
 
-        return ResponseEntity.ok(exhibitionList);
+            List<Map<String, String>> exhibitionList = exhibitions
+                    .stream()
+                    .map(exhibition -> {
+                        Map<String, String> map = new HashMap<>();
+                        String exhibitionDate = exhibition.getGradationExhibitionDate().substring(0, 4);
+                        map.put("id",String.valueOf(exhibition.getId()));
+                        map.put("title", exhibitionDate + " " + exhibition.getGradationExhibitionTitle());
+                        return map;
+                    })
+                    .collect(Collectors.toList());
 
+            response.put("exhibitions", exhibitionList);
+            response.put("message", "최근 전시회 조회 성공");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("message", "서버 오류: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
 //    좋아요순 작품 50개
@@ -167,20 +178,20 @@ public class ExhibitionController {
     @ApiResponse(responseCode = "200", description = "지난 전시회 작품 목록 조회 성공")
     @GetMapping("gradation/past/{exhibitionId}/arts")
     @Parameters({
-        @Parameter(name = "exhibitionId", description = "전시회 ID", example = "1"),
-        @Parameter(name = "cursor", description = "페이지", example = "1")
+            @Parameter(name = "exhibitionId", description = "전시회 ID", example = "1"),
+            @Parameter(name = "cursor", description = "페이지", example = "1")
     })
-    public ResponseEntity<Map<String, Object>> getExhibitionArtList(@RequestBody HashMap<String, Object> params) {
+    public ResponseEntity<Map<String, Object>> getExhibitionArtList(@PathVariable String exhibitionId, @RequestParam(defaultValue = "1") int cursor) {
         Map<String, Object> response = new HashMap<>();
+        response.put("exhibitionId", exhibitionId);
+        response.put("cursor", cursor);
 
         try {
             List<ExhibitionPastDTO> exhibitionArts = exhibitionService.getExhibitionArtList(response);
 
             if(exhibitionArts != null) {
                 response.put("arts", exhibitionArts);
-                response.put("exhibitionId", response);
                 response.put("message", "지난 전시회 작품 목록 조회 성공");
-                response.put("cursor", 1);
                 return ResponseEntity.ok(response);
             } else {
                 response.put("message", "지난 전시회 작품 목록 조회 실패");
@@ -191,10 +202,6 @@ public class ExhibitionController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-
-
-
-
 
 
 //    University

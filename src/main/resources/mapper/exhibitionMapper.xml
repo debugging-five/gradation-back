@@ -216,6 +216,8 @@
 <!--    지난 전시회 작품 리스트 -->
     <select id="selectExhibitionArtList" parameterType="map" resultType="ExhibitionPastDTO">
         SELECT
+            TAR.ID,
+            TAR.ID AS ART_ID,
             TAR.ART_TITLE,
             TAI.ART_IMG_NAME,
             TAI.ART_IMG_PATH,
