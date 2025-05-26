@@ -20,7 +20,7 @@ public class ApprovalServiceImpl implements ApprovalService {
     public List<?> getPendingList(String type) {
         return switch (type.toLowerCase()){
             case "upcycling" -> approvalDAO.findAllUpcyclingPending();
-            case "art" -> approvalDAO.findAllArtPending();
+            case "art", "display" -> approvalDAO.findAllArtPending();
             case "writer" -> approvalDAO.findAllWriterPending();
             case "university" -> approvalDAO.findAllUniversityPending();
             case "exhibition" -> approvalDAO.findAllUniversityExhibitionPending();
@@ -33,7 +33,7 @@ public class ApprovalServiceImpl implements ApprovalService {
     public Optional<?> getPendingById(String type, Long id) {
         return switch (type.toLowerCase()){
             case "upcycling" -> approvalDAO.findUpcyclingPendingById(id);
-            case "art" -> approvalDAO.findArtPendingById(id);
+            case "art", "display" -> approvalDAO.findArtPendingById(id);
             case "writer" -> approvalDAO.findWriterPendingById(id);
             case "university" -> approvalDAO.findUniversityPendingById(id);
             case "exhibition" -> approvalDAO.findUniversityExhibitionPendingById(id);
@@ -47,7 +47,7 @@ public class ApprovalServiceImpl implements ApprovalService {
         switch (type.toLowerCase()){
 //          오브젝트 DTO로 형변환(다운캐스팅)
             case "upcycling" -> approvalDAO.updateUpcyclingStatus((UpcyclingDTO) dto);
-            case "art" -> approvalDAO.updateArtStatus((ArtDTO) dto);
+            case "art", "display" -> approvalDAO.updateArtStatus((ArtDTO) dto);
             case "writer" -> approvalDAO.updateWriterStatus((UserVO) dto );
             case "university" -> approvalDAO.updateUniversityStatus((UserVO) dto );
             case "exhibition" -> approvalDAO.updateUniversityExhibitionStatus((UniversityExhibitionDTO) dto);
