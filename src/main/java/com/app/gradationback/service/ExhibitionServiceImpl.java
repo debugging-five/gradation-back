@@ -155,8 +155,17 @@ public class ExhibitionServiceImpl implements ExhibitionService {
         exhibitionDAO.deleteUniversityLike(universityLikeVO);
     }
 
+//      내가 신청한 전시회 승인내역 조회
+    @Override
+    public List<UniversityExhibitionDTO> getExhibitionStatus(Long userId){
+        return exhibitionDAO.findMyExhibitionStatus(userId);
+    }
 
-
+//      내가 좋아요 한 전시회 목록
+    @Override
+    public List<UniversityExhibitionDTO> getLikedUniversityExhibition(Long userId) {
+        return exhibitionDAO.findLikedUniversityExhibition(userId);
+    }
 }
 
 

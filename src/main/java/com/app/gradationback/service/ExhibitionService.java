@@ -58,6 +58,11 @@ public interface ExhibitionService {
 //    좋아요 취소
     public void removeUniversityLike(UniversityLikeVO universityLikeVO);
 
+//      내가 신청한 전시회 승인내역 조회
+    public List<UniversityExhibitionDTO> getExhibitionStatus(Long userId);
+
+//      내가 좋아요 한 전시회 목록
+    public List<UniversityExhibitionDTO> getLikedUniversityExhibition(Long userid);
 }
 
 
