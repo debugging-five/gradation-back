@@ -4,8 +4,11 @@
 
     <!--  댓글 등록  -->
     <insert id="insert" parameterType="CommentVO">
-        INSERT INTO TBL_COMMENT
-        VALUES (SEQ_COMMENT.NEXTVAL, #{artPostId}, #{userId}, #{commentContent}, #{commentDate})
+        <selectKey keyProperty="id" order="BEFORE" resultType="Long">
+            SELECT SEQ_COMMENT.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO TBL_COMMENT (ID, ART_POST_ID, USER_ID, COMMENT_CONTENT, COMMENT_DATE)
+        VALUES (#{id}, #{artPostId}, #{userId}, #{commentContent}, #{commentDate})
     </insert>
 
     <!--  댓글 전체 조회  -->
@@ -48,10 +51,10 @@
                 ORDER BY COMMENT_LIKE_COUNT DESC
             </when>
             <when test="order != null and order.equals('date')">
-                ORDER BY TBC.COMMENT_DATE ASC
+                ORDER BY TBC.COMMENT_DATE DESC
             </when>
             <otherwise>
-                ORDER BY TBC.COMMENT_DATE ASC
+                ORDER BY TBC.COMMENT_DATE DESC
             </otherwise>
         </choose>
         OFFSET (#{cursor} - 1) * 10 ROWS
