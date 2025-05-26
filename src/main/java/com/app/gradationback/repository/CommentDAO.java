@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -37,8 +38,8 @@ public class CommentDAO {
     }
 
 //    댓글 전체 조회 (postId로)
-    public List<CommentDTO> findAllByPostId(Long postId) {
-        return commentMapper.selectAllByPostId(postId);
+    public List<CommentDTO> findAllByPostId(Map<String, Object> params) {
+        return commentMapper.selectAllByPostId(params);
     }
 
 //    댓글 수정

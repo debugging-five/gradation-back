@@ -14,6 +14,7 @@ public class CommentDTO {
     private Long userId;
     private String commentContent;
     private Timestamp commentDate;
+    private Integer commentLikeCount;
     private String userName;
     private String userImgPath;
     private String userImgName;
