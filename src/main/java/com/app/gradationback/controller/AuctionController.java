@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+@Slf4j
 @RestController
 @RequestMapping("auction/api/*")
 @RequiredArgsConstructor
-@Slf4j
 public class AuctionController {
     private final AuctionService auctionService;
 
@@ -49,7 +49,6 @@ public class AuctionController {
     @PutMapping("modify")
     public ResponseEntity<Map<String, Object>> modify(@RequestBody AuctionVO auctionVO) {
         Map<String, Object> response = new HashMap<>();
-        log.info(auctionVO.toString());
         try {
             auctionService.auctionModify(auctionVO);
         } catch (Exception e) {
@@ -75,9 +74,18 @@ public class AuctionController {
     @PostMapping("list")
     public ResponseEntity<Map<String, Object>> list(@RequestBody HashMap<String, Object> params) {
         Map<String, Object> response = new HashMap<>();
-        response.put("auctionList", auctionService.auctionList(params));
+        List<AuctionDTO> auctionList = auctionService.auctionList(params);
+        if (auctionList.isEmpty()) {
+            response.put("auctionList", auctionList);
+            response.put("message", "조회완료");
+            response.put("contents", 0);
+            response.put("params", params);
+            return ResponseEntity.ok(response);
+        }
+        response.put("auctionList", auctionList);
         response.put("message", "조회완료");
         response.put("params", params);
+        response.put("contents" , auctionService.auctionCountList(params));
         return ResponseEntity.ok(response);
     }
 

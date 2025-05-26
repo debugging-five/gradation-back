@@ -125,6 +125,9 @@
             <when test="order != null and order.equals('popular')">
                 ART_LIKE_COUNT
             </when>
+            <when test="order != null and order.equals('date')">
+                AUCTION_START_DATE
+            </when>
             <otherwise>
                 TAU.ID
             </otherwise>
@@ -139,6 +142,60 @@
         </choose>
         OFFSET (#{cursor} - 1) * 15 ROWS
         FETCH NEXT 15 ROWS ONLY
+    </select>
+
+    <select id="selectCountBidding" parameterType="Map" resultType="Integer">
+        SELECT COUNT(TAU.ID)
+        FROM TBL_AUCTION TAU
+        JOIN TBL_ART TAR
+        ON TAU.ART_ID = TAR.ID
+        JOIN TBL_USER TUS
+        ON TAR.USER_ID = TUS.ID
+        <choose>
+            <when test="category != null and category.equals('공예')">
+                WHERE ART_CATEGORY = '공예'
+            </when>
+            <when test="category != null and category.equals('건축')">
+                WHERE ART_CATEGORY = '건축'
+            </when>
+            <when test="category != null and category.equals('서예')">
+                WHERE ART_CATEGORY = '서예'
+            </when>
+            <when test="category != null and category.equals('회화')">
+                WHERE ART_CATEGORY = '회화'
+            </when>
+            <when test="category != null and category.equals('조각')">
+                WHERE ART_CATEGORY = '조각'
+            </when>
+            <when test="category != null and category.equals('한국화')">
+                WHERE ART_CATEGORY = '한국화'
+            </when>
+            <otherwise>
+                WHERE ART_CATEGORY = '한국화'
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="status != null and status.equals('expected')">
+                AND AUCTION_START_DATE &gt; SYSDATE
+            </when>
+            <when test="status != null and status.equals('bidding')">
+                AND AUCTION_START_DATE &lt; SYSDATE
+                AND AUCTION_BID_DATE IS NULL
+            </when>
+            <when test="status != null and status.equals('complete')">
+                AND AUCTION_BID_DATE &lt; SYSDATE
+            </when>
+            <otherwise>
+                AND AUCTION_START_DATE &lt; SYSDATE
+                AND AUCTION_BID_DATE IS NULL
+            </otherwise>
+        </choose>
+        <if test="keyword != null and keyword != ''">
+            AND (
+                TAR.ART_TITLE LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+                OR TUS.USER_NAME LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+            )
+        </if>
     </select>
 
     <select id="select" resultType="AuctionDTO" parameterType="Long">

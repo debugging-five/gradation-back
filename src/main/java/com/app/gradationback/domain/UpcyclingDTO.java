@@ -20,6 +20,7 @@ public class UpcyclingDTO {
     private int upcyclingSizeLarge;
     private String upcyclingMaterials;
     private String upcyclingSignificant;
+    private String upcyclingStatus;
     private Long userId;
 
 //    TBL_USER
