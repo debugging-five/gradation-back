@@ -272,7 +272,55 @@ public class ExhibitionController {
     }
 
 
+//    내 승인내역 조회
+    @Operation(summary = "내 승인내역 조회", description = "내가 신청한 대학교 전시회 승인내역을 조회할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "승인내역 조회 성공")
+    @Parameter(
+            name = "userId",
+            description = "사용자 ID",
+            required = true,
+            in = ParameterIn.PATH,
+            schema = @Schema(type = "integer")
+    )
+    @GetMapping("university/{userId}/exhibition-status")
+    public ResponseEntity<Map<String, Object>> getExhibitionStatus(@PathVariable("userId") Long userId) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            List<UniversityExhibitionDTO> statusList = exhibitionService.getExhibitionStatus(userId);
+            response.put("message", "승인내역 조회 성공");
+            response.put("statusList", statusList);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("message", "서버 오류: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 
+
+
+//    내가 좋아요 누른 대학교 전시회 조회
+    @Operation(summary = "좋아요 누른 대학교 전시회 조회", description = "내가 좋아요 누른 대학교 전시회를 조회할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "좋아요한 전시회 조회 성공")
+    @Parameter(
+            name = "userId",
+            description = "사용자 ID",
+            required = true,
+            in = ParameterIn.PATH,
+            schema = @Schema(type = "integer")
+    )
+    @GetMapping("university/{userId}/liked-exhibitions")
+    public ResponseEntity<Map<String, Object>> getLikedUniversityExhibition(@PathVariable("userId") Long userId) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            List<UniversityExhibitionDTO> likedExhibitions = exhibitionService.getLikedUniversityExhibition(userId);
+            response.put("message", "좋아요한 전시회 조회 성공");
+            response.put("likedExhibitions", likedExhibitions);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("message", "서버 오류: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 
 
 
