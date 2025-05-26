@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.User;
@@ -100,7 +101,7 @@ public class UserController {
     @Operation(summary = "로그인", description = "로그인을 할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "로그인 성공")
     @PostMapping("login")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody UserVO userVO) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody UserVO userVO, HttpSession session) {
         Map<String, Object> response = new HashMap<>();
         Map<String, Object> claims = new HashMap<>();
 
@@ -118,6 +119,13 @@ public class UserController {
                 response.put("message", "아이디 또는 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시 확인해주세요.");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
             }
+
+            session.setAttribute("id", foundUser.getId());
+//            System.out.println(session.getAttribute("id").toString());
+//            System.out.println(session.getAttribute("id").toString());
+//            System.out.println(session.getAttribute("id").toString());
+//            System.out.println(session.getAttribute("id").toString());
+
 
             claims.put("email", foundUser.getUserEmail());
             claims.put("identification", foundUser.getUserIdentification());
@@ -186,7 +194,7 @@ public class UserController {
     @GetMapping("user/{userEmail}")
     public ResponseEntity<Map<String, Object>> getUser(@PathVariable String userEmail) {
         Map<String, Object> response = new HashMap<>();
-        log.info("{}", userEmail);
+//        log.info("{}", userEmail);
         try {
             Optional<UserVO> foundUser = userService.getUserByEmail(userEmail);
             if (foundUser.isPresent()) {
