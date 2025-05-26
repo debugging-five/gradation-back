@@ -14,6 +14,7 @@
                 GRADATION_EXHIBITION_FEE,
                 GRADATION_EXHIBITION_TEL,
                 GRADATION_EXHIBITION_ADDRESS,
+                GRADATION_EXHIBITION_REAL_ADDRESS,
                 GRADATION_EXHIBITION_DATE
             FROM (
                 SELECT
@@ -25,6 +26,7 @@
                     GRADATION_EXHIBITION_FEE,
                     GRADATION_EXHIBITION_TEL,
                     GRADATION_EXHIBITION_ADDRESS,
+                    GRADATION_EXHIBITION_REAL_ADDRESS,
                     GRADATION_EXHIBITION_DATE
                 FROM TBL_GRADATION_EXHIBITION
                 ORDER BY ID DESC
@@ -58,6 +60,7 @@
         GRADATION_EXHIBITION_FEE,
         GRADATION_EXHIBITION_TEL,
         GRADATION_EXHIBITION_ADDRESS,
+        GRADATION_EXHIBITION_REAL_ADDRESS,
         GRADATION_EXHIBITION_DATE
         )
         VALUES (
@@ -69,6 +72,7 @@
         #{gradationExhibitionFee},
         #{gradationExhibitionTel},
         #{gradationExhibitionAddress},
+        #{gradationExhibitionRealAddress},
         #{gradationExhibitionDate}
         )
     </insert>
@@ -212,6 +216,8 @@
 <!--    지난 전시회 작품 리스트 -->
     <select id="selectExhibitionArtList" parameterType="map" resultType="ExhibitionPastDTO">
         SELECT
+            TAR.ID,
+            TAR.ID AS ART_ID,
             TAR.ART_TITLE,
             TAI.ART_IMG_NAME,
             TAI.ART_IMG_PATH,
@@ -290,7 +296,8 @@
             UNIVERSITY_EXHIBITION_END_DATE,
             UNIVERSITY_EXHIBITION_TITLE,
             UNIVERSITY_EXHIBITION_LOCATION,
-            MAJOR_ID
+            MAJOR_ID,
+            USER_ID
         )
         VALUES (
             #{id},
@@ -298,7 +305,8 @@
             #{universityExhibitionEndDate},
             #{universityExhibitionTitle},
             #{universityExhibitionLocation},
-            #{majorId}
+            #{majorId},
+            #{userId}
         )
     </insert>
     
@@ -397,17 +405,40 @@
         WHERE USER_ID = #{userId} AND UNIVERSITY_EXHIBITION_ID  = #{universityExhibitionId}
     </delete>
 
+<!--    내가 신청한 전시회 승인내역 조회-->
+    <select id="selectExhibitionStatus" parameterType="Long" resultType="UniversityExhibitionDTO">
+        select TUE.ID, TU.UNIVERSITY_NAME, TM.MAJOR_NAME, TUE.UNIVERSITY_EXHIBITION_TITLE, TUE.UNIVERSITY_EXHIBITION_STATUS, TUE.USER_ID
+        from TBL_UNIVERSITY_EXHIBITION TUE
+            JOIN TBL_MAJOR TM
+            ON TUE.MAJOR_ID = TM.ID
+            JOIN TBL_UNIVERSITY TU
+            ON TU.ID = TM.UNIVERSITY_ID
+        WHERE USER_ID = #{userId}
+    </select>
 
-
-
-
-
-
-
-
-
-
-
+<!--    내가 좋아요 한 전시회 목록-->
+    <select id="selectLikedUniversityExhibition" parameterType="Long" resultType="UniversityExhibitionDTO">
+        SELECT
+            TUL.ID AS LIKE_ID,
+            TUE.ID AS EXHIBITION_ID,
+            TU.UNIVERSITY_NAME,
+            TU.UNIVERSITY_LOGO_IMG_NAME,
+            TU.UNIVERSITY_LOGO_IMG_PATH,
+            TUE.UNIVERSITY_EXHIBITION_TITLE,
+            TM.MAJOR_NAME,
+            TUE.UNIVERSITY_EXHIBITION_START_DATE,
+            TUE.UNIVERSITY_EXHIBITION_END_DATE,
+            TUE.UNIVERSITY_EXHIBITION_LOCATION
+        FROM TBL_UNIVERSITY_LIKE TUL
+             JOIN TBL_UNIVERSITY_EXHIBITION TUE
+            ON TUL.UNIVERSITY_EXHIBITION_ID = TUE.ID
+            JOIN TBL_MAJOR TM
+            ON TUE.MAJOR_ID = TM.ID
+            JOIN TBL_UNIVERSITY TU
+            ON TM.UNIVERSITY_ID = TU.ID
+        WHERE TUL.USER_ID = #{userId}
+        ORDER BY TUL.UNIVERSITY_LIKE_TIME DESC
+    </select>
 </mapper>
 
 
