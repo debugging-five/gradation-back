@@ -257,19 +257,40 @@ public class ExhibitionController {
     @Operation(summary = "대학교 전시회 좋아요", description = "대학교 전시회 좋아요를 할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "대학교 전시회 좋아요 성공")
     @PostMapping("university/like")
-    public UniversityLikeVO registerUniversityLike(@RequestBody UniversityLikeVO universityLikeVO) {
-        exhibitionService.registerUniversityLike(universityLikeVO);
-        return universityLikeVO;
+    public ResponseEntity<Map<String, Object>> registerUniversityLike(@RequestBody UniversityLikeVO universityLikeVO) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            exhibitionService.registerUniversityLike(universityLikeVO);
+            response.put("like", universityLikeVO);
+            response.put("message", "좋아요 등록 성공");
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            response.put("message", "서버 오류: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
 //    좋아요 취소
     @Operation(summary = "대학교 전시회 좋아요 취소", description = "대학교 전시회 좋아요를 취소할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "대학교 전시회 좋아요 취소 성공")
-    @PostMapping("university/unlike")
-    public UniversityLikeVO removeUniversityLike(@RequestBody UniversityLikeVO universityLikeVO) {
-        exhibitionService.removeUniversityLike(universityLikeVO);
-        return universityLikeVO;
+    @DeleteMapping("university/unlike")
+    public ResponseEntity<Map<String, Object>> removeUniversityLike(@RequestBody UniversityLikeVO universityLikeVO) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            exhibitionService.removeUniversityLike(universityLikeVO);
+            response.put("unlike", universityLikeVO);
+            response.put("message", "좋아요 취소 완료");
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            response.put("message", "서버 오류: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
+
 
 
 //    내 승인내역 조회
