@@ -17,6 +17,9 @@ public interface PaymentService {
 //    결제 조회
     public Optional<DeliveryDTO> getPaymentById(Long id);
 
+//    결매 결제 조회
+    public Optional<DeliveryDTO> getPaymentByAuctionId(Long auctionId);
+
 //    유저 결제 조회
     public List<DeliveryDTO> getPaymentByUserId(Long userId);
 }
