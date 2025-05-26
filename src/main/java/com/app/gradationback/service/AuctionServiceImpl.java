@@ -19,7 +19,6 @@ import java.util.Optional;
 @Service
 @Transactional(rollbackFor = Exception.class)
 @RequiredArgsConstructor
-@Slf4j
 public class AuctionServiceImpl implements AuctionService {
 
     private final AuctionDAO auctionDAO;
@@ -34,6 +33,12 @@ public class AuctionServiceImpl implements AuctionService {
     @Override
     public List<AuctionDTO> auctionList(HashMap<String, Object> params) {
         return auctionDAO.findAll(params);
+    }
+
+    @Override
+    public Integer auctionCountList(HashMap<String, Object> params) {
+        HashMap<String, Object> selectedParams = new HashMap<>();
+        return auctionDAO.findCountByParams(params);
     }
 
     @Override

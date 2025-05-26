@@ -1,5 +1,6 @@
 package com.app.gradationback.mapper.duckjun.mapper;
 
+import com.app.gradationback.domain.UpcyclingDTO;
 import com.app.gradationback.domain.UpcyclingVO;
 import com.app.gradationback.mapper.UpcyclingMapper;
 import com.app.gradationback.repository.UpcyclingDAO;
@@ -23,7 +24,7 @@ public class UpcyclingMapperTests {
     private UpcyclingDAO upcyclingDAO;
 
     @Test
-    public void selectAllTest(){log.info("전체 신청 목록 : {}", upcyclingMapper.selectAll());}
+    public void selectAllTest(){log.info("전체 신청 목록 : {}", upcyclingMapper.selectAll(1L));}
 
     @Test
     public void selectByIdTest(){log.info("단일 ID 조회 : {}", upcyclingMapper.select(1L));}
@@ -51,7 +52,7 @@ public class UpcyclingMapperTests {
 
     @Test
     public void findAllTest() {
-        List<UpcyclingVO> list = upcyclingDAO.getUpcyclingUserList();
+        List<UpcyclingDTO> list = upcyclingDAO.getUpcyclingUserList(1L);
         list.forEach(vo -> log.info(vo.toString()));
     }
 

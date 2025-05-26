@@ -21,8 +21,8 @@ public class UpcyclingServiceImpl implements UpcyclingService {
     private final UpcyclingDAO upcyclingDAO;
 
     @Override
-    public List<UpcyclingVO> getUpcyclingUserList() {
-        return upcyclingDAO.getUpcyclingUserList();
+    public List<UpcyclingDTO> getUpcyclingUserList(Long userId) {
+        return upcyclingDAO.getUpcyclingUserList(userId);
     }
 
     @Override
