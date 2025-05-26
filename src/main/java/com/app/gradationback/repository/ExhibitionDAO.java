@@ -123,6 +123,16 @@ public class ExhibitionDAO {
         exhibitionMapper.deleteUniversityLike(universityLikeVO);
     }
 
+//      내가 신청한 전시회 승인내역 조회
+    public List<UniversityExhibitionDTO> findMyExhibitionStatus(Long userId) {
+        return exhibitionMapper.selectExhibitionStatus(userId);
+    }
+
+//      내가 좋아요 한 전시회 목록
+    public List<UniversityExhibitionDTO> findLikedUniversityExhibition(Long userId) {
+        return exhibitionMapper.selectLikedUniversityExhibition(userId);
+    }
+
 
 }
 

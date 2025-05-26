@@ -11,7 +11,7 @@ import java.util.Optional;
 @Mapper
 public interface UpcyclingMapper {
     //신청 내역 조회
-    public List<UpcyclingVO> selectAll();
+    public List<UpcyclingDTO> selectAll(Long userId);
     //ID 단건 조회
     public Optional<UpcyclingVO> select(Long id);
     //업사이클링 신청 등록
