@@ -6,6 +6,7 @@ import com.app.gradationback.domain.CommentVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Mapper
@@ -24,7 +25,7 @@ public interface CommentMapper {
     public List<ArtPostDTO> selectAllByUserId(Long userId);
 
 //    댓글 전체 조회 (postId로)
-    public List<CommentDTO> selectAllByPostId(Long postId);
+    public List<CommentDTO> selectAllByPostId(Map<String, Object> params);
 
 //    댓글 수정
     public void update(CommentVO commentVO);

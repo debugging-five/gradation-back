@@ -54,6 +54,7 @@ public class ArtPostDTO {
     private Integer artLikeCount;
     @Schema(description = "댓글 개수", example = "50")
     private Integer commentCount;
+    private Integer commentLikeCount;
 
 //    TBL_COMMENT
     @Schema(description = "게시글 번호", required = true, example = "1")

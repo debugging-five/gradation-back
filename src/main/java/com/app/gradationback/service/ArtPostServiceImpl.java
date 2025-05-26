@@ -67,7 +67,7 @@ public class ArtPostServiceImpl implements ArtPostService {
     public Optional<ArtPostDTO> getArtPostById(Long id) {
 
         return artPostDAO.findById(id).map((post) -> {
-            post.setComments(commentDAO.findAllByPostId(post.getId()));
+//            post.setComments(commentDAO.findAllByPostId(post.getId()));
             post.setImages(artImgDAO.findAllByArtId(post.getArtId()));
             post.setArtLikeCount(artDAO.findLikeCount(post.getArtId()));
             return post;
@@ -99,7 +99,7 @@ public class ArtPostServiceImpl implements ArtPostService {
         }
 
         return artPostDAO.findArtListByCategoryAndDropdown(params).stream().map(post -> {
-            post.setComments(commentDAO.findAllByPostId(post.getArtPostId()));
+//            post.setComments(commentDAO.findAllByPostId(post.getArtPostId()));
             post.setImages(artImgDAO.findAllByArtId(post.getId()));
             return post;
         }).toList();
