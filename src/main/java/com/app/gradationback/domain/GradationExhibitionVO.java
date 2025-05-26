@@ -16,5 +16,6 @@ public class GradationExhibitionVO {
     private String gradationExhibitionFee;
     private String gradationExhibitionTel;
     private String gradationExhibitionAddress;
+    private String gradationExhibitionRealAddress;
     private String gradationExhibitionDate;
 }
