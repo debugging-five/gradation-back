@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface AuctionMapper {
     public void insert(AuctionVO auctionVO);
     public List<AuctionDTO> selectAll(HashMap<String, Object> params);
+    public Integer selectCountBidding(HashMap<String, Object> params);
     public Optional<AuctionDTO> select(Long id);
     public List<AuctionDTO> selectBidding(Integer cursor);
     public Long selectByArtId(Long artId);

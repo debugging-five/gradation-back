@@ -21,6 +21,9 @@ public class AuctionDAO {
     public List<AuctionDTO> findAll(HashMap<String, Object> params) {
         return auctionMapper.selectAll(params);
     }
+    public Integer findCountByParams(HashMap<String, Object> params) {
+        return auctionMapper.selectCountBidding(params);
+    }
     public Optional<AuctionDTO> findById(Long id) {
         return auctionMapper.select(id);
     }

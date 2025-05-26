@@ -79,7 +79,7 @@ public class CommentMapperTests {
 
     @Test
     public void getCommentByPostIdTest() {
-        log.info("comments :{}", commentDAO.findAllByPostId(1L));
+//        log.info("comments :{}", commentDAO.findAllByPostId(1L));
     }
 
 }
