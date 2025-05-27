@@ -1,6 +1,5 @@
 package com.app.gradationback.controller;
 
-import com.app.gradationback.domain.AuctionVO;
 import com.app.gradationback.domain.DeliveryDTO;
 import com.app.gradationback.domain.DeliveryVO;
 import com.app.gradationback.domain.PaymentCancellationVO;
@@ -8,7 +7,6 @@ import com.app.gradationback.service.DeliveryService;
 import com.app.gradationback.service.PaymentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -32,25 +30,23 @@ public class PaymentController {
     @Operation(summary = "결제", description = "결제 API")
     @ApiResponse(responseCode = "200", description = "결제 성공")
     @PostMapping("/payment")
-    public ResponseEntity<Map<String, Object>> processPayment(@RequestBody Map<String, Object> paymentData) {
+    public ResponseEntity<Map<String, Object>> payment(@RequestBody Map<String, Object> paymentData) {
         Map<String, Object> response = new HashMap<>();
-        Optional<DeliveryDTO> foundPayment;
-        try {
-            foundPayment = paymentService.payment(paymentData);
-        }catch (Exception e) {
-            response.put("message", "등록 실패" + e.getMessage());
-            response.put("status", false);
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        Optional<DeliveryDTO> foundPayment = paymentService.payment(paymentData);
+        if (foundPayment.isPresent()) {
+            response.put("message", "등록 성공");
+            response.put("status", foundPayment.get());
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         }
-        response.put("message", "등록 성공");
-        response.put("status", foundPayment.get());
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        response.put("message", "등록 실패");
+        response.put("status", false);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
     @Operation(summary = "결제취소", description = "결제 취소 API")
     @ApiResponse(responseCode = "200", description = "결제 취소 성공")
     @PostMapping("/cancel")
-    public void processPayment(@RequestBody PaymentCancellationVO paymentCancellationVO) {
+    public void cancelPayment(@RequestBody PaymentCancellationVO paymentCancellationVO) {
         paymentService.paymentCancel(paymentCancellationVO);
     }
 
@@ -113,7 +109,7 @@ public class PaymentController {
         return deliveryDTOList;
     }
 
-//    배송
+    //    배송
     @Operation(summary = "배송 조회", description = "Id 값으로 상품의 배송정보만 조회하는 API")
     @ApiResponse(responseCode = "200", description = "조회 성공")
     @Parameter(
@@ -136,9 +132,7 @@ public class PaymentController {
     @ApiResponse(responseCode = "200", description = "수정 성공")
     @PutMapping("modify")
     public void modify(DeliveryVO deliveryVO) {
-        deliveryService.deleveryUpdate(deliveryVO);
-    }
-
-
+    deliveryService.deleveryUpdate(deliveryVO);
+}
 
 }
