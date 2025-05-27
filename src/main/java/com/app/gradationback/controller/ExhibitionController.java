@@ -247,9 +247,23 @@ public class ExhibitionController {
             schema = @Schema(type = "integer")
     )
     @GetMapping("university/{universityExhibitionId}/images")
-    public ResponseEntity<List<UniversityExhibitionImgVO>> getUniversityImg(@PathVariable("universityExhibitionId") Long universityExhibitionId) {
-        List<UniversityExhibitionImgVO> images = exhibitionService.getUniversityImgAll(universityExhibitionId);
-        return ResponseEntity.ok(images);
+    public ResponseEntity<Map<String, Object>> getUniversityImg(@PathVariable("universityExhibitionId") Long universityExhibitionId) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            List<UniversityExhibitionImgVO> images = exhibitionService.getUniversityImgAll(universityExhibitionId);
+            if(images != null) {
+                response.put("images", images);
+                response.put("message", "이미지 조회 성공");
+                return ResponseEntity.ok(response);
+            } else {
+                response.put("message", "이미지 조회 실패");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+            }
+        } catch (Exception e) {
+            response.put("message", "서버 오류: " +  e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
 
