@@ -56,11 +56,11 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Override
     public Optional<?> getCompletedById(String type, Long id) {
         return switch (type.toLowerCase()){
-            case "upcycling" -> approvalDAO.findUpcyclingPendingById(id);
-            case "art", "display" -> approvalDAO.findArtPendingById(id);
-            case "writer" -> approvalDAO.findWriterPendingById(id);
-            case "university" -> approvalDAO.findUniversityPendingById(id);
-            case "exhibition" -> approvalDAO.findUniversityExhibitionPendingById(id);
+            case "upcycling" -> approvalDAO.findUpcyclingCompletedById(id);
+            case "art", "display" -> approvalDAO.findArtCompletedById(id);
+            case "writer" -> approvalDAO.findWriterCompletedById(id);
+            case "university" -> approvalDAO.findUniversityCompletedById(id);
+            case "exhibition" -> approvalDAO.findUniversityExhibitionCompletedById(id);
             default -> throw new RuntimeException("지원하지 않는 타입");
         };
     }

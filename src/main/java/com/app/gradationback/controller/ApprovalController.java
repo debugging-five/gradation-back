@@ -56,7 +56,7 @@ public class ApprovalController {
 
     //    승인 대기 중 상세 목록 조회
     @Operation(summary = "승인 대기 중 상세 목록 조회", description = "관리자 전용: 특정 항목 상세 조회")
-    @GetMapping("/{type}/pending/{id}")
+    @GetMapping("/{type}/completed/{id}")
 //    결과값 유무로 옵셔널, 얘도 뭐 들어올지 모르니 와일드 카드
     public Optional<?> getCompletedById(@PathVariable String type, @PathVariable Long id, HttpServletRequest request) {
         if (!adminCheckUtil.isAdmin(request)) {

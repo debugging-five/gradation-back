@@ -130,7 +130,7 @@
     <select id="selectAllWriterCompleted" resultType="UserVO">
         SELECT ID, USER_NAME, USER_EMAIL, USER_WRITER_STATUS
         FROM TBL_USER
-        WHERE USER_WRITER_STATUS = '미승인'
+        WHERE USER_WRITER_STATUS = '승인완료'
         ORDER BY ID DESC
     </select>
 
