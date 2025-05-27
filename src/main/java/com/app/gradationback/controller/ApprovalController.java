@@ -54,6 +54,17 @@ public class ApprovalController {
         return approvalService.getPendingById(type, id);
     }
 
+    //    승인 대기 중 상세 목록 조회
+    @Operation(summary = "승인 대기 중 상세 목록 조회", description = "관리자 전용: 특정 항목 상세 조회")
+    @GetMapping("/{type}/pending/{id}")
+//    결과값 유무로 옵셔널, 얘도 뭐 들어올지 모르니 와일드 카드
+    public Optional<?> getCompletedById(@PathVariable String type, @PathVariable Long id, HttpServletRequest request) {
+        if (!adminCheckUtil.isAdmin(request)) {
+            throw new RuntimeException("그라데이션 관리자만 접근 가능합니다.");
+        }
+        return approvalService.getCompletedById(type, id);
+    }
+
 //    승인 상태 변경(승인, 반려)
     @Operation(summary = "승인 상태 변경", description = "관리자 전용: 승인 또는 반려 처리 (업사이클링/작가/대학교/작품)")
     @PatchMapping("/{type}/status")

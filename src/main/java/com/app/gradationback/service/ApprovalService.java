@@ -9,6 +9,7 @@ public interface ApprovalService {
     List<?> getCompletedList(String type);
 //  옵셔널도 4개 중 하나라 와일드 카드 사용
     Optional<?> getPendingById(String type, Long id);
+    Optional<?> getCompletedById(String type, Long id);
 //  dto는 UpcyclingDTO, ArtDTO, UserVO(작가용), UserVO(대학교용) > 오브젝트로 받음
     public void updateStatus(String type, Object dto);
 }

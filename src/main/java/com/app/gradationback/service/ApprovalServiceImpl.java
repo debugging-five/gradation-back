@@ -54,6 +54,17 @@ public class ApprovalServiceImpl implements ApprovalService {
     }
 
     @Override
+    public Optional<?> getCompletedById(String type, Long id) {
+        return switch (type.toLowerCase()){
+            case "upcycling" -> approvalDAO.findUpcyclingPendingById(id);
+            case "art", "display" -> approvalDAO.findArtPendingById(id);
+            case "writer" -> approvalDAO.findWriterPendingById(id);
+            case "university" -> approvalDAO.findUniversityPendingById(id);
+            case "exhibition" -> approvalDAO.findUniversityExhibitionPendingById(id);
+            default -> throw new RuntimeException("지원하지 않는 타입");
+        };
+    }
+    @Override
 //  dto는 UpcyclingDTO, ArtDTO, UserVO(작가용), UserVO(대학교용) > 오브젝트로 받음
     public void updateStatus(String type, Object dto) {
         switch (type.toLowerCase()){

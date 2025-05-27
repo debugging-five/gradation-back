@@ -31,6 +31,10 @@ public class ApprovalDAO {
         return approvalMapper.selectUpcyclingPendingById(id);
     }
 
+    public Optional<UpcyclingDTO> findUpcyclingCompletedById(Long id) {
+        return approvalMapper.selectUpcyclingCompletedById(id);
+    }
+
 //    업사이클링 신청 상태 변경 (승인/반려)
     public void updateUpcyclingStatus(UpcyclingDTO upcyclingDTO) {
         approvalMapper.updateUpcyclingStatus(upcyclingDTO);
@@ -51,6 +55,8 @@ public class ApprovalDAO {
         return approvalMapper.selectArtPendingById(id);
     }
 
+    public Optional<ArtDTO> findArtCompletedById(Long id) { return approvalMapper.selectArtCompletedById(id);
+    }
 //    작품 승인 상태 변경 (승인 / 반려)
     public void updateArtStatus(ArtDTO artDTO) {
         approvalMapper.updateArtStatus(artDTO);
@@ -70,6 +76,8 @@ public class ApprovalDAO {
         return approvalMapper.selectWriterPendingById(id);
     }
 
+    public Optional<UserVO> findWriterCompletedById(Long id) { return approvalMapper.selectWriterCompletedById(id);
+    }
 //    작가 승인 상태 변경 (승인/반려)
     public void updateWriterStatus(UserVO userVO) {
         approvalMapper.updateWriterStatus(userVO);
@@ -86,6 +94,7 @@ public class ApprovalDAO {
 //    대학교 인증 대기 목록 중 단일 내용 조회
     public Optional<UserVO> findUniversityPendingById(Long id) { return approvalMapper.selectUniversityPendingById(id); }
 
+    public Optional<UserVO> findUniversityCompletedById(Long id) { return approvalMapper.selectUniversityCompletedById(id); }
 //    대학교 인증 상태 변경 (승인.반려)
     public void updateUniversityStatus(UserVO userVO) { approvalMapper.updateUniversityStatus(userVO);
     }
@@ -99,6 +108,7 @@ public class ApprovalDAO {
     //    전시회 인증 대기 목록 중 단일 내용 조회
     public Optional<UniversityExhibitionDTO> findUniversityExhibitionPendingById(Long id) { return approvalMapper.selectUniversityExhibitionPendingById(id); }
 
+    public Optional<UniversityExhibitionDTO> findUniversityExhibitionCompletedById(Long id) { return approvalMapper.selectUniversityExhibitionCompletedById(id); }
     //    전시회 인증 상태 변경 (승인.반려)
     public void updateUniversityExhibitionStatus(UniversityExhibitionDTO universityExhibitionDTO) { approvalMapper.updateUniversityExhibitionStatus(universityExhibitionDTO);
     }
