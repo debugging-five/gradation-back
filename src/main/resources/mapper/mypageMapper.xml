@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.app.gradationback.mapper.MypageMapper">
+
+    <!-- 사용자가 좋아요한 아트 삭제 -->
+    <delete id="deleteArtLikesByUserId" parameterType="Long">
+        DELETE FROM TBL_ART_LIKE
+        WHERE USER_ID = #{userId}
+    </delete>
+
+    <!-- 해당 사용자가 만든 작품에 대한 좋아요 삭제 -->
+    <delete id="deleteArtLikesByArtOfUser" parameterType="Long">
+        DELETE FROM TBL_ART_LIKE
+        WHERE ART_ID IN (
+            SELECT ID FROM TBL_ART
+            WHERE USER_ID = #{userId}
+        )
+    </delete>
+
+    <!-- 해당 사용자가 만든 작품이 전시된 과거 전시 작품 데이터 삭제 -->
+    <delete id="deleteExhibitionPastArtByArtOfUser" parameterType="Long">
+        DELETE FROM TBL_EXHIBITION_PAST_ART
+        WHERE ART_ID IN (
+            SELECT ID FROM TBL_ART
+            WHERE USER_ID = #{userId}
+        )
+    </delete>
+
+    <!-- 해당 사용자가 만든 작품 이미지 삭제 -->
+    <delete id="deleteArtImgByArtOfUser" parameterType="Long">
+        DELETE FROM TBL_ART_IMG
+        WHERE ART_ID IN (
+            SELECT ID FROM TBL_ART
+            WHERE USER_ID = #{userId}
+        )
+    </delete>
+
+    <!-- 해당 사용자가 만든 작품 게시글에 달린 댓글 삭제 -->
+    <delete id="deleteCommentByArtPostOfUser" parameterType="Long">
+        DELETE FROM TBL_COMMENT
+        WHERE ART_POST_ID IN (
+            SELECT ID FROM TBL_ART_POST
+            WHERE ART_ID IN (
+                SELECT ID FROM TBL_ART
+                WHERE USER_ID = #{userId}
+            )
+        )
+    </delete>
+
+
+    <!-- 사용자가 작성한 아트 게시글 삭제 -->
+    <delete id="deleteArtPostByUserId" parameterType="Long">
+        DELETE FROM TBL_ART_POST
+        WHERE USER_ID = #{userId}
+    </delete>
+
+    <delete id="deleteArtPostsByUserId" parameterType="Long">
+        DELETE FROM TBL_ART_POST
+        WHERE ART_ID IN (
+            SELECT ID FROM TBL_ART WHERE USER_ID = #{userId}
+        )
+    </delete>
+
+    <!-- 사용자가 만든 작품 삭제 -->
+    <delete id="deleteArtByUserId" parameterType="Long">
+        DELETE FROM TBL_ART
+        WHERE USER_ID = (
+            SELECT ID FROM TBL_USER
+            WHERE ID = #{userId}
+        )
+    </delete>
+
+    <!-- 사용자가 입찰한 경매 입찰 정보 삭제 -->
+    <delete id="deleteAuctionBiddingByUserId" parameterType="Long">
+        DELETE FROM TBL_AUCTION_BIDDING
+        WHERE USER_ID = #{userId}
+    </delete>
+
+    <!-- 사용자가 등록한 경매 삭제 -->
+    <delete id="deleteAuctionByUserId" parameterType="Long">
+        DELETE FROM TBL_AUCTION
+        WHERE USER_ID = #{userId}
+    </delete>
+
+    <!-- 사용자가 등록한 경매에 대한 결제 취소 내역 삭제 -->
+    <delete id="deletePaymentCancellationByUserId" parameterType="Long">
+        DELETE FROM TBL_PAYMENT_CANCELLATION
+        WHERE PAYMENT_ID IN (
+            SELECT ID FROM TBL_PAYMENT
+            WHERE AUCTION_ID IN (
+                SELECT ID FROM TBL_AUCTION
+                WHERE USER_ID = #{userId}
+            )
+        )
+    </delete>
+
+    <!-- 사용자가 등록한 경매의 결제 내역 삭제 -->
+    <delete id="deletePaymentByUserId" parameterType="Long">
+        DELETE FROM TBL_PAYMENT
+        WHERE AUCTION_ID IN (
+            SELECT ID FROM TBL_AUCTION
+            WHERE USER_ID = #{userId}
+        )
+    </delete>
+
+    <!-- 사용자가 등록한 경매의 배송 정보 삭제 -->
+    <delete id="deleteDeliveryByUserId" parameterType="Long">
+        DELETE FROM TBL_DELIVERY
+        WHERE PAYMENT_ID IN (
+            SELECT ID FROM TBL_PAYMENT
+            WHERE AUCTION_ID IN (
+                SELECT ID FROM TBL_AUCTION
+                WHERE USER_ID = #{userId}
+            )
+        )
+    </delete>
+
+    <!-- 사용자 차단 정보 삭제 -->
+    <delete id="deleteBanByUserId" parameterType="Long">
+        DELETE FROM TBL_BAN
+        WHERE USER_ID = #{userId}
+    </delete>
+
+    <!-- 사용자가 등록한 Q&A 답변 삭제 -->
+    <delete id="deleteQnaAnswerByUserId" parameterType="Long">
+        DELETE FROM TBL_QNA_ANSWER
+        WHERE QNA_ID IN (
+            SELECT ID FROM TBL_QNA
+            WHERE USER_ID = #{userId}
+        )
+    </delete>
+
+    <!-- 사용자가 등록한 Q&A 질문 삭제 -->
+    <delete id="deleteQnaByUserId" parameterType="Long">
+        DELETE FROM TBL_QNA
+        WHERE USER_ID = #{userId}
+    </delete>
+
+    <!-- 업사이클링 신청 삭제 -->
+    <delete id="deleteUpcyclingByUserId" parameterType="Long">
+        DELETE FROM TBL_UPCYCLING
+        WHERE USER_ID = #{userId}
+    </delete>
+
+    <!-- 대학교 좋아요 삭제 -->
+    <delete id="deleteUniversityLikeByUserId" parameterType="Long">
+        DELETE FROM TBL_UNIVERSITY_LIKE
+        WHERE USER_ID = #{userId}
+    </delete>
+
+    <!-- 사용자 히스토리 삭제 -->
+    <delete id="deleteHistoryByUserId" parameterType="Long">
+        DELETE FROM TBL_HISTORY
+        WHERE USER_ID = #{userId}
+    </delete>
+
+    <!-- 사용자 정보 삭제 (가장 마지막에 실행해야 함) -->
+    <delete id="deleteUserById" parameterType="Long">
+        DELETE FROM TBL_USER
+        WHERE ID = #{id}
+    </delete>
+
+
+</mapper>

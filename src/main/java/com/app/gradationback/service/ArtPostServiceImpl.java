@@ -13,10 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -67,8 +64,12 @@ public class ArtPostServiceImpl implements ArtPostService {
     public Optional<ArtPostDTO> getArtPostById(Long id) {
 
         return artPostDAO.findById(id).map((post) -> {
-//            post.setComments(commentDAO.findAllByPostId(post.getId()));
+            Map<String, Object> params = new HashMap<>();
+            params.put("postId", post.getArtId());
+
+            post.setComments(commentDAO.findAllByPostId(params));
             post.setImages(artImgDAO.findAllByArtId(post.getArtId()));
+//            post.setImages(artImgDAO.findAllByArtId(post.getId()));
             post.setArtLikeCount(artDAO.findLikeCount(post.getArtId()));
             return post;
         });
