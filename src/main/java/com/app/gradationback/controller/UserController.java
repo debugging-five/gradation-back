@@ -156,11 +156,11 @@ public class UserController {
             if (token != null && jwtTokenUtil.isTokenValid(token)) {
 
                 Claims claims = jwtTokenUtil.parseToken(token);
-//                String userIdentification = claims.get("identification").toString();
-                String userEmail = claims.get("email").toString();
+                String userIdentification = claims.get("identification").toString();
+//                String userEmail = claims.get("email").toString();
 
-                Long userId = userService.getIdByEmail(userEmail);
-                UserVO foundUser = userService.getUserByEmail(userEmail).orElseThrow(() -> {
+//                Long userId = userService.getIdByEmail(userEmail);
+                UserVO foundUser = userService.getUserByIdentification(userIdentification).orElseThrow(() -> {
                     throw new RuntimeException("회원 정보가 존재하지 않습니다.");
                 });
 
