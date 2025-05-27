@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 @Component
 @Data
 public class UserVO {
@@ -63,6 +65,8 @@ public class UserVO {
     private String userWriterStatus;
     @Schema(description = "학생증 인증 상태", example = "미신청")
     private String userUniversityStatus;
+    @Schema(description = "인증 신청 일자", example = "2025-05-26")
+    private Date userUniversityDate;
     @Schema(description = "작가 작품 분야", example = "회화")
     private String userArtCategory;
     @Schema(description = "작가 배경화면 제목", example = "background.jpg")

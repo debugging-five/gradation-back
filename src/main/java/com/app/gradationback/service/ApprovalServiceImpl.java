@@ -30,6 +30,18 @@ public class ApprovalServiceImpl implements ApprovalService {
     }
 
     @Override
+    public List<?> getCompletedList(String type) {
+        return switch (type.toLowerCase()){
+            case "upcycling" -> approvalDAO.findAllUpcyclingCompleted();
+            case "art", "display" -> approvalDAO.findAllArtCompleted();
+            case "writer" -> approvalDAO.findAllWriterCompleted();
+            case "university" -> approvalDAO.findAllUniversityCompleted();
+            case "exhibition" -> approvalDAO.findAllUniversityExhibitionCompleted();
+            default -> throw new IllegalArgumentException("지원하지 않는 타입");
+        };
+    }
+
+    @Override
     public Optional<?> getPendingById(String type, Long id) {
         return switch (type.toLowerCase()){
             case "upcycling" -> approvalDAO.findUpcyclingPendingById(id);

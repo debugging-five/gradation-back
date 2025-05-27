@@ -22,8 +22,31 @@
         ORDER BY TUP.UPCYCLING_DATE DESC
     </select>
 
+    <select id="selectAllUpcyclingCompleted" resultType="UpcyclingDTO">
+        SELECT
+            TUP.ID, UPCYCLING_ADDRESS, UPCYCLING_DETAIL_ADDRESS, UPCYCLING_EMAIL, UPCYCLING_PHONE, UPCYCLING_DATE,
+            UPCYCLING_SIZE_SMALL, UPCYCLING_SIZE_MEDIUM, UPCYCLING_SIZE_LARGE, UPCYCLING_MATERIALS, UPCYCLING_IMG_NAME,
+            UPCYCLING_IMG_PATH, UPCYCLING_SIGNIFICANT, UPCYCLING_STATUS,
+            TUS.ID AS USER_ID, USER_NAME, USER_EMAIL
+        FROM TBL_UPCYCLING TUP
+                 JOIN TBL_USER TUS ON TUP.USER_ID = TUS.ID
+        WHERE TUP.UPCYCLING_STATUS = '승인완료'
+        ORDER BY TUP.UPCYCLING_DATE DESC
+    </select>
+
     <!-- 업사이클링 신청 대기 목록 중 단일 내용 조회 -->
     <select id="selectUpcyclingPendingById" parameterType="Long" resultType="UpcyclingDTO">
+        SELECT
+            TUP.ID, UPCYCLING_ADDRESS, UPCYCLING_DETAIL_ADDRESS, UPCYCLING_EMAIL, UPCYCLING_PHONE, UPCYCLING_DATE,
+            UPCYCLING_SIZE_SMALL, UPCYCLING_SIZE_MEDIUM, UPCYCLING_SIZE_LARGE, UPCYCLING_MATERIALS, UPCYCLING_IMG_NAME,
+            UPCYCLING_IMG_PATH, UPCYCLING_SIGNIFICANT, UPCYCLING_STATUS,
+            TUS.ID AS USER_ID, USER_NAME, USER_EMAIL
+        FROM TBL_UPCYCLING TUP
+            JOIN TBL_USER TUS ON TUP.USER_ID = TUS.ID
+        WHERE TUP.ID = #{id}
+    </select>
+
+    <select id="selectUpcyclingCompletedById" parameterType="Long" resultType="UpcyclingDTO">
         SELECT
             TUP.ID, UPCYCLING_ADDRESS, UPCYCLING_DETAIL_ADDRESS, UPCYCLING_EMAIL, UPCYCLING_PHONE, UPCYCLING_DATE,
             UPCYCLING_SIZE_SMALL, UPCYCLING_SIZE_MEDIUM, UPCYCLING_SIZE_LARGE, UPCYCLING_MATERIALS, UPCYCLING_IMG_NAME,
@@ -54,13 +77,36 @@
         ORDER BY TAR.ID DESC
     </select>
 
-    <!-- 작품 승인 대기 목록 중 단일 내용 조회 조회 -->
-    <select id="selectArtPendingById" parameterType="Long" resultType="ArtDTO">
+    <select id="selectAllArtCompleted" resultType="ArtDTO">
         SELECT
             TAR.ID, ART_TITLE, ART_CATEGORY, ART_MATERIAL, ART_SIZE, ART_DESCRIPTION, ART_END_DATE, ART_STATUS,
             TUS.ID AS USER_ID, USER_NAME, USER_EMAIL
         FROM TBL_ART TAR
+                 JOIN TBL_USER TUS ON TAR.USER_ID = TUS.ID
+        WHERE TAR.ART_STATUS = '승인완료'
+        ORDER BY TAR.ID DESC
+    </select>
+
+    <!-- 작품 승인 대기 목록 중 단일 내용 조회 조회 -->
+    <select id="selectArtPendingById" parameterType="Long" resultType="ArtDTO">
+        SELECT
+            TAR.ID, ART_TITLE, ART_CATEGORY, ART_MATERIAL, ART_SIZE, ART_DESCRIPTION, ART_END_DATE, ART_STATUS,
+            TUS.ID AS USER_ID, USER_NAME, USER_EMAIL,
+            TAI.ART_IMG_NAME, ART_IMG_PATH
+        FROM TBL_ART TAR
             JOIN TBL_USER TUS ON TAR.USER_ID = TUS.ID
+            LEFT JOIN TBL_ART_IMG TAI ON TAR.ID = TAI.ART_ID
+        WHERE TAR.ID = #{id}
+    </select>
+
+    <select id="selectArtCompletedById" parameterType="Long" resultType="ArtDTO">
+        SELECT
+            TAR.ID, ART_TITLE, ART_CATEGORY, ART_MATERIAL, ART_SIZE, ART_DESCRIPTION, ART_END_DATE, ART_STATUS,
+            TUS.ID AS USER_ID, USER_NAME, USER_EMAIL,
+            TAI.ART_IMG_NAME, ART_IMG_PATH
+        FROM TBL_ART TAR
+            JOIN TBL_USER TUS ON TAR.USER_ID = TUS.ID
+            LEFT JOIN TBL_ART_IMG TAI ON TAR.ID = TAI.ART_ID
         WHERE TAR.ID = #{id}
     </select>
 
@@ -81,8 +127,21 @@
         ORDER BY ID DESC
     </select>
 
+    <select id="selectAllWriterCompleted" resultType="UserVO">
+        SELECT ID, USER_NAME, USER_EMAIL, USER_WRITER_STATUS
+        FROM TBL_USER
+        WHERE USER_WRITER_STATUS = '미승인'
+        ORDER BY ID DESC
+    </select>
+
     <!-- 작가 승인 대기 중 단일 내용 조회 -->
     <select id="selectWriterPendingById" parameterType="Long" resultType="UserVO">
+        SELECT ID, USER_NAME, USER_EMAIL, USER_WRITER_STATUS
+        FROM TBL_USER
+        WHERE ID = #{id}
+    </select>
+
+    <select id="selectWriterCompletedById" parameterType="Long" resultType="UserVO">
         SELECT ID, USER_NAME, USER_EMAIL, USER_WRITER_STATUS
         FROM TBL_USER
         WHERE ID = #{id}
@@ -99,15 +158,28 @@
 
     <!-- 대학 인증 승인 대기 목록 -->
     <select id="selectAllUniversityPending" resultType="UserVO">
-        SELECT ID, USER_NAME, USER_EMAIL, USER_UNIVERSITY_STATUS
+        SELECT ID, USER_NAME, USER_EMAIL, USER_UNIVERSITY_STATUS, USER_UNIVERSITY_DATE
         FROM TBL_USER
         WHERE USER_UNIVERSITY_STATUS = '미승인'
         ORDER BY ID DESC
     </select>
 
+    <select id="selectAllUniversityCompleted" resultType="UserVO">
+        SELECT ID, USER_NAME, USER_EMAIL, USER_UNIVERSITY_STATUS, USER_UNIVERSITY_DATE
+        FROM TBL_USER
+        WHERE USER_UNIVERSITY_STATUS = '승인완료'
+        ORDER BY ID DESC
+    </select>
+
     <!-- 대학 인증 승인 대기 중 단일 내용 조회 조회 -->
     <select id="selectUniversityPendingById" parameterType="Long" resultType="UserVO">
-        SELECT ID, USER_NAME, USER_EMAIL, USER_UNIVERSITY_STATUS
+        SELECT ID, USER_NAME, USER_EMAIL, USER_UNIVERSITY_STATUS, USER_UNIVERSITY_DATE, USER_MAJOR_IMG_NAME, USER_MAJOR_IMG_PATH
+        FROM TBL_USER
+        WHERE ID = #{id}
+    </select>
+
+    <select id="selectUniversityCompletedById" parameterType="Long" resultType="UserVO">
+        SELECT ID, USER_NAME, USER_EMAIL, USER_UNIVERSITY_STATUS, USER_UNIVERSITY_DATE, USER_MAJOR_IMG_NAME, USER_MAJOR_IMG_PATH
         FROM TBL_USER
         WHERE ID = #{id}
     </select>
@@ -128,16 +200,38 @@
         FROM TBL_UNIVERSITY_EXHIBITION TUE
             JOIN TBL_MAJOR TMA ON TUE.MAJOR_ID = TMA.ID
             JOIN TBL_UNIVERSITY TUN ON TMA.UNIVERSITY_ID = TUN.ID
-        WHERE TUE.UNIVERSITY_EXHIBITION_STATUS = '대기'
+        WHERE TUE.UNIVERSITY_EXHIBITION_STATUS = '미승인'
+        ORDER BY TUE.UNIVERSITY_EXHIBITION_START_DATE DESC
+    </select>
+
+    <select id="selectAllUniversityExhibitionCompleted" resultType="UniversityExhibitionDTO">
+        SELECT TUE.ID, UNIVERSITY_EXHIBITION_START_DATE, UNIVERSITY_EXHIBITION_END_DATE, UNIVERSITY_EXHIBITION_TITLE, UNIVERSITY_EXHIBITION_LOCATION, UNIVERSITY_EXHIBITION_STATUS,
+               TUN.UNIVERSITY_NAME AS UNIVERSITY_NAME
+        FROM TBL_UNIVERSITY_EXHIBITION TUE
+            JOIN TBL_MAJOR TMA ON TUE.MAJOR_ID = TMA.ID
+            JOIN TBL_UNIVERSITY TUN ON TMA.UNIVERSITY_ID = TUN.ID
+        WHERE TUE.UNIVERSITY_EXHIBITION_STATUS = '승인완료'
         ORDER BY TUE.UNIVERSITY_EXHIBITION_START_DATE DESC
     </select>
 
     <!-- 대학 전시회 인증 승인 대기 중 단일 내용 조회 조회 -->
     <select id="selectUniversityExhibitionPendingById" parameterType="Long" resultType="UniversityExhibitionDTO">
         SELECT TUE.UNIVERSITY_EXHIBITION_START_DATE, UNIVERSITY_EXHIBITION_END_DATE, UNIVERSITY_EXHIBITION_TITLE, UNIVERSITY_EXHIBITION_LOCATION, UNIVERSITY_EXHIBITION_STATUS,
-               TUS.ID AD USER_ID, USER_NAME, USER_EMAIL
+               TUS.ID AS USER_ID, USER_NAME, USER_EMAIL,
+               TUI.UNIVERSITY_EXHIBITION_IMG_NAME, UNIVERSITY_EXHIBITION_IMG_PATH
         FROM TBL_UNIVERSITY_EXHIBITION TUE
             JOIN TBL_USER TUS ON TUE.USER_ID = TUS.ID
+            LEFT JOIN TBL_UNIVERSITY_EXHIBITION_IMG TUI ON TUE.ID = TUI.UNIVERSITY_EXHIBITION_ID
+        WHERE TUE.ID = #{id}
+    </select>
+
+    <select id="selectUniversityExhibitionCompletedById" parameterType="Long" resultType="UniversityExhibitionDTO">
+        SELECT TUE.UNIVERSITY_EXHIBITION_START_DATE, UNIVERSITY_EXHIBITION_END_DATE, UNIVERSITY_EXHIBITION_TITLE, UNIVERSITY_EXHIBITION_LOCATION, UNIVERSITY_EXHIBITION_STATUS,
+               TUS.ID AS USER_ID, USER_NAME, USER_EMAIL,
+               TUI.UNIVERSITY_EXHIBITION_IMG_NAME, UNIVERSITY_EXHIBITION_IMG_PATH
+        FROM TBL_UNIVERSITY_EXHIBITION TUE
+                 JOIN TBL_USER TUS ON TUE.USER_ID = TUS.ID
+                 LEFT JOIN TBL_UNIVERSITY_EXHIBITION_IMG TUI ON TUE.ID = TUI.UNIVERSITY_EXHIBITION_ID
         WHERE TUE.ID = #{id}
     </select>
 

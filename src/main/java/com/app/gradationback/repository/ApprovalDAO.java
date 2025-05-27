@@ -21,6 +21,11 @@ public class ApprovalDAO {
         return approvalMapper.selectAllUpcyclingPending();
     }
 
+//    업사이클링 신청 완료 목록 조회
+    public List<UpcyclingDTO> findAllUpcyclingCompleted() {
+        return approvalMapper.selectAllUpcyclingCompleted();
+    }
+
 //    업사이클링 신청 대기 목록 중 단일 내용 조회
     public Optional<UpcyclingDTO> findUpcyclingPendingById(Long id) {
         return approvalMapper.selectUpcyclingPendingById(id);
@@ -34,6 +39,11 @@ public class ApprovalDAO {
 //    작품 승인 대기 목록 조회
     public List<ArtDTO> findAllArtPending() {
         return approvalMapper.selectAllArtPending();
+    }
+
+//    작품 승인 완료 목록 조회
+    public List<ArtDTO> findAllArtCompleted() {
+        return approvalMapper.selectAllArtCompleted();
     }
 
 //    작품 승인 대기 목록 중 단일 내용 조회
@@ -51,6 +61,10 @@ public class ApprovalDAO {
         return approvalMapper.selectAllWriterPending();
     }
 
+    public List<UserVO> findAllWriterCompleted() {
+        return approvalMapper.selectAllWriterCompleted();
+    }
+
 //    작가 승인 대기 목록 중 단일 내용 조회
     public Optional<UserVO> findWriterPendingById(Long id) {
         return approvalMapper.selectWriterPendingById(id);
@@ -66,6 +80,9 @@ public class ApprovalDAO {
         return approvalMapper.selectAllUniversityPending();
     }
 
+//    대학교 인증 완료 목록 조회
+    public List<UserVO> findAllUniversityCompleted() {return approvalMapper.selectAllUniversityCompleted();}
+
 //    대학교 인증 대기 목록 중 단일 내용 조회
     public Optional<UserVO> findUniversityPendingById(Long id) { return approvalMapper.selectUniversityPendingById(id); }
 
@@ -73,14 +90,17 @@ public class ApprovalDAO {
     public void updateUniversityStatus(UserVO userVO) { approvalMapper.updateUniversityStatus(userVO);
     }
 
-    //    대학교 인증 대기 목록 조회
+    //    전시회 인증 대기 목록 조회
     public List<UniversityExhibitionDTO> findAllUniversityExhibitionPending() { return approvalMapper.selectAllUniversityExhibitionPending();
     }
-
-    //    대학교 인증 대기 목록 중 단일 내용 조회
+    //    전시회 인증 완료 목록 조회
+    public List<UniversityExhibitionDTO> findAllUniversityExhibitionCompleted() { return approvalMapper.selectAllUniversityExhibitionCompleted();
+    }
+    //    전시회 인증 대기 목록 중 단일 내용 조회
     public Optional<UniversityExhibitionDTO> findUniversityExhibitionPendingById(Long id) { return approvalMapper.selectUniversityExhibitionPendingById(id); }
 
-    //    대학교 인증 상태 변경 (승인.반려)
+    //    전시회 인증 상태 변경 (승인.반려)
     public void updateUniversityExhibitionStatus(UniversityExhibitionDTO universityExhibitionDTO) { approvalMapper.updateUniversityExhibitionStatus(universityExhibitionDTO);
     }
+
 }

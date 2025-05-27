@@ -32,6 +32,17 @@ public class ApprovalController {
         return approvalService.getPendingList(type);
     }
 
+    //    승 인 완료 목록 조회
+    @Operation(summary = "승인 완료 목록 조회", description = "관리자 전용: 업사이클링/작가/대학교/작품 승인 완료 목록 조회")
+    @GetMapping("/{type}/completed")
+//    승인 카테고리 타입이 각각 다르므로 리스트 와일드 카드로, 패스베리어블 스트링 타입으로 항목 확인학
+    public List<?> getCompletedList(@PathVariable String type, HttpServletRequest request) {
+        if (!adminCheckUtil.isAdmin(request)) {
+            throw new RuntimeException("그라데이션 관리자만 접근 가능합니다.");
+        }
+        return approvalService.getCompletedList(type);
+    }
+
 //    승인 대기 중 상세 목록 조회
     @Operation(summary = "승인 대기 중 상세 목록 조회", description = "관리자 전용: 특정 항목 상세 조회")
     @GetMapping("/{type}/pending/{id}")
