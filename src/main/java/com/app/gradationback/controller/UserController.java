@@ -341,7 +341,6 @@ public class UserController {
             return ResponseEntity.ok(response);
 
         } catch (IllegalArgumentException e) {
-            response.put("message", "기존 비밀번호와 일치하는 비밀번호는 사용할 수 없습니다.");
             response.put("status", "fail");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
 
@@ -434,6 +433,39 @@ public class UserController {
             }
             response.put("message", "해당 회원이 존재하지 않습니다.");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } catch (Exception e) {
+            response.put("message", "서버 오류");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @Operation(summary = "현재 비밀번호 검증", description = "사용자가 입력한 현재 비밀번호가 맞는지 확인하는 API")
+    @ApiResponse(responseCode = "200", description = "비밀번호 일치 여부 확인 성공")
+    @PostMapping("/check-password")
+    public ResponseEntity<Map<String, Object>> checkPassword(@RequestBody UserVO userVO) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            Optional<UserVO> foundUser = userService.getUserByIdentification(userVO.getUserIdentification());
+
+            if (!foundUser.isPresent()) {
+                response.put("message", "존재하지 않는 회원입니다.");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+
+            UserVO user = foundUser.get();
+
+            // 평문 비교 (암호화 안 했을 경우)
+            if (!user.getUserPassword().equals(userVO.getUserPassword())) {
+                response.put("message", "비밀번호가 일치하지 않습니다.");
+                response.put("match", false);
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+
+            response.put("message", "비밀번호가 일치합니다.");
+            response.put("match", true);
+            return ResponseEntity.ok(response);
+
         } catch (Exception e) {
             response.put("message", "서버 오류");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
