@@ -178,7 +178,8 @@ public class CommentController {
     public ResponseEntity<Map<String, Object>> modify(@PathVariable Long id, @RequestBody CommentVO commentVO) {
         Map<String, Object> response = new HashMap<>();
         try {
-            Optional<CommentVO> foundReply = commentService.getComment(commentVO.getId());
+//            Optional<CommentVO> foundReply = commentService.getComment(commentVO.getId());
+            Optional<CommentVO> foundReply = commentService.getComment(id);
             if (foundReply.isPresent()) {
                 commentVO.setId(id);
                 commentService.modifyComment(commentVO);

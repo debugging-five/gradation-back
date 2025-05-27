@@ -19,7 +19,7 @@ public class ArtLikeController {
 //    좋아요 등록
     @Operation(summary = "작품 좋아요 등록", description = "작품 좋아요를 등록할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "작품 좋아요 등록 성공")
-    @PostMapping("register")
+    @PostMapping("registration")
     public void registerLike(@RequestBody ArtLikeVO artLikeVO) {
         artLikeService.register(artLikeVO);
     }
@@ -35,7 +35,7 @@ public class ArtLikeController {
 //    좋아요 삭제
     @Operation(summary = "작품 좋아요 삭제", description = "작품 좋아요를 삭제할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "작품 좋아요 삭제 성공")
-    @DeleteMapping("remove")
+    @DeleteMapping("delete")
     public void deleteLike(@RequestBody ArtLikeVO artLikeVO) {
         artLikeService.remove(artLikeVO);
     }
