@@ -69,6 +69,7 @@ public class ArtPostServiceImpl implements ArtPostService {
 
             post.setComments(commentDAO.findAllByPostId(params));
             post.setImages(artImgDAO.findAllByArtId(post.getArtId()));
+//            post.setImages(artImgDAO.findAllByArtId(post.getId()));
             post.setArtLikeCount(artDAO.findLikeCount(post.getArtId()));
             return post;
         });
