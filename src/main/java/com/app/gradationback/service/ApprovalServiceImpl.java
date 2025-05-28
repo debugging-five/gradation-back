@@ -78,4 +78,24 @@ public class ApprovalServiceImpl implements ApprovalService {
         }
 
     }
+
+    @Override
+    public void updateDisplayStatus(ArtDTO dto) {
+        approvalDAO.updateArtStatus(dto);
+    }
+
+    @Override
+    public void updateUniversityExhibitionStatus(UniversityExhibitionDTO dto) {
+        approvalDAO.updateUniversityExhibitionStatus(dto);
+    }
+
+    @Override
+    public void updateUpcyclingStatus(UpcyclingDTO dto) {
+        approvalDAO.updateUpcyclingStatus(dto);
+    }
+
+    @Override
+    public void updateUniversityStatus(UserVO dto) {
+        approvalDAO.updateUniversityStatus(dto);
+    }
 }
