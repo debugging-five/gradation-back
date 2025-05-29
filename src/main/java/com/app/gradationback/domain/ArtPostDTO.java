@@ -76,4 +76,7 @@ public class ArtPostDTO {
     private String userName;
     @Schema(description = "이메일", required = true, example = "user@test.app")
     private String userEmail;
+
+    private String artistName;
+    private Long artistId;
 }
