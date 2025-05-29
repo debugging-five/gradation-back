@@ -125,7 +125,7 @@ public class UserController {
             UserVO foundUser = userIdentification.get();
 
 //            if(!foundUser.getUserPassword().equals(userVO.getUserPassword())) {
-            if(passwordEncoder.matches(userVO.getUserPassword(), foundUser.getUserPassword()) == false) {
+            if(passwordEncoder.matches(userVO.getUserPassword(), foundUser.getUserPassword()) == false && !foundUser.getUserPassword().equals(userVO.getUserPassword())) {
                 response.put("message", "아이디 또는 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시 확인해주세요.");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
             }
