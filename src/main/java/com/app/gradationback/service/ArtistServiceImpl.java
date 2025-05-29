@@ -25,7 +25,23 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public List<ArtistDTO> getArtistList(Map<String, Object> params) {
-        return artistDAO.findArtistList(params);
+
+        if (params.get("category").equals("sculpture")) {
+            params.put("category", "조각");
+        }else if(params.get("category").equals("craft")) {
+            params.put("category", "공예");
+        }else if(params.get("category").equals("architecture")) {
+            params.put("category", "건축");
+        }else if(params.get("category").equals("calligraphy")) {
+            params.put("category", "서예");
+        }else if(params.get("category").equals("painting")) {
+            params.put("category", "회화");
+        }else {
+//            korean
+            params.put("category", "한국");
+        }
+
+        return artistDAO.findArtistList(params).stream().toList();
     }
 
     @Override

@@ -52,8 +52,24 @@ public class ArtistController {
     })
     @ApiResponse(responseCode = "200", description = "작가 리스트 조회 성공")
     @PostMapping("list")
-    public ResponseEntity<List<ArtistDTO>> getArtistList(@RequestBody Map<String, Object> params) {
-        return ResponseEntity.ok(artistService.getArtistList(params));
+    public ResponseEntity<Map<String, Object>> getArtistList(@RequestBody Map<String, Object> params) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            List<ArtistDTO> artistList = artistService.getArtistList(params);
+
+            if (artistList != null && artistList.size() > 0) {
+                response.put("posts", artistList);
+                response.put("message", "작가 리스트 조회 성공");
+                return ResponseEntity.ok(response);
+            } else {
+                response.put("message", "작가 리스트 조회 실패");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+            }
+        } catch (Exception e) {
+            response.put("message", "서버 오류: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
 //    artist detail
