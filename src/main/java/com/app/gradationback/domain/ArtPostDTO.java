@@ -60,6 +60,8 @@ public class ArtPostDTO {
     @Schema(description = "게시글 번호", required = true, example = "1")
     private Long artPostId;
 
+    private boolean isLiked;
+
 
 //    TBL_COMMENT_LIKE
     @Schema(description = "댓글 좋아요 누른 시간", example = "2025-01-01T13:30:00")

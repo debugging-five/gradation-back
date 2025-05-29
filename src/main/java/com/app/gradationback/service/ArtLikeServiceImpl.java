@@ -28,12 +28,10 @@ public class ArtLikeServiceImpl implements ArtLikeService {
 //    좋아요 여부
     @Override
     public boolean getLiked(ArtLikeVO artLikeVO) {
-        if(artDAO.findLiked(artLikeVO) > 0) {
-            artDAO.deleteLike(artLikeVO);
-            return false;
+        if(artDAO.findLiked(artLikeVO) == 1) {
+            return true;
         }
-        artDAO.saveLike(artLikeVO);
-        return true;
+        return false;
     }
 
 //    좋아요 삭제
