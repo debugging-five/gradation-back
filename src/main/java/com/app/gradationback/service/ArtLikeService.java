@@ -10,6 +10,9 @@ public interface ArtLikeService {
 //    좋아요 수
     public int getLikeCount(Long artId);
 
+//    좋아요 여부
+    public boolean getLiked(ArtLikeVO artLikeVO);
+
 //    좋아요 삭제
     public void remove(ArtLikeVO artLikeVO);
 

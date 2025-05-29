@@ -18,4 +18,5 @@ public class CommentDTO {
     private String userName;
     private String userImgPath;
     private String userImgName;
+    private String userWriterStatus;
 }
