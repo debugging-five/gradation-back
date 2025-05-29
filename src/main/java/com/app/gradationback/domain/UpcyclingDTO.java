@@ -21,6 +21,8 @@ public class UpcyclingDTO {
     private String upcyclingMaterials;
     private String upcyclingSignificant;
     private String upcyclingStatus;
+    private String upcyclingImgName;
+    private String upcyclingImgPath;
     private Long userId;
 
 //    TBL_USER
