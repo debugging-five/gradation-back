@@ -130,16 +130,19 @@ public class AuctionController {
             required = false
     )
     @GetMapping("footer/{cursor}")
-    public ResponseEntity<List<AuctionDTO>> read(@PathVariable int cursor) {
+    public ResponseEntity<Map<String, Object>> read(@PathVariable int cursor) {
+        Map<String, Object> response = new HashMap<>();
         List<AuctionDTO> footerList = null;
         try {
             if (cursor == 0) {
                 footerList = auctionService.auctionFooterBidding(1);
             }
             footerList = auctionService.auctionFooterBidding(cursor);
-            return ResponseEntity.ok(footerList);
+            response.put("footerList", footerList);
+            response.put("contents", auctionService.auctionFooterBiddingCount());
+            return ResponseEntity.ok(response);
         }catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(footerList);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         }
     }
 

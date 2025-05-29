@@ -52,8 +52,22 @@ public class DisplayController {
     @PostMapping("list")
     public ResponseEntity<Map<String, Object>> getAllPosts(@RequestBody HashMap<String, Object> params) {
         Map<String, Object> response = new HashMap<>();
-        response.put("posts", artPostService.getArtListByCategoryAndDropdown(params));
+        List<ArtPostDTO> postList = artPostService.getArtListByCategoryAndDropdown(params);
+        if(postList.isEmpty()) {
+            response.put("postList", postList);
+            response.put("message", "작품 리스트 조회 성공했습니다.");
+            response.put("contents", 0);
+            response.put("params", params);
+            return ResponseEntity.ok(response);
+        }
+        response.put("postList", postList);
+        response.put("message", "작품 리스트 조회 성공했습니다.");
+        response.put("params", params);
+        response.put("cursor", params.get("cursor"));
+        response.put("contents", artPostService.getCountArtList(params));
         return ResponseEntity.ok(response);
+//        response.put("posts", artPostService.getArtListByCategoryAndDropdown(params));
+//        return ResponseEntity.ok(response);
     }
 
 //    전시 단일 조회

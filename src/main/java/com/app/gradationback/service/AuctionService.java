@@ -17,6 +17,7 @@ public interface AuctionService {
     public Integer auctionCountList(HashMap<String, Object> params);
     public Optional<AuctionDTO> auctionRead(Long id);
     public List<AuctionDTO> auctionFooterBidding(Integer cursor);
+    public Integer auctionFooterBiddingCount();
     public Long auctionFindByArtId(Long artId);
     public List<AuctionDTO> auctionFindByUserId(Long userId);
     public void auctionModify(AuctionVO auctionVO);
