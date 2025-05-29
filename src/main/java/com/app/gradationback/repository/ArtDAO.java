@@ -60,6 +60,11 @@ public class ArtDAO {
         return artMapper.selectLikeCount(artId);
     }
 
+//    좋아요 여부
+    public Integer findLiked(ArtLikeVO artLikeVO) {
+        return artMapper.selectLiked(artLikeVO);
+    }
+
 //    좋아요 삭제
     public void deleteLike(ArtLikeVO artLikeVO) {
         artMapper.deleteLike(artLikeVO);

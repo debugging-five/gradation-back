@@ -37,6 +37,7 @@ public class ArtPostServiceImpl implements ArtPostService {
         artVO.setArtDescription(artPostDTO.getArtDescription());
         artVO.setArtEndDate(artPostDTO.getArtEndDate());
         artVO.setUserId(artPostDTO.getUserId());
+        artVO.setArtStatus("미승인");
         artDAO.save(artVO);
         Long artId = artVO.getId();
 
@@ -106,7 +107,13 @@ public class ArtPostServiceImpl implements ArtPostService {
         }).toList();
     };
 
-//    내 작품 리스트
+    @Override
+    public Integer getCountArtList(Map<String, Object> params) {
+        Map<String, Object> selectedParams = new HashMap<>();
+        return artPostDAO.findCountArtList(params);
+    }
+
+    //    내 작품 리스트
     @Override
     public List<ArtPostDTO> getMyArtList(Long userId) {
         return artPostDAO.findAllMyArt(userId);

@@ -39,6 +39,9 @@ public interface ArtMapper {
 //    좋아요 수
     public int selectLikeCount(Long artId);
 
+//    좋아요 여부
+    public Integer selectLiked(ArtLikeVO artLikeVO);
+
 //    좋아요 취소
     public void deleteLike(ArtLikeVO artLikeVO);
 

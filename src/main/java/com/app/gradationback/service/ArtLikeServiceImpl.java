@@ -25,6 +25,15 @@ public class ArtLikeServiceImpl implements ArtLikeService {
         return artDAO.findLikeCount(artId);
     }
 
+//    좋아요 여부
+    @Override
+    public boolean getLiked(ArtLikeVO artLikeVO) {
+        if(artDAO.findLiked(artLikeVO) == 1) {
+            return true;
+        }
+        return false;
+    }
+
 //    좋아요 삭제
     @Override
     public void remove(ArtLikeVO artLikeVO) {

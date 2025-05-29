@@ -48,6 +48,10 @@ public class ArtPostDAO {
         return artPostMapper.selectArtListByCategoryAndDropdown(params);
     }
 
+    public Integer findCountArtList(Map<String, Object> params) {
+        return artPostMapper.selectCountArtList(params);
+    }
+
 //    내 작품 리스트
     public List<ArtPostDTO> findAllMyArt(Long userId) { return artPostMapper.selectAllMyArt(userId); }
 
