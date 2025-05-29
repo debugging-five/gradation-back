@@ -1,5 +1,6 @@
 package com.app.gradationback.controller;
 
+import com.app.gradationback.aspect.annotation.ExceptionResponse;
 import com.app.gradationback.domain.*;
 import com.app.gradationback.repository.ArtImgDAO;
 import com.app.gradationback.repository.ExhibitionDAO;
@@ -144,6 +145,7 @@ public class FileController {
         return ResponseEntity.ok(response);
     }
 
+    @ExceptionResponse
     @Operation(summary = "이미지 조회", description = "패스와 이름을 적으면 이미지를 반환해주는 API")
     @GetMapping("get/{fileName}")
     @ResponseBody
