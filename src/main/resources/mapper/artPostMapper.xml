@@ -65,7 +65,7 @@
         ON TBP.ART_ID = TBA.ID
         JOIN TBL_USER TBU
         ON TBA.USER_ID = TBU.ID
-        WHERE TBP.ID = #{id};
+        WHERE TBP.ID = #{id}
     </select>
 
     <!--  작품 게시글 전체 조회 (userId로)  -->
