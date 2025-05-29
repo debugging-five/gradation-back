@@ -4,6 +4,7 @@ import com.app.gradationback.domain.AuctionBiddingVO;
 import com.app.gradationback.domain.AuctionDTO;
 import com.app.gradationback.domain.AuctionPriceVO;
 import com.app.gradationback.domain.AuctionVO;
+import com.app.gradationback.exception.AuctionException;
 import com.app.gradationback.repository.ArtImgDAO;
 import com.app.gradationback.repository.AuctionBiddingDAO;
 import com.app.gradationback.repository.AuctionDAO;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
 @RequiredArgsConstructor
@@ -31,13 +33,12 @@ public class AuctionServiceImpl implements AuctionService {
     }
 
     @Override
-    public List<AuctionDTO> auctionList(HashMap<String, Object> params) {
+    public List<AuctionDTO> readAuctionList(HashMap<String, Object> params) {
         return auctionDAO.findAll(params);
     }
 
     @Override
     public Integer auctionCountList(HashMap<String, Object> params) {
-        HashMap<String, Object> selectedParams = new HashMap<>();
         return auctionDAO.findCountByParams(params);
     }
 
