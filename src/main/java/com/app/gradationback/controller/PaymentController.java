@@ -1,5 +1,6 @@
 package com.app.gradationback.controller;
 
+import com.app.gradationback.aspect.annotation.ExceptionResponse;
 import com.app.gradationback.domain.DeliveryDTO;
 import com.app.gradationback.domain.DeliveryVO;
 import com.app.gradationback.domain.PaymentCancellationVO;
@@ -27,6 +28,7 @@ public class PaymentController {
     private final PaymentService paymentService;
     private final DeliveryService deliveryService;
 
+    @ExceptionResponse
     @Operation(summary = "결제", description = "결제 API")
     @ApiResponse(responseCode = "200", description = "결제 성공")
     @PostMapping("/payment")
@@ -43,6 +45,7 @@ public class PaymentController {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
+    @ExceptionResponse
     @Operation(summary = "결제취소", description = "결제 취소 API")
     @ApiResponse(responseCode = "200", description = "결제 취소 성공")
     @PostMapping("/cancel")
@@ -50,6 +53,7 @@ public class PaymentController {
         paymentService.paymentCancel(paymentCancellationVO);
     }
 
+    @ExceptionResponse
     @Operation(summary = "결제 조회", description = "결제 조회 API")
     @ApiResponse(responseCode = "200", description = "조회 성공")
     @Parameter(
@@ -68,6 +72,7 @@ public class PaymentController {
         return new DeliveryDTO();
     }
 
+    @ExceptionResponse
     @Operation(summary = "해당 경매 결제 조회", description = "해당 경매의 결제여부를 조회할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "조회 성공")
     @Parameter(
@@ -91,6 +96,7 @@ public class PaymentController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @ExceptionResponse
     @Operation(summary = "결제 전체 조회", description = "결제 전체 조회 API")
     @ApiResponse(responseCode = "200", description = "조회 성공")
     @Parameter(
@@ -110,6 +116,7 @@ public class PaymentController {
     }
 
     //    배송
+    @ExceptionResponse
     @Operation(summary = "배송 조회", description = "Id 값으로 상품의 배송정보만 조회하는 API")
     @ApiResponse(responseCode = "200", description = "조회 성공")
     @Parameter(
@@ -128,6 +135,7 @@ public class PaymentController {
         return new DeliveryVO();
     }
 
+    @ExceptionResponse
     @Operation(summary = "배송 수정", description = "배송정보를 수정할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "수정 성공")
     @PutMapping("modify")
