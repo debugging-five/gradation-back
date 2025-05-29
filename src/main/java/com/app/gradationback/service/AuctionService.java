@@ -13,10 +13,11 @@ public interface AuctionService {
 
 //    경매 조회에 사용되는 로직
     public void auctionRegistration(AuctionVO auctionVO);
-    public List<AuctionDTO> auctionList(HashMap<String, Object> params);
+    public List<AuctionDTO> readAuctionList(HashMap<String, Object> params);
     public Integer auctionCountList(HashMap<String, Object> params);
     public Optional<AuctionDTO> auctionRead(Long id);
     public List<AuctionDTO> auctionFooterBidding(Integer cursor);
+    public Integer auctionFooterBiddingCount();
     public Long auctionFindByArtId(Long artId);
     public List<AuctionDTO> auctionFindByUserId(Long userId);
     public void auctionModify(AuctionVO auctionVO);

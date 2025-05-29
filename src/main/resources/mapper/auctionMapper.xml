@@ -133,11 +133,11 @@
             </otherwise>
         </choose>
         <choose>
-            <when test="direction != null and direction.equals('asc')">
-                ASC
+            <when test="direction != null and direction.equals('desc')">
+                DESC
             </when>
             <otherwise>
-                DESC
+                ASC
             </otherwise>
         </choose>
         OFFSET (#{cursor} - 1) * 15 ROWS
@@ -279,6 +279,13 @@
         ORDER BY TAU.ID
         OFFSET (#{cursor} - 1) * 4 ROWS
         FETCH NEXT 4 ROWS ONLY
+    </select>
+
+    <select id="selectCountOnBidding" resultType="Integer">
+        SELECT COUNT(ID)
+        FROM TBL_AUCTION
+        WHERE AUCTION_START_DATE &lt; SYSDATE
+        AND AUCTION_BID_DATE IS NULL
     </select>
 
     <select id="selectByArtId" parameterType="Long" resultType="Long">
