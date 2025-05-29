@@ -27,6 +27,8 @@ public interface ArtPostService {
 //    카테고리 + 드롭다운 + 페이지네이션
     public List<ArtPostDTO> getArtListByCategoryAndDropdown(Map<String, Object> params);
 
+    public Integer getCountArtList(Map<String, Object> params);
+
 //    내 작품 리스트
     public List<ArtPostDTO> getMyArtList(Long userId);
 
