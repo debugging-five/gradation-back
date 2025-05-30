@@ -103,17 +103,26 @@ public class CommentController {
     })
     @ApiResponse(responseCode = "200", description = "댓글 전체 조회 성공")
     @PostMapping("list")
-    public ResponseEntity<Map<String, Object>> getReplies(@RequestBody HashMap<String, Object> params) {
+    public ResponseEntity<Map<String, Object>> getReplies(@RequestBody HashMap<String, Object> params, HttpSession session) {
         Map<String, Object> response = new HashMap<>();
-        try {
-            List<CommentDTO> commentList = commentService.getAllCommentByPostId(params);
+
+        Long userId = (Long) session.getAttribute("id");
+//        UserVO foundUser = (UserVO) session.getAttribute("user");
+        if (userId == null) {
+            params.put("userId", userId);
+        }
+        List<CommentDTO> commentList = commentService.getAllCommentByPostId(params);
             response.put("message", "댓글 전체 조회 성공했습니다.");
             response.put("commentList", commentList);
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            response.put("message", "댓글 전체 조회 실패했습니다.");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            response.put("params", params);
+            if(commentList.isEmpty()) {
+                response.put("contents", 0);
+                return ResponseEntity.ok(response);
+
+//            response.put("message", "메세지");
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
+            return ResponseEntity.ok(response);
     }
 
 //    댓글 단일 조회

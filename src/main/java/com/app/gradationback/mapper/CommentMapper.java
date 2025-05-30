@@ -1,8 +1,6 @@
 package com.app.gradationback.mapper;
 
-import com.app.gradationback.domain.ArtPostDTO;
-import com.app.gradationback.domain.CommentDTO;
-import com.app.gradationback.domain.CommentVO;
+import com.app.gradationback.domain.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -39,5 +37,19 @@ public interface CommentMapper {
 //    댓글 전체 삭제 (게시글 삭제)
     public void deleteAllByPostId(Long postId);
 
+//    댓글 좋아요 등록
+    public void insertCommentLike(CommentLikeVO commentLikeVO);
+
+//    댓글 좋아요 수
+    public int selectCommentLikeCount(Long commentId);
+
+//    댓글 좋아요 여부
+    public Integer selectCommentLiked(CommentLikeVO commentLikeVO);
+
+//    댓글 좋아요 취소
+    public void deleteCommentLike(CommentLikeVO commentLikeVO);
+
+//    댓글 좋아요 삭제
+    public void deleteAllCommentByCommentId(Long commentId);
 
 }

@@ -41,7 +41,13 @@
        SELECT COUNT(ID)
        FROM TBL_COMMENT_LIKE TCL
        WHERE TCL.COMMENT_ID = TBC.ID
-       ) AS COMMENT_LIKE_COUNT
+       ) AS COMMENT_LIKE_COUNT,
+        (
+        SELECT COUNT(ID)
+        FROM TBL_COMMENT_LIKE TCL
+        WHERE TCL.COMMENT_ID = TBC.ID
+        AND TCL.USER_ID = #{userId}
+        ) AS IS_LIKED
         FROM TBL_COMMENT TBC
         JOIN TBL_USER TBU
         ON TBC.USER_ID = TBU.ID
@@ -59,6 +65,17 @@
         </choose>
         OFFSET (#{cursor} - 1) * 10 ROWS
         FETCH NEXT 10 ROWS ONLY
+    </select>
+
+
+    <select id="selectCountComment" parameterType="Map" resultType="Integer">
+        SELECT COUNT(ID)
+        FROM TBL_COMMENT_LIKE TCL
+        WHERE TCL.COMMENT_ID = TBC.ID
+        FROM TBL_COMMENT TBC
+        JOIN TBL_USER TBU
+        ON TBC.USER_ID = TBU.ID
+        WHERE ART_POST_ID = #{postId}
     </select>
 
     <!--  댓글 수정  -->
@@ -84,6 +101,38 @@
     <delete id="deleteAllByPostId" parameterType="Long">
         DELETE FROM TBL_COMMENT
         WHERE ART_POST_ID = #{artPostId}
+    </delete>
+
+    <!--  댓글 좋아요 등록  -->
+    <insert id="insertCommentLike" parameterType="CommentLikeVO">
+        INSERT INTO TBL_COMMENT_LIKE (ID, COMMENT_ID, USER_ID, COMMENT_LIKE_TIME)
+        VALUES (SEQ_COMMENT_LIKE.NEXTVAL, #{commentId}, #{userId}, SYSTIMESTAMP)
+    </insert>
+
+    <!--  댓글 좋아요 수  -->
+    <select id="selectCommentLikeCount" parameterType="Long" resultType="int">
+        SELECT COUNT(ID)
+        FROM TBL_COMMENT_LIKE
+        WHERE COMMENT_ID = #{commentId}
+    </select>
+
+    <!--  댓글 좋아요 여부  -->
+    <select id="selectCommentLiked" parameterType="CommentLikeVO" resultType="Integer">
+        SELECT COUNT(ID)
+        FROM TBL_COMMENT_LIKE
+        WHERE USER_ID = #{userId} AND COMMENT_ID = #{commentId}
+    </select>
+
+    <!--  댓글 좋아요 취소  -->
+    <delete id="deleteCommentLike" parameterType="CommentLikeVO">
+        DELETE FROM TBL_COMMENT_LIKE
+        WHERE USER_ID = #{userId} AND COMMENT_ID = #{commentId}
+    </delete>
+
+    <!--  댓글 좋아요 전체 삭제 (게시글 삭제 시) -->
+    <delete id="deleteAllCommentByArtId" parameterType="Long">
+        DELETE FROM TBL_COMMENT_LIKE
+        WHERE COMMENT_ID = #{commentId}
     </delete>
 
 </mapper>
