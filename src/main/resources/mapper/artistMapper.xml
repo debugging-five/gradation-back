@@ -23,7 +23,7 @@
     </select>
 
 
-    <!-- 작가 리스트(내 프로필 제외) -->
+    <!-- 작가 리스트 -->
     <select id="selectArtistList" parameterType="Map" resultType="ArtistDTO">
         SELECT
             TU.ID,
@@ -33,12 +33,31 @@
             TU.USER_BACKGROUND_IMG_NAME,
             TU.USER_BACKGROUND_IMG_PATH,
             TU.USER_ART_CATEGORY,
-        TUS.UNIVERSITY_NAME
+            TUS.UNIVERSITY_NAME,
+            ART.ART_IMG_NAME,
+            ART.ART_IMG_PATH
         FROM TBL_USER TU
         JOIN TBL_MAJOR TM
             ON TU.MAJOR_ID = TM.ID
         JOIN TBL_UNIVERSITY TUS
             ON TM.UNIVERSITY_ID = TUS.ID
+        JOIN (
+            SELECT
+                USER_ID,
+                ART_IMG_NAME,
+                ART_IMG_PATH
+            FROM (
+                SELECT
+                TA.USER_ID,
+                TAI.ART_IMG_NAME,
+                TAI.ART_IMG_PATH,
+                ROW_NUMBER() OVER (PARTITION BY TA.USER_ID ORDER BY TA.ID ASC) AS RN
+            FROM TBL_ART TA
+            JOIN TBL_ART_IMG TAI ON TA.ID = TAI.ART_ID
+            WHERE TA.ART_STATUS = '승인'
+            )
+            WHERE RN = 1
+        ) ART ON TU.ID = ART.USER_ID
         WHERE TU.USER_WRITER_STATUS = '승인'
 
         <choose>
@@ -136,9 +155,7 @@
             TU.USER_ART_CATEGORY,
             TH.ID AS HISTORY_ID,
             TH.HISTORY_DATE,
-            TH.HISTORY_CONTENT,
-            TU.USER_BACKGROUND_IMG_PATH,
-            TU.USER_BACKGROUND_IMG_NAME
+            TH.HISTORY_CONTENT
         FROM TBL_USER TU
         LEFT JOIN TBL_MAJOR TM
             ON TU.MAJOR_ID = TM.ID
@@ -150,23 +167,30 @@
     </select>
 
 <!--    작품들 썸네일 -->
-    <select id="selectArtistArt" parameterType="Long" resultType="ArtistDetailDTO">
+    <select id="selectArtistArts" parameterType="Long" resultType="ArtistDetailDTO">
         SELECT
-            TA.ID,
-            AI.ART_IMG_NAME,
-            AI.ART_IMG_PATH
+            TA.ID AS ART_ID,
+            TA.ART_TITLE,
+            TU.USER_NAME,
+            TAI.ART_IMG_NAME,
+            TAI.ART_IMG_PATH,
+            TAP.ID AS ART_POST_ID
         FROM TBL_ART TA
         JOIN (
-            SELECT AI1.ART_ID, AI1.ART_IMG_NAME, AI1.ART_IMG_PATH
-            FROM TBL_ART_IMG AI1
+            SELECT TAI1.ART_ID, TAI1.ART_IMG_NAME, TAI1.ART_IMG_PATH
+            FROM TBL_ART_IMG TAI1
             JOIN (
                 SELECT ART_ID, MIN(ID) AS MIN_ID
                 FROM TBL_ART_IMG
                 GROUP BY ART_ID
-            ) AI2
-                ON AI1.ART_ID = AI2.ART_ID AND AI1.ID = AI2.MIN_ID
-        ) AI
-            ON TA.ID = AI.ART_ID
+            ) TAI2
+                ON TAI1.ART_ID = TAI2.ART_ID AND TAI1.ID = TAI2.MIN_ID
+        ) TAI
+            ON TA.ID = TAI.ART_ID
+        JOIN TBL_USER TU
+            ON TA.USER_ID = TU.ID
+        JOIN TBL_ART_POST TAP
+            ON TAP.ART_ID = TA.ID
         WHERE TA.USER_ID = #{userId}
     </select>
 

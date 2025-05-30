@@ -23,9 +23,12 @@ public class ArtistDetailDTO {
     private String historyContent;
     private Long historyId;
 
+    private Long artPostId;
     private String artImgPath;
     private String artImgName;
     private Long artId;
+
+    private String artTitle;
 
     private List<HistoryVO> historyList;
     private List<ArtImgVO> artImgList;

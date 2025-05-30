@@ -17,6 +17,8 @@ public interface ArtistService {
 
     public ArtistDetailDTO getArtistDetailById(Long userId);
 
+    public List<ArtistDetailDTO> getArtistArtsList(Long userId);
+
     public void editArtist(UserVO userVO);
 
     public void registerUserHistory(HistoryVO historyVO);

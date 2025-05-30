@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface MypageMapper {
+    void deleteArtByAuction (Long userId);
     void deleteArtLikesByUserId(Long userId);
     void deleteArtLikesByArtOfUser(Long userId);
     void deleteExhibitionPastArtByArtOfUser(Long userId);
