@@ -89,13 +89,13 @@ public class PaymentServiceImpl implements PaymentService {
             JsonNode responseNode = objectMapper.readTree(jsonString);
             if(responseNode.hasNonNull("card")) {
                 paymentVO.setPaymentMethod(cardCompanyMap.get(responseNode.path("card").path("issuerCode").asText()));
-                paymentVO.setPaymentAmount(responseNode.path("card").path("amount").asInt());
+                paymentVO.setPaymentAmount(responseNode.path("card").path("amount").asLong());
                 paymentVO.setPaymentCode(responseNode.path("orderId").asText());
                 paymentVO.setAuctionId(auctionId);
                 paymentDAO.save(paymentVO);
             }else {
                 paymentVO.setPaymentMethod(responseNode.path("easyPay").path("provider").asText());
-                paymentVO.setPaymentAmount(responseNode.path("easyPay").path("amount").asInt());
+                paymentVO.setPaymentAmount(responseNode.path("easyPay").path("amount").asLong());
                 paymentVO.setPaymentCode(responseNode.path("orderId").asText());
                 paymentVO.setAuctionId(auctionId);
                 paymentDAO.save(paymentVO);
