@@ -2,6 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.gradationback.mapper.MypageMapper">
 
+    <!-- 작품에 연결된 경매 삭제 -->
+    <delete id="deleteArtByAuction" parameterType="Long">
+        DELETE FROM TBL_AUCTION
+        WHERE ART_ID IN (
+            SELECT ID FROM TBL_ART WHERE USER_ID = #{userId}
+        )
+    </delete>
+
     <!-- 사용자가 좋아요한 아트 삭제 -->
     <delete id="deleteArtLikesByUserId" parameterType="Long">
         DELETE FROM TBL_ART_LIKE
