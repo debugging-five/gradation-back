@@ -112,8 +112,8 @@ public class CommentController {
             params.put("userId", userId);
         }
         List<CommentDTO> commentList = commentService.getAllCommentByPostId(params);
-            response.put("message", "댓글 전체 조회 성공했습니다.");
             response.put("commentList", commentList);
+            response.put("message", "댓글 전체 조회 성공했습니다.");
             response.put("params", params);
             if(commentList.isEmpty()) {
                 response.put("contents", 0);
@@ -122,6 +122,7 @@ public class CommentController {
 //            response.put("message", "메세지");
 //            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
+            response.put("contents", commentService.getCountComment(params));
             return ResponseEntity.ok(response);
     }
 

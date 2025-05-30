@@ -67,15 +67,12 @@
         FETCH NEXT 10 ROWS ONLY
     </select>
 
-
+<!---->
     <select id="selectCountComment" parameterType="Map" resultType="Integer">
-        SELECT COUNT(ID)
-        FROM TBL_COMMENT_LIKE TCL
-        WHERE TCL.COMMENT_ID = TBC.ID
+        SELECT COUNT(TBC.ID)
         FROM TBL_COMMENT TBC
         JOIN TBL_USER TBU
         ON TBC.USER_ID = TBU.ID
-        WHERE ART_POST_ID = #{postId}
     </select>
 
     <!--  댓글 수정  -->

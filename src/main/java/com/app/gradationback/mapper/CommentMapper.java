@@ -25,6 +25,8 @@ public interface CommentMapper {
 //    댓글 전체 조회 (postId로)
     public List<CommentDTO> selectAllByPostId(Map<String, Object> params);
 
+    public Integer selectCountComment(Map<String, Object> params);
+
 //    댓글 수정
     public void update(CommentVO commentVO);
 

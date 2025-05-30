@@ -40,6 +40,10 @@ public class CommentDAO {
         return commentMapper.selectAllByPostId(params);
     }
 
+    public Integer findCountComment(Map<String, Object> params) {
+        return commentMapper.selectCountComment(params);
+    }
+
 //    댓글 수정
     public void update(CommentVO commentVO) {
         commentMapper.update(commentVO);

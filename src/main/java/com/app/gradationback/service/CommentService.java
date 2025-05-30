@@ -25,6 +25,8 @@ public interface CommentService {
 //    댓글 전체 조회 (postId로)
     public List<CommentDTO> getAllCommentByPostId(Map<String, Object> params);
 
+    public Integer getCountComment(Map<String, Object> params);
+
 //    댓글 삭제
     public void removeComment(Long id);
 
