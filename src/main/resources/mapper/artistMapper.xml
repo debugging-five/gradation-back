@@ -189,7 +189,7 @@
             ON TA.ID = TAI.ART_ID
         JOIN TBL_USER TU
             ON TA.USER_ID = TU.ID
-        LEFT JOIN TBL_ART_POST TAP
+        JOIN TBL_ART_POST TAP
             ON TAP.ART_ID = TA.ID
         WHERE TA.USER_ID = #{userId}
     </select>
