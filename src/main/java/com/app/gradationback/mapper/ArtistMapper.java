@@ -23,7 +23,7 @@ public interface ArtistMapper {
     public List<ArtistDetailDTO> selectArtistById(Long userId);
 
 //    작가 디테일(작품들 썸네일)
-    public List<ArtistDetailDTO> selectArtistArt(Long userId);
+    public List<ArtistDetailDTO> selectArtistArts(Long userId);
 
 //    작가 정보 수정
     public void updateArtist(UserVO userVO);

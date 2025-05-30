@@ -3,6 +3,9 @@ package com.app.gradationback.domain;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
+
 @Component
 @Data
 public class ArtistDTO {
@@ -14,4 +17,7 @@ public class ArtistDTO {
     private String userBackgroundImgPath;
     private String userArtCategory;
     private String universityName;
+
+    private String artImgName;
+    private String artImgPath;
 }
