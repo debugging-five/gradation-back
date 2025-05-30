@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Schema(description = "입찰 정보")
 public class AuctionBiddingVO {
     private Long id;
-    private int auctionBiddingPrice;
+    private Long auctionBiddingPrice;
     private boolean auctionBiddingAutoOk;
     private String auctionBiddingTime;
     private Long auctionId;
