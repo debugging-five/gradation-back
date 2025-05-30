@@ -26,6 +26,8 @@ public class UniversityExhibitionDTO {
     private String universityExhibitionTitle;
     private String universityExhibitionLocation;
     private String universityExhibitionStatus;
+    private String universityExhibitionRejectReason;
+    private Date universityExhibitionRequestDate;
     private Long majorId;
 //    드롭다운용 지역필터
     private String location;

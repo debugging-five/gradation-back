@@ -178,12 +178,12 @@ public class AdminController {
             throw new RuntimeException("관리자만 접근 가능합니다.");
         }
 
-        int status = banDTO.getUserBanOk();
+        String status = banDTO.getUserBanStatus();
 
-        if (status == 0) {
+        if ("일반회원".equals(status)) {
             // 정지 해제
             userService.updateUserBanStatus(banDTO);
-        } else if (status == 1 || status == 2) {
+        } else if ("댓글정지".equals(status) || "영구정지".equals(status)) {
             // 정지 처리 (댓글 정지 / 영구 정지)
             banDTO.setBanDate(new Timestamp(System.currentTimeMillis())); // 정지 일자 자동 세팅
             userService.banUser(banDTO);

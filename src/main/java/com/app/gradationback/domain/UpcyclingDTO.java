@@ -23,6 +23,8 @@ public class UpcyclingDTO {
     private String upcyclingStatus;
     private String upcyclingImgName;
     private String upcyclingImgPath;
+    private String upcyclingRejectReason;
+    private Date upcyclingRequestDate;
     private Long userId;
 
 //    TBL_USER

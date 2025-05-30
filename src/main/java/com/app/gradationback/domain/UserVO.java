@@ -61,6 +61,10 @@ public class UserVO {
     private String userMajorImgName;
     @Schema(description = "학생증 이미지 경로", example = "assets/images/user/major.jpg")
     private String userMajorImgPath;
+    @Schema(description = "재학중인 대학명", example = "00대학교")
+    private String universityName;
+    @Schema(description = "재학중인 대학의 학과명", example = "00학과")
+    private String majorName;
     @Schema(description = "작가 인증 상태", example = "미신청")
     private String userWriterStatus;
     @Schema(description = "학생증 인증 상태", example = "미신청")
@@ -79,7 +83,12 @@ public class UserVO {
     private String userMyUniversity;
     @Schema(description = "재학중인 대학의 학과명", example = "00학과")
     private String userMyMajor;
+    @Schema(description = "학과 아이디", example = "2")
     private Long majorId;
-
-
+    @Schema(description = "학교 인증 기각 사유", example = "첨부파일의 사진의 글씨를 알아 볼 수 없습니다.")
+    private String userUniversityRejectReason;
+    @Schema(description = "학교 인증 신청일", example = "2025-05-05")
+    private Date userUniversityRequestDate;
+    @Schema(description = "유저 정지 값", example = "일반 회원")
+    private String userBanStatus;
 }

@@ -15,5 +15,6 @@ public class ArtVO {
     private String artDescription;
     private Date artEndDate;
     private String artStatus;
+    private String artRejectReason;
     private Long userId;
 }

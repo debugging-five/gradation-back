@@ -14,5 +14,7 @@ public class UniversityExhibitionVO {
     private String universityExhibitionTitle;
     private String universityExhibitionLocation;
     private String universityExhibitionStatus;
+    private String universityExhibitionRejectReason;
+    private Date universityExhibitionRequestDate;
     private Long majorId;
 }

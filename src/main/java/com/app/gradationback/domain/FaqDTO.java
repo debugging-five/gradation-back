@@ -38,7 +38,7 @@ private Long id;
     private String userGoogle;
     private String userNaver;
     private boolean userAdminOk;
-    private boolean userBanOk;
+    private String userBanStatus;
     private String userMajorImgName;
     private String userMajorImgPath;
     private String userWriterStatus;
