@@ -14,17 +14,17 @@ public class AuctionDTO {
     private Long id;
     private String auctionStartDate;
     private String auctionEndDate;
-    private int auctionStartPrice;
+    private Long auctionStartPrice;
     private String auctionEstimatedMinPrice;
     private String auctionEstimatedMaxPrice;
     private boolean auctionAttracted;
-    private int auctionBidPrice;
+    private Long auctionBidPrice;
     private String auctionBidDate;
     private Long artId;
     private Long userId;
 
 //    TBL_AUCTION_BIDDING
-    private int auctionBiddingPrice;
+    private Long auctionBiddingPrice;
     private boolean auctionBiddingAutoOk;
     private Timestamp auctionBiddingTime;
     private Long auctionId;

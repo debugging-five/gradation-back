@@ -12,6 +12,8 @@ public class MypageDAO {
 
     // 회원 탈퇴 관련 연관 데이터 모두 삭제
     public void deleteUserAllData(Long userId) {
+
+        mypageMapper.deleteArtByAuction(userId);
         // 좋아요
         mypageMapper.deleteArtLikesByUserId(userId);
         mypageMapper.deleteArtLikesByArtOfUser(userId);
