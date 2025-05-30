@@ -25,13 +25,28 @@ public class ArtistServiceImpl implements ArtistService {
 
     @Override
     public List<ArtistDTO> getArtistList(Map<String, Object> params) {
-        return artistDAO.findArtistList(params);
+
+        if (params.get("category").equals("sculpture")) {
+            params.put("category", "조각");
+        }else if(params.get("category").equals("craft")) {
+            params.put("category", "공예");
+        }else if(params.get("category").equals("architecture")) {
+            params.put("category", "건축");
+        }else if(params.get("category").equals("calligraphy")) {
+            params.put("category", "서예");
+        }else if(params.get("category").equals("painting")) {
+            params.put("category", "회화");
+        }else {
+//            korean
+            params.put("category", "한국화");
+        }
+
+        return artistDAO.findArtistList(params).stream().toList();
     }
 
     @Override
     public ArtistDetailDTO getArtistDetailById(Long userId) {
         List<ArtistDetailDTO> artistInfoList = artistDAO.findMyArtistById(userId);
-        List<ArtistDetailDTO> artistArtList = artistDAO.findArtistArt(userId);
 
         ArtistDetailDTO artistInfo = artistInfoList.get(0);
 
@@ -46,19 +61,13 @@ public class ArtistServiceImpl implements ArtistService {
             }
         }
 
-        List<ArtImgVO> artImgList = new ArrayList<>();
-        for(ArtistDetailDTO artistDetailDTO : artistArtList) {
-            ArtImgVO artImgVO = new ArtImgVO();
-            artImgVO.setArtId(artistDetailDTO.getArtId());
-            artImgVO.setArtImgName(artistDetailDTO.getArtImgName());
-            artImgVO.setArtImgPath(artistDetailDTO.getArtImgPath());
-            artImgList.add(artImgVO);
-        }
-
         artistInfo.setHistoryList(histories);
-        artistInfo.setArtImgList(artImgList);
-
         return artistInfo;
+    }
+
+    @Override
+    public List<ArtistDetailDTO> getArtistArtsList(Long userId) {
+        return artistDAO.findArtistArts(userId);
     }
 
     @Override

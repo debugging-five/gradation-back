@@ -97,7 +97,7 @@ public class ArtPostServiceImpl implements ArtPostService {
             params.put("category", "회화");
         }else {
 //            korean
-            params.put("category", "한국");
+            params.put("category", "한국화");
         }
 
         return artPostDAO.findArtListByCategoryAndDropdown(params).stream().map(post -> {
