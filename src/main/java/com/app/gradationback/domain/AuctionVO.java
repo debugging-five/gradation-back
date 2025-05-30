@@ -22,7 +22,7 @@ public class AuctionVO {
     private String auctionEndDate;
 
     @Schema(description = "시작 입찰가", required = true, example = "100000")
-    private Integer auctionStartPrice;
+    private Long auctionStartPrice;
 
     @Schema(description = "최소추정가", required = true, example = "100000")
     private String auctionEstimatedMinPrice;
@@ -34,7 +34,7 @@ public class AuctionVO {
     private boolean auctionAttracted;
 
     @Schema(description = "낙찰가", example = "200000")
-    private Integer auctionBidPrice;
+    private Long auctionBidPrice;
 
     @Schema(description = "경매종료일", example = "2025-01-01 15:30:00")
     private String auctionBidDate;

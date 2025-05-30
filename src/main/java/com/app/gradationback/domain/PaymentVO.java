@@ -17,7 +17,7 @@ public class PaymentVO {
     private String paymentMethod;
 
     @Schema(description = "결제 금액", required = true, example = "1000000")
-    private int paymentAmount;
+    private Long paymentAmount;
 
     @Schema(description = "결제 일시", example = "2025-05-04 11:15:27")
     private String paymentDate;

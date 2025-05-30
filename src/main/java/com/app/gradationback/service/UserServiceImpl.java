@@ -3,6 +3,9 @@ package com.app.gradationback.service;
 import com.app.gradationback.domain.*;
 import com.app.gradationback.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,11 +23,28 @@ public class UserServiceImpl implements UserService {
     private final ArtImgDAO artImgDAO;
     private final ArtPostDAO artPostDAO;
 
-//    일반 회원가입
+    //    일반 회원가입
     @Override
     public void joinNormal(UserVO userVO) {
         userDAO.saveNormal(userVO);
     }
+//    public void joinNormal(UserVO userVO) {
+//        UserVO user = new UserVO();
+//        String userIdentification = userVO.getUserIdentification();
+//        String userPassword = passwordEncoder.encode(userVO.getUserPassword());
+//        String userName = userVO.getUserName();
+//        String userNickName = userVO.getUserNickName();
+//        String userPhone = userVO.getUserPhone();
+//        String userEmail = userVO.getUserEmail();
+//
+//        user.setUserIdentification(userIdentification);
+//        user.setUserPassword(userPassword);
+//        user.setUserName(userName);
+//        user.setUserNickName(userNickName);
+//        user.setUserPhone(userPhone);
+//        user.setUserEmail(userEmail);
+//        userDAO.saveNormal(userVO);
+//    }
 
 //    소셜 로그인 후 회원가입
     @Override

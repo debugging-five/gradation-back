@@ -55,10 +55,10 @@
 
     <!--  작품 게시글 단일 조회  -->
     <select id="select" parameterType="Long" resultType="ArtPostDTO">
-        SELECT TBP.ID, TBP.ART_POST_DATE, TBP.USER_ID, TBP.ART_ID,
+        SELECT TBP.ID, TBP.ART_POST_DATE, TBP.ART_ID,
                TBA.ART_TITLE, TBA.ART_CATEGORY, TBA.ART_MATERIAL, TBA.ART_SIZE,
                TBA.ART_DESCRIPTION, TBA.ART_END_DATE, TBA.USER_ID,
-               TBU.USER_NAME AS ARTIST_NAME, TBU.ID AS ARTIST_ID, TBU.USER_EMAIL,
+               TBU.USER_NAME, TBU.USER_EMAIL,
                TBU.USER_IMG_NAME, TBU.USER_IMG_PATH
         FROM TBL_ART_POST TBP
         JOIN TBL_ART TBA

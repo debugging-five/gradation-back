@@ -4,6 +4,7 @@ import com.app.gradationback.domain.AuctionBiddingVO;
 import com.app.gradationback.domain.AuctionDTO;
 import com.app.gradationback.domain.AuctionPriceVO;
 import com.app.gradationback.domain.AuctionVO;
+import com.app.gradationback.exception.AuctionException;
 import com.app.gradationback.repository.ArtImgDAO;
 import com.app.gradationback.repository.AuctionBiddingDAO;
 import com.app.gradationback.repository.AuctionDAO;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
 @RequiredArgsConstructor
@@ -31,13 +33,12 @@ public class AuctionServiceImpl implements AuctionService {
     }
 
     @Override
-    public List<AuctionDTO> auctionList(HashMap<String, Object> params) {
+    public List<AuctionDTO> readAuctionList(HashMap<String, Object> params) {
         return auctionDAO.findAll(params);
     }
 
     @Override
     public Integer auctionCountList(HashMap<String, Object> params) {
-        HashMap<String, Object> selectedParams = new HashMap<>();
         return auctionDAO.findCountByParams(params);
     }
 
@@ -87,17 +88,17 @@ public class AuctionServiceImpl implements AuctionService {
 //        최상위 일반 응찰
         AuctionBiddingVO topBidding = auctionBiddingDAO.findByAuctionId(auctionBiddingVO.getAuctionId()).orElse(null);
 //        시작응찰가 구하기
-        int startPrice = auctionDAO.findById(auctionBiddingVO.getAuctionId()).get().getAuctionStartPrice();
+        Long startPrice = auctionDAO.findById(auctionBiddingVO.getAuctionId()).get().getAuctionStartPrice();
 
 //        인풋 응찰 등록
         auctionBiddingDAO.save(auctionBiddingVO);
-        int biddingPrice = auctionBiddingVO.getAuctionBiddingPrice();
-        int minPrice =  (int)Math.ceil(biddingPrice * 1.1 / 1000) * 1000;
+        Long biddingPrice = auctionBiddingVO.getAuctionBiddingPrice();
+        Long minPrice =  (long)Math.ceil(biddingPrice * 1.1 / 1000) * 1000;
 
 //        0으로 할 경우 오류 방지
-        int autoMinPrice = 1;
+        Long autoMinPrice = 1L;
         if (topAutoBidding != null) {
-            autoMinPrice =  (int)Math.ceil(topAutoBidding.getAuctionBiddingPrice() * 1.1 / 1000) * 1000;
+            autoMinPrice =  (long)Math.ceil(topAutoBidding.getAuctionBiddingPrice() * 1.1 / 1000) * 1000;
         }
 
 //        일반 응찰
@@ -115,7 +116,7 @@ public class AuctionServiceImpl implements AuctionService {
 //                최상위 자동 응찰의 응찰가가 현재 응찰가의 최소 응찰가 이상일 때
 //                현재 응찰가의 최소 응찰가로 최상위 자동응찰이 응찰한다.
                 auctionBiddingVO.setAuctionBiddingAutoOk(false);
-                auctionBiddingVO.setAuctionBiddingPrice((int)Math.ceil(topBidding.getAuctionBiddingPrice() * 1.1 / 1000) * 1000);
+                auctionBiddingVO.setAuctionBiddingPrice((long)Math.ceil(topBidding.getAuctionBiddingPrice() * 1.1 / 1000) * 1000);
 
                 topAutoBidding.setAuctionBiddingAutoOk(false);
                 topAutoBidding.setAuctionBiddingPrice(minPrice);
@@ -131,7 +132,7 @@ public class AuctionServiceImpl implements AuctionService {
             }else if (topAutoBidding == null && topBidding != null) {
 //                최상위 자동응찰이 없는 경우
                 auctionBiddingVO.setAuctionBiddingAutoOk(false);
-                auctionBiddingVO.setAuctionBiddingPrice((int) Math.ceil(topBidding.getAuctionBiddingPrice() * 1.1 / 1000) * 1000);
+                auctionBiddingVO.setAuctionBiddingPrice((long) Math.ceil(topBidding.getAuctionBiddingPrice() * 1.1 / 1000) * 1000);
                 auctionBiddingDAO.save(auctionBiddingVO);
             }else {
                 auctionBiddingVO.setAuctionBiddingAutoOk(false);

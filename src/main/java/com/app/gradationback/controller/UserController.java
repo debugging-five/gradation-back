@@ -18,8 +18,10 @@ import org.apache.catalina.User;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -33,6 +35,7 @@ public class UserController {
     private final UserService userService;
     private final UserVO userVO;
     private final JwtTokenUtil jwtTokenUtil;
+    private final PasswordEncoder passwordEncoder;
 
 
 //    일반 회원가입
@@ -51,6 +54,12 @@ public class UserController {
             if (userVO.getUserNickName() == null || userVO.getUserNickName().length() == 0) {
                 userVO.setUserNickName(userVO.getUserName());
             }
+            //
+            String password = userVO.getUserPassword();
+            String encodedPassword = passwordEncoder.encode(password);
+
+            userVO.setUserPassword(encodedPassword);
+
             userService.joinNormal(userVO);
             response.put("message", "회원가입이 완료되었습니다.");
             return ResponseEntity.ok(response);
@@ -115,7 +124,8 @@ public class UserController {
 
             UserVO foundUser = userIdentification.get();
 
-            if(!foundUser.getUserPassword().equals(userVO.getUserPassword())) {
+//            if(!foundUser.getUserPassword().equals(userVO.getUserPassword())) {
+            if(passwordEncoder.matches(userVO.getUserPassword(), foundUser.getUserPassword()) == false && !foundUser.getUserPassword().equals(userVO.getUserPassword())) {
                 response.put("message", "아이디 또는 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시 확인해주세요.");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
             }
