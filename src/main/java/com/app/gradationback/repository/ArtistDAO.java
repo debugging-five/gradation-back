@@ -34,8 +34,8 @@ public class ArtistDAO {
     }
 
     //    작가 디테일(작품들 썸네일)
-    public List<ArtistDetailDTO> findArtistArt(Long userId) {
-        return artistMapper.selectArtistArt(userId);
+    public List<ArtistDetailDTO> findArtistArts(Long userId) {
+        return artistMapper.selectArtistArts(userId);
     }
 
     //    작가 정보 수정

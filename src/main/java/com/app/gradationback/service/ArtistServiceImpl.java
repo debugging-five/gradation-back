@@ -38,7 +38,7 @@ public class ArtistServiceImpl implements ArtistService {
             params.put("category", "회화");
         }else {
 //            korean
-            params.put("category", "한국");
+            params.put("category", "한국화");
         }
 
         return artistDAO.findArtistList(params).stream().toList();
@@ -47,7 +47,6 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public ArtistDetailDTO getArtistDetailById(Long userId) {
         List<ArtistDetailDTO> artistInfoList = artistDAO.findMyArtistById(userId);
-        List<ArtistDetailDTO> artistArtList = artistDAO.findArtistArt(userId);
 
         ArtistDetailDTO artistInfo = artistInfoList.get(0);
 
@@ -62,19 +61,13 @@ public class ArtistServiceImpl implements ArtistService {
             }
         }
 
-        List<ArtImgVO> artImgList = new ArrayList<>();
-        for(ArtistDetailDTO artistDetailDTO : artistArtList) {
-            ArtImgVO artImgVO = new ArtImgVO();
-            artImgVO.setArtId(artistDetailDTO.getArtId());
-            artImgVO.setArtImgName(artistDetailDTO.getArtImgName());
-            artImgVO.setArtImgPath(artistDetailDTO.getArtImgPath());
-            artImgList.add(artImgVO);
-        }
-
         artistInfo.setHistoryList(histories);
-        artistInfo.setArtImgList(artImgList);
-
         return artistInfo;
+    }
+
+    @Override
+    public List<ArtistDetailDTO> getArtistArtsList(Long userId) {
+        return artistDAO.findArtistArts(userId);
     }
 
     @Override
