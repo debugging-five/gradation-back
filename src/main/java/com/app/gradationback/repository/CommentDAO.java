@@ -85,7 +85,7 @@ public class CommentDAO {
     }
 
 //    댓글 좋아요 전체 삭제
-    public void deleteAllCommentByCommentId(Long commentId) {
-        commentMapper.deleteAllCommentByCommentId(commentId);
+    public void deleteAllCommentLikeByCommentId(Long commentId) {
+        commentMapper.deleteAllCommentLikeByCommentId(commentId);
     }
 }
