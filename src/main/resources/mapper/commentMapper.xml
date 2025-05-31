@@ -8,7 +8,7 @@
             SELECT SEQ_COMMENT.NEXTVAL FROM DUAL
         </selectKey>
         INSERT INTO TBL_COMMENT (ID, ART_POST_ID, USER_ID, COMMENT_CONTENT, COMMENT_DATE)
-        VALUES (#{id}, #{artPostId}, #{userId}, #{commentContent}, #{commentDate})
+        VALUES (#{id}, #{artPostId}, #{userId}, #{commentContent}, SYSTIMESTAMP)
     </insert>
 
     <!--  댓글 전체 조회  -->
@@ -73,6 +73,7 @@
         FROM TBL_COMMENT TBC
         JOIN TBL_USER TBU
         ON TBC.USER_ID = TBU.ID
+        WHERE TBC.ART_POST_ID = #{postId}
     </select>
 
     <!--  댓글 수정  -->
@@ -126,8 +127,8 @@
         WHERE USER_ID = #{userId} AND COMMENT_ID = #{commentId}
     </delete>
 
-    <!--  댓글 좋아요 전체 삭제 (게시글 삭제 시) -->
-    <delete id="deleteAllCommentByArtId" parameterType="Long">
+    <!--  댓글 좋아요 전체 삭제 (댓글 삭제 시) -->
+    <delete id="deleteAllCommentLikeByCommentId" parameterType="Long">
         DELETE FROM TBL_COMMENT_LIKE
         WHERE COMMENT_ID = #{commentId}
     </delete>

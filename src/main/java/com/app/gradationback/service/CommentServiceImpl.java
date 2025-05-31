@@ -63,8 +63,9 @@ public class CommentServiceImpl implements CommentService {
 
 //    댓글 삭제
     @Override
-    public void removeComment(Long id) {
-        commentDAO.delete(id);
+    public void removeComment(Long commentId) {
+        commentDAO.deleteAllCommentLikeByCommentId(commentId);
+        commentDAO.delete(commentId);
     }
 
 //    댓글 전체 삭제 (회원 탈퇴)

@@ -46,6 +46,6 @@ public class CommentLikeServiceImpl implements CommentLikeService {
 //    댓글 좋아요 전체 삭제
     @Override
     public void removeCommentLikeAll(Long commentId) {
-        commentDAO.deleteAllCommentByCommentId(commentId);
+        commentDAO.deleteAllCommentLikeByCommentId(commentId);
     }
 }

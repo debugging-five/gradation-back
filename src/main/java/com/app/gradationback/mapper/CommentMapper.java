@@ -52,6 +52,6 @@ public interface CommentMapper {
     public void deleteCommentLike(CommentLikeVO commentLikeVO);
 
 //    댓글 좋아요 삭제
-    public void deleteAllCommentByCommentId(Long commentId);
+    public void deleteAllCommentLikeByCommentId(Long commentId);
 
 }

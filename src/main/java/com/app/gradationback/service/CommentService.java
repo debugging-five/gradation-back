@@ -28,7 +28,7 @@ public interface CommentService {
     public Integer getCountComment(Map<String, Object> params);
 
 //    댓글 삭제
-    public void removeComment(Long id);
+    public void removeComment(Long commentId);
 
 //    댓글 수정
     public void modifyComment(CommentVO commentVO);
