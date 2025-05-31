@@ -1,8 +1,6 @@
 package com.app.gradationback.repository;
 
-import com.app.gradationback.domain.ArtPostDTO;
-import com.app.gradationback.domain.CommentDTO;
-import com.app.gradationback.domain.CommentVO;
+import com.app.gradationback.domain.*;
 import com.app.gradationback.mapper.CommentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -42,6 +40,10 @@ public class CommentDAO {
         return commentMapper.selectAllByPostId(params);
     }
 
+    public Integer findCountComment(Map<String, Object> params) {
+        return commentMapper.selectCountComment(params);
+    }
+
 //    댓글 수정
     public void update(CommentVO commentVO) {
         commentMapper.update(commentVO);
@@ -62,4 +64,28 @@ public class CommentDAO {
         commentMapper.deleteAllByPostId(postId);
     }
 
+//    댓글 좋아요 등록
+    public void saveCommentLike(CommentLikeVO commentLikeVO) {
+        commentMapper.insertCommentLike(commentLikeVO);
+    }
+
+//    댓글 좋아요 수
+    public int findCommentLikeCount(Long commentId) {
+        return commentMapper.selectCommentLikeCount(commentId);
+    }
+
+//    댓글 좋아요 여부
+    public Integer findCommentLiked(CommentLikeVO commentLikeVO) {
+        return commentMapper.selectCommentLiked(commentLikeVO);
+    }
+
+//    댓글 좋아요 삭제
+    public void deleteCommentLike(CommentLikeVO commentLikeVO) {
+        commentMapper.deleteCommentLike(commentLikeVO);
+    }
+
+//    댓글 좋아요 전체 삭제
+    public void deleteAllCommentByCommentId(Long commentId) {
+        commentMapper.deleteAllCommentByCommentId(commentId);
+    }
 }
