@@ -109,7 +109,6 @@ public class ArtPostServiceImpl implements ArtPostService {
 
     @Override
     public Integer getCountArtList(Map<String, Object> params) {
-        Map<String, Object> selectedParams = new HashMap<>();
         return artPostDAO.findCountArtList(params);
     }
 

@@ -16,7 +16,9 @@ public class ArtLikeServiceImpl implements ArtLikeService {
 //    좋아요 등록
     @Override
     public void register(ArtLikeVO artLikeVO) {
-        artDAO.saveLike(artLikeVO);
+        if(!getLiked(artLikeVO)) {
+            artDAO.saveLike(artLikeVO);
+        }
     }
 
 //    좋아요 수

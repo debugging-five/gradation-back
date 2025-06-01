@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -49,7 +50,12 @@ public class CommentServiceImpl implements CommentService {
         return commentDAO.findAllByPostId(params);
     }
 
-//    댓글 수정
+    @Override
+    public Integer getCountComment(Map<String, Object> params) {
+        return commentDAO.findCountComment(params);
+    }
+
+    //    댓글 수정
     @Override
     public void modifyComment(CommentVO commentVO) {
         commentDAO.update(commentVO);
@@ -57,8 +63,9 @@ public class CommentServiceImpl implements CommentService {
 
 //    댓글 삭제
     @Override
-    public void removeComment(Long id) {
-        commentDAO.delete(id);
+    public void removeComment(Long commentId) {
+        commentDAO.deleteAllCommentLikeByCommentId(commentId);
+        commentDAO.delete(commentId);
     }
 
 //    댓글 전체 삭제 (회원 탈퇴)
