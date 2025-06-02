@@ -345,7 +345,11 @@ public class UserController {
         Map<String, Object> response = new HashMap<>();
         try {
 //            Optional<UserVO> foundUser = userService.getUserByIdentification(userVO.getUserIdentification());
+            String password = userVO.getUserPassword();
+            String encodedPassword = passwordEncoder.encode(password);
+            userVO.setUserPassword(encodedPassword);
             userService.modifyPassword(userVO);
+
             response.put("message", "비밀번호가 수정되었습니다.");
             response.put("status", "success");
             return ResponseEntity.ok(response);
