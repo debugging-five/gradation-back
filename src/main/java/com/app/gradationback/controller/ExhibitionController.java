@@ -214,23 +214,21 @@ public class ExhibitionController {
 
         try {
             exhibitionService.registerUniversity(universityExhibitionDTO);
+            response.put("message", "등록이 완료되었습니다");
+            response.put("status", universityExhibitionDTO);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             response.put("message", e.getMessage());
             response.put("status", universityExhibitionDTO);
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         }
-        response.put("massage", "등록이 완료되었습니다");
-        response.put("status", universityExhibitionDTO);
-        return ResponseEntity.ok(response);
     }
 
 //    대학교 전시회 불러오기
     @Operation(summary = "대학교 전시회 조회", description = "대학교 전시회를 조회할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "대학교 전시회 조회 성공")
     @PostMapping("university/list")
-    public ResponseEntity<Map<String, Object>> getUniversity(
-            @RequestBody(required = false) Map<String, Object> params
-    ) {
+    public ResponseEntity<Map<String, Object>> getUniversity(@RequestBody(required = false) Map<String, Object> params) {
         Map<String, Object> response = new HashMap<>();
         response.put("university", exhibitionService.getUniversity(params));
         return ResponseEntity.ok(response);
@@ -267,23 +265,46 @@ public class ExhibitionController {
     }
 
 
-//    대학교 좋아요
+//    대학교 좋아요 등록
     @Operation(summary = "대학교 전시회 좋아요", description = "대학교 전시회 좋아요를 할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "대학교 전시회 좋아요 성공")
     @PostMapping("university/like")
     public ResponseEntity<Map<String, Object>> registerUniversityLike(@RequestBody UniversityLikeVO universityLikeVO) {
         Map<String, Object> response = new HashMap<>();
 
+        if(exhibitionService.getUniversityLike(universityLikeVO)) {
+            response.put("message", "이미 좋아요 누름");
+            response.put("status", universityLikeVO);
+            response.put("isLiked", true);
+            return ResponseEntity.ok(response);
+        }
         try {
             exhibitionService.registerUniversityLike(universityLikeVO);
-            response.put("like", universityLikeVO);
-            response.put("message", "좋아요 등록 성공");
-            return ResponseEntity.ok(response);
-
         } catch (Exception e) {
             response.put("message", "서버 오류: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
+        response.put("message", "좋아요 등록 성공");
+        response.put("status", universityLikeVO);
+        response.put("isLiked", false);
+        return ResponseEntity.ok(response);
+    }
+
+//    좋아요 여부
+    @Operation(summary = "대학교 좋아요 여부 조회", description = "대학교 좋아요 여부를 조회할 수 있는 API")
+    @ApiResponse(responseCode = "200", description = "대학교 좋아요 여부 조회 성공")
+    @PostMapping("/liked")
+    public ResponseEntity<Map<String, Object>> isLiked(@RequestBody UniversityLikeVO universityLikeVO) {
+        Map<String, Object> response = new HashMap<>();
+        boolean isLiked = exhibitionService.getUniversityLike(universityLikeVO);
+        if (isLiked) {
+            response.put("message", "좋아요 여부 true");
+            response.put("isLiked", isLiked);
+            return ResponseEntity.ok(response);
+        }
+        response.put("message", "좋아요 여부 false");
+        response.put("isLiked", isLiked);
+        return ResponseEntity.ok(response);
     }
 
 //    좋아요 취소
@@ -295,17 +316,15 @@ public class ExhibitionController {
 
         try {
             exhibitionService.removeUniversityLike(universityLikeVO);
-            response.put("unlike", universityLikeVO);
-            response.put("message", "좋아요 취소 완료");
-            return ResponseEntity.ok(response);
-
         } catch (Exception e) {
             response.put("message", "서버 오류: " + e.getMessage());
+            response.put("status", universityLikeVO);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
+        response.put("message", "좋아요 취소 성공");
+        response.put("status", universityLikeVO);
+        return ResponseEntity.ok(response);
     }
-
-
 
 //    내 승인내역 조회
     @Operation(summary = "내 승인내역 조회", description = "내가 신청한 대학교 전시회 승인내역을 조회할 수 있는 API")

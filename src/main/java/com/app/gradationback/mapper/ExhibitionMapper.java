@@ -70,8 +70,11 @@ public interface ExhibitionMapper {
 //    해당 전시회 이미지 띄우기
     public List<UniversityExhibitionImgVO> selectUniversityImgAll(Long universityExhibitionId);
 
-//    좋아요
+//    좋아요 등록
     public void insertUniversityLike(UniversityLikeVO universityLikeVO);
+
+//    좋아요 여부
+    public Integer selectUniversityLike(UniversityLikeVO universityLikeVO);
 
 //    좋아요 취소
     public void deleteUniversityLike(UniversityLikeVO universityLikeVO);

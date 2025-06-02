@@ -113,9 +113,14 @@ public class ExhibitionDAO {
         return exhibitionMapper.selectUniversityImgAll(universityExhibitionId);
     }
 
-//    좋아요
+//    좋아요 등록
     public void saveUniversityLike(UniversityLikeVO universityLikeVO) {
         exhibitionMapper.insertUniversityLike(universityLikeVO);
+    }
+
+//    좋아요 여부
+    public Integer findUniversityLike(UniversityLikeVO universityLikeVO) {
+        return exhibitionMapper.selectUniversityLike(universityLikeVO);
     }
 
 //    좋아요 취소
