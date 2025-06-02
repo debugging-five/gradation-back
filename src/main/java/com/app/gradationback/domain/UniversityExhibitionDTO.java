@@ -49,6 +49,7 @@ public class UniversityExhibitionDTO {
     private Long universityLikeId;
     private Timestamp universityLikeTime;
     private Long userId;
+    private boolean liked;
 
 //    TBL_USER
     private String userImgName;

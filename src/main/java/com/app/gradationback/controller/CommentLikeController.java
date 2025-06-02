@@ -63,7 +63,7 @@ public class CommentLikeController {
     public ResponseEntity<Map<String, Object>> isLiked(@RequestBody CommentLikeVO commentLikeVO) {
         Map<String, Object> response = new HashMap<>();
         boolean isLiked = commentLikeService.getCommentLiked(commentLikeVO);
-        if (isLiked) {
+        if(isLiked) {
             response.put("message", "좋아요 여부 true");
             response.put("isLiked", isLiked);
             return ResponseEntity.ok(response);
@@ -76,18 +76,23 @@ public class CommentLikeController {
 //    댓글 좋아요 삭제
     @Operation(summary = "댓글 좋아요 삭제", description = "댓글 좋아요를 삭제할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "댓글 좋아요 삭제 성공")
-    @DeleteMapping("delete")
-    public ResponseEntity<Map<String, Object>> deleteLike(@RequestBody CommentLikeVO commentLikeVO) {
+    @DeleteMapping("delete/{commentId}")
+    public ResponseEntity<Map<String, Object>> deleteLike(@PathVariable Long commentId, @RequestParam Long userId) {
         Map<String, Object> response = new HashMap<>();
+
+        CommentLikeVO commentLikeVO = new CommentLikeVO();
+        commentLikeVO.setCommentId(commentId);
+        commentLikeVO.setUserId(userId);
+
         try {
             commentLikeService.removeCommentLike(commentLikeVO);
+            response.put("message", "좋아요 취소 성공");
+            response.put("status", commentLikeVO);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             response.put("message", "좋아요 취소 실패");
             response.put("status", commentLikeVO);
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         }
-        response.put("message", "좋아요 취소 성공");
-        response.put("status", commentLikeVO);
-        return ResponseEntity.ok(response);
     }
 }

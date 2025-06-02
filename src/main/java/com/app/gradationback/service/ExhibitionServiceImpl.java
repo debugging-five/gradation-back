@@ -122,6 +122,13 @@ public class ExhibitionServiceImpl implements ExhibitionService {
         return exhibitionDAO.findUniversity(params).stream()
                 .map((university) -> {
                     university.setUniversityExhibitionImgList(exhibitionDAO.findUniversityImgAll(university.getId()));
+
+                    if(university.getUniversityLikeId() != null) {
+                        university.setLiked(true);
+                    } else {
+                        university.setLiked(false);
+                    }
+
                     return university;
                 })
                 .map(university -> {
@@ -143,10 +150,19 @@ public class ExhibitionServiceImpl implements ExhibitionService {
         return exhibitionDAO.findUniversityImgAll(universityExhibitionId);
     }
 
-//    대학교 좋아요
+//    좋아요 등록
     @Override
     public void registerUniversityLike(UniversityLikeVO universityLikeVO) {
         exhibitionDAO.saveUniversityLike(universityLikeVO);
+    }
+
+//    좋아요 여부
+    @Override
+    public boolean getUniversityLike(UniversityLikeVO universityLikeVO) {
+        if(exhibitionDAO.findUniversityLike(universityLikeVO) == 1) {
+            return true;
+        }
+        return false;
     }
 
 //    좋아요 취소

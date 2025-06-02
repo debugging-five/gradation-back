@@ -61,7 +61,7 @@ public class ArtLikeController {
     public ResponseEntity<Map<String, Object>> isLiked(@RequestBody ArtLikeVO artLikeVO) {
         Map<String, Object> response = new HashMap<>();
         boolean isLiked = artLikeService.getLiked(artLikeVO);
-        if (isLiked) {
+        if(isLiked) {
             response.put("message", "좋아요 여부 true");
             response.put("isLiked", isLiked);
             return ResponseEntity.ok(response);
@@ -74,18 +74,23 @@ public class ArtLikeController {
 //    좋아요 삭제
     @Operation(summary = "작품 좋아요 삭제", description = "작품 좋아요를 삭제할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "작품 좋아요 삭제 성공")
-    @DeleteMapping("delete")
-    public ResponseEntity<Map<String, Object>> deleteLike(@RequestBody ArtLikeVO artLikeVO) {
+    @DeleteMapping("delete/{artId}")
+    public ResponseEntity<Map<String, Object>> deleteLike(@PathVariable Long artId, @RequestParam Long userId) {
         Map<String, Object> response = new HashMap<>();
+
+        ArtLikeVO artLikeVO = new ArtLikeVO();
+        artLikeVO.setArtId(artId);
+        artLikeVO.setUserId(userId);
+
         try {
             artLikeService.remove(artLikeVO);
+            response.put("message", "좋아요 취소 성공");
+            response.put("status", artLikeVO);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             response.put("message", "좋아요 취소 실패");
             response.put("status", artLikeVO);
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         }
-        response.put("message", "좋아요 취소 성공");
-        response.put("status", artLikeVO);
-        return ResponseEntity.ok(response);
     }
 }
