@@ -19,7 +19,7 @@ public class AuctionBiddingServiceTest {
     @Test
     public void insertTest() {
         AuctionBiddingVO auctionBiddingVO = new AuctionBiddingVO();
-        auctionBiddingVO.setAuctionBiddingPrice(350000);
+        auctionBiddingVO.setAuctionBiddingPrice(350000L);
         auctionBiddingVO.setAuctionId(6L);
         auctionBiddingVO.setUserId(8L);
 

@@ -1,6 +1,8 @@
 package com.app.gradationback.service;
 
 import com.app.gradationback.domain.DeliveryVO;
+import com.app.gradationback.exception.AuctionException;
+import com.app.gradationback.exception.DeliveryException;
 import com.app.gradationback.repository.DeliveryDAO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,7 +12,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional(rollbackFor = Exception.class)
 public class DeliveryServiceImpl implements DeliveryService {
 
     private final DeliveryDAO deliveryDAO;

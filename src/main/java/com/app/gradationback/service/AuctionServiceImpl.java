@@ -10,6 +10,7 @@ import com.app.gradationback.repository.AuctionBiddingDAO;
 import com.app.gradationback.repository.AuctionDAO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-@Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
 @RequiredArgsConstructor
@@ -82,39 +82,28 @@ public class AuctionServiceImpl implements AuctionService {
 
 
     @Override
-    public void auctionBidding(AuctionBiddingVO auctionBiddingVO) {
-//        현재 최상위 자동응찰 가져오기
+    public void auctionBidding(@NotNull AuctionBiddingVO auctionBiddingVO) {
         AuctionBiddingVO topAutoBidding = auctionBiddingDAO.findAutoByAuctionId(auctionBiddingVO.getAuctionId()).orElse(null);
-//        최상위 일반 응찰
         AuctionBiddingVO topBidding = auctionBiddingDAO.findByAuctionId(auctionBiddingVO.getAuctionId()).orElse(null);
-//        시작응찰가 구하기
         Long startPrice = auctionDAO.findById(auctionBiddingVO.getAuctionId()).get().getAuctionStartPrice();
 
-//        인풋 응찰 등록
         auctionBiddingDAO.save(auctionBiddingVO);
         Long biddingPrice = auctionBiddingVO.getAuctionBiddingPrice();
         Long minPrice =  (long)Math.ceil(biddingPrice * 1.1 / 1000) * 1000;
 
-//        0으로 할 경우 오류 방지
         Long autoMinPrice = 1L;
         if (topAutoBidding != null) {
             autoMinPrice =  (long)Math.ceil(topAutoBidding.getAuctionBiddingPrice() * 1.1 / 1000) * 1000;
         }
 
-//        일반 응찰
         if(!auctionBiddingVO.isAuctionBiddingAutoOk()) {
-//        일반 응찰인 경우 => 최상위 자동 응찰과 비교 후 경매 갱신 => 자동응찰의 응찰
             if(topAutoBidding != null && topAutoBidding.getAuctionBiddingPrice() >= minPrice){
                 topAutoBidding.setAuctionBiddingAutoOk(false);
                 topAutoBidding.setAuctionBiddingPrice(minPrice);
                 auctionBiddingDAO.save(topAutoBidding);
             }
         }else {
-//        자동 응찰인 경우 => 최상위 자동 응찰과 비교 후 경매 갱신
-
             if(topAutoBidding != null && topAutoBidding.getAuctionBiddingPrice() > minPrice && topBidding != null){
-//                최상위 자동 응찰의 응찰가가 현재 응찰가의 최소 응찰가 이상일 때
-//                현재 응찰가의 최소 응찰가로 최상위 자동응찰이 응찰한다.
                 auctionBiddingVO.setAuctionBiddingAutoOk(false);
                 auctionBiddingVO.setAuctionBiddingPrice((long)Math.ceil(topBidding.getAuctionBiddingPrice() * 1.1 / 1000) * 1000);
 
@@ -123,14 +112,11 @@ public class AuctionServiceImpl implements AuctionService {
                 auctionBiddingDAO.save(topAutoBidding);
 
             }else if(topAutoBidding != null && autoMinPrice < biddingPrice){
-//                최상위 자동응찰가의 최소응찰가 보다 높은 가격으로 자동응찰 한 경우, 최상위 자동응찰의 최소응찰가로
-//                현재 응찰된 자동응찰이 응찰한다. 또한 해당 응찰이 최상위 자동응찰로 자동변경된다.
                 auctionBiddingVO.setAuctionBiddingAutoOk(false);
                 auctionBiddingVO.setAuctionBiddingPrice(autoMinPrice);
                 auctionBiddingDAO.save(auctionBiddingVO);
 
             }else if (topAutoBidding == null && topBidding != null) {
-//                최상위 자동응찰이 없는 경우
                 auctionBiddingVO.setAuctionBiddingAutoOk(false);
                 auctionBiddingVO.setAuctionBiddingPrice((long) Math.ceil(topBidding.getAuctionBiddingPrice() * 1.1 / 1000) * 1000);
                 auctionBiddingDAO.save(auctionBiddingVO);
@@ -139,12 +125,7 @@ public class AuctionServiceImpl implements AuctionService {
                 auctionBiddingVO.setAuctionBiddingPrice(startPrice);
                 auctionBiddingDAO.save(auctionBiddingVO);
             }
-//            두 자동응찰이 서로의 최소 응찰가를 동시에 만족하지 못할경우 더 높은 응찰금의 자동응찰이 응찰 우선권을 가진다.
-//            이는 해당 응찰이 최상위 자동응찰이 되므로 만족된다.
-
-
         }
-
     }
 
     @Override
