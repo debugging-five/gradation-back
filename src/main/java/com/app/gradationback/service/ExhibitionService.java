@@ -52,8 +52,11 @@ public interface ExhibitionService {
 //    전시회 이미지
     public List<UniversityExhibitionImgVO> getUniversityImgAll(Long universityExhibitionId);
 
-//    대학교 좋아요
+//    좋아요 등록
     public void registerUniversityLike(UniversityLikeVO universityLikeVO);
+
+//    좋아요 여부
+    public boolean getUniversityLike(UniversityLikeVO universityLikeVO);
 
 //    좋아요 취소
     public void removeUniversityLike(UniversityLikeVO universityLikeVO);

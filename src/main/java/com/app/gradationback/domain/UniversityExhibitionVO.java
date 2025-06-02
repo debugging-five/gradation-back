@@ -15,4 +15,5 @@ public class UniversityExhibitionVO {
     private String universityExhibitionLocation;
     private String universityExhibitionStatus;
     private Long majorId;
+    private Long userId;
 }

@@ -133,6 +133,7 @@
             GRADATION_EXHIBITION_FEE = #{gradationExhibitionFee},
             GRADATION_EXHIBITION_TEL = #{gradationExhibitionTel},
             GRADATION_EXHIBITION_ADDRESS = #{gradationExhibitionAddress},
+            GRADATION_EXHIBITION_REAL_ADDRESS = #{gradationExhibitionRealAddress},
             GRADATION_EXHIBITION_DATE = #{gradationExhibitionDate}
         WHERE ID = #{id}
     </update>
@@ -360,6 +361,9 @@
             ON TM.UNIVERSITY_ID = TU.ID
         LEFT JOIN TBL_UNIVERSITY_LIKE TUL
             ON TUL.UNIVERSITY_EXHIBITION_ID = TUE.ID
+        <if test="userId != null">
+            AND TUL.USER_ID = #{userId}
+        </if>
         WHERE TUE.UNIVERSITY_EXHIBITION_STATUS = '승인완료' AND TUE.UNIVERSITY_EXHIBITION_END_DATE >= SYSDATE
 
         <if test="location != null and location != '' and location != '전체지역'">
@@ -399,10 +403,17 @@
         VALUES (SEQ_UNIVERSITY_LIKE.NEXTVAL, SYSTIMESTAMP, #{universityExhibitionId}, #{userId})
     </insert>
 
+<!--    좋아요 여부 -->
+    <select id="selectUniversityLike" parameterType="UniversityLikeVO">
+        SELECT COUNT(ID)
+        FROM TBL_UNIVERSITY_LIKE
+        WHERE USER_ID = #{userId} AND UNIVERSITY_EXHIBITION_ID = #{universityExhibitionId}
+    </select>
+
 <!--    좋아요 취소 -->
     <delete id="deleteUniversityLike" parameterType="UniversityLikeVO">
         DELETE FROM TBL_UNIVERSITY_LIKE
-        WHERE USER_ID = #{userId} AND UNIVERSITY_EXHIBITION_ID  = #{universityExhibitionId}
+        WHERE USER_ID = #{userId} AND UNIVERSITY_EXHIBITION_ID = #{universityExhibitionId}
     </delete>
 
 <!--    내가 신청한 전시회 승인내역 조회-->
