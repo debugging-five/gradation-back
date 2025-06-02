@@ -2,6 +2,7 @@ package com.app.gradationback.aspect.sepect;
 
 import com.app.gradationback.exception.AuctionException;
 import com.app.gradationback.exception.BiddingException;
+import com.app.gradationback.exception.DeliveryException;
 import com.app.gradationback.exception.PaymentException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.exceptions.PersistenceException;
@@ -50,6 +51,10 @@ public class ExceptionResponseAspect {
         }catch (PaymentException paymentException) {
             response.put("message", "결제 API 응답 실패");
             response.put("error", paymentException.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        }catch (DeliveryException deliveryException) {
+            response.put("message", "배송 API 응답 실패");
+            response.put("error", deliveryException.getMessage());
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         }catch (Exception e) {
             response.put("message", "알수 없는 오류");

@@ -111,10 +111,6 @@ public class FileController {
     public ResponseEntity<Map<String, Object>> universityExhibitionFileUpload(@RequestParam("files")List<MultipartFile> files, @PathVariable Long id) throws IOException {
         Map<String, Object> response = new HashMap<>();
 
-        log.info("=========================================================");
-        log.info(files.toString());
-        log.info("=========================================================");
-
         if (files == null || files.isEmpty()) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
