@@ -25,7 +25,7 @@ public class AuctionMapperTest {
         AuctionVO auctionVO = new AuctionVO();
         auctionVO.setArtId(9L);
         auctionVO.setAuctionStartDate("2025-04-24 16:30:00");
-        auctionVO.setAuctionStartPrice(1000000);
+        auctionVO.setAuctionStartPrice(1000000L);
         auctionVO.setAuctionEstimatedMinPrice("2000000");
         auctionVO.setAuctionEstimatedMaxPrice("3000000");
 
@@ -97,7 +97,7 @@ public class AuctionMapperTest {
         auctionVO.setId(1L);
         auctionVO.setAuctionStartDate("2025-05-26 14:40:00");
         auctionVO.setAuctionEndDate("2025-05-28 14:40:00");
-        auctionVO.setAuctionStartPrice(1000000);
+        auctionVO.setAuctionStartPrice(1000000L);
         auctionVO.setAuctionEstimatedMinPrice("2000000");
         auctionVO.setAuctionEstimatedMaxPrice("3000000");
 

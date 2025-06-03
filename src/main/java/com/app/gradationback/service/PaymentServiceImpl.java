@@ -6,6 +6,7 @@ import com.app.gradationback.domain.PaymentCancellationVO;
 import com.app.gradationback.domain.PaymentVO;
 import com.app.gradationback.repository.DeliveryDAO;
 import com.app.gradationback.repository.PaymentDAO;
+import com.app.gradationback.util.CardCompanyMapUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,31 +40,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public Optional<DeliveryDTO> payment(Map<String, Object> paymentData) {
-        Map<String, String> cardCompanyMap = new HashMap<>();
-        cardCompanyMap.put("11", "국민카드");
-        cardCompanyMap.put("21", "하나카드");
-        cardCompanyMap.put("31", "BC카드");
-        cardCompanyMap.put("3K", "기업BC카드");
-        cardCompanyMap.put("41", "신한카드");
-        cardCompanyMap.put("51", "삼성카드");
-        cardCompanyMap.put("61", "현대카드");
-        cardCompanyMap.put("71", "롯데카드");
-        cardCompanyMap.put("91", "NH농협카드");
-        cardCompanyMap.put("36", "씨티카드");
-        cardCompanyMap.put("33", "우리BC카드");
-        cardCompanyMap.put("W1", "우리카드"); // 응답 전용 코드
-        cardCompanyMap.put("15", "카카오뱅크카드");
-        cardCompanyMap.put("3A", "케이뱅크카드");
-        cardCompanyMap.put("24", "토스뱅크카드");
-        cardCompanyMap.put("46", "광주은행카드");
-        cardCompanyMap.put("35", "전북은행카드");
-        cardCompanyMap.put("42", "제주은행카드");
-        cardCompanyMap.put("30", "한국산업은행카드");
-        cardCompanyMap.put("34", "Sh수협은행카드");
-        cardCompanyMap.put("62", "신협카드");
-        cardCompanyMap.put("38", "새마을금고카드");
-        cardCompanyMap.put("37", "우체국예금보험카드");
-        cardCompanyMap.put("39", "저축은행중앙회카드");
+        Map<String, String> cardCompanyMap = CardCompanyMapUtil.createMap();
 
         RestTemplate restTemplate = new RestTemplate();
         Long auctionId = Long.valueOf(paymentData.get("auctionId").toString());

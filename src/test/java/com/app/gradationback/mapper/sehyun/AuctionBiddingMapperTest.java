@@ -27,7 +27,7 @@ public class AuctionBiddingMapperTest {
     @Test
     public void insert() {
         AuctionBiddingVO auctionBiddingVO = new AuctionBiddingVO();
-        auctionBiddingVO.setAuctionBiddingPrice(250000);
+        auctionBiddingVO.setAuctionBiddingPrice(250000L);
         auctionBiddingVO.setAuctionBiddingAutoOk(false);
         auctionBiddingVO.setAuctionId(6L);
         auctionBiddingVO.setUserId(2L);
