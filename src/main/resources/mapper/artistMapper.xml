@@ -54,11 +54,11 @@
                 ROW_NUMBER() OVER (PARTITION BY TA.USER_ID ORDER BY TA.ID ASC) AS RN
             FROM TBL_ART TA
             JOIN TBL_ART_IMG TAI ON TA.ID = TAI.ART_ID
-            WHERE TA.ART_STATUS = '승인'
+            WHERE TA.ART_STATUS = '승인완료'
             )
             WHERE RN = 1
         ) ART ON TU.ID = ART.USER_ID
-        WHERE TU.USER_WRITER_STATUS = '승인'
+        WHERE TU.USER_WRITER_STATUS = '승인완료'
 
         <choose>
             <when test="category != null and category.equals('공예')">
