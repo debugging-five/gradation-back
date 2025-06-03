@@ -41,6 +41,10 @@ public class UpcyclingVO implements Serializable {
     private String upcyclingSignificant;
     @Schema(description = "신청 상태", example = "대기 / 신청완료")
     private String upcyclingStatus;
+    @Schema(description = "신청 기각 사유", example = "입력하신 연락처가 확인되지 않습니다.")
+    private String upcyclingRejectReason;
+    @Schema(description = "신청 일자", example = "2025-05-05")
+    private Date upcyclingRequestDate;
     @Schema(description = "신청자 User ID", example = "10")
     private Long userId;
 }

@@ -132,7 +132,7 @@
         ) TAI
         ON TBA.ID = TAI.ART_ID
         WHERE
-        TBA.ART_STATUS = '승인'
+        TBA.ART_STATUS = '승인완료'
         AND
         <!-- 카테고리 필터링 -->
         <choose>

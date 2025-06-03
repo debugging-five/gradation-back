@@ -1,5 +1,9 @@
 package com.app.gradationback.controller;
 
+import com.app.gradationback.domain.ArtDTO;
+import com.app.gradationback.domain.UniversityExhibitionDTO;
+import com.app.gradationback.domain.UpcyclingDTO;
+import com.app.gradationback.domain.UserVO;
 import com.app.gradationback.service.ApprovalService;
 import com.app.gradationback.util.AdminCheckUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,6 +36,17 @@ public class ApprovalController {
         return approvalService.getPendingList(type);
     }
 
+    //    승 인 완료 목록 조회
+    @Operation(summary = "승인 완료 목록 조회", description = "관리자 전용: 업사이클링/작가/대학교/작품 승인 완료 목록 조회")
+    @GetMapping("/{type}/completed")
+//    승인 카테고리 타입이 각각 다르므로 리스트 와일드 카드로, 패스베리어블 스트링 타입으로 항목 확인학
+    public List<?> getCompletedList(@PathVariable String type, HttpServletRequest request) {
+        if (!adminCheckUtil.isAdmin(request)) {
+            throw new RuntimeException("그라데이션 관리자만 접근 가능합니다.");
+        }
+        return approvalService.getCompletedList(type);
+    }
+
 //    승인 대기 중 상세 목록 조회
     @Operation(summary = "승인 대기 중 상세 목록 조회", description = "관리자 전용: 특정 항목 상세 조회")
     @GetMapping("/{type}/pending/{id}")
@@ -41,6 +56,17 @@ public class ApprovalController {
             throw new RuntimeException("그라데이션 관리자만 접근 가능합니다.");
         }
         return approvalService.getPendingById(type, id);
+    }
+
+    //    승인 완료 중 상세 목록 조회
+    @Operation(summary = "승인 대기 중 상세 목록 조회", description = "관리자 전용: 특정 항목 상세 조회")
+    @GetMapping("/{type}/completed/{id}")
+//    결과값 유무로 옵셔널, 얘도 뭐 들어올지 모르니 와일드 카드
+    public Optional<?> getCompletedById(@PathVariable String type, @PathVariable Long id, HttpServletRequest request) {
+        if (!adminCheckUtil.isAdmin(request)) {
+            throw new RuntimeException("그라데이션 관리자만 접근 가능합니다.");
+        }
+        return approvalService.getCompletedById(type, id);
     }
 
 //    승인 상태 변경(승인, 반려)
@@ -55,4 +81,38 @@ public class ApprovalController {
         approvalService.updateStatus(type, dto);
         return ResponseEntity.ok("승인 상태가 정상적으로 변경되었습니다.");
     }
+
+    // Display(Art) 승인/반려
+    @PatchMapping("/display/status")
+    public ResponseEntity<String> updateDisplayStatus(@RequestBody ArtDTO dto, HttpServletRequest request) {
+        if (!adminCheckUtil.isAdmin(request)) throw new RuntimeException("관리자만 접근 가능합니다.");
+        approvalService.updateDisplayStatus(dto);
+        return ResponseEntity.ok("승인 상태가 정상적으로 변경되었습니다.");
+    }
+
+    // Exhibition 승인/반려
+    @PatchMapping("/exhibition/status")
+    public ResponseEntity<String> updateExhibitionStatus(@RequestBody UniversityExhibitionDTO dto, HttpServletRequest request) {
+        if (!adminCheckUtil.isAdmin(request)) throw new RuntimeException("관리자만 접근 가능합니다.");
+        approvalService.updateUniversityExhibitionStatus(dto);
+        return ResponseEntity.ok("승인 상태가 정상적으로 변경되었습니다.");
+    }
+
+    // Upcycling 승인/반려
+    @PatchMapping("/upcycling/status")
+    public ResponseEntity<String> updateUpcyclingStatus(@RequestBody UpcyclingDTO dto, HttpServletRequest request) {
+        if (!adminCheckUtil.isAdmin(request)) throw new RuntimeException("관리자만 접근 가능합니다.");
+        approvalService.updateUpcyclingStatus(dto);
+        return ResponseEntity.ok("승인 상태가 정상적으로 변경되었습니다.");
+    }
+
+    // University(대학교 인증) 승인/반려
+    @PatchMapping("/university/status")
+    public ResponseEntity<String> updateUniversityStatus(@RequestBody UserVO dto, HttpServletRequest request) {
+        if (!adminCheckUtil.isAdmin(request)) throw new RuntimeException("관리자만 접근 가능합니다.");
+        approvalService.updateUniversityStatus(dto);
+        return ResponseEntity.ok("승인 상태가 정상적으로 변경되었습니다.");
+    }
 }
+
+

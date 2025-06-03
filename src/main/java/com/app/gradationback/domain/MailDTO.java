@@ -32,7 +32,7 @@ public class MailDTO {
     private String sendUserGoogle;
     private String sendUserNaver;
     private boolean sendUserAdminOk;
-    private boolean sendUserBanOk;
+    private String userBanStatus;
     private String sendUserMajorImgName;
     private String sendUserMajorImgPath;
     private String sendUserWriterStatus;

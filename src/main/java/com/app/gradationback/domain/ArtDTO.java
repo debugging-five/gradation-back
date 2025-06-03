@@ -17,6 +17,7 @@ public class ArtDTO {
     private String artDescription;
     private Date artEndDate;
     private String artStatus;
+    private String artRejectReason;
     private Long userId;
 
 //    TBL_ART_IMG
