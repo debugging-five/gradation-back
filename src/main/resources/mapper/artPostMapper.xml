@@ -94,6 +94,7 @@
         ON TAI1.ART_ID = TAI2.ART_ID AND TAI1.ID = TAI2.MIN_ID
         ) TAI
         ON TBA.ID = TAI.ART_ID
+        WHERE TBA.ART_STATUS = '승인완료'
         ORDER BY TBP.ART_POST_DATE DESC
         FETCH NEXT 50 ROWS ONLY
     </select>
