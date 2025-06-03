@@ -19,7 +19,7 @@
         JOIN TBL_UNIVERSITY TUS
             ON TM.UNIVERSITY_ID = TUS.ID
         WHERE TU.ID = #{userId}
-          AND TU.USER_WRITER_STATUS = '승인'
+          AND TU.USER_WRITER_STATUS = '승인완료'
     </select>
 
 

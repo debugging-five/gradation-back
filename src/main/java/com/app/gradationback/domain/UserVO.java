@@ -89,6 +89,4 @@ public class UserVO {
     private String userUniversityRejectReason;
     @Schema(description = "학교 인증 신청일", example = "2025-05-05")
     private Date userUniversityRequestDate;
-    @Schema(description = "유저 정지 값", example = "일반 회원")
-    private String userBanStatus;
 }

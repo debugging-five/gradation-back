@@ -58,7 +58,7 @@ public interface UserService {
 
     public void updateUserBanStatus(BanDTO banDTO);
 
-//    댓글 작성 시 정지 유저 확인
+    //    댓글 작성 시 정지 유저 확인
     public Optional<UserVO> findUserByIdForWrite(Long id);
 
 }

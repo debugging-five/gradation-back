@@ -42,7 +42,6 @@ public class BanDTO {
     private String userBackgroundImgPath;
     private String userProvider;
     private Long majorId;
-    private String userBanStatus;
 
 
 //    TBL_BAN

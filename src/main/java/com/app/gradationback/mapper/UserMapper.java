@@ -65,4 +65,5 @@ public interface UserMapper {
 //    댓글 작성 시 정지 유저 확인용
     public Optional<UserVO> selectUserByIdForWrite(Long id);
 
+
 }
