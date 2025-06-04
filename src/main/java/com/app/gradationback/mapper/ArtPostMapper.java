@@ -25,7 +25,7 @@ public interface ArtPostMapper {
     public List<ArtPostDTO> selectAllByUserId(Long userId);
 
 //    등록순으로 상위 50개 작품 조회
-    public List<ArtPostDTO> selectAllForMain(Map<String, Object> params);
+    public List<ArtPostDTO> selectAllForMain();
 
 //    카테고리 + 드롭다운 + 페이지네이션
     public List<ArtPostDTO> selectArtListByCategoryAndDropdown(Map<String, Object> params);
