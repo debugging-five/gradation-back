@@ -80,19 +80,20 @@ public class ArtPostServiceImpl implements ArtPostService {
 //    등록순으로 상위 50개 작품 조회
     public List<ArtPostDTO> getArtListForMain(Map<String, Object> params) {
 
-        // 카테고리 한글로 매핑
-        if (params.get("category").equals("sculpture")) {
-            params.put("category", "조각");
-        }else if(params.get("category").equals("craft")) {
-            params.put("category", "공예");
-        }else if(params.get("category").equals("architecture")) {
-            params.put("category", "건축");
-        }else if(params.get("category").equals("calligraphy")) {
-            params.put("category", "서예");
-        }else if(params.get("category").equals("painting")) {
-            params.put("category", "회화");
-        }else {
-            params.put("category", "한국화");
+        Map<String, String> categoryMap = new HashMap<>();
+        categoryMap.put("sculpture", "조각");
+        categoryMap.put("craft", "공예");
+        categoryMap.put("architecture", "건축");
+        categoryMap.put("calligraphy", "서예");
+        categoryMap.put("painting", "회화");
+        categoryMap.put("korean", "한국화");
+
+        Object category = params.get("category");
+
+        if (category != null) {
+            String english = category.toString();
+            String korean = categoryMap.get(english);
+            params.put("category", korean);
         }
 
         return artPostDAO.findAllForMain(params);
