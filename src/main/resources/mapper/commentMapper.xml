@@ -39,20 +39,20 @@
     <select id="selectAllByPostId" parameterType="Map" resultType="CommentDTO">
         SELECT TBC.ID, TBC.ART_POST_ID, TBC.USER_ID, TBC.COMMENT_CONTENT, TBC.COMMENT_DATE,
                TBU.USER_NAME, TBU.USER_IMG_PATH, TBU.USER_IMG_NAME, TBU.USER_WRITER_STATUS,
-       (
-       SELECT COUNT(ID)
-       FROM TBL_COMMENT_LIKE TCL
-       WHERE TCL.COMMENT_ID = TBC.ID
-       ) AS COMMENT_LIKE_COUNT,
-        (
-        SELECT COUNT(ID)
-        FROM TBL_COMMENT_LIKE TCL
-        WHERE TCL.COMMENT_ID = TBC.ID
-        AND TCL.USER_ID = #{userId}
-        ) AS IS_LIKED
+           (
+               SELECT COUNT(ID)
+               FROM TBL_COMMENT_LIKE TCL
+               WHERE TCL.COMMENT_ID = TBC.ID
+            ) AS COMMENT_LIKE_COUNT,
+            (
+                SELECT COUNT(ID)
+                FROM TBL_COMMENT_LIKE TCL
+                WHERE TCL.COMMENT_ID = TBC.ID
+                AND TCL.USER_ID = #{userId}
+            ) AS IS_LIKED
         FROM TBL_COMMENT TBC
         JOIN TBL_USER TBU
-        ON TBC.USER_ID = TBU.ID
+            ON TBC.USER_ID = TBU.ID
         WHERE ART_POST_ID = #{postId}
         <choose>
             <when test="order != null and order.equals('like')">
@@ -69,7 +69,7 @@
         FETCH NEXT 10 ROWS ONLY
     </select>
 
-<!---->
+    <!-- 댓글 수 조회 -->
     <select id="selectCountComment" parameterType="Map" resultType="Integer">
         SELECT COUNT(TBC.ID)
         FROM TBL_COMMENT TBC

@@ -39,7 +39,9 @@ public class ArtLikeServiceImpl implements ArtLikeService {
 //    좋아요 삭제
     @Override
     public void remove(ArtLikeVO artLikeVO) {
-        artDAO.deleteLike(artLikeVO);
+        if(getLiked(artLikeVO)) {
+            artDAO.deleteLike(artLikeVO);
+        }
     }
 
 //    좋아요 전체 삭제
