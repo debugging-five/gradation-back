@@ -70,6 +70,9 @@
         ) TAI
             ON TBA.ID = TAI.ART_ID
         WHERE TBA.ART_STATUS = '승인완료'
+        <if test="category != null">
+            AND TBA.ART_CATEGORY = #{category}
+        </if>
         ORDER BY TBP.ART_POST_DATE DESC
         FETCH NEXT 50 ROWS ONLY
     </select>
