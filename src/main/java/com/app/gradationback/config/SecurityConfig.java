@@ -77,14 +77,19 @@ public class SecurityConfig {
                                 Long userId = userService.getIdByEmail(email);
                                 String foundUserProvider = userService.getUserByEmail(email).map(UserVO::getUserProvider).orElse(null);
                                 String redirectUrl = "";
-                                log.info("provider: {}", foundUserProvider);
+//                                log.info("provider: {}", foundUserProvider);
 
                                 if(userId != null && foundUserProvider != null && foundUserProvider.equals(provider)) {
-                                    log.info("foundUserProvider: {}", userService.getUserByEmail(email));
+//                                    log.info("foundUserProvider: {}", userService.getUserByEmail(email));
 //                                    소셜 로그인할 때 userIdentification를 회원가입 시 안받아서 null
 //                                    따라서 userIdentification로 토큰 검증이 안되므로 -> 토큰이 초기화
 //                                claims.put("identification", foundUserIdentification);
 //                                log.info("foundUserIdentification :{}", foundUserIdentification);
+                                    String foundUserIdentification = userService.getUserByEmail(email).map(UserVO::getUserIdentification).orElse(null);
+                                    if (foundUserIdentification != null) {
+                                        claims.put("identification", foundUserIdentification);
+//                                        log.info("foundUserIdentification : {}", foundUserIdentification);
+                                    }
                                     String jwtToken = jwtTokenUtil.generateToken(claims);
                                     redirectUrl = "http://localhost:3000/?jwtToken=" + jwtToken;
 
@@ -104,7 +109,7 @@ public class SecurityConfig {
                                         userVO.setUserNickName(user.getUserNickName());
                                         userVO.setUserProvider(provider);
                                         userService.modifyUser(userVO);
-                                        log.info("provider: {}", userVO.getUserProvider());
+//                                        log.info("provider: {}", userVO.getUserProvider());
                                     });
                                     redirectUrl = "http://localhost:3000/?jwtToken=" + jwtToken;
 

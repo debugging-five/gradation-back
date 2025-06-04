@@ -19,7 +19,7 @@
 
     <!-- 소셜 로그인 후 회원가입 -->
     <insert id="insertSocial" parameterType="UserVO">
-        INSERT INTO TBL_USER (ID, USER_NAME, USER_EMAIL, USER_NICKNAME, USER_PROVIDER)
+        INSERT INTO TBL_USER (ID, USER_NAME, USER_EMAIL, USER_NICKNAME, USER_PROVIDER, USER_IDENTIFICATION)
         VALUES (
         SEQ_USER.NEXTVAL,
         #{userName},
@@ -27,7 +27,8 @@
         <if test="userNickName != null">#{userNickName}</if>
         <if test="userNickName == null">#{userName}</if>,
         <if test="userProvider != null">#{userProvider}</if>
-        <if test="userProvider == null">DEFAULT</if>
+        <if test="userProvider == null">DEFAULT</if>,
+        #{userIdentification}
         )
     </insert>
 
