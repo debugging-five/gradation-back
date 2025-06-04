@@ -51,7 +51,7 @@
     </select>
 
     <!-- 등록순으로 상위 50개 (메인)  -->
-    <select id="selectAllForMain" resultType="ArtPostDTO">
+    <select id="selectAllForMain" parameterType="Map" resultType="ArtPostDTO">
         SELECT TBA.ID, TBA.ART_TITLE, TBU.USER_NAME, TAI.ART_IMG_NAME, TAI.ART_IMG_PATH, TBA.ART_CATEGORY
         FROM TBL_ART TBA
         JOIN TBL_ART_POST TBP
