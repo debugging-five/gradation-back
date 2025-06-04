@@ -26,10 +26,12 @@
 
     <!--  댓글 전체 조회 (userId로)  -->
     <select id="selectAllByUserId" parameterType="Long" resultType="ArtPostDTO">
-        SELECT TBC.ID, TBC.ART_POST_ID, TBC.USER_ID, TBC.COMMENT_CONTENT, TBC.COMMENT_DATE, TBA.ART_TITLE, TBA.ID AS ART_ID, TBA.ART_CATEGORY
+        SELECT TBC.ID, TBC.ART_POST_ID, TBC.USER_ID, TBC.COMMENT_CONTENT, TBC.COMMENT_DATE, TBA.ART_TITLE, TBA.ID AS ART_ID, TBA.ART_CATEGORY, TBA.ID
         FROM TBL_COMMENT TBC
-        JOIN TBL_ART TBA
-        ON TBC.ART_POST_ID = TBA.ID
+                 JOIN TBL_ART_POST TAP
+                      ON TBC.ART_POST_ID = TAP.ID
+                 JOIN TBL_ART TBA
+                      ON TBA.ID = TAP.ART_ID
         WHERE TBC.USER_ID = #{userId}
     </select>
 

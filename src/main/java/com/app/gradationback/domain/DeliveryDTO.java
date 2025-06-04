@@ -24,6 +24,7 @@ public class DeliveryDTO {
     private String paymentDate;
     private String paymentCode;
     private Long auctionId;
+    private Long auctionBidPrice;
 
 //    TBL_USER
     private String userImgName;
