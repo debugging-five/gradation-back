@@ -2,27 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.app.gradationback.mapper.ArtistMapper">
 
-<!--    작가 메인페이지(내 프로필) -->
-    <select id="selectMyArtistProfile" parameterType="Map" resultType="ArtistDTO">
-        SELECT
-            TU.ID,
-            TU.USER_NAME,
-            TU.USER_IMG_NAME,
-            TU.USER_IMG_PATH,
-            TU.USER_BACKGROUND_IMG_NAME,
-            TU.USER_BACKGROUND_IMG_PATH,
-            TU.USER_ART_CATEGORY,
-            TUS.UNIVERSITY_NAME
-        FROM TBL_USER TU
-        JOIN TBL_MAJOR TM
-            ON TU.MAJOR_ID = TM.ID
-        JOIN TBL_UNIVERSITY TUS
-            ON TM.UNIVERSITY_ID = TUS.ID
-        WHERE TU.ID = #{userId}
-          AND TU.USER_WRITER_STATUS = '승인'
-    </select>
-
-
     <!-- 작가 리스트 -->
     <select id="selectArtistList" parameterType="Map" resultType="ArtistDTO">
         SELECT
@@ -35,30 +14,38 @@
             TU.USER_ART_CATEGORY,
             TUS.UNIVERSITY_NAME,
             ART.ART_IMG_NAME,
-            ART.ART_IMG_PATH
+            ART.ART_IMG_PATH,
+            ART.ART_POST_ID
         FROM TBL_USER TU
         JOIN TBL_MAJOR TM
             ON TU.MAJOR_ID = TM.ID
         JOIN TBL_UNIVERSITY TUS
-            ON TM.UNIVERSITY_ID = TUS.ID
+        ON TM.UNIVERSITY_ID = TUS.ID
         JOIN (
             SELECT
                 USER_ID,
                 ART_IMG_NAME,
-                ART_IMG_PATH
+                ART_IMG_PATH,
+                ART_POST_ID
             FROM (
                 SELECT
-                TA.USER_ID,
-                TAI.ART_IMG_NAME,
-                TAI.ART_IMG_PATH,
-                ROW_NUMBER() OVER (PARTITION BY TA.USER_ID ORDER BY TA.ID ASC) AS RN
-            FROM TBL_ART TA
-            JOIN TBL_ART_IMG TAI ON TA.ID = TAI.ART_ID
-            WHERE TA.ART_STATUS = '승인'
+                    TU.ID AS USER_ID,
+                    TAI.ART_IMG_NAME,
+                    TAI.ART_IMG_PATH,
+                    TAP.ID AS ART_POST_ID,
+                    ROW_NUMBER() OVER (PARTITION BY TU.ID ORDER BY TAP.ID ASC) AS RN
+                FROM TBL_USER TU
+                JOIN TBL_ART TA
+                    ON TU.ID = TA.USER_ID
+                JOIN TBL_ART_POST TAP
+                    ON TA.ID = TAP.ART_ID
+                JOIN TBL_ART_IMG TAI
+                    ON TA.ID = TAI.ART_ID
+                WHERE TA.ART_STATUS = '승인완료'
             )
             WHERE RN = 1
         ) ART ON TU.ID = ART.USER_ID
-        WHERE TU.USER_WRITER_STATUS = '승인'
+        WHERE TU.USER_WRITER_STATUS = '승인완료'
 
         <choose>
             <when test="category != null and category.equals('공예')">
@@ -101,6 +88,67 @@
         OFFSET (#{cursor} - 1) * 15 ROWS
         FETCH NEXT 15 ROWS ONLY
     </select>
+
+    <select id="selectCountArtistList" parameterType="Map" resultType="Integer">
+        SELECT COUNT(DISTINCT TU.ID)
+        FROM TBL_USER TU
+        JOIN TBL_MAJOR TM
+            ON TU.MAJOR_ID = TM.ID
+        JOIN TBL_UNIVERSITY TUS
+            ON TM.UNIVERSITY_ID = TUS.ID
+        JOIN (
+            SELECT
+                USER_ID,
+                ART_IMG_NAME,
+                ART_IMG_PATH
+            FROM (
+                SELECT
+                    TU.ID AS USER_ID,
+                    TAI.ART_IMG_NAME,
+                    TAI.ART_IMG_PATH,
+                    ROW_NUMBER() OVER (PARTITION BY TU.ID ORDER BY TAP.ID ASC) AS RN
+                FROM TBL_USER TU
+                JOIN TBL_ART TA
+                    ON TU.ID = TA.USER_ID
+                JOIN TBL_ART_POST TAP
+                    ON TA.ID = TAP.ART_ID
+                JOIN TBL_ART_IMG TAI
+                    ON TA.ID = TAI.ART_ID
+                WHERE TA.ART_STATUS = '승인완료'
+            )
+            WHERE RN = 1
+        ) ART ON TU.ID = ART.USER_ID
+        WHERE TU.USER_WRITER_STATUS = '승인완료'
+
+        <choose>
+            <when test="category != null and category.equals('공예')">
+                AND TU.USER_ART_CATEGORY = '공예'
+            </when>
+            <when test="category != null and category.equals('건축')">
+                AND TU.USER_ART_CATEGORY = '건축'
+            </when>
+            <when test="category != null and category.equals('서예')">
+                AND TU.USER_ART_CATEGORY = '서예'
+            </when>
+            <when test="category != null and category.equals('회화')">
+                AND TU.USER_ART_CATEGORY = '회화'
+            </when>
+            <when test="category != null and category.equals('조각')">
+                AND TU.USER_ART_CATEGORY = '조각'
+            </when>
+            <when test="category != null and category.equals('한국화')">
+                AND TU.USER_ART_CATEGORY = '한국화'
+            </when>
+            <otherwise>
+                AND TU.USER_ART_CATEGORY = '한국화'
+            </otherwise>
+        </choose>
+
+        <if test="keyword != null and keyword != ''">
+            AND TU.USER_NAME LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+        </if>
+    </select>
+
 
 <!--    작가 정보 수정 -->
     <update id="updateArtist" parameterType="UserVO">
@@ -147,6 +195,7 @@
             TU.USER_IMG_NAME,
             TU.USER_IMG_PATH,
             TU.USER_NAME,
+            TU.USER_EMAIL,
             TUN.UNIVERSITY_NAME,
             TU.USER_INSTAGRAM,
             TU.USER_BLOG,
@@ -191,7 +240,8 @@
             ON TA.USER_ID = TU.ID
         JOIN TBL_ART_POST TAP
             ON TAP.ART_ID = TA.ID
-        WHERE TA.USER_ID = #{userId}
+        WHERE TA.USER_ID = #{userId} AND TA.ART_STATUS = '승인완료'
+        ORDER BY TAP.ID ASC
     </select>
 
     

@@ -11,13 +11,13 @@ import java.util.Optional;
 
 public interface ArtistService {
 
-    public Optional<ArtistDTO> getMyArtistProfile(Map<String, Object> param);
-
     public List<ArtistDTO> getArtistList(Map<String, Object> param);
 
     public ArtistDetailDTO getArtistDetailById(Long userId);
 
     public List<ArtistDetailDTO> getArtistArtsList(Long userId);
+
+    public Integer getCountArtistList(Map<String, Object> params);
 
     public void editArtist(UserVO userVO);
 

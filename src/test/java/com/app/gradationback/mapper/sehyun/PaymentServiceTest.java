@@ -25,7 +25,7 @@ public class PaymentServiceTest {
         PaymentVO paymentVO = new PaymentVO();
         paymentVO.setAuctionId(4L);
         paymentVO.setPaymentMethod("oo은행");
-        paymentVO.setPaymentAmount(250000);
+        paymentVO.setPaymentAmount(250000L);
         paymentVO.setPaymentCode("00000003");
         log.info("-------------------");
         log.info("paymentVO:{}", paymentVO);

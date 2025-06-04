@@ -19,7 +19,7 @@
             #{id},
             #{artId},
             TO_DATE(#{auctionStartDate}, 'YYYY-MM-DD HH24:MI:SS'),
-            TO_DATE(#{auctionEndDate}, 'YYYY-MM-DD HH24:MI:SS'),
+            TO_DATE(#{auctionStartDate}, 'YYYY-MM-DD HH24:MI:SS') + 3,
             #{auctionStartPrice},
             #{auctionEstimatedMinPrice},
             #{auctionEstimatedMaxPrice}

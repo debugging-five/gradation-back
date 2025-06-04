@@ -28,22 +28,16 @@ import java.util.*;
 public class AuctionController {
     private final AuctionService auctionService;
 
+    @ExceptionResponse
     @Operation(summary = "경매 등록", description = "경매 등록 API")
     @ApiResponse(responseCode = "200", description = "등록 성공")
     @PostMapping("registration")
     public ResponseEntity<Map<String, Object>> registration(@RequestBody AuctionVO auctionVO) throws AuctionException {
         Map<String, Object> response = new HashMap<>();
-        try {
-            auctionService.auctionRegistration(auctionVO);
-        } catch (Exception e) {
-            response.put("message", "등록 실패" + e.getMessage());
-            response.put("status", auctionVO);
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
-        }
+        auctionService.auctionRegistration(auctionVO);
         response.put("message", "등록이 완료되었습니다");
-        response.put("status", auctionVO);
+        response.put("request", auctionVO);
         return ResponseEntity.ok(response);
-
     }
 
     @ExceptionResponse

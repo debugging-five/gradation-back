@@ -105,6 +105,7 @@ public class ExhibitionServiceImpl implements ExhibitionService {
         }
 //        학과 저장
         exhibitionDAO.saveMajor(universityExhibitionDTO);
+        universityExhibitionDTO.setUniversityExhibitionRequestDate(new Date());
 //        전시회 저장
         exhibitionDAO.saveUniversityExhibition(universityExhibitionDTO);
     }

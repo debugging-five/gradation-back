@@ -13,9 +13,6 @@ import java.util.Optional;
 @Mapper
 public interface ArtistMapper {
 
-//    작가 메인페이지(내 프로필)
-    public Optional<ArtistDTO> selectMyArtistProfile(Map<String, Object> param);
-
 //    작가 메인페이지
     public List<ArtistDTO> selectArtistList(Map<String, Object> params);
 
@@ -24,6 +21,8 @@ public interface ArtistMapper {
 
 //    작가 디테일(작품들 썸네일)
     public List<ArtistDetailDTO> selectArtistArts(Long userId);
+
+    public Integer selectCountArtistList(Map<String, Object> params);
 
 //    작가 정보 수정
     public void updateArtist(UserVO userVO);
