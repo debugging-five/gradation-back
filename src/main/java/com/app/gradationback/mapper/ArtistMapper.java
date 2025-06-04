@@ -20,7 +20,9 @@ public interface ArtistMapper {
     public List<ArtistDetailDTO> selectArtistById(Long userId);
 
 //    작가 디테일(작품들 썸네일)
-    public List<ArtistDetailDTO> selectArtistArts(Long userId);
+    public List<ArtistDetailDTO> selectArtistArts(Map<String, Object> params);
+
+    public Integer selectCountArtistArts(Long userId);
 
     public Integer selectCountArtistList(Map<String, Object> params);
 
