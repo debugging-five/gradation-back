@@ -24,13 +24,13 @@ public class JwtTokenUtil {
         HashMap<String, Object> userInfo = new HashMap<String, Object>();
         String email = (String) claims.get("email"); // 이메일 추출
         String name = (String) claims.get("name"); // 이름 추출
-        String identification = (String) claims.get("identification");
+        String identification = (String) claims.get("identification"); // 아이디 추출
 
         userInfo.put("email", email);
         userInfo.put("name", name);
         userInfo.put("identification", identification);
 
-//        24시간
+//        토큰 유효기간 : 24시간
         long expirationTimeInMillis = 24 * 60 * 60 * 1000;
         Date expirationDate = new Date(System.currentTimeMillis() + expirationTimeInMillis);
 

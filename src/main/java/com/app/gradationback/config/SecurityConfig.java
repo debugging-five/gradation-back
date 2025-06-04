@@ -38,7 +38,6 @@ public class SecurityConfig {
     }
 
     @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http, UserService userService) throws Exception {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, UserService userService) throws Exception {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 추가
@@ -52,8 +51,6 @@ public class SecurityConfig {
                                 OAuth2AuthenticationToken authToken = (OAuth2AuthenticationToken) authentication;
                                 OAuth2User oAuth2User = authToken.getPrincipal();
                                 Map<String, Object> attributes = oAuth2User.getAttributes();
-
-//                                log.info(attributes.toString());
 
                                 String provider = authToken.getAuthorizedClientRegistrationId();
                                 String email = "";
