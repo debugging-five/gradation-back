@@ -19,39 +19,14 @@
                TBCL.COMMENT_ID, TBCL.USER_ID, TBCL.COMMENT_LIKE_TIME
         FROM TBL_ART_POST TBP
         JOIN TBL_ART TBA
-        ON TBP.ART_ID = TBA.ID
+            ON TBP.ART_ID = TBA.ID
         JOIN TBL_USER TBU
-        ON TBP.USER_ID = TBU.ID
+            ON TBP.USER_ID = TBU.ID
         LEFT JOIN TBL_COMMENT TBC
-        ON TBP.ID = TBC.ART_POST_ID
+            ON TBP.ID = TBC.ART_POST_ID
         LEFT JOIN TBL_COMMENT_LIKE TBCL
-        ON TBC.ID = TBCL.COMMENT_ID
+            ON TBC.ID = TBCL.COMMENT_ID
     </select>
-
-<!--    &lt;!&ndash;  작품 게시글 단일 조회  &ndash;&gt;-->
-<!--    <select id="select" parameterType="Long" resultType="ArtPostDTO">-->
-<!--        SELECT TBP.ID, TBP.ART_POST_DATE, TBP.USER_ID, TBP.ART_ID,-->
-<!--               TBA.ART_TITLE, TBA.ART_CATEGORY, TBA.ART_MATERIAL, TBA.ART_SIZE,-->
-<!--               TBA.ART_DESCRIPTION, TBA.ART_END_DATE, TBA.USER_ID,-->
-<!--               TBU.USER_NAME AS ARTIST_NAME, TBU.ID AS ARTIST_ID, TBU.USER_EMAIL,-->
-<!--               TAI.ART_IMG_NAME, TAI.ART_IMG_PATH, TBU.USER_IMG_NAME, TBU.USER_IMG_PATH-->
-<!--        FROM TBL_ART_POST TBP-->
-<!--        JOIN TBL_ART TBA-->
-<!--        ON TBP.ART_ID = TBA.ID-->
-<!--        JOIN TBL_USER TBU-->
-<!--        ON TBP.USER_ID = TBU.ID-->
-<!--        LEFT JOIN (-->
-<!--        SELECT TAI1.ART_ID, TAI1.ART_IMG_NAME, TAI1.ART_IMG_PATH-->
-<!--        FROM TBL_ART_IMG TAI1-->
-<!--        JOIN (-->
-<!--        SELECT ART_ID, MIN(ID) AS MIN_ID-->
-<!--        FROM TBL_ART_IMG-->
-<!--        GROUP BY ART_ID-->
-<!--        ) TAI2-->
-<!--        ON TAI1.ART_ID = TAI2.ART_ID AND TAI1.ID = TAI2.MIN_ID-->
-<!--        ) TAI ON TBA.ID = TAI.ART_ID-->
-<!--        WHERE TBP.ID = #{id}-->
-<!--    </select>    -->
 
     <!--  작품 게시글 단일 조회  -->
     <select id="select" parameterType="Long" resultType="ArtPostDTO">
@@ -62,9 +37,9 @@
                TBU.USER_IMG_NAME, TBU.USER_IMG_PATH
         FROM TBL_ART_POST TBP
         JOIN TBL_ART TBA
-        ON TBP.ART_ID = TBA.ID
+            ON TBP.ART_ID = TBA.ID
         JOIN TBL_USER TBU
-        ON TBA.USER_ID = TBU.ID
+            ON TBA.USER_ID = TBU.ID
         WHERE TBP.ID = #{id}
     </select>
 
@@ -76,25 +51,28 @@
     </select>
 
     <!-- 등록순으로 상위 50개 (메인)  -->
-    <select id="selectAllForMain" resultType="ArtPostDTO">
-        SELECT TBA.ID, TBA.ART_TITLE, TBU.USER_NAME, TAI.ART_IMG_NAME, TAI.ART_IMG_PATH
+    <select id="selectAllForMain" parameterType="Map" resultType="ArtPostDTO">
+        SELECT TBA.ID, TBA.ART_TITLE, TBU.USER_NAME, TAI.ART_IMG_NAME, TAI.ART_IMG_PATH, TBA.ART_CATEGORY
         FROM TBL_ART TBA
         JOIN TBL_ART_POST TBP
-        ON TBA.ID = TBP.ART_ID
+            ON TBA.ID = TBP.ART_ID
         JOIN TBL_USER TBU
-        ON TBA.USER_ID = TBU.ID
+            ON TBA.USER_ID = TBU.ID
         LEFT JOIN (
-        SELECT TAI1.ART_ID, TAI1.ART_IMG_NAME, TAI1.ART_IMG_PATH
-        FROM TBL_ART_IMG TAI1
-        JOIN (
-        SELECT ART_ID, MIN(ID) AS MIN_ID
-        FROM TBL_ART_IMG
-        GROUP BY ART_ID
-        ) TAI2
-        ON TAI1.ART_ID = TAI2.ART_ID AND TAI1.ID = TAI2.MIN_ID
+            SELECT TAI1.ART_ID, TAI1.ART_IMG_NAME, TAI1.ART_IMG_PATH
+            FROM TBL_ART_IMG TAI1
+            JOIN (
+                SELECT ART_ID, MIN(ID) AS MIN_ID
+                FROM TBL_ART_IMG
+                GROUP BY ART_ID
+            ) TAI2
+            ON TAI1.ART_ID = TAI2.ART_ID AND TAI1.ID = TAI2.MIN_ID
         ) TAI
-        ON TBA.ID = TAI.ART_ID
+            ON TBA.ID = TAI.ART_ID
         WHERE TBA.ART_STATUS = '승인완료'
+        <if test="category != null">
+            AND TBA.ART_CATEGORY = #{category}
+        </if>
         ORDER BY TBP.ART_POST_DATE DESC
         FETCH NEXT 50 ROWS ONLY
     </select>
@@ -106,34 +84,33 @@
                TBU.ID AS ARTIST_ID, TBC.ART_POST_ID, TAI.ART_IMG_PATH, TAI.ART_IMG_NAME, TBP.ART_ID, TBP.ID AS artPostId
         FROM TBL_ART TBA
         JOIN TBL_ART_POST TBP
-        ON TBA.ID = TBP.ART_ID
+            ON TBA.ID = TBP.ART_ID
         JOIN TBL_USER TBU
-        ON TBA.USER_ID = TBU.ID
+            ON TBA.USER_ID = TBU.ID
         LEFT JOIN (
-        SELECT ART_ID, COUNT(ID) AS ART_LIKE_COUNT
-        FROM TBL_ART_LIKE
-        GROUP BY ART_ID
+            SELECT ART_ID, COUNT(ID) AS ART_LIKE_COUNT
+            FROM TBL_ART_LIKE
+            GROUP BY ART_ID
         ) TAL
-        ON TBA.ID = TAL.ART_ID
+            ON TBA.ID = TAL.ART_ID
         LEFT JOIN (
-        SELECT ART_POST_ID, COUNT(ID) AS COMMENT_COUNT
-        FROM TBL_COMMENT
-        GROUP BY ART_POST_ID
+            SELECT ART_POST_ID, COUNT(ID) AS COMMENT_COUNT
+            FROM TBL_COMMENT
+            GROUP BY ART_POST_ID
         ) TBC
-        ON TBP.ID = TBC.ART_POST_ID
+            ON TBP.ID = TBC.ART_POST_ID
         LEFT JOIN (
-        SELECT TAI1.ART_ID, TAI1.ART_IMG_NAME, TAI1.ART_IMG_PATH
-        FROM TBL_ART_IMG TAI1
-        JOIN (
-        SELECT ART_ID, MIN(ID) AS MIN_ID
-        FROM TBL_ART_IMG
-        GROUP BY ART_ID
-        ) TAI2
-        ON TAI1.ART_ID = TAI2.ART_ID AND TAI1.ID = TAI2.MIN_ID
+            SELECT TAI1.ART_ID, TAI1.ART_IMG_NAME, TAI1.ART_IMG_PATH
+            FROM TBL_ART_IMG TAI1
+            JOIN (
+                SELECT ART_ID, MIN(ID) AS MIN_ID
+                FROM TBL_ART_IMG
+                GROUP BY ART_ID
+            ) TAI2
+                ON TAI1.ART_ID = TAI2.ART_ID AND TAI1.ID = TAI2.MIN_ID
         ) TAI
-        ON TBA.ID = TAI.ART_ID
-        WHERE
-        TBA.ART_STATUS = '승인완료'
+            ON TBA.ID = TAI.ART_ID
+        WHERE TBA.ART_STATUS = '승인완료'
         AND
         <!-- 카테고리 필터링 -->
         <choose>
@@ -163,8 +140,8 @@
         <!-- 검색 (작품명, 작가명) -->
         <if test="keyword != null and keyword != ''">
             AND (
-            TBA.ART_TITLE LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
-            OR TBU.USER_NAME LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+                TBA.ART_TITLE LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+                OR TBU.USER_NAME LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
             )
         </if>
 
@@ -187,14 +164,14 @@
         FETCH NEXT 15 ROWS ONLY
     </select>
 
-
+    <!--  작품 수 조회  -->
     <select id="selectCountArtList" parameterType="Map" resultType="Integer">
         SELECT COUNT(TBP.ID)
         FROM TBL_ART_POST TBP
         JOIN TBL_ART TBA
-        ON TBP.ART_ID = TBA.ID
+            ON TBP.ART_ID = TBA.ID
         JOIN TBL_USER TBU
-        ON TBA.USER_ID = TBU.ID
+            ON TBA.USER_ID = TBU.ID
         WHERE
         <!-- 카테고리 필터링 -->
         <choose>
@@ -224,8 +201,8 @@
         <!-- 검색 (작품명, 작가명) -->
         <if test="keyword != null and keyword != ''">
             AND (
-            TBA.ART_TITLE LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
-            OR TBU.USER_NAME LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+                TBA.ART_TITLE LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
+                OR TBU.USER_NAME LIKE CONCAT('%', CONCAT(#{keyword}, '%'))
             )
         </if>
     </select>
@@ -235,23 +212,23 @@
         SELECT TBA.ID, TBA.ART_TITLE, TAI.ART_IMG_NAME, TAI.ART_IMG_PATH, TBU.USER_NAME, TBA.ART_STATUS,
                TBA.ART_CATEGORY, COUNT(TAL.ID) AS ART_LIKE_COUNT, TAP.ID AS ART_POST_ID
         FROM TBL_ART TBA
-                 JOIN TBL_USER TBU
-                      ON TBA.USER_ID = TBU.ID
-                 LEFT JOIN (
+        JOIN TBL_USER TBU
+            ON TBA.USER_ID = TBU.ID
+        LEFT JOIN (
             SELECT TAI1.ART_ID, TAI1.ART_IMG_NAME, TAI1.ART_IMG_PATH
             FROM TBL_ART_IMG TAI1
-                     JOIN (
+            JOIN (
                 SELECT ART_ID, MIN(ID) AS MIN_ID
                 FROM TBL_ART_IMG
                 GROUP BY ART_ID
             ) TAI2
-                          ON TAI1.ART_ID = TAI2.ART_ID AND TAI1.ID = TAI2.MIN_ID
+                ON TAI1.ART_ID = TAI2.ART_ID AND TAI1.ID = TAI2.MIN_ID
         ) TAI
-                           ON TBA.ID = TAI.ART_ID
-                 LEFT JOIN TBL_ART_LIKE TAL
-                           ON TAL.ART_ID = TBA.ID
-                 JOIN TBL_ART_POST TAP
-                      ON TAP.ART_ID = TBA.ID
+            ON TBA.ID = TAI.ART_ID
+        LEFT JOIN TBL_ART_LIKE TAL
+            ON TAL.ART_ID = TBA.ID
+        JOIN TBL_ART_POST TAP
+            ON TAP.ART_ID = TBA.ID
         WHERE TBA.USER_ID = #{userId}
         GROUP BY TBA.ID, TBA.ART_TITLE, TAI.ART_IMG_NAME, TAI.ART_IMG_PATH, TBU.USER_NAME, TBA.ART_STATUS, TBA.ART_CATEGORY, TAP.ID
     </select>
@@ -267,29 +244,29 @@
             TBA.ART_CATEGORY,
             TAP.ID AS ART_POST_ID
         FROM TBL_ART TBA
-                 JOIN TBL_ART_LIKE TBLU
-                      ON TBA.ID = TBLU.ART_ID AND TBLU.USER_ID = #{userId}
-                 JOIN TBL_USER TBU
-                      ON TBA.USER_ID = TBU.ID
-                 LEFT JOIN (
+        JOIN TBL_ART_LIKE TBLU
+            ON TBA.ID = TBLU.ART_ID AND TBLU.USER_ID = #{userId}
+        JOIN TBL_USER TBU
+            ON TBA.USER_ID = TBU.ID
+        LEFT JOIN (
             SELECT ART_ID, COUNT(ID) AS ART_LIKE_COUNT
             FROM TBL_ART_LIKE
             GROUP BY ART_ID
         ) TAL
-                           ON TBA.ID = TAL.ART_ID
-                 LEFT JOIN (
+            ON TBA.ID = TAL.ART_ID
+        LEFT JOIN (
             SELECT TAI1.ART_ID, TAI1.ART_IMG_NAME, TAI1.ART_IMG_PATH
             FROM TBL_ART_IMG TAI1
-                     JOIN (
+            JOIN (
                 SELECT ART_ID, MIN(ID) AS MIN_ID
                 FROM TBL_ART_IMG
                 GROUP BY ART_ID
             ) TAI2
-                          ON TAI1.ART_ID = TAI2.ART_ID AND TAI1.ID = TAI2.MIN_ID
+                ON TAI1.ART_ID = TAI2.ART_ID AND TAI1.ID = TAI2.MIN_ID
         ) TAI
-                           ON TBA.ID = TAI.ART_ID
-                 LEFT JOIN TBL_ART_POST TAP
-                           ON TAP.ART_ID = TBA.ID
+            ON TBA.ID = TAI.ART_ID
+        LEFT JOIN TBL_ART_POST TAP
+            ON TAP.ART_ID = TBA.ID
     </select>
 
     <!--  경매 가능 작품 조회 (좋아요 50개 이상)  -->
@@ -303,26 +280,26 @@
             TBA.ART_CATEGORY,
             TAP.ID AS ART_POST_ID
         FROM TBL_ART TBA
-                 JOIN TBL_ART_POST TAP
-                      ON TAP.ART_ID = TBA.ID
-                 JOIN (
+        JOIN TBL_ART_POST TAP
+            ON TAP.ART_ID = TBA.ID
+        JOIN (
             SELECT ART_ID, COUNT(ID) AS LIKE_COUNT
             FROM TBL_ART_LIKE
             GROUP BY ART_ID
             HAVING COUNT(ID) >= 50
         ) TAL
-                      ON TBA.ID = TAL.ART_ID
-                 LEFT JOIN (
+            ON TBA.ID = TAL.ART_ID
+        LEFT JOIN (
             SELECT TAI1.ART_ID, TAI1.ART_IMG_NAME, TAI1.ART_IMG_PATH
             FROM TBL_ART_IMG TAI1
-                     JOIN (
+            JOIN (
                 SELECT ART_ID, MIN(ID) AS MIN_ID
                 FROM TBL_ART_IMG
                 GROUP BY ART_ID
             ) TAI2
-                          ON TAI1.ART_ID = TAI2.ART_ID AND TAI1.ID = TAI2.MIN_ID
+                ON TAI1.ART_ID = TAI2.ART_ID AND TAI1.ID = TAI2.MIN_ID
         ) TAI
-                           ON TBA.ID = TAI.ART_ID
+            ON TBA.ID = TAI.ART_ID
         WHERE TBA.USER_ID = #{userId}
     </select>
 

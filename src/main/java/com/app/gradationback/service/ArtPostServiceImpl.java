@@ -26,9 +26,10 @@ public class ArtPostServiceImpl implements ArtPostService {
     private final ArtDAO artDAO;
     private final CommentDAO commentDAO;
 
-//    작품 게시글 등록 (작품 정보 + 작품 이미지 + 작품 게시글)
+//    작품 게시글 등록 (작품 정보 + 작품 게시글)
     @Override
     public Long register(ArtPostDTO artPostDTO) {
+        // ArtVO에 사용자가 입력한 작품 정보 저장
         ArtVO artVO = new ArtVO();
         artVO.setArtTitle(artPostDTO.getArtTitle());
         artVO.setArtCategory(artPostDTO.getArtCategory());
@@ -38,14 +39,15 @@ public class ArtPostServiceImpl implements ArtPostService {
         artVO.setArtEndDate(artPostDTO.getArtEndDate());
         artVO.setUserId(artPostDTO.getUserId());
         artVO.setArtStatus("미승인");
-        artDAO.save(artVO);
+        artDAO.save(artVO); // 작품 정보 저장
         Long artId = artVO.getId();
 
+        // 저장된 artId로 artPostVO 생성 후 게시글 등록
         ArtPostVO artPostVO = new ArtPostVO();
         artPostVO.setArtId(artId);
         artPostVO.setArtPostDate(new Timestamp(System.currentTimeMillis()));
         artPostVO.setUserId(artPostDTO.getUserId());
-        artPostDAO.save(artPostVO);
+        artPostDAO.save(artPostVO); // 게시글 정보 저장
         return artPostVO.getId();
     }
 
@@ -70,21 +72,38 @@ public class ArtPostServiceImpl implements ArtPostService {
 
             post.setComments(commentDAO.findAllByPostId(params));
             post.setImages(artImgDAO.findAllByArtId(post.getArtId()));
-//            post.setImages(artImgDAO.findAllByArtId(post.getId()));
             post.setArtLikeCount(artDAO.findLikeCount(post.getArtId()));
             return post;
         });
     }
 
 //    등록순으로 상위 50개 작품 조회
-    public List<ArtPostDTO> getArtListForMain() {
-        return artPostDAO.findAllForMain();
+    public List<ArtPostDTO> getArtListForMain(Map<String, Object> params) {
+
+        Map<String, String> categoryMap = new HashMap<>();
+        categoryMap.put("sculpture", "조각");
+        categoryMap.put("craft", "공예");
+        categoryMap.put("architecture", "건축");
+        categoryMap.put("calligraphy", "서예");
+        categoryMap.put("painting", "회화");
+        categoryMap.put("korean", "한국화");
+
+        Object category = params.get("category");
+
+        if (category != null) {
+            String english = category.toString();
+            String korean = categoryMap.get(english);
+            params.put("category", korean);
+        }
+
+        return artPostDAO.findAllForMain(params);
     }
 
 //    카테고리 + 드롭다운 + 페이지네이션
     @Override
     public List<ArtPostDTO> getArtListByCategoryAndDropdown(Map<String, Object> params) {
 
+        // 카테고리 한글로 매핑
         if (params.get("category").equals("sculpture")) {
             params.put("category", "조각");
         }else if(params.get("category").equals("craft")) {
@@ -96,23 +115,23 @@ public class ArtPostServiceImpl implements ArtPostService {
         }else if(params.get("category").equals("painting")) {
             params.put("category", "회화");
         }else {
-//            korean
             params.put("category", "한국화");
         }
 
+        // 게시글 리스트 조회 후, 각 게시글에 이미지 리스트 추가
         return artPostDAO.findArtListByCategoryAndDropdown(params).stream().map(post -> {
-//            post.setComments(commentDAO.findAllByPostId(post.getArtPostId()));
             post.setImages(artImgDAO.findAllByArtId(post.getId()));
             return post;
         }).toList();
-    };
+    }
 
+//    작품 수 조회
     @Override
     public Integer getCountArtList(Map<String, Object> params) {
         return artPostDAO.findCountArtList(params);
     }
 
-    //    내 작품 리스트
+//    내 작품 리스트
     @Override
     public List<ArtPostDTO> getMyArtList(Long userId) {
         return artPostDAO.findAllMyArt(userId);

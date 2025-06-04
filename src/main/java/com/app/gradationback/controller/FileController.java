@@ -53,7 +53,6 @@ public class FileController {
         Optional<ArtVO> foundArt = artService.getArt(artId);
         if (foundArt.isPresent()) {
             artId = foundArt.get().getId();
-//            log.info(artId.toString());
             filePath = filePath + "/" + categoryMap.get(foundArt.get().getArtCategory());
         }
 
@@ -64,9 +63,9 @@ public class FileController {
             artImgVO.setArtImgName(uuid + "_" + file.getOriginalFilename());
             artImgVO.setArtImgPath(filePath);
             artImgVO.setArtId(artId);
+            // DB에 작품 이미지 저장
             artImgService.register(artImgVO);
-//            log.info(artImgVO.toString());
-
+            // 실제 파일 저장
             fileSave.fileSave(file, artImgVO.getArtImgPath(), artImgVO.getArtImgName());
 
 //            썸네일
