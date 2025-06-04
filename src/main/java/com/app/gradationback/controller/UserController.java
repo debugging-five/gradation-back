@@ -167,6 +167,7 @@ public class UserController {
 
                 Claims claims = jwtTokenUtil.parseToken(token);
                 String userIdentification = claims.get("identification").toString();
+                log.info("userIdentification : {}", userIdentification);
 //                String userEmail = claims.get("email").toString();
 
 //                Long userId = userService.getIdByEmail(userEmail);
