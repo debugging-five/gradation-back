@@ -24,7 +24,6 @@ public class MypageDAO {
         mypageMapper.deleteCommentByArtPostOfUser(userId);
 
         // 게시글, 작품
-        mypageMapper.deleteArtPostByUserId(userId);
         mypageMapper.deleteArtPostsByUserId(userId);
         mypageMapper.deleteArtByUserId(userId);
 

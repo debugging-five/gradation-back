@@ -5,6 +5,7 @@ import com.app.gradationback.domain.AuctionDTO;
 import com.app.gradationback.domain.AuctionPriceVO;
 import com.app.gradationback.domain.AuctionVO;
 import com.app.gradationback.exception.AuctionException;
+import com.app.gradationback.exception.BiddingException;
 import com.app.gradationback.repository.ArtImgDAO;
 import com.app.gradationback.repository.AuctionBiddingDAO;
 import com.app.gradationback.repository.AuctionDAO;
@@ -85,7 +86,7 @@ public class AuctionServiceImpl implements AuctionService {
     public void auctionBidding(@NotNull AuctionBiddingVO auctionBiddingVO) {
         AuctionBiddingVO topAutoBidding = auctionBiddingDAO.findAutoByAuctionId(auctionBiddingVO.getAuctionId()).orElse(null);
         AuctionBiddingVO topBidding = auctionBiddingDAO.findByAuctionId(auctionBiddingVO.getAuctionId()).orElse(null);
-        Long startPrice = auctionDAO.findById(auctionBiddingVO.getAuctionId()).get().getAuctionStartPrice();
+        Long startPrice = auctionDAO.findById(auctionBiddingVO.getAuctionId()).orElseThrow(BiddingException::new).getAuctionStartPrice();
 
         auctionBiddingDAO.save(auctionBiddingVO);
         Long biddingPrice = auctionBiddingVO.getAuctionBiddingPrice();

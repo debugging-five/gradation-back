@@ -55,13 +55,6 @@
         )
     </delete>
 
-
-    <!-- 사용자가 작성한 아트 게시글 삭제 -->
-    <delete id="deleteArtPostByUserId" parameterType="Long">
-        DELETE FROM TBL_ART_POST
-        WHERE USER_ID = #{userId}
-    </delete>
-
     <delete id="deleteArtPostsByUserId" parameterType="Long">
         DELETE FROM TBL_ART_POST
         WHERE ART_ID IN (
@@ -80,8 +73,7 @@
 
     <!-- 사용자가 입찰한 경매 입찰 정보 삭제 -->
     <delete id="deleteAuctionBiddingByUserId" parameterType="Long">
-        DELETE FROM TBL_AUCTION_BIDDING
-        WHERE USER_ID = #{userId}
+        DELETE FROM TBL_AUCTION_BIDDING WHERE AUCTION_ID IN (SELECT ID FROM TBL_AUCTION WHERE USER_ID = #{userId})
     </delete>
 
     <!-- 사용자가 등록한 경매 삭제 -->

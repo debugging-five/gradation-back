@@ -4,6 +4,8 @@ import com.app.gradationback.aspect.annotation.ExceptionResponse;
 import com.app.gradationback.domain.DeliveryDTO;
 import com.app.gradationback.domain.DeliveryVO;
 import com.app.gradationback.domain.PaymentCancellationVO;
+import com.app.gradationback.exception.DeliveryException;
+import com.app.gradationback.exception.PaymentException;
 import com.app.gradationback.service.DeliveryService;
 import com.app.gradationback.service.PaymentService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,24 +34,20 @@ public class PaymentController {
     @Operation(summary = "결제", description = "결제 API")
     @ApiResponse(responseCode = "200", description = "결제 성공")
     @PostMapping("/payment")
-    public ResponseEntity<Map<String, Object>> payment(@RequestBody Map<String, Object> paymentData) {
+    public ResponseEntity<Map<String, Object>> payment(@RequestBody Map<String, Object> paymentData) throws PaymentException {
         Map<String, Object> response = new HashMap<>();
         Optional<DeliveryDTO> foundPayment = paymentService.payment(paymentData);
-        if (foundPayment.isPresent()) {
-            response.put("message", "등록 성공");
-            response.put("status", foundPayment.get());
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-        }
-        response.put("message", "등록 실패");
-        response.put("status", false);
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        DeliveryDTO payment = foundPayment.orElseThrow(() -> new PaymentException("결제 등록 실패"));
+        response.put("message", "결제 등록 성공");
+        response.put("status", payment);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @ExceptionResponse
     @Operation(summary = "결제취소", description = "결제 취소 API")
     @ApiResponse(responseCode = "200", description = "결제 취소 성공")
     @PostMapping("/cancel")
-    public void cancelPayment(@RequestBody PaymentCancellationVO paymentCancellationVO) {
+    public void cancelPayment(@RequestBody PaymentCancellationVO paymentCancellationVO) throws PaymentException {
         paymentService.paymentCancel(paymentCancellationVO);
     }
 
@@ -64,12 +62,9 @@ public class PaymentController {
             required = true
     )
     @GetMapping("/payment/{id}")
-    public DeliveryDTO getPaymentById(@PathVariable Long id) {
-        Optional<DeliveryDTO> deliveryDTO = paymentService.getPaymentById(id);
-        if (deliveryDTO.isPresent()) {
-            return deliveryDTO.get();
-        }
-        return new DeliveryDTO();
+    public DeliveryDTO getPaymentById(@PathVariable Long id) throws PaymentException {
+        Optional<DeliveryDTO> foundDelivery = paymentService.getPaymentById(id);
+        return foundDelivery.orElseThrow(() -> new PaymentException("결제 조회 실패"));
     }
 
     @ExceptionResponse
@@ -107,7 +102,7 @@ public class PaymentController {
             required = true
     )
     @GetMapping("/payment/all/{userId}")
-    public List<DeliveryDTO> getPaymentByUserId(@PathVariable Long userId) {
+    public List<DeliveryDTO> getPaymentByUserId(@PathVariable Long userId) throws PaymentException {
         List<DeliveryDTO> deliveryDTOList = paymentService.getPaymentByUserId(userId);
         if (deliveryDTOList.isEmpty()) {
             return new ArrayList<>();
@@ -127,20 +122,17 @@ public class PaymentController {
             required = true
     )
     @GetMapping("/delivery/{id}")
-    public DeliveryVO getDeliveryByUserId(@PathVariable Long id) {
-        Optional<DeliveryVO> deliveryVO = deliveryService.deliveryRead(id);
-        if (deliveryVO.isPresent()) {
-            return deliveryVO.get();
-        }
-        return new DeliveryVO();
+    public DeliveryVO getDeliveryByUserId(@PathVariable Long id) throws DeliveryException {
+        Optional<DeliveryVO> foundDelivery = deliveryService.deliveryRead(id);
+        return foundDelivery.orElseThrow(() -> new DeliveryException("배송 조회 실패"));
     }
 
     @ExceptionResponse
     @Operation(summary = "배송 수정", description = "배송정보를 수정할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "수정 성공")
     @PutMapping("modify")
-    public void modify(DeliveryVO deliveryVO) {
-    deliveryService.deleveryUpdate(deliveryVO);
+    public void modify(DeliveryVO deliveryVO) throws DeliveryException {
+    deliveryService.deliveryUpdate(deliveryVO);
 }
 
 }
