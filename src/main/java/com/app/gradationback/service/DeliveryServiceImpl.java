@@ -23,7 +23,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     }
 
     @Override
-    public void deleveryUpdate(DeliveryVO deliveryVO) {
+    public void deliveryUpdate(DeliveryVO deliveryVO) {
         deliveryDAO.update(deliveryVO);
     }
 

@@ -8,5 +8,5 @@ public interface DeliveryService {
 
     public Optional<DeliveryVO> deliveryRead(Long id);
 
-    public void deleveryUpdate(DeliveryVO deliveryVO);
+    public void deliveryUpdate(DeliveryVO deliveryVO);
 }
