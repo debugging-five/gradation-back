@@ -12,6 +12,7 @@ public class ArtistDetailDTO {
     private String userImgName;
     private String userImgPath;
     private String userName;
+    private String userEmail;
     private String universityName;
     private String userInstagram;
     private String userBlog;
