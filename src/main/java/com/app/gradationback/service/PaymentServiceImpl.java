@@ -4,6 +4,7 @@ import com.app.gradationback.domain.DeliveryDTO;
 import com.app.gradationback.domain.DeliveryVO;
 import com.app.gradationback.domain.PaymentCancellationVO;
 import com.app.gradationback.domain.PaymentVO;
+import com.app.gradationback.exception.PaymentException;
 import com.app.gradationback.repository.DeliveryDAO;
 import com.app.gradationback.repository.PaymentDAO;
 import com.app.gradationback.util.CardCompanyMapUtil;
@@ -91,11 +92,8 @@ public class PaymentServiceImpl implements PaymentService {
             return paymentDAO.findById(paymentVO.getId());
 
         } catch (JsonProcessingException e) {
-            log.error(e.getMessage());
+            throw new PaymentException("결제 실패");
         }
-
-        return Optional.empty();
-
     }
 
     @Override

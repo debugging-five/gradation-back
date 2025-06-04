@@ -6,6 +6,7 @@ import com.app.gradationback.domain.AuctionDTO;
 import com.app.gradationback.domain.AuctionPriceVO;
 import com.app.gradationback.domain.AuctionVO;
 import com.app.gradationback.exception.AuctionException;
+import com.app.gradationback.exception.BiddingException;
 import com.app.gradationback.service.AuctionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -92,7 +93,7 @@ public class AuctionController {
     public ResponseEntity<Map<String, Object>> read(@PathVariable Long id) throws AuctionException {
         Map<String, Object> response = new HashMap<>();
         response.put("message", "조회 성공");
-        response.put("auction", auctionService.auctionRead(id));
+        response.put("auction", auctionService.auctionRead(id).orElseThrow(() -> new AuctionException("경매 조회 실패")));
         return ResponseEntity.ok(response);
     }
 
@@ -125,7 +126,7 @@ public class AuctionController {
     @GetMapping("footer/{cursor}")
     public ResponseEntity<Map<String, Object>> read(@PathVariable int cursor) throws AuctionException {
         Map<String, Object> response = new HashMap<>();
-        List<AuctionDTO> footerList = footerList = auctionService.auctionFooterBidding(cursor);
+        List<AuctionDTO> footerList = auctionService.auctionFooterBidding(cursor);
         response.put("footerList", footerList);
         response.put("contents", auctionService.auctionFooterBiddingCount());
         return ResponseEntity.ok(response);
@@ -170,7 +171,7 @@ public class AuctionController {
     @Operation(summary = "경매 응찰", description = "경매 입찰 API")
     @ApiResponse(responseCode = "200", description = "응찰 성공")
     @PostMapping("bidding")
-    public ResponseEntity<Map<String,Object>> bidding(@RequestBody AuctionBiddingVO auctionBiddingVO) throws AuctionException {
+    public ResponseEntity<Map<String,Object>> bidding(@RequestBody AuctionBiddingVO auctionBiddingVO) throws BiddingException {
         Map<String, Object> response = new HashMap<>();
         auctionService.auctionBidding(auctionBiddingVO);
         response.put("message", "응찰 성공");
@@ -188,7 +189,7 @@ public class AuctionController {
             required = true
     )
     @GetMapping("read-bidder-count/{auctionId}")
-    public ResponseEntity<Map<String, Object>> readBidderCount(@PathVariable Long auctionId) throws AuctionException {
+    public ResponseEntity<Map<String, Object>> readBidderCount(@PathVariable Long auctionId) throws BiddingException {
         Map<String, Object> response = new HashMap<>();
         int count = auctionService.auctionBidderCount(auctionId).orElse(0);
         response.put("message", "조회 성공");
@@ -206,13 +207,9 @@ public class AuctionController {
             required = true
     )
     @GetMapping("read-bidder/{auctionId}")
-    public ResponseEntity<AuctionBiddingVO> readBidder(@PathVariable Long auctionId) throws AuctionException {
-        Optional<AuctionBiddingVO> foundBidder = auctionService.auctionStatus(auctionId);
-        if(foundBidder.isPresent()) {
-            AuctionBiddingVO bidding = foundBidder.get();
-            return ResponseEntity.ok(bidding);
-        }
-        return ResponseEntity.ok(new AuctionBiddingVO());
+    public ResponseEntity<AuctionBiddingVO> readBidder(@PathVariable Long auctionId) throws BiddingException {
+        AuctionBiddingVO bidding = auctionService.auctionStatus(auctionId).orElseThrow(() -> new BiddingException("입찰 정보를 찾을 수 없습니다."));
+        return ResponseEntity.ok(bidding);
     }
 
     @ExceptionResponse
@@ -225,19 +222,11 @@ public class AuctionController {
             required = true
     )
     @GetMapping("getLatestPrice/{auctionId}")
-    public ResponseEntity<Map<String, Object>> getLatestPrice(@PathVariable Long auctionId) throws AuctionException {
+    public ResponseEntity<Map<String, Object>> getLatestPrice(@PathVariable Long auctionId) throws BiddingException {
         Map<String, Object> response = new HashMap<>();
         Optional<AuctionPriceVO> latestPrice = auctionService.getLatestPrice(auctionId);
-        if(latestPrice.isPresent()) {
-            AuctionPriceVO price = latestPrice.get();
-            response.put("price", price);
-            return ResponseEntity.ok(response);
-        }
-
-//        첫 경매일 때 빈 객체
-        response.put("price", new AuctionPriceVO());
+        AuctionPriceVO price = latestPrice.orElse(new AuctionPriceVO());
+        response.put("price", price);
         return ResponseEntity.ok(response);
     }
-
-
 }
