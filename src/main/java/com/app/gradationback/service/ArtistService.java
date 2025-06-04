@@ -15,7 +15,9 @@ public interface ArtistService {
 
     public ArtistDetailDTO getArtistDetailById(Long userId);
 
-    public List<ArtistDetailDTO> getArtistArtsList(Long userId);
+    public List<ArtistDetailDTO> getArtistArtsList(Map<String, Object> params);
+
+    public Integer getCountArtistArts(Long userId);
 
     public Integer getCountArtistList(Map<String, Object> params);
 
