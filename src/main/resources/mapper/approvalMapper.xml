@@ -200,7 +200,7 @@
     <update id="updateUniversityStatus" parameterType="UserVO">
         UPDATE TBL_USER
         SET USER_UNIVERSITY_STATUS = #{userUniversityStatus},
-            USER_UNIVERSITY_REJECT_REASON = #{userUniversityReason}
+            USER_UNIVERSITY_REJECT_REASON = #{userUniversityRejectReason}
         WHERE ID = #{id}
     </update>
 
