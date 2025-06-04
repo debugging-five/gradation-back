@@ -32,12 +32,12 @@
         INSERT INTO TBL_UPCYCLING (
             ID, UPCYCLING_ADDRESS, UPCYCLING_DETAIL_ADDRESS, UPCYCLING_EMAIL, UPCYCLING_PHONE, UPCYCLING_DATE,
             UPCYCLING_SIZE_SMALL, UPCYCLING_SIZE_MEDIUM, UPCYCLING_SIZE_LARGE, UPCYCLING_MATERIALS, UPCYCLING_IMG_NAME,
-            UPCYCLING_IMG_PATH, UPCYCLING_SIGNIFICANT, UPCYCLING_STATUS, USER_ID
+            UPCYCLING_IMG_PATH, UPCYCLING_SIGNIFICANT, USER_ID
         ) VALUES (
             SEQ_UPCYCLING.NEXTVAL, #{upcyclingAddress}, #{upcyclingDetailAddress}, #{upcyclingEmail},
              #{upcyclingPhone}, #{upcyclingDate}, #{upcyclingSizeSmall}, #{upcyclingSizeMedium}, #{upcyclingSizeLarge},
              #{upcyclingMaterials}, #{upcyclingImgName}, #{upcyclingImgPath}, #{upcyclingSignificant},
-             #{upcyclingStatus}, #{userId}
+             #{userId}
                  )
     </insert>
 
