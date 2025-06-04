@@ -29,20 +29,7 @@ public class ArtistController {
 
     private final ArtistService artistService;
 
-//    artist(내 프로필)
-    @Operation(summary = "작가리스트(내 프로필 조회)", description = "작가리스트에서 내 프로필을 조회할 수 있는 API")
-    @ApiResponse(responseCode = "200", description = "내 프로필 조회 성공")
-    @GetMapping("profile")
-    public ResponseEntity<ArtistDTO> getMyArtistProfile(@RequestParam Long userId) {
-        Map<String, Object> param = new HashMap<>();
-        param.put("userId", userId);
-
-        return artistService.getMyArtistProfile(param)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-//    작가 리스트 조회
+    //    작가 리스트 조회
     @Operation(summary = "작가 리스트 조회", description = "작가 리스트를 조회할 수 있는 API")
     @Parameters({
             @Parameter(name = "category", description = "작품 카테고리", example = "서예"),
@@ -58,14 +45,18 @@ public class ArtistController {
         try {
             List<ArtistDTO> artistList = artistService.getArtistList(params);
 
-            if (artistList != null && artistList.size() > 0) {
-                response.put("posts", artistList);
+            response.put("posts", artistList);
+            response.put("params", params);
+
+            if (artistList != null && !artistList.isEmpty()) {
                 response.put("message", "작가 리스트 조회 성공");
-                return ResponseEntity.ok(response);
+                response.put("contents", artistService.getCountArtistList(params));
             } else {
                 response.put("message", "작가 리스트 조회 실패");
+                response.put("contents", 0);
                 return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
             }
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             e.printStackTrace();
             response.put("message", "서버 오류: " + e.getMessage());
@@ -105,10 +96,6 @@ public class ArtistController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-
-
-
-
 
     @Operation(summary = "작가 정보 수정", description = "작가 정보를 수정할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "작가 정보 수정 성공")

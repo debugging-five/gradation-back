@@ -18,11 +18,6 @@ public class ArtistDAO {
 
     private final ArtistMapper artistMapper;
 
-    //    작가 메인페이지(내 프로필)
-    public Optional<ArtistDTO> findMyArtistProfile(Map<String, Object> param) {
-        return artistMapper.selectMyArtistProfile(param);
-    }
-
     //    작가 메인페이지
     public List<ArtistDTO> findArtistList(Map<String, Object> params) {
         return artistMapper.selectArtistList(params);
@@ -36,6 +31,10 @@ public class ArtistDAO {
     //    작가 디테일(작품들 썸네일)
     public List<ArtistDetailDTO> findArtistArts(Long userId) {
         return artistMapper.selectArtistArts(userId);
+    }
+
+    public Integer findCountArtistList(Map<String, Object> params) {
+        return artistMapper.selectCountArtistList(params);
     }
 
     //    작가 정보 수정

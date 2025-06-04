@@ -19,11 +19,6 @@ public class ArtistServiceImpl implements ArtistService {
     private final ArtistDAO artistDAO;
 
     @Override
-    public Optional<ArtistDTO> getMyArtistProfile(Map<String, Object> param) {
-        return artistDAO.findMyArtistProfile(param);
-    }
-
-    @Override
     public List<ArtistDTO> getArtistList(Map<String, Object> params) {
 
         if (params.get("category").equals("sculpture")) {
@@ -68,6 +63,11 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public List<ArtistDetailDTO> getArtistArtsList(Long userId) {
         return artistDAO.findArtistArts(userId);
+    }
+
+    @Override
+    public Integer getCountArtistList(Map<String, Object> params) {
+        return artistDAO.findCountArtistList(params);
     }
 
     @Override
