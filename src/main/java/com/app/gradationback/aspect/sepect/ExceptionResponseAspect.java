@@ -1,9 +1,6 @@
 package com.app.gradationback.aspect.sepect;
 
-import com.app.gradationback.exception.AuctionException;
-import com.app.gradationback.exception.BiddingException;
-import com.app.gradationback.exception.DeliveryException;
-import com.app.gradationback.exception.PaymentException;
+import com.app.gradationback.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -38,7 +35,7 @@ public class ExceptionResponseAspect {
 
         try {
             return joinPoint.proceed();
-        }catch (NoSuchFileException noSuchFileException) {
+        }catch (ImageFileException noSuchFileException) {
             return FileCopyUtils.copyToByteArray(new File("c:/upload/images/exception/no_such_file.jpg"));
         }catch (AuctionException auctionException) {
             response.put("message", "경매 API 응답 실패");

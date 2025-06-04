@@ -2,6 +2,7 @@ package com.app.gradationback.controller;
 
 import com.app.gradationback.aspect.annotation.ExceptionResponse;
 import com.app.gradationback.domain.*;
+import com.app.gradationback.exception.ImageFileException;
 import com.app.gradationback.repository.ArtImgDAO;
 import com.app.gradationback.repository.ExhibitionDAO;
 import com.app.gradationback.service.ArtImgService;
@@ -145,7 +146,13 @@ public class FileController {
     @GetMapping("get/{fileName}")
     @ResponseBody
     public byte[] display(@PathVariable String fileName, @RequestParam String filePath) throws IOException {
-        return FileCopyUtils.copyToByteArray(new File("c:/upload/" + filePath + "/" + fileName));
+        File file = new File("c:/upload/" + filePath + "/" + fileName);
+
+        if (!file.exists()) {
+            throw new ImageFileException(file.getAbsolutePath());
+        }
+
+        return FileCopyUtils.copyToByteArray(file);
     }
 
 //    프로필 사진 변경
