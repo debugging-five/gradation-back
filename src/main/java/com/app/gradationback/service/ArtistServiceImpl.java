@@ -61,8 +61,13 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public List<ArtistDetailDTO> getArtistArtsList(Long userId) {
-        return artistDAO.findArtistArts(userId);
+    public List<ArtistDetailDTO> getArtistArtsList(Map<String, Object> params) {
+        return artistDAO.findArtistArts(params);
+    }
+
+    @Override
+    public Integer getCountArtistArts(Long userId) {
+        return artistDAO.selectCountArtistArts(userId);
     }
 
     @Override

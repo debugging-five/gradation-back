@@ -67,12 +67,10 @@ public class ArtistController {
 //    artist detail
     @Operation(summary = "작가 상세 조회", description = "작가 상세를 조회할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "작가 상세 조회 성공")
-    @Parameter(
-            name = "userId",
-            description = "조회할 작가 ID",
-            in = ParameterIn.PATH,
-            required = true
-    )
+    @Parameters({
+            @Parameter(name = "userId", description = "user ID", example = "1"),
+            @Parameter(name = "cursor", description = "페이지", example = "1")
+    })
     @GetMapping("detail/{userId}")
     public ResponseEntity<ArtistDetailDTO> getArtistDetailById(@PathVariable Long userId) {
         ArtistDetailDTO artistDetailDTO = artistService.getArtistDetailById(userId);
@@ -83,18 +81,28 @@ public class ArtistController {
     @Operation(summary = "작가 상세 작품 조회", description = "작가 상세페이지에서 작품들을 조회할 수 있는 API")
     @ApiResponse(responseCode = "200", description = "작가 상세페이지 작품 조회 성공")
     @GetMapping("/detail/{userId}/arts")
-    public ResponseEntity<Map<String, Object>> getArtistArtList(@PathVariable Long userId) {
+    public ResponseEntity<Map<String, Object>> getArtistArtList(@PathVariable Long userId, @RequestParam Integer cursor) {
         Map<String, Object> response = new HashMap<>();
+        response.put("userId", userId);
+        response.put("cursor", cursor);
 
         try {
-            List<ArtistDetailDTO> artistArtsList = artistService.getArtistArtsList(userId);
-            response.put("message", "작품 조회 성공");
-            response.put("arts", artistArtsList);
-            return ResponseEntity.ok(response);
+            List<ArtistDetailDTO> artistArtsList = artistService.getArtistArtsList(response);
+
+            if(artistArtsList != null) {
+                response.put("arts", artistArtsList);
+                response.put("message", "작품 조회 성공");
+                response.put("contents", artistService.getCountArtistArts(userId));
+                return ResponseEntity.ok(response);
+            } else {
+                response.put("message", "작품 조회 실패");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+            }
         } catch (Exception e) {
             response.put("message", "서버 오류: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
+
     }
 
     @Operation(summary = "작가 정보 수정", description = "작가 정보를 수정할 수 있는 API")

@@ -29,8 +29,12 @@ public class ArtistDAO {
     }
 
     //    작가 디테일(작품들 썸네일)
-    public List<ArtistDetailDTO> findArtistArts(Long userId) {
-        return artistMapper.selectArtistArts(userId);
+    public List<ArtistDetailDTO> findArtistArts(Map<String, Object> params) {
+        return artistMapper.selectArtistArts(params);
+    }
+
+    public Integer selectCountArtistArts(Long userId) {
+        return artistMapper.selectCountArtistArts(userId);
     }
 
     public Integer findCountArtistList(Map<String, Object> params) {

@@ -9,6 +9,7 @@ import java.util.List;
 @Component
 @Data
 public class ArtistDetailDTO {
+    private Long id;
     private String userImgName;
     private String userImgPath;
     private String userName;
