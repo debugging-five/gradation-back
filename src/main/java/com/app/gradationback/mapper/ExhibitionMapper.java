@@ -47,6 +47,8 @@ public interface ExhibitionMapper {
 //    지난 전시회 작품들
     public List<ExhibitionPastDTO> selectExhibitionArtList(Map<String, Object> params);
 
+    public Integer selectExhibitionCountArtList(Long exhibitionId);
+
 
 //    대학교 전시회
 //    신청 양식(대학교)

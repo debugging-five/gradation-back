@@ -39,6 +39,9 @@ public interface ExhibitionService {
 //    지난 전시회 작품 리스트
     public List<ExhibitionPastDTO> getExhibitionArtList(Map<String, Object> params);
 
+    public Integer getCountExhibitionArtList(Long exhibitionId);
+
+
 //    대학교 전시회
 //    신청 양식(대학교 + 학과 + 대학교 전시회)
     public void registerUniversity(UniversityExhibitionDTO universityExhibitionDTO);

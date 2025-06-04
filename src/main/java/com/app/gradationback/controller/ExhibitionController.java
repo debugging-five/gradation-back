@@ -181,7 +181,7 @@ public class ExhibitionController {
             @Parameter(name = "exhibitionId", description = "전시회 ID", example = "1"),
             @Parameter(name = "cursor", description = "페이지", example = "1")
     })
-    public ResponseEntity<Map<String, Object>> getExhibitionArtList(@PathVariable String exhibitionId, @RequestParam(defaultValue = "1") int cursor) {
+    public ResponseEntity<Map<String, Object>> getExhibitionArtList(@PathVariable Long exhibitionId, @RequestParam Integer cursor) {
         Map<String, Object> response = new HashMap<>();
         response.put("exhibitionId", exhibitionId);
         response.put("cursor", cursor);
@@ -192,6 +192,7 @@ public class ExhibitionController {
             if(exhibitionArts != null) {
                 response.put("arts", exhibitionArts);
                 response.put("message", "지난 전시회 작품 목록 조회 성공");
+                response.put("contents", exhibitionService.getCountExhibitionArtList(exhibitionId));
                 return ResponseEntity.ok(response);
             } else {
                 response.put("message", "지난 전시회 작품 목록 조회 실패");

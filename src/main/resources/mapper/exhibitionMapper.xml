@@ -245,6 +245,29 @@
         FETCH NEXT 15 ROWS ONLY
     </select>
 
+<!--    지난 전시회 페이지 네이션-->
+    <select id="selectExhibitionCountArtList" parameterType="Long" resultType="Integer">
+        SELECT COUNT(TAR.ID)
+        FROM TBL_EXHIBITION_PAST_ART EPA
+        JOIN TBL_ART TAR
+          ON EPA.ART_ID = TAR.ID
+        JOIN TBL_USER TU
+          ON TAR.USER_ID = TU.ID
+        JOIN (
+            SELECT T1.ART_ID, T1.ART_IMG_NAME, T1.ART_IMG_PATH
+            FROM TBL_ART_IMG T1
+                JOIN (
+                    SELECT ART_ID, MIN(ID) AS MIN_ID
+                    FROM TBL_ART_IMG
+                    GROUP BY ART_ID
+                )T2
+                    ON T1.ART_ID = T2.ART_ID AND T1.ID = T2.MIN_ID
+        )TAI
+            ON TAR.ID = TAI.ART_ID
+        WHERE EPA.GRADATION_EXHIBITION_ID = #{exhibitionId}
+        ORDER BY TAR.ID
+    </select>
+
 
 
     <!--    대학교 전시회 -->

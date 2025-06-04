@@ -76,6 +76,9 @@ public class ExhibitionDAO {
         return exhibitionMapper.selectExhibitionArtList(params);
     }
 
+    public Integer findCountExhibitionArtList(Long exhibitionId) {
+        return exhibitionMapper.selectExhibitionCountArtList(exhibitionId);
+    }
 
 //    대학교 전시회
 //    신청 양식(대학교)
