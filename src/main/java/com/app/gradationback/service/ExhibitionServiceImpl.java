@@ -86,6 +86,11 @@ public class ExhibitionServiceImpl implements ExhibitionService {
         return exhibitionDAO.findExhibitionArtList(params);
     }
 
+    @Override
+    public Integer getCountExhibitionArtList(Long exhibitionId) {
+        return exhibitionDAO.findCountExhibitionArtList(exhibitionId);
+    }
+
 
 //    대학교 전시회
     @Override
