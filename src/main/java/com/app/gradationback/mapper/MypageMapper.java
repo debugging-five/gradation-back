@@ -12,7 +12,6 @@ public interface MypageMapper {
     void deleteArtImgByArtOfUser(Long userId);
     void deleteCommentByArtPostOfUser(Long userId);
 
-    void deleteArtPostByUserId(Long userId);
     void deleteArtPostsByUserId(Long userId);
     void deleteArtByUserId(Long userId);
     void deleteAuctionBiddingByUserId(Long userId);
