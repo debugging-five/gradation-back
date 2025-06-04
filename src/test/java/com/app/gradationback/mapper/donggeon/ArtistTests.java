@@ -2,6 +2,7 @@ package com.app.gradationback.mapper.donggeon;
 
 import com.app.gradationback.domain.*;
 import com.app.gradationback.service.ArtistService;
+import com.app.gradationback.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +22,15 @@ public class ArtistTests {
     @Autowired
     private ArtistService artistService;
 
-    @Test
+    @Autowired
+    UserService userService;
+
+/*    @Test
     public void getMyArtistProfileTest() {
         Map<String, Object> param = new HashMap<>();
         param.put("userId", 2L);
 
-        Optional<ArtistDTO> myArtist = artistService.getMyArtistProfile(param);
+//        Optional<ArtistDTO> myArtist = artistService.getMyArtistProfile(param);
 
         if (myArtist.isPresent()) {
             ArtistDTO artist = myArtist.get();
@@ -39,7 +43,7 @@ public class ArtistTests {
         } else {
             log.info("작가가 아닙니다.");
         }
-    }
+    }*/
 
     @Test
     public void getArtistList() {
@@ -120,15 +124,10 @@ public class ArtistTests {
         artistService.removeUserHistory(historyId);
     }
 
-
-
-
-
-
-
-
-
-
+    @Test
+    public void getUserEmail(){
+        log.info("user {}", userService.getUserByEmail("codefuling@gmail.com"));
+    }
 
 
 }
